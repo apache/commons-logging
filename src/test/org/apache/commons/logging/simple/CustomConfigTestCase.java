@@ -17,7 +17,6 @@
 package org.apache.commons.logging.simple;
 
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,11 +28,11 @@ import org.apache.commons.logging.impl.SimpleLog;
 
 
 /**
- * <p>TestCase for sipmle logging when running with custom configuration
+ * <p>TestCase for simple logging when running with custom configuration
  * properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.4 $ $Date: 2004/02/28 21:46:46 $
+ * @version $Revision: 1.5 $ $Date: 2004/05/29 10:43:35 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
@@ -164,6 +163,8 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertEquals(SimpleLog.LOG_LEVEL_DEBUG, ((SimpleLog) log).getLevel());
 
         // Can we validate the extra exposed properties?
+        assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
+                     ((DecoratedSimpleLog) log).getDateTimeFormat());
         assertEquals("DecoratedLogger",
                      ((DecoratedSimpleLog) log).getLogName());
         assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());

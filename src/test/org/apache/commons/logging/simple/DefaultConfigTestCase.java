@@ -36,7 +36,7 @@ import org.apache.commons.logging.impl.SimpleLog;
  * other than selecting the SimpleLog implementation.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.4 $ $Date: 2004/02/28 21:46:46 $
+ * @version $Revision: 1.5 $ $Date: 2004/05/29 10:43:35 $
  */
 
 public class DefaultConfigTestCase extends TestCase {
@@ -178,6 +178,8 @@ public class DefaultConfigTestCase extends TestCase {
         assertEquals(SimpleLog.LOG_LEVEL_INFO, ((SimpleLog) log).getLevel());
 
         // Can we validate the extra exposed properties?
+        assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
+                     ((DecoratedSimpleLog) log).getDateTimeFormat());
         assertEquals("DecoratedLogger",
                      ((DecoratedSimpleLog) log).getLogName());
         assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());

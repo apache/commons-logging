@@ -41,6 +41,11 @@ public class DecoratedSimpleLog extends SimpleLog {
     // ------------------------------------------------------------- Properties
 
 
+    public String getDateTimeFormat() {
+        return (dateTimeFormat);
+    }
+
+
     public String getLogName() {
         return (logName);
     }
