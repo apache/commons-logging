@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Log4JCategoryLog.java,v 1.9 2002/01/24 18:29:36 rdonkin Exp $
- * $Revision: 1.9 $
- * $Date: 2002/01/24 18:29:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Log4JCategoryLog.java,v 1.10 2002/01/31 00:14:31 sanders Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/01/31 00:14:31 $
  *
  * ====================================================================
  *
@@ -71,26 +71,26 @@ import org.apache.log4j.Priority;
  * Category instances should be done in the usual manner, as outlined in
  * the Log4J documentation.</p>
  *
+ * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- *
- * @version $Id: Log4JCategoryLog.java,v 1.9 2002/01/24 18:29:36 rdonkin Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.10 2002/01/31 00:14:31 sanders Exp $
  */
 public final class Log4JCategoryLog implements Log {
-    
+
 
     // ------------------------------------------------------------- Attributes
-    
+
 
     /** Log to this category */
     Category category = null;
 
 
     // ------------------------------------------------------------ Constructor
-    
-    
-    /** 
-     * Base constructor 
+
+
+    /**
+     * Base constructor
      */
     public Log4JCategoryLog(String name) {
         category = Category.getInstance(name);
@@ -98,6 +98,24 @@ public final class Log4JCategoryLog implements Log {
 
 
     // ---------------------------------------------------------- Implmentation
+
+
+    /**
+     * Log a message to the Log4j Category with <code>TRACE</code> priority.
+     * Currently logs to <code>DEBUG</code> level in Log4J.
+     */
+    public void trace(Object message) {
+        category.debug(message);
+    }
+
+
+    /**
+     * Log an error to the Log4j Category with <code>TRACE</code> priority.
+     * Currently logs to <code>DEBUG</code> level in Log4J.
+     */
+    public void trace(Object message, Throwable t) {
+        category.debug(message,t);
+    }
 
 
     /**
@@ -139,7 +157,7 @@ public final class Log4JCategoryLog implements Log {
         category.warn(message);
     }
 
-    
+
     /**
      * Log an error to the Log4j Category with <code>WARN</code> priority.
      */
@@ -211,6 +229,14 @@ public final class Log4JCategoryLog implements Log {
         return category.isInfoEnabled();
     }
 
+
+    /**
+     * Check whether the Log4j Category used is enabled for <code>TRACE</code> priority.
+     * For Log4J, this returns the value of <code>isDebugEnabled()</code>
+     */
+    public boolean isTraceEnabled() {
+        return category.isDebugEnabled();
+    }
 
     /**
      * Check whether the Log4j Category used is enabled for <code>WARN</code> priority.

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/NoOpLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
- * $Revision: 1.8 $
- * $Date: 2002/01/17 01:47:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/NoOpLog.java,v 1.9 2002/01/31 00:14:31 sanders Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/01/31 00:14:31 $
  *
  * ====================================================================
  *
@@ -66,8 +66,9 @@ package org.apache.commons.logging;
  * <p>Default implementation of Log that throws away all messages.  No
  * configurable system properties are supported.</p>
  *
+ * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
+ * @version $Id: NoOpLog.java,v 1.9 2002/01/31 00:14:31 sanders Exp $
  */
 public final class NoOpLog implements Log {
 
@@ -75,6 +76,10 @@ public final class NoOpLog implements Log {
     public NoOpLog() { }
     /** Base constructor */
     public NoOpLog(String name) { }
+    /** Do nothing */
+    public void trace(Object message) { }
+    /** Do nothing */
+    public void trace(Object message, Throwable t) { }
     /** Do nothing */
     public void debug(Object message) { }
     /** Do nothing */
@@ -96,40 +101,46 @@ public final class NoOpLog implements Log {
     /** Do nothing */
     public void fatal(Object message, Throwable t) { }
 
-    /** 
-     * Debug is never enabled. 
+    /**
+     * Debug is never enabled.
      *
      * @return false
      */
     public final boolean isDebugEnabled() { return false; }
-    
-    /** 
-     * Error is never enabled. 
+
+    /**
+     * Error is never enabled.
      *
      * @return false
      */
     public final boolean isErrorEnabled() { return false; }
-    
-    /** 
-     * Fatal is never enabled. 
+
+    /**
+     * Fatal is never enabled.
      *
      * @return false
      */
     public final boolean isFatalEnabled() { return false; }
-    
-    /** 
-     * Info is never enabled. 
+
+    /**
+     * Info is never enabled.
      *
      * @return false
      */
     public final boolean isInfoEnabled() { return false; }
 
-    /** 
-     * Warning is never enabled. 
+    /**
+     * Trace is never enabled.
+     *
+     * @return false
+     */
+    public final boolean isTraceEnabled() { return false; }
+
+    /**
+     * Warning is never enabled.
      *
      * @return false
      */
     public final boolean isWarnEnabled() { return false; }
-
 
 }

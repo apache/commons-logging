@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.4 2002/01/30 03:56:26 craigmcc Exp $
- * $Revision: 1.4 $
- * $Date: 2002/01/30 03:56:26 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.5 2002/01/31 00:14:31 sanders Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/01/31 00:14:31 $
  *
  * ====================================================================
  *
@@ -72,9 +72,10 @@ import java.util.logging.Logger;
  * interfaces that wraps the standard JDK logging mechanisms that were
  * introduced in the Merlin release (JDK 1.4).</p>
  *
+ * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.4 $ $Date: 2002/01/30 03:56:26 $
+ * @version $Revision: 1.5 $ $Date: 2002/01/31 00:14:31 $
  */
 
 public final class Jdk14Logger implements Log {
@@ -240,11 +241,41 @@ public final class Jdk14Logger implements Log {
 
 
     /**
+     * Is tace logging currently enabled?
+     */
+    public boolean isTraceEnabled() {
+
+        return (logger.isLoggable(Level.FINEST));
+
+    }
+
+
+    /**
      * Is warning logging currently enabled?
      */
     public boolean isWarnEnabled() {
 
         return (logger.isLoggable(Level.WARNING));
+
+    }
+
+
+    /**
+     * Log a message with trace log level.
+     */
+    public void trace(Object message) {
+
+        logger.log(Level.FINEST, message.toString());
+
+    }
+
+
+    /**
+     * Log a message and exception with trace log level.
+     */
+    public void trace(Object message, Throwable exception) {
+
+        logger.log(Level.FINEST, message.toString(), exception);
 
     }
 

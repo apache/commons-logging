@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.11 2002/01/23 20:14:30 rdonkin Exp $
- * $Revision: 1.11 $
- * $Date: 2002/01/23 20:14:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.12 2002/01/31 00:14:31 sanders Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/01/31 00:14:31 $
  *
  * ====================================================================
  *
@@ -68,12 +68,13 @@ package org.apache.commons.logging;
  * this interface must have a constructor that takes a single String
  * parameter representing the "name" of this Log.</p>
  *
- * <p> The five logging levels used by <code>Log</code> are (in order):
- * <ol> 
- * <li>debug (the least serious)</li>
+ * <p> The six logging levels used by <code>Log</code> are (in order):
+ * <ol>
+ * <li>trace (the least serious)</li>
+ * <li>debug</li>
  * <li>info</li>
  * <li>warn</li>
- * <li>error</li> 
+ * <li>error</li>
  * <li>fatal (the most serious)</li>
  * </ol>
  * The mapping of these log levels to the concepts used by the underlying
@@ -86,7 +87,7 @@ package org.apache.commons.logging;
  * a component can avoid expensive operations (producing information
  * to be logged).</p>
  *
- * <p> For example, 
+ * <p> For example,
  * <code><pre>
  *    if (log.isDebugEnabled()) {
  *        ... do something expensive ...
@@ -94,109 +95,137 @@ package org.apache.commons.logging;
  *    }
  * </pre></code>
  * </p>
- * 
+ *
  * <p>Configuration of the underlying logging system will generally be done
  * external to the Logging APIs, through whatever mechanism is supported by
  * that system.</p>
  *
+ * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.11 2002/01/23 20:14:30 rdonkin Exp $
+ * @version $Id: Log.java,v 1.12 2002/01/31 00:14:31 sanders Exp $
  */
 public interface Log {
-    
-    
+
+
     // ----------------------------------------------------- Logging Properties
-    
+
 
     /**
      * <p> Is debug logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatination)
-     * when the log level is more than debug. </p> 
+     * when the log level is more than debug. </p>
      */
     public boolean isDebugEnabled();
-    
+
 
     /**
      * <p> Is error logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatination)
-     * when the log level is more than error. </p> 
+     * when the log level is more than error. </p>
      */
     public boolean isErrorEnabled();
-    
+
 
     /**
      * <p> Is fatal logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatination)
-     * when the log level is more than fatal. </p> 
+     * when the log level is more than fatal. </p>
      */
     public boolean isFatalEnabled();
-    
+
 
     /**
      * <p> Is info logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatination)
-     * when the log level is more than info. </p> 
+     * when the log level is more than info. </p>
      */
     public boolean isInfoEnabled();
 
-    
+
+    /**
+     * <p> Is trace logging currently enabled? </p>
+     *
+     * <p> Call this method to prevent having to perform expensive operations
+     * (for example, <code>String</code> concatination)
+     * when the log level is more than trace. </p>
+     */
+    public boolean isTraceEnabled();
+
+
     /**
      * <p> Is warning logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatination)
-     * when the log level is more than warning. </p> 
+     * when the log level is more than warning. </p>
      */
     public boolean isWarnEnabled();
 
-    
+
     // -------------------------------------------------------- Logging Methods
 
 
     /**
-     * <p> Log a message with debug log level </p> 
+     * <p> Log a message with trace log level </p>
+     *
+     * @param message log this message
+     */
+    public void trace(Object message);
+
+
+    /**
+     * <p> Log an error with trace log level </p>
+     *
+     * @param message log this message
+     * @param t log this cause
+     */
+    public void trace(Object message, Throwable t);
+
+
+    /**
+     * <p> Log a message with debug log level </p>
      *
      * @param message log this message
      */
     public void debug(Object message);
-    
+
 
     /**
-     * <p> Log an error with debug log level </p> 
+     * <p> Log an error with debug log level </p>
      *
      * @param message log this message
      * @param t log this cause
      */
     public void debug(Object message, Throwable t);
 
-    
+
     /**
-     * <p> Log a message with info log level </p> 
+     * <p> Log a message with info log level </p>
      *
      * @param message log this message
      */
     public void info(Object message);
-    
+
 
     /**
-     * <p> Log an error with info log level </p> 
+     * <p> Log an error with info log level </p>
      *
      * @param message log this message
      * @param t log this cause
      */
     public void info(Object message, Throwable t);
-    
-    
+
+
     /**
-     * <p> Log a message with warn log level </p> 
+     * <p> Log a message with warn log level </p>
      *
      * @param message log this message
      */
@@ -204,16 +233,16 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with warn log level </p> 
+     * <p> Log an error with warn log level </p>
      *
      * @param message log this message
      * @param t log this cause
      */
     public void warn(Object message, Throwable t);
-    
-    
+
+
     /**
-     * <p> Log a message with error log level </p> 
+     * <p> Log a message with error log level </p>
      *
      * @param message log this message
      */
@@ -221,16 +250,16 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with error log level </p> 
+     * <p> Log an error with error log level </p>
      *
      * @param message log this message
      * @param t log this cause
      */
     public void error(Object message, Throwable t);
-    
-    
+
+
     /**
-     * <p> Log a message with fatal log level </p> 
+     * <p> Log a message with fatal log level </p>
      *
      * @param message log this message
      */
@@ -238,7 +267,7 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with fatal log level </p> 
+     * <p> Log an error with fatal log level </p>
      *
      * @param message log this message
      * @param t log this cause
