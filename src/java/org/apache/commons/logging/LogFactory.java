@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.6 2002/03/15 22:57:36 craigmcc Exp $
- * $Revision: 1.6 $
- * $Date: 2002/03/15 22:57:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.7 2002/05/04 19:50:29 sanders Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/05/04 19:50:29 $
  *
  * ====================================================================
  *
@@ -84,7 +84,7 @@ import java.util.Properties;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.6 $ $Date: 2002/03/15 22:57:36 $
+ * @version $Revision: 1.7 $ $Date: 2002/05/04 19:50:29 $
  */
 
 public abstract class LogFactory {
@@ -347,7 +347,7 @@ public abstract class LogFactory {
 
         // Fourth, try the fallback implementation class
         if (factory == null) {
-            factory = newFactory(FACTORY_DEFAULT, classLoader);
+            factory = newFactory(FACTORY_DEFAULT, LogFactory.class.getClassLoader());
         }
 
         if( props!=null ) {
