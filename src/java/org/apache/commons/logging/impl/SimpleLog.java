@@ -52,7 +52,13 @@ import org.apache.commons.logging.LogConfigurationException;
  *     included in output messages. Defaults to <code>true</code>.</li>
  * <li><code>org.apache.commons.logging.simplelog.showdatetime</code> -
  *     Set to <code>true</code> if you want the current date and time
- *     to be included in output messages. Default is false.</li>
+ *     to be included in output messages. Default is <code>false</code>.</li>
+ * <li><code>org.apache.commons.logging.simplelog.dateTimeFormat</code> -
+ *     The date and time format to be used in the output messages.
+ *     The pattern describing the date and time format is the same that is
+ *     used in <code>java.text.SimpleDateFormat</code>. If the format is not
+ *     specified or is invalid, the default format is used.
+ *     The default format is <code>yyyy/MM/dd HH:mm:ss:SSS zzz</code>.</li>
  * </ul>
  *
  * <p>In addition to looking for system properties with the names specified
@@ -64,7 +70,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.18 2004/03/01 02:12:48 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.19 2004/05/29 10:43:35 rdonkin Exp $
  */
 public class SimpleLog implements Log, Serializable {
 
@@ -78,6 +84,10 @@ public class SimpleLog implements Log, Serializable {
     /** Properties loaded from simplelog.properties */
     static protected final Properties simpleLogProps = new Properties();
 
+    /** The default format to use when formating dates */
+    static protected final String DEFAULT_DATE_TIME_FORMAT =
+        "yyyy/MM/dd HH:mm:ss:SSS zzz";
+
     /** Include the instance name in the log message? */
     static protected boolean showLogName = false;
     /** Include the short name ( last component ) of the logger in the log
@@ -87,6 +97,8 @@ public class SimpleLog implements Log, Serializable {
     static protected boolean showShortName = true;
     /** Include the current time in the log message */
     static protected boolean showDateTime = false;
+    /** The date and time format to use in the log message */
+    static protected String dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
     /** Used to format times */
     static protected DateFormat dateFormatter = null;
 
@@ -154,9 +166,19 @@ public class SimpleLog implements Log, Serializable {
         showDateTime = getBooleanProperty( systemPrefix + "showdatetime", showDateTime);
 
         if(showDateTime) {
-            dateFormatter = new SimpleDateFormat(
-                getStringProperty(systemPrefix + "dateformat",
-                                  "yyyy/MM/dd HH:mm:ss:SSS zzz"));
+            dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat",
+                                               dateTimeFormat);
+            if (dateTimeFormat == null || "".equals(dateTimeFormat)) {
+                // if this property has not been set then use the default
+                dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
+            }
+            try {
+                dateFormatter = new SimpleDateFormat(dateTimeFormat);
+            } catch(IllegalArgumentException e) {
+                // If the format pattern is invalid - use the default format
+                dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
+                dateFormatter = new SimpleDateFormat(dateTimeFormat);
+            }
         }
     }
 
@@ -170,7 +192,7 @@ public class SimpleLog implements Log, Serializable {
     /** The short name of this simple log instance */
     private String shortLogName = null;
 
-    
+
     // ------------------------------------------------------------ Constructor
 
     /**
@@ -252,7 +274,7 @@ public class SimpleLog implements Log, Serializable {
      * This method assembles the message
      * and then calls <code>write()</code> to cause it to be written.</p>
      *
-     * @param type One of the LOG_LEVE_XXX constants defining the log level
+     * @param type One of the LOG_LEVEL_XXX constants defining the log level
      * @param message The message itself (typically a String)
      * @param t The exception whose stack trace should be logged
      */
