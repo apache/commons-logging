@@ -1,0 +1,123 @@
+<body>
+<p>Simple wrapper API around multiple logging APIs.</p>
+
+<h3>Overview</h3>
+
+<p>This package provides an API for logging in server-based applications that
+can be used around a variety of different logging implementations, including
+prebuilt support for the following:</p>
+<ul>
+<li><a href="http://jakarta.apache.org/log4j/">Log4J</a> from Apache's
+    Jakarta project.  Each named <a href="Log.html">Log</a> instance is
+    connected to a corresponding Log4J Category.</li>
+<!--
+<li><a href="http://java.sun.com/j2se/1.4/docs/guide/util/logging/index.html">
+    JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
+    <a href="Log.html">Log</a> instance is connected to a corresponding
+    <code>java.util.logging.Logger</code> instance.</li>
+-->
+<li><a href="NoOpLog.html">NoOpLog</a> implementation that simply swallows
+    all log output, for all named <a href="Log.html">Log</a> isntances.</li>
+<li><a href="SimpleLog.html">SimpleLog</a> implementation that writes all
+    log output, for all named <a href="Log.html">Log</a> instances, to
+    System.out.</li>
+</ul>
+
+<h3>Configuring the Logging Package APIs</h3>
+
+<p>The Logging Package APIs are configured based on the values of system
+properties, which are normally set on the command line that started your
+application.  The following system properties are global to all
+<a href="Log.html">Log</a> implementations:
+<ul>
+<li><code>org.apache.commons.logging.log</code> - Fully qualified class name
+    of the <code>org.apache.commons.logging.Log</code> implementation to be
+    used.</li>
+</ul>
+
+<p>If you do not specify the class name of the Log implementation to use, the
+following algorithm is applied:</p>
+<ul>
+<li>If Log4J is available, return an instance of
+    <a href="Log4JCategoryLog.html">Log4JCategoryLog</a> that wraps a
+    Log4J Category instance of the specified name.</li>
+<!--
+<li>If the JDK 1.4 logging APIs are available, return an instance
+    of <a href="JdkLogger.html">JdkLogger</a> that wraps an instance of
+    <code>java.util.logging.Logger</code> for the specified name.</li>
+-->
+<li>Return an instance of <a href="NoOpLog.html">NoOpLog</a> that
+    throws away all logged output.</li>
+</ul>
+
+
+<p>Additionally, each individual <a href="Log.html">Log</a> implementation may
+support its own configuration properties.  These will be documented in the
+class descriptions for the corresponding implementation class.</p>
+
+<p>Finally, some <code>Log</code> implementations (such as the one for Log4J)
+require an external configuration file for the entire logging environment.
+This file should be prepared in a manner that is specific to the actual logging
+technology being used.</p>
+
+<h3>Using the Logging Package APIs</h3>
+
+<p>Use of the Logging Package APIs, from the perspective of an application
+component, consists of the following steps:</p>
+<ol>
+<li>Acquire a reference to an instance of
+    <a href="Log.html">org.apache.commons.logging.Log</a>, by calling the
+    factory method
+    <a href="LogSource.html#makeNewLogInstance(java.lang.String)">
+    LogSource.makeNewLogInstance()</a>.  Your application can contain
+    references to multiple loggers that are used for different
+    purposes.  A typical scenario for a server application is to have each
+    major component of the server use its own Log instance.</li>
+<li>Optionally, you can dynamically change the logging detail level by
+    calling <a href="Log.html#setLevel(int)">Log.setLevel()</a> with
+    an appropriate constant from the <code>Log</code> interface.  Note that,
+    in most cases, the underlying logging system configuration will have
+    been preconfigured by the system administrator.</li>
+<li>Cause messages to be logged (if the corresponding detail level is enabled)
+    by calling appropriate methods (<code>debug()</code>, <code>info()</code>,
+    <code>warn()</code>, <code>error</code>, and <code>fatal()</code>).</li>
+</ol>
+
+<p>For example, you might use the following technique to initialize and
+use a <a href="Log.html">Log</a> instance in an application component:</p>
+<pre>
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogSource;
+
+public class MyComponent {
+
+  protected Log log = LogSource.makeNewInstance("mycomponent");
+
+  // Called once at startup time
+  public void start() {
+    ...
+    log.info("MyComponent started");
+    ...
+  }
+
+  // Called once at shutdown time
+  public void stop() {
+    ...
+    log.info("MyComponent stopped");
+    ...
+  }
+
+  // Called repeatedly to process a particular argument value
+  // which you want logged if debugging is enabled
+  public void process(String value) {
+    ...
+    // Do the string concatenation only if logging is enabled
+    if (log.isDebugEnabled())
+      log.debug("MyComponent processing " + value);
+    ...
+  }
+
+}
+</pre>
+
+</body>
