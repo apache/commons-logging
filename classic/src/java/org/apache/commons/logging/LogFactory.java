@@ -410,7 +410,7 @@ public abstract class LogFactory {
     public static Log getLog(Class clazz)
         throws LogConfigurationException {
 
-        return (getFactory().getInstance(clazz));
+        return LogManager.getLog(clazz);
 
     }
 
@@ -429,7 +429,7 @@ public abstract class LogFactory {
     public static Log getLog(String name)
         throws LogConfigurationException {
 
-        return (getFactory().getInstance(name));
+        return LogManager.getLog(name);
 
     }
 
@@ -662,5 +662,23 @@ public abstract class LogFactory {
                     }
                 }
             });
+    }
+    
+    public static class Manager extends LogManager
+    {
+        /**
+         * Gets a <code>Log</code> implementation.
+         * Hook for subclassing.
+         * @param param  <code>Object</code> identifying the <code>Log</code>, not null
+         * @return <code>Log</code>, not null
+         */
+        protected Log getLogInstance(Object param) {
+            if (param instanceof Class) {
+                Class clazz = (Class) param;
+                return LogFactory.getFactory().getInstance(clazz);
+            }
+            String logName = param.toString();
+            return LogFactory.getFactory().getInstance(logName);
+        }
     }
 }
