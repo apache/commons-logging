@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.4 2002/02/14 21:09:19 costin Exp $
- * $Revision: 1.4 $
- * $Date: 2002/02/14 21:09:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.5 2002/02/26 19:00:27 costin Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/02/26 19:00:27 $
  *
  * ====================================================================
  *
@@ -84,7 +84,7 @@ import java.util.Properties;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.4 $ $Date: 2002/02/14 21:09:19 $
+ * @version $Revision: 1.5 $ $Date: 2002/02/26 19:00:27 $
  */
 
 public abstract class LogFactory {
@@ -483,21 +483,29 @@ public abstract class LogFactory {
      */
     protected static LogFactory newFactory(String factoryClass,
                                            ClassLoader classLoader)
-        throws LogConfigurationException {
-
+        throws LogConfigurationException
+    {
+        
         try {
             Class clazz = null;
             if (classLoader == null) {
                 clazz = Class.forName(factoryClass);
             } else {
-                clazz = classLoader.loadClass(factoryClass);
+                try {
+                    // first the thread class loader
+                    clazz = classLoader.loadClass(factoryClass);
+                } catch( ClassNotFoundException ex ) {
+                    // if this failed ( i.e. no implementation is
+                    // found in the webapp itself ) try the
+                    // caller's loader 
+                    clazz = Class.forName( factoryClass );
+                }
             }
             return ((LogFactory) clazz.newInstance());
         } catch (Exception e) {
+            e.printStackTrace();
             throw new LogConfigurationException(e);
         }
 
     }
-
-
 }
