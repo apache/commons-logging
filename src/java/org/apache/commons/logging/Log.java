@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.9 2002/01/17 01:47:49 craigmcc Exp $
- * $Revision: 1.9 $
- * $Date: 2002/01/17 01:47:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.10 2002/01/17 22:55:43 rdonkin Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/01/17 22:55:43 $
  *
  * ====================================================================
  *
@@ -83,27 +83,9 @@ package org.apache.commons.logging;
  * the underlying logging implementation in use.</p>
  *
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.9 2002/01/17 01:47:49 craigmcc Exp $
+ * @version $Id: Log.java,v 1.10 2002/01/17 22:55:43 rdonkin Exp $
  */
 public interface Log {
-
-
-    // ---------------------------------------------------- Log Level Constants
-    
-    /** All logging level. */
-    public static final int ALL  = Integer.MIN_VALUE;
-    /** "Debug" level logging. */
-    public static final int DEBUG  = 10000;
-    /** "Info" level logging. */
-    public static final int INFO   = 20000;
-    /** "Warn" level logging. */
-    public static final int WARN   = 30000;
-    /** "Error" level logging. */
-    public static final int ERROR  = 40000;
-    /** "Fatal" level logging. */
-    public static final int FATAL  = 50000;
-    /** No logging level. */
-    public static final int OFF  = Integer.MAX_VALUE;
     
     
     // ----------------------------------------------------- Logging Properties

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/TestAll.java,v 1.1 2002/01/03 18:47:09 rdonkin Exp $
- * $Revision: 1.1 $
- * $Date: 2002/01/03 18:47:09 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/TestAll.java,v 1.2 2002/01/17 22:55:43 rdonkin Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/01/17 22:55:43 $
  *
  * ====================================================================
  *
@@ -74,7 +74,7 @@ import junit.framework.*;
   * coded by James Strachan. </p>
   *
   * @author Robert Burrell Donkin
-  * @version $Revision: 1.1 $
+  * @version $Revision: 1.2 $
  */
 public class TestAll extends TestCase {
 
@@ -86,8 +86,8 @@ public class TestAll extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         
-        // Add independent test suites
-        suite.addTest(TestLogLevels.suite());
+        // don't have any tests anymore
+        //suite.addTest(TestLogLevels.suite());
         
         return suite;
     }
