@@ -21,7 +21,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.47 2004/11/04 22:59:02 rdonkin Exp $
+        $Id: build.xml,v 1.48 2004/11/10 22:59:04 rdonkin Exp $
 -->
 
 
@@ -462,7 +462,7 @@ limitations under the License.--&gt;'>
 
 
   <target name="test"
-       depends="log4j12-warning, compile.tests,test.jdk14,test.log4j,test.simple,test.avalon,test.log4j12"
+       depends="test.alt-hashtable, log4j12-warning, compile.tests,test.jdk14,test.log4j,test.simple,test.avalon,test.log4j12"
             if="test.entry"
    description="Run all unit test cases">
       <java    classname="${test.runner}" fork="yes"
@@ -921,5 +921,27 @@ limitations under the License.--&gt;'>
 
   </target>
 
+
+
+  <target name="test.alt-hashtable" depends="compile.tests"
+   description="Tests for hashtable substitution">
+
+    <echo message="Hashtable substitution Tests"/>
+    <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
+      <arg value="org.apache.commons.logging.AltHashtableTest"/>
+      <classpath refid="test.classpath"/>
+      <sysproperty key="org.apache.commons.logging.LogFactory.HashtableImpl"
+                 value="org.apache.commons.logging.AltHashtable"/>
+    </java>
+    
+    <echo message="Bad property test"/>
+    <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
+      <arg value="org.apache.commons.logging.BadHashtablePropertyTest"/>
+      <classpath refid="test.classpath"/>
+      <sysproperty key="org.apache.commons.logging.LogFactory.HashtableImpl"
+                 value="org.apache.commons.logging.bad.BogusHashTable"/>
+    </java>
+    
+  </target>
 
 </project>

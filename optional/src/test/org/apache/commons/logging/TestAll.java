@@ -19,13 +19,14 @@ package org.apache.commons.logging;
 
 import junit.framework.*;
 import org.apache.commons.logging.impl.MemoryLogTest;
+import org.apache.commons.logging.impl.WeakHashtableTest;
 
 /**
   * <p> The build script calls just one <code>TestSuite</code> - this one!
   * All tests should be written into separate <code>TestSuite</code>'s
   * and added to this. Don't clutter this class with implementations. </p>
   *
-  * @version $Revision: 1.1 $
+  * @version $Revision: 1.2 $
  */
 public class TestAll extends TestCase {
 
@@ -38,6 +39,8 @@ public class TestAll extends TestCase {
         TestSuite suite = new TestSuite();
         
         suite.addTest(MemoryLogTest.suite());
+        suite.addTestSuite(WeakHashtableTest.class);
+        suite.addTestSuite(LogFactoryTest.class);
         
         return suite;
     }

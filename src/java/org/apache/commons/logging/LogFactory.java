@@ -42,7 +42,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.27 $ $Date: 2004/06/06 21:15:12 $
+ * @version $Revision: 1.28 $ $Date: 2004/11/10 22:59:04 $
  */
 
 public abstract class LogFactory {
@@ -79,6 +79,42 @@ public abstract class LogFactory {
     protected static final String SERVICE_ID =
         "META-INF/services/org.apache.commons.logging.LogFactory";
 
+    /**
+     * <p>Setting this system property value allows the <code>Hashtable</code> used to store
+     * classloaders to be substituted by an alternative implementation.
+     * </p>
+     * <p>
+     * <strong>Note:</strong> <code>LogFactory</code> will print:
+     * <code><pre>
+     * [ERROR] LogFactory: Load of custom hashtable failed</em>
+     * </code></pre>
+     * to system error and then continue using a standard Hashtable.
+     * </p>
+     * <p>
+     * <strong>Usage:</strong> Set this property when Java is invoked
+     * and <code>LogFactory</code> will attempt to load a new instance 
+     * of the given implementation class.
+     * For example, running the following ant scriplet:
+     * <code><pre>
+     *  &lt;java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}"&gt;
+     *     ...
+     *     &lt;sysproperty 
+     *        key="org.apache.commons.logging.LogFactory.HashtableImpl"
+     *        value="org.apache.commons.logging.AltHashtable"/&gt;
+     *  &lt;/java&gt;
+     * </pre></code>
+     * will mean that <code>LogFactory</code> will load an instance of
+     * <code>org.apache.commons.logging.AltHashtable</code>.
+     * </p>
+     * <p>
+     * A typical use case is to allow a custom
+     * Hashtable implementation using weak references to be substituted.
+     * This will allow classloaders to be garbage collected without
+     * the need to release them (on 1.3+ JVMs only, of course ;)
+     * </p>
+     */
+    public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
+        "org.apache.commons.logging.LogFactory.HashtableImpl";
 
     // ----------------------------------------------------------- Constructors
 
@@ -181,7 +217,28 @@ public abstract class LogFactory {
      * The previously constructed <code>LogFactory</code> instances, keyed by
      * the <code>ClassLoader</code> with which it was created.
      */
-    protected static Hashtable factories = new Hashtable();
+    protected static Hashtable factories = createFactoryStore();
+    
+    private static final Hashtable createFactoryStore() {
+        Hashtable result = null;
+        String storeImplementationClass 
+            = System.getProperty(HASHTABLE_IMPLEMENTATION_PROPERTY);
+        if (storeImplementationClass == null) {
+            storeImplementationClass = "org.apache.commons.logging.impl.WeakHashtable";
+        }
+        try {
+            Class implementationClass = Class.forName(storeImplementationClass);
+            result = (Hashtable) implementationClass.newInstance();
+            
+        } catch (Exception e) {
+            // ignore
+            System.err.println("[ERROR] LogFactory: Load of custom hashtable failed");
+        }
+        if (result == null) {
+            result = new Hashtable();
+        }
+        return result;
+    }
 
 
     // --------------------------------------------------------- Static Methods
