@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.31 2003/03/31 00:38:22 craigmcc Exp $
+        $Id: build.xml,v 1.32 2003/04/02 00:50:49 craigmcc Exp $
 -->
 
 
@@ -236,16 +236,24 @@
     <copy    todir="${build.home}/tests" filtering="on">
       <fileset dir="${test.home}" excludes="**/*.java"/>
     </copy>
+    <jar jarfile="${build.home}/commons-${component.name}-appender.jar"
+         basedir="${build.home}/tests"
+        manifest="${build.home}/conf/MANIFEST.MF">
+      <include name="org/apache/commons/logging/log4j/CustomConfig.properties"
+                 if="log4j.present"/>
+      <include name="org/apache/commons/logging/log4j/TestAppender.class"
+                 if="log4j.present"/>
+    </jar>
     <jar jarfile="${build.home}/commons-${component.name}-tests.jar"
          basedir="${build.home}/tests"
-         manifest="${build.home}/conf/MANIFEST.MF">
+        manifest="${build.home}/conf/MANIFEST.MF">
       <exclude name="org/apache/commons/logging/Wrapper.class"/>
       <exclude name="org/apache/commons/logging/jdk14/TestHandler.class"
                  if="jdk.1.4.present"/>
     </jar>
     <jar jarfile="${build.home}/commons-${component.name}-wrapper.jar"
          basedir="${build.home}/tests"
-         manifest="${build.home}/conf/MANIFEST.MF">
+        manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/Wrapper.class"/>
       <include name="org/apache/commons/logging/jdk14/TestHandler.class"
                  if="jdk.1.4.present"/>
@@ -476,6 +484,80 @@
                  value="org.apache.commons.logging.impl.Log4JLogger"/>
       <arg value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <classpath refid="test.classpath.log4j"/>
+    </java>
+
+    <echo message="Hierarchy Configuration API (Log4J Auto-Recognized)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="API"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration API (Log4J LogFactoryImpl Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="API"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.LogFactory"
+                 value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration API (Log4J Log4JLogger Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="API"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.Log"
+                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration FULL (Log4J Auto-Recognized)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="FULL"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration FULL (Log4J LogFactoryImpl Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="FULL"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.LogFactory"
+                 value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration FULL (Log4J Log4JLogger Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="FULL"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.Log"
+                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+      <classpath refid="test.classpath.wrap"/>
     </java>
 
   </target>

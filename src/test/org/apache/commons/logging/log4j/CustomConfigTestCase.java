@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/CustomConfigTestCase.java,v 1.1 2003/03/30 05:22:50 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2003/03/30 05:22:50 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/CustomConfigTestCase.java,v 1.2 2003/04/02 00:50:49 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/04/02 00:50:49 $
  *
  * ====================================================================
  *
@@ -85,7 +85,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2003/03/30 05:22:50 $
+ * @version $Revision: 1.2 $ $Date: 2003/04/02 00:50:49 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
@@ -235,7 +235,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     protected void checkLoggingEvents(boolean thrown) {
         Iterator events = appender.events();
         for (int i = 0; i < testMessages.length; i++) {
-            assertTrue(events.hasNext());
+            assertTrue("Logged event " + i + " exists",events.hasNext());
             LoggingEvent event = (LoggingEvent) events.next();
             assertEquals("LoggingEvent level",
                          testLevels[i], event.getLevel());
