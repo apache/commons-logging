@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.9 2002/02/03 01:44:03 sanders Exp $
+        $Id: build.xml,v 1.10 2002/02/14 21:04:18 costin Exp $
 -->
 
 
@@ -137,20 +137,33 @@
 
 
   <target name="compile" depends="static"
-   description="Compile shareable components">
+          description="Compile shareable components">
     <available property="jdk.1.4.present"
-              classname="java.util.logging.Logger"/>
+               classname="java.util.logging.Logger"/>
+    <available property="log4j.present"
+               classname="org.apache.log4j.Category"/>
+    <available property="logkit.present"
+               classname="org.apache.log.Logger"/>
+
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
-    <javac  srcdir="${source.home}"
+    <echo  message="log4j.present=${log4j.present}"/>
+    <echo  message="logkit.present=${logkit.present}"/>
+
+
+    <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
-             debug="${compile.debug}"
-       deprecation="${compile.deprecation}"
-          optimize="${compile.optimize}">
+           debug="${compile.debug}"
+           deprecation="${compile.deprecation}"
+           optimize="${compile.optimize}">
       <classpath refid="compile.classpath"/>
       <exclude name="org/apache/commons/logging/impl/Jdk14Logger.java"
-             unless="jdk.1.4.present"/>
+               unless="jdk.1.4.present"/>
+      <exclude name="org/apache/commons/logging/impl/Log4JCategoryLog.java"
+               unless="log4j.present"/>
+      <exclude name="org/apache/commons/logging/impl/LogKitLogger.java"
+               unless="logkit.present"/>
     </javac>
-    <copy    todir="${build.home}/classes" filtering="on">
+    <copy  todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>
     </copy>
   </target>
