@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.14 2002/08/30 03:23:34 rsitze Exp $
- * $Revision: 1.14 $
- * $Date: 2002/08/30 03:23:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.15 2002/09/27 02:14:57 rsitze Exp $
+ * $Revision: 1.15 $
+ * $Date: 2002/09/27 02:14:57 $
  *
  * ====================================================================
  *
@@ -106,7 +106,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.14 $ $Date: 2002/08/30 03:23:34 $
+ * @version $Revision: 1.15 $ $Date: 2002/09/27 02:14:57 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -146,7 +146,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * The deprecated system property used for backwards compatibility with
-     * the old {@link LogSource} class.
+     * the old {@link org.apache.commons.logging.LogSource} class.
      */
     protected static final String LOG_PROPERTY_OLD =
         "org.apache.commons.logging.log";
@@ -156,22 +156,24 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * The configuration attributes for this {@link LogFactory}.
+     * Configuration attributes
      */
     protected Hashtable attributes = new Hashtable();
 
 
     /**
-     * The {@link Log} instances that have already been created, keyed by
-     * logger name.
+     * The {@link org.apache.commons.logging.Log} instances that have
+     * already been created, keyed by logger name.
      */
     protected Hashtable instances = new Hashtable();
 
 
     /**
-     * The one-argument constructor of the {@link Log} implementation class
-     * that will be used to create new instances.  This value is initialized
-     * by <code>getLogConstructor()</code>, and then returned repeatedly.
+     * The one-argument constructor of the
+     * {@link org.apache.commons.logging.Log}
+     * implementation class that will be used to create new instances.
+     * This value is initialized by <code>getLogConstructor()</code>,
+     * and then returned repeatedly.
      */
     protected Constructor logConstructor = null;
 
@@ -187,7 +189,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * The one-argument <code>setLogFactory</code> method of the selected
-     * {@link Log} method, if it exists.
+     * {@link org.apache.commons.logging.Log} method, if it exists.
      */
     protected Method logMethod = null;
 
@@ -293,7 +295,8 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * Release any internal references to previously created {@link Log}
+     * Release any internal references to previously created
+     * {@link org.apache.commons.logging.Log}
      * instances returned by this factory.  This is useful environments
      * like servlet containers, which implement application reloading by
      * throwing away a ClassLoader.  Dangling references to objects in that
@@ -349,7 +352,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * <p>Return the <code>Constructor</code> that can be called to instantiate
-     * new {@link Log} instances.</p>
+     * new {@link org.apache.commons.logging.Log} instances.</p>
      *
      * <p><strong>IMPLEMENTATION NOTE</strong> - Race conditions caused by
      * calling this method from more than one thread are ignored, because
@@ -438,10 +441,11 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * <p>** MUST KEEP THIS METHOD PRIVATE **
+     * <p>MUST KEEP THIS METHOD PRIVATE
      * </p>
      * 
-     * <p>This method uses <code>AccessController.doPrivileged()</code>.
+     * <p>Exposing this method establishes a security violation.
+     * This method uses <code>AccessController.doPrivileged()</code>.
      * </p>
      * 
      * Load a class, try first the thread class loader, and
@@ -526,7 +530,8 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * Create and return a new {@link Log} instance for the specified name.
+     * Create and return a new {@link org.apache.commons.logging.Log}
+     * instance for the specified name.
      *
      * @param name Name of the new logger
      *
