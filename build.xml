@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.36 2003/05/07 16:02:20 rdonkin Exp $
+        $Id: build.xml,v 1.37 2003/05/14 11:12:58 rdonkin Exp $
 -->
 
 
@@ -264,6 +264,39 @@
     </jar>
   </target>
 
+  <target name='compile.jdk1.4.tests' if='jdk.1.4.present'>
+    <javac  srcdir="${test.home}"
+           destdir="${build.home}/tests"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}">
+      <classpath refid="test.classpath"/>
+        <include name='**/jdk14/**'/>
+    </javac>
+  </target>
+
+  <target name='compile.log4j.tests' if='log4j.present'>
+    <javac  srcdir="${test.home}"
+           destdir="${build.home}/tests"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}">
+      <classpath refid="test.classpath"/>
+        <include name='**/log4j/**'/>
+    </javac>
+  </target>
+
+
+  <target name='compile.avalon.tests' if='avalon-framework.present'>
+    <javac  srcdir="${test.home}"
+           destdir="${build.home}/tests"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}">
+      <classpath refid="test.classpath"/>
+        <include name='**/avalon/**'/>
+    </javac>
+  </target>
 
   <target name="compile.tests" depends="compile"
    description="Compile unit test cases">
@@ -273,7 +306,13 @@
        deprecation="${compile.deprecation}"
           optimize="${compile.optimize}">
       <classpath refid="test.classpath"/>
+      <exclude name='**/jdk14/**'/>
+      <exclude name='**/log4j/**'/>
+      <exclude name='**/avalon/**'/>
     </javac>
+    <antcall target='compile.log4j.tests'/>
+    <antcall target='compile.jdk1.4.tests'/>
+    <antcall target='compile.avalon.tests'/>
     <copy    todir="${build.home}/tests" filtering="on">
       <fileset dir="${test.home}" excludes="**/*.java"/>
     </copy>
@@ -355,7 +394,7 @@
 <!-- ========== Unit Test Targets ========================================= -->
 
 
-  <target name="test"  depends="compile.tests,test.jdk14,test.log4j
+  <target name="test"  depends="compile.tests,test.jdk14,test.log4j,test.avalon
           " if="test.entry"
    description="Run all unit test cases">
       <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
@@ -605,5 +644,14 @@
 
   </target>
 
+  <target name="test.avalon" depends="compile.tests" if="avalon-framework.present"
+   description="Run unit tests specific to Avalon (Framework) logging">
+
+    <echo message="Avalon Tests"/>
+    <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
+      <arg value="org.apache.commons.logging.avalon.AvalonLoggerTest"/>
+      <classpath refid="test.classpath"/>
+    </java>
+  </target>
 
 </project>
