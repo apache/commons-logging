@@ -1,0 +1,50 @@
+Fri Nov 01 01:06:22 GMT 2002  [debug] AvalonLogSystem initialized using logfile 'velocity.log'
+Fri Nov 01 01:06:22 GMT 2002   [info] ************************************************************** 
+Fri Nov 01 01:06:22 GMT 2002   [info] Starting Jakarta Velocity v1.3
+Fri Nov 01 01:06:22 GMT 2002   [info] RuntimeInstance initializing.
+Fri Nov 01 01:06:22 GMT 2002   [info] Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+Fri Nov 01 01:06:22 GMT 2002   [info] Trying to use logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Nov 01 01:06:22 GMT 2002   [info] Using logger class org.apache.velocity.runtime.log.AvalonLogSystem
+Fri Nov 01 01:06:22 GMT 2002   [info] Default ResourceManager initializing. (class org.apache.velocity.runtime.resource.ResourceManagerImpl)
+Fri Nov 01 01:06:22 GMT 2002   [info] Resource Loader Instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+Fri Nov 01 01:06:22 GMT 2002   [info] FileResourceLoader : initialization starting.
+Fri Nov 01 01:06:22 GMT 2002   [info] FileResourceLoader : adding path '.'
+Fri Nov 01 01:06:22 GMT 2002   [info] FileResourceLoader : initialization complete.
+Fri Nov 01 01:06:22 GMT 2002   [info] ResourceCache : initialized. (class org.apache.velocity.runtime.resource.ResourceCacheImpl)
+Fri Nov 01 01:06:22 GMT 2002   [info] Default ResourceManager initialization complete.
+Fri Nov 01 01:06:22 GMT 2002   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+Fri Nov 01 01:06:22 GMT 2002   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+Fri Nov 01 01:06:22 GMT 2002   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+Fri Nov 01 01:06:22 GMT 2002   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Include
+Fri Nov 01 01:06:22 GMT 2002   [info] Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+Fri Nov 01 01:06:22 GMT 2002   [info] Loaded User Directive: org.apache.tools.dvsl.directive.MatchDirective
+Fri Nov 01 01:06:22 GMT 2002   [info] Created: 20 parsers.
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : initialization starting.
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : adding VMs from VM library template : VM_global_library.vm
+Fri Nov 01 01:06:22 GMT 2002  [error] ResourceManager : unable to find resource 'VM_global_library.vm' in any resource loader.
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : error using  VM library template VM_global_library.vm : org.apache.velocity.exception.ResourceNotFoundException: Unable to find resource 'VM_global_library.vm'
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro :  VM library template macro registration complete.
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : allowInline = true : VMs can be defined inline in templates
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : allowInlineLocal = false : VMs defined inline will be  global in scope if allowed.
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : messages on  : VM system will output logging messages
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : autoload off  : VM system will not automatically reload global library macros
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : initialization complete.
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocity successfully started.
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : added new VM : #printRow( count ) : source = DVSL:stylesheet
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : added new VM : #loadNavigation( filename ) : source = DVSL:stylesheet
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : added new VM : #selectNavigation( fileUtil docSrc ) : source = DVSL:stylesheet
+Fri Nov 01 01:06:22 GMT 2002   [info] Velocimacro : added new VM : #itemLink( item ) : source = DVSL:stylesheet
+Fri Nov 01 01:06:23 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:23 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:24 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:25 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:25 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:26 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:26 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:26 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:27 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:27 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:28 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:28 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
+Fri Nov 01 01:06:28 GMT 2002   [warn] org.apache.velocity.runtime.exception.ReferenceException: reference : template = document [line 246,column 38] : $context.toolbox.devProcess is not a valid reference.
