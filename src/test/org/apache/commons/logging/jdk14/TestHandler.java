@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/TestHandler.java,v 1.2 2003/10/05 15:57:56 rdonkin Exp $
- * $Revision: 1.2 $
- * $Date: 2003/10/05 15:57:56 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/TestHandler.java,v 1.3 2003/10/09 21:37:47 rdonkin Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/10/09 21:37:47 $
  *
  * ====================================================================
  * 
@@ -26,8 +26,8 @@
  *    if any, must include the following acknowledgement:  
  *       "This product includes software developed by the 
  *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
+ *    Alternately, this acknowledgement may appear in the software itself,
+ *    if and wherever such third-party acknowledgements normally appear.
  *
  * 4. The names "Apache", "The Jakarta Project", "Commons", and "Apache Software
  *    Foundation" must not be used to endorse or promote products derived
@@ -72,7 +72,7 @@ import java.util.logging.LogRecord;
  * <p>Test implementation of <code>java.util.logging.Handler</code>.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.2 $ $Date: 2003/10/05 15:57:56 $
+ * @version $Revision: 1.3 $ $Date: 2003/10/09 21:37:47 $
  */
 
 public class TestHandler extends Handler {
