@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.24 2003/03/13 21:19:33 costin Exp $
+        $Id: build.xml,v 1.25 2003/03/17 03:24:14 craigmcc Exp $
 -->
 
 
@@ -179,16 +179,13 @@
       <fileset dir="${source.home}" excludes="**/*.java"/>
     </copy>
 
-    <property name="commons-logging-api.jar" value="${build.home}/commons-${component.name}-api.jar" />
-    <property name="commons-logging.jar" value="${build.home}/commons-${component.name}.jar" />
-
-    <jar jarfile="${commons-logging.jar}"
+    <jar jarfile="${build.home}/commons-${component.name}.jar"
          basedir="${build.home}/classes"
          manifest="${conf.home}/MANIFEST.MF">
       <include name="org/apache/commons/logging/**" />
     </jar>
 
-    <jar jarfile="${commons-logging-api.jar}"
+    <jar jarfile="${build.home}/commons-${component.name}-api.jar"
          basedir="${build.home}/classes"
          manifest="${conf.home}/MANIFEST.MF">
       <include name="org/apache/commons/logging/*.class" />
