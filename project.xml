@@ -35,4 +35,15 @@
 
   </dependencies>
 
+  <build>
+    <sourceModifications>
+      <sourceModification>
+        <className>java.util.logging.Logger</className>
+        <excludes>
+          <exclude>**/Jdk14Logger.java</exclude>
+        </excludes>
+      </sourceModification>
+    </sourceModifications>
+  </build>
+
 </project>
