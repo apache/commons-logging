@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.2 2002/02/14 00:19:03 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2002/02/14 00:19:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.3 2002/02/14 03:48:44 craigmcc Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/02/14 03:48:44 $
  *
  * ====================================================================
  *
@@ -82,7 +82,7 @@ import java.util.Properties;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.2 $ $Date: 2002/02/14 00:19:03 $
+ * @version $Revision: 1.3 $ $Date: 2002/02/14 03:48:44 $
  */
 
 public abstract class LogFactory {
@@ -276,14 +276,15 @@ public abstract class LogFactory {
                     props.load(stream);
                     stream.close();
                     String factoryClass = props.getProperty(FACTORY_PROPERTY);
-                    if (factoryClass != null) {
-                        factory = newFactory(factoryClass, classLoader);
-                        Enumeration names = props.propertyNames();
-                        while (names.hasMoreElements()) {
-                            String name = (String) names.nextElement();
-                            String value = props.getProperty(name);
-                            factory.setAttribute(name, value);
-                        }
+                    if (factoryClass == null) {
+                        factoryClass = FACTORY_DEFAULT;
+                    }
+                    factory = newFactory(factoryClass, classLoader);
+                    Enumeration names = props.propertyNames();
+                    while (names.hasMoreElements()) {
+                        String name = (String) names.nextElement();
+                        String value = props.getProperty(name);
+                        factory.setAttribute(name, value);
                     }
                 }
             } catch (IOException e) {
