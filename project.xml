@@ -33,7 +33,12 @@
       <id>junit</id>
       <version>3.7</version>
     </dependency>
-
+    
+    <dependency>
+      <id>avalon-framework</id>
+      <version>4.0</version>
+    </dependency>
+    
   </dependencies>
 
   <build>
