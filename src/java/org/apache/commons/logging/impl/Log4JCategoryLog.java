@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.3 2002/03/07 22:32:47 costin Exp $
- * $Revision: 1.3 $
- * $Date: 2002/03/07 22:32:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.4 2002/05/06 21:32:37 costin Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/05/06 21:32:37 $
  *
  * ====================================================================
  *
@@ -62,9 +62,9 @@
 
 package org.apache.commons.logging.impl;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
+import org.apache.log4j.*;
 import org.apache.commons.logging.Log;
+import java.util.Enumeration;
 
 /**
  * <p>Implementation of {@link Log} that maps directly to a Log4J
@@ -75,7 +75,7 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.3 2002/03/07 22:32:47 costin Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.4 2002/05/06 21:32:37 costin Exp $
  */
 public final class Log4JCategoryLog implements Log {
 
@@ -85,6 +85,8 @@ public final class Log4JCategoryLog implements Log {
     /** The fully qualified name of the Log4JCategoryLog class. */
     private static final String FQCN = Log4JCategoryLog.class.getName();
     
+    private static boolean initialized=false;
+    private static String LAYOUT="%r [%t] %p %c{2} %x - %m%n";
 
     /** Log to this category */
     private Category category = null;
@@ -97,18 +99,36 @@ public final class Log4JCategoryLog implements Log {
      * Base constructor
      */
     public Log4JCategoryLog(String name) {
-        category = Category.getInstance(name);
+        this( Category.getInstance(name));
     }
 
     /** For use with a log4j factory
      */
     public Log4JCategoryLog(Category category ) {
+        if( ! initialized ) {
+            initialize();
+        }
         this.category=category;
     }
 
 
     // ---------------------------------------------------------- Implmentation
 
+    private void initialize() {
+        Category root=Category.getRoot();
+        Enumeration appenders=root.getAllAppenders();
+        if( appenders==null || ! appenders.hasMoreElements() ) {
+            // No config, set some defaults ( consistent with
+            // commons-logging patterns ).
+            ConsoleAppender app=new ConsoleAppender(new PatternLayout( LAYOUT ),
+                                                    ConsoleAppender.SYSTEM_ERR );
+            
+            root.addAppender( app );
+            root.setPriority( Priority.INFO );
+        }
+        initialized=true;
+    }
+    
 
     /**
      * Log a message to the Log4j Category with <code>TRACE</code> priority.

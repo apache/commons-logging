@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.2 2002/04/29 16:48:09 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2002/04/29 16:48:09 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.3 2002/05/06 21:32:37 costin Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/05/06 21:32:37 $
  *
  * ====================================================================
  *
@@ -77,7 +77,7 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.2 $ $Date: 2002/04/29 16:48:09 $
+ * @version $Revision: 1.3 $ $Date: 2002/05/06 21:32:37 $
  */
 
 public final class Jdk14Logger implements Log {
@@ -109,13 +109,32 @@ public final class Jdk14Logger implements Log {
 
     // --------------------------------------------------------- Public Methods
 
+    private void log( Level level, String msg, Throwable ex ) {
+        // Hack (?) to get the stack trace.
+        Throwable dummyException=new Throwable();
+        StackTraceElement locations[]=dummyException.getStackTrace();
+        // Caller will be the third element
+        String cname="unknown";
+        String method="unknown";
+        if( locations!=null && locations.length >2 ) {
+            StackTraceElement caller=locations[2];
+            cname=caller.getClassName();
+            method=caller.getMethodName();
+        }
+
+        if( ex==null ) {
+            logger.logp( level, cname, method, msg );
+        } else {
+            logger.logp( level, cname, method, msg, ex );
+        }
+    }
 
     /**
      * Log a message with debug log level.
      */
     public void debug(Object message) {
 
-        logger.log(Level.FINE, message.toString());
+        log(Level.FINE, message.toString(), null);
 
     }
 
@@ -125,7 +144,7 @@ public final class Jdk14Logger implements Log {
      */
     public void debug(Object message, Throwable exception) {
 
-        logger.log(Level.FINE, message.toString(), exception);
+        log(Level.FINE, message.toString(), exception);
 
     }
 
@@ -135,7 +154,7 @@ public final class Jdk14Logger implements Log {
      */
     public void error(Object message) {
 
-        logger.log(Level.SEVERE, message.toString());
+        log(Level.SEVERE, message.toString(), null);
 
     }
 
@@ -145,7 +164,7 @@ public final class Jdk14Logger implements Log {
      */
     public void error(Object message, Throwable exception) {
 
-        logger.log(Level.SEVERE, message.toString(), exception);
+        log(Level.SEVERE, message.toString(), exception);
 
     }
 
@@ -155,7 +174,7 @@ public final class Jdk14Logger implements Log {
      */
     public void fatal(Object message) {
 
-        logger.log(Level.SEVERE, message.toString());
+        log(Level.SEVERE, message.toString(), null);
 
     }
 
@@ -165,7 +184,7 @@ public final class Jdk14Logger implements Log {
      */
     public void fatal(Object message, Throwable exception) {
 
-        logger.log(Level.SEVERE, message.toString(), exception);
+        log(Level.SEVERE, message.toString(), exception);
 
     }
 
@@ -185,7 +204,7 @@ public final class Jdk14Logger implements Log {
      */
     public void info(Object message) {
 
-        logger.log(Level.INFO, message.toString());
+        log(Level.INFO, message.toString(), null);
 
     }
 
@@ -195,7 +214,7 @@ public final class Jdk14Logger implements Log {
      */
     public void info(Object message, Throwable exception) {
 
-        logger.log(Level.INFO, message.toString(), exception);
+        log(Level.INFO, message.toString(), exception);
 
     }
 
@@ -265,7 +284,7 @@ public final class Jdk14Logger implements Log {
      */
     public void trace(Object message) {
 
-        logger.log(Level.FINEST, message.toString());
+        log(Level.FINEST, message.toString(), null);
 
     }
 
@@ -275,7 +294,7 @@ public final class Jdk14Logger implements Log {
      */
     public void trace(Object message, Throwable exception) {
 
-        logger.log(Level.FINEST, message.toString(), exception);
+        log(Level.FINEST, message.toString(), exception);
 
     }
 
@@ -285,7 +304,7 @@ public final class Jdk14Logger implements Log {
      */
     public void warn(Object message) {
 
-        logger.log(Level.WARNING, message.toString());
+        log(Level.WARNING, message.toString(), null);
 
     }
 
@@ -295,7 +314,7 @@ public final class Jdk14Logger implements Log {
      */
     public void warn(Object message, Throwable exception) {
 
-        logger.log(Level.WARNING, message.toString(), exception);
+        log(Level.WARNING, message.toString(), exception);
 
     }
 
