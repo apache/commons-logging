@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.8 2002/12/12 20:29:16 rsitze Exp $
- * $Revision: 1.8 $
- * $Date: 2002/12/12 20:29:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.9 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.9 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -90,10 +90,10 @@ import org.apache.commons.logging.LogConfigurationException;
  *     If not specified, the default logging detail level is used.</li>
  * <li><code>org.apache.commons.logging.simplelog.showlogname</code> -
  *     Set to <code>true</code> if you want the Log instance name to be
- *     included in output messages. Defaults to false</li>
+ *     included in output messages. Defaults to <code>false</code>.</li>
  * <li><code>org.apache.commons.logging.simplelog.showShortLogname</code> -
  *     Set to <code>true</code> if you want the last componet of the name to be
- *     included in output messages. Defaults to true.</li>
+ *     included in output messages. Defaults to <code>true</code>.</li>
  * <li><code>org.apache.commons.logging.simplelog.showdatetime</code> -
  *     Set to <code>true</code> if you want the current date and time
  *     to be included in output messages. Default is false.</li>
@@ -108,7 +108,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.8 2002/12/12 20:29:16 rsitze Exp $
+ * @version $Id: SimpleLog.java,v 1.9 2003/03/30 23:42:36 craigmcc Exp $
  */
 public class SimpleLog implements Log {
 

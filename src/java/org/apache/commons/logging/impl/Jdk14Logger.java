@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.4 2002/07/17 16:42:40 rsitze Exp $
- * $Revision: 1.4 $
- * $Date: 2002/07/17 16:42:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.5 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.4 $ $Date: 2002/07/17 16:42:40 $
+ * @version $Revision: 1.5 $ $Date: 2003/03/30 23:42:36 $
  */
 
 public final class Jdk14Logger implements Log {

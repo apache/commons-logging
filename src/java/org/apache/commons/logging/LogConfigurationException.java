@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogConfigurationException.java,v 1.1 2002/02/13 02:18:30 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/13 02:18:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogConfigurationException.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ package org.apache.commons.logging;
  * factory methods.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2002/02/13 02:18:30 $
+ * @version $Revision: 1.2 $ $Date: 2003/03/30 23:42:36 $
  */
 
 public class LogConfigurationException extends RuntimeException {

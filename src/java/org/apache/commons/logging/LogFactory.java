@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.20 2003/03/01 09:55:06 baliuka Exp $
- * $Revision: 1.20 $
- * $Date: 2003/03/01 09:55:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.21 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.21 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.20 $ $Date: 2003/03/01 09:55:06 $
+ * @version $Revision: 1.21 $ $Date: 2003/03/30 23:42:36 $
  */
 
 public abstract class LogFactory {

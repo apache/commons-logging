@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.16 2002/11/23 03:49:40 craigmcc Exp $
- * $Revision: 1.16 $
- * $Date: 2002/11/23 03:49:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.17 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.17 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -97,7 +97,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  *  implementation performs exactly the same algorithm as this class did
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.16 2002/11/23 03:49:40 craigmcc Exp $
+ * @version $Id: LogSource.java,v 1.17 2003/03/30 23:42:36 craigmcc Exp $
  */
 public class LogSource {
 
