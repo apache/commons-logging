@@ -32,9 +32,8 @@ import org.apache.commons.logging.impl.SimpleLog;
  * properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.5 $ $Date: 2004/05/29 10:43:35 $
+ * @version $Revision: 1.6 $ $Date: 2004/05/30 10:32:25 $
  */
-
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
@@ -163,14 +162,25 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertEquals(SimpleLog.LOG_LEVEL_DEBUG, ((SimpleLog) log).getLevel());
 
         // Can we validate the extra exposed properties?
-        assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
-                     ((DecoratedSimpleLog) log).getDateTimeFormat());
+        checkDecoratedDateTime();
         assertEquals("DecoratedLogger",
                      ((DecoratedSimpleLog) log).getLogName());
-        assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());
+        checkShowDateTime();
         assertTrue(((DecoratedSimpleLog) log).getShowShortName());
 
     }
+    
+    /** Hook for subclassses */
+    protected void checkShowDateTime() {
+        assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());
+    }
+    
+    /** Hook for subclasses */
+    protected void checkDecoratedDateTime() {
+            assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
+                     ((DecoratedSimpleLog) log).getDateTimeFormat());
+    }
+    
 
 
     // Check the actual log records against the expected ones

@@ -21,7 +21,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.45 2004/05/19 21:02:10 rdonkin Exp $
+        $Id: build.xml,v 1.46 2004/05/30 10:32:25 rdonkin Exp $
 -->
 
 
@@ -736,6 +736,20 @@ limitations under the License.--&gt;'>
       <sysproperty key="org.apache.commons.logging.simplelog.defaultlog"
                  value="debug"/>
       <arg value="org.apache.commons.logging.simple.CustomConfigTestCase"/>
+      <classpath refid="test.classpath"/>
+    </java>
+    
+    <echo message="Custom Configuration With DateTime (SimpleLog Selected)"/>
+    <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="org.apache.commons.logging.Log"
+                 value="org.apache.commons.logging.simple.DecoratedSimpleLog"/>
+      <sysproperty key="org.apache.commons.logging.simplelog.defaultlog"
+                 value="debug"/>
+      <sysproperty key="org.apache.commons.logging.simplelog.dateTimeFormat"
+                 value="dd.mm.yyyy"/>
+      <sysproperty key="org.apache.commons.logging.simplelog.showdatetime"
+                 value="true"/>                 
+      <arg value="org.apache.commons.logging.simple.DateTimeCustomConfigTestCase"/>
       <classpath refid="test.classpath"/>
     </java>
     
