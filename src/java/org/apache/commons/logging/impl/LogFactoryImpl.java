@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.24 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.24 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.25 2003/04/02 01:53:04 craigmcc Exp $
+ * $Revision: 1.25 $
+ * $Date: 2003/04/02 01:53:04 $
  *
  * ====================================================================
  *
@@ -107,7 +107,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.24 $ $Date: 2003/03/30 23:42:36 $
+ * @version $Revision: 1.25 $ $Date: 2003/04/02 01:53:04 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -120,21 +120,10 @@ public class LogFactoryImpl extends LogFactory {
      */
     public LogFactoryImpl() {
         super();
-        guessConfig();
     }
 
 
     // ----------------------------------------------------- Manifest Constants
-
-
-    // Defaulting to NullLogger means important messages will be lost if
-    // no other logger is available. This is as bad as having a catch() and
-    // ignoring the exception because 'it can't happen'
-    /**
-     * The fully qualified name of the default {@link Log} implementation.
-     */
-    public static final String LOG_DEFAULT =
-        "org.apache.commons.logging.impl.SimpleLog";
 
 
     /**
@@ -152,9 +141,6 @@ public class LogFactoryImpl extends LogFactory {
     protected static final String LOG_PROPERTY_OLD =
         "org.apache.commons.logging.log";
 
-
-    private static final String LOG4JLOGIMPL =
-        "org.apache.commons.logging.impl.Log4JLogger".intern();
 
     // ----------------------------------------------------- Instance Variables
 
@@ -177,6 +163,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     private String logClassName;
 
+
     /**
      * The one-argument constructor of the
      * {@link org.apache.commons.logging.Log}
@@ -186,8 +173,6 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Constructor logConstructor = null;
 
-
-    protected LogFactory proxyFactory=null;
 
     /**
      * The signature of the Constructor to be used.
@@ -220,10 +205,9 @@ public class LogFactoryImpl extends LogFactory {
      * @param name Name of the attribute to return
      */
     public Object getAttribute(String name) {
-        if( proxyFactory != null )
-            return proxyFactory.getAttribute( name );
 
-        return attributes.get(name);
+        return (attributes.get(name));
+
     }
 
 
@@ -233,8 +217,6 @@ public class LogFactoryImpl extends LogFactory {
      * length array is returned.
      */
     public String[] getAttributeNames() {
-        if( proxyFactory != null )
-            return proxyFactory.getAttributeNames();
 
         Vector names = new Vector();
         Enumeration keys = attributes.keys();
@@ -245,7 +227,8 @@ public class LogFactoryImpl extends LogFactory {
         for (int i = 0; i < results.length; i++) {
             results[i] = (String) names.elementAt(i);
         }
-        return results;
+        return (results);
+
     }
 
 
@@ -259,10 +242,9 @@ public class LogFactoryImpl extends LogFactory {
      *  instance cannot be returned
      */
     public Log getInstance(Class clazz) throws LogConfigurationException {
-        if( proxyFactory != null )
-            return proxyFactory.getInstance(clazz);
 
-        return getInstance(clazz.getName());
+        return (getInstance(clazz.getName()));
+
     }
 
 
@@ -284,15 +266,14 @@ public class LogFactoryImpl extends LogFactory {
      *  instance cannot be returned
      */
     public Log getInstance(String name) throws LogConfigurationException {
-        if( proxyFactory != null )
-            return proxyFactory.getInstance(name);
 
         Log instance = (Log) instances.get(name);
         if (instance == null) {
             instance = newInstance(name);
             instances.put(name, instance);
         }
-        return instance;
+        return (instance);
+
     }
 
 
@@ -305,8 +286,6 @@ public class LogFactoryImpl extends LogFactory {
      * class loader would prevent garbage collection.
      */
     public void release() {
-        if( proxyFactory != null )
-            proxyFactory.release();
 
         instances.clear();
     }
@@ -319,9 +298,9 @@ public class LogFactoryImpl extends LogFactory {
      * @param name Name of the attribute to remove
      */
     public void removeAttribute(String name) {
-        if( proxyFactory != null )
-            proxyFactory.removeAttribute(name);
+
         attributes.remove(name);
+
     }
 
 
@@ -335,8 +314,6 @@ public class LogFactoryImpl extends LogFactory {
      *  to remove any setting for this attribute
      */
     public void setAttribute(String name, Object value) {
-        if( proxyFactory != null )
-            proxyFactory.setAttribute(name, value);
 
         if (value == null) {
             attributes.remove(name);
@@ -351,8 +328,13 @@ public class LogFactoryImpl extends LogFactory {
 
 
 
+    /**
+     * Return the fully qualified Java classname of the {@link Log}
+     * implementation we will be using.
+     */
     protected String getLogClassName() {
-        // Identify the Log implementation class we will be using
+
+        // Return the previously identified class name (if any)
         if (logClassName != null) {
             return logClassName;
         }
@@ -380,19 +362,19 @@ public class LogFactoryImpl extends LogFactory {
         }
 
         if ((logClassName == null) && isLog4JAvailable()) {
-            logClassName = LOG4JLOGIMPL;
+            logClassName = "org.apache.commons.logging.impl.Log4JLogger";
         }
 
         if ((logClassName == null) && isJdk14Available()) {
-            logClassName =
-                "org.apache.commons.logging.impl.Jdk14Logger";
+            logClassName = "org.apache.commons.logging.impl.Jdk14Logger";
         }
 
         if (logClassName == null) {
-            logClassName = LOG_DEFAULT;
+            logClassName = "org.apache.commons.logging.impl.SimpleLog";
         }
 
-        return logClassName;
+        return (logClassName);
+
     }
 
 
@@ -495,24 +477,6 @@ public class LogFactoryImpl extends LogFactory {
     }
 
 
-    protected void guessConfig() {
-        if (getLogClassName() == LOG4JLOGIMPL) {
-            proxyFactory = null;
-            try {
-                Class proxyClass=
-                    loadClass("org.apache.commons.logging.impl.Log4jFactory");
-                if (proxyClass != null) {
-                    proxyFactory = (LogFactory)proxyClass.newInstance();
-                }
-            } catch( Throwable t ) {
-                ; // ignore
-            }
-        }
-        // other logger specific initialization
-        // ...
-    }
-
-
     /**
      * Is <em>JDK 1.4 or later</em> logging available?
      */
@@ -553,8 +517,8 @@ public class LogFactoryImpl extends LogFactory {
      *  be created
      */
     protected Log newInstance(String name) throws LogConfigurationException {
-        Log instance = null;
 
+        Log instance = null;
         try {
             Object params[] = new Object[1];
             params[0] = name;
@@ -567,5 +531,8 @@ public class LogFactoryImpl extends LogFactory {
         } catch (Throwable t) {
             throw new LogConfigurationException(t);
         }
+
     }
+
+
 }

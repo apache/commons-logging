@@ -73,6 +73,11 @@ import org.apache.log4j.Logger;
 /**
  * <p>Concrete subclass of {@link LogFactory} specific to log4j.
  *
+ * @deprecated Per discussion on COMMONS-DEV, the behind-the-scenes use
+ *  of this class as a proxy factory has been removed.  For 1.0, you
+ *  can still request it directly if you wish, but it doesn't really
+ *  do anything useful, and will be removed in 1.1.
+ *
  * @author Costin Manolache
  */
 public final class Log4jFactory extends LogFactory {
