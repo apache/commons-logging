@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.13 2003/10/09 21:37:47 rdonkin Exp $
- * $Revision: 1.13 $
- * $Date: 2003/10/09 21:37:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.14 2004/02/28 17:54:14 rdonkin Exp $
+ * $Revision: 1.14 $
+ * $Date: 2004/02/28 17:54:14 $
  *
  * ====================================================================
  * 
@@ -77,7 +77,7 @@ import org.apache.log4j.Priority;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.13 2003/10/09 21:37:47 rdonkin Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.14 2004/02/28 17:54:14 rdonkin Exp $
  */
 public final class Log4JCategoryLog implements Log {
 
@@ -86,7 +86,7 @@ public final class Log4JCategoryLog implements Log {
 
     /** The fully qualified name of the Log4JCategoryLog class. */
     private static final String FQCN = Log4JCategoryLog.class.getName();
-    
+
     /** Log to this category */
     private Category category = null;
 
@@ -98,13 +98,13 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Base constructor
+     * Base constructor.
      */
     public Log4JCategoryLog(String name) {
         this.category=Category.getInstance(name);
     }
 
-    /** For use with a log4j factory
+    /** For use with a log4j factory.
      */
     public Log4JCategoryLog(Category category ) {
         this.category=category;

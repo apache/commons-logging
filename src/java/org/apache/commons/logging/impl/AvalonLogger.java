@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/AvalonLogger.java,v 1.6 2003/10/09 21:37:47 rdonkin Exp $
- * $Revision: 1.6 $
- * $Date: 2003/10/09 21:37:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/AvalonLogger.java,v 1.7 2004/02/28 17:54:14 rdonkin Exp $
+ * $Revision: 1.7 $
+ * $Date: 2004/02/28 17:54:14 $
  *
  * ====================================================================
  * 
@@ -66,11 +66,11 @@ import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 
 /**
- * Implementation of commons-logging Log interface that delegates all 
- * logging calls to Avalon logging abstraction: the Logger interface.
- * 
+ * Implementation of commons-logging Log interface that delegates all
+ * logging calls to the Avalon logging abstraction: the Logger interface.
+ *
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision: 1.6 $ $Date: 2003/10/09 21:37:47 $
+ * @version $Revision: 1.7 $ $Date: 2004/02/28 17:54:14 $
  */
 public class AvalonLogger implements Log, Serializable {
 
@@ -79,7 +79,7 @@ public class AvalonLogger implements Log, Serializable {
     private String name = null;
 
     /**
-     * @param logger the avalon logger implementation to delegate to 
+     * @param logger the avalon logger implementation to delegate to
      */
     public AvalonLogger(Logger logger) {
         this.name = name;
@@ -87,10 +87,10 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
-     * @param name the name of the avalon logger implementation to delegate to 
+     * @param name the name of the avalon logger implementation to delegate to
      */
     public AvalonLogger(String name) {
-        if (defaultLogger == null) 
+        if (defaultLogger == null)
             throw new NullPointerException("default logger has to be specified if this constructor is used!");
         this.logger = getLogger();
     }

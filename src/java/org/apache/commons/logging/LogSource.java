@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.19 2003/10/09 21:37:47 rdonkin Exp $
- * $Revision: 1.19 $
- * $Date: 2003/10/09 21:37:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.20 2004/02/28 17:54:14 rdonkin Exp $
+ * $Revision: 1.20 $
+ * $Date: 2004/02/28 17:54:14 $
  *
  * ====================================================================
  * 
@@ -97,7 +97,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  *  implementation performs exactly the same algorithm as this class did
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.19 2003/10/09 21:37:47 rdonkin Exp $
+ * @version $Id: LogSource.java,v 1.20 2004/02/28 17:54:14 rdonkin Exp $
  */
 public class LogSource {
 
@@ -108,7 +108,7 @@ public class LogSource {
     /** Is log4j available (in the current classpath) */
     static protected boolean log4jIsAvailable = false;
 
-    /** Is JD 1.4 logging available */
+    /** Is JDK 1.4 logging available */
     static protected boolean jdk14IsAvailable = false;
 
     /** Constructor for current log class */

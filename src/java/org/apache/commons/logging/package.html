@@ -19,7 +19,7 @@ prebuilt support for the following:</p>
     Avalon project.  Each named <a href="Log.html">Log</a> instance is
     connected to a corresponding LogKit <code>Logger</code>.</li>
 <li><a href="impl/NoOpLog.html">NoOpLog</a> implementation that simply swallows
-    all log output, for all named <a href="Log.html">Log</a> isntances.</li>
+    all log output, for all named <a href="Log.html">Log</a> instances.</li>
 <li><a href="impl/SimpleLog.html">SimpleLog</a> implementation that writes all
     log output, for all named <a href="Log.html">Log</a> instances, to
     System.err.</li>
@@ -63,7 +63,7 @@ application.</p>
 <h3>Configuring the Commons Logging Package</h3>
 
 
-<h4>Choosing A <code>LogFactory</code> Implementation</h4>
+<h4>Choosing a <code>LogFactory</code> Implementation</h4>
 
 <p>From an application perspective, the first requirement is to retrieve an
 object reference to the <code>LogFactory</code> instance that will be used
@@ -135,7 +135,7 @@ implementation uses the following rules:</p>
     <li>If the application is executing on a JDK 1.4 system, use
         the corresponding wrapper class
         (<a href="impl/Jdk14Logger.html">Jdk14Logger</a>).</li>
-    <li>Fall back to the default simple logging wrapper
+    <li>Fall back to the default simple logging implementation
         (<a href="impl/SimpleLog.html">SimpleLog</a>).</li>
     </ul></li>
 <li>Load the class of the specified name from the thread context class
@@ -152,8 +152,8 @@ configuration information for this default implementation.</p>
 
 <h4>Configuring the Underlying Logging System</h4>
 
-<p>The basic principle is that the user is totally responsible for the 
-configuration of the underlying logging system. 
+<p>The basic principle is that the user is totally responsible for the
+configuration of the underlying logging system.
 Commons-logging should not change the existing configuration.</p>
 
 <p>Each individual <a href="Log.html">Log</a> implementation may
@@ -187,11 +187,11 @@ component, consists of the following steps:</p>
 <p>For convenience, <code>LogFactory</code> also offers a static method
 <code>getLog()</code> that combines the typical two-step pattern:</p>
 <pre>
-  Log log = LogFactory.getFactory().getInstance("Foo");
+  Log log = LogFactory.getFactory().getInstance(Foo.class);
 </pre>
 <p>into a single method call:</p>
 <pre>
-  Log log = LogFactory.getLog("Foo");
+  Log log = LogFactory.getLog(Foo.class);
 </pre>
 
 <p>For example, you might use the following technique to initialize and
@@ -203,7 +203,7 @@ import org.apache.commons.logging.LogFactory;
 public class MyComponent {
 
   protected static Log log =
-    LogFactory.getLog("my.component");
+    LogFactory.getLog(MyComponent.class);
 
   // Called once at startup time
   public void start() {

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.10 2003/10/09 21:37:47 rdonkin Exp $
- * $Revision: 1.10 $
- * $Date: 2003/10/09 21:37:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.11 2004/02/28 17:54:14 rdonkin Exp $
+ * $Revision: 1.11 $
+ * $Date: 2004/02/28 17:54:14 $
  *
  * ====================================================================
  * 
@@ -78,7 +78,7 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.10 $ $Date: 2003/10/09 21:37:47 $
+ * @version $Revision: 1.11 $ $Date: 2004/02/28 17:54:14 $
  */
 
 public class Jdk14Logger implements Log, Serializable {
@@ -249,7 +249,7 @@ public class Jdk14Logger implements Log, Serializable {
 
 
     /**
-     * Is tace logging currently enabled?
+     * Is trace logging currently enabled?
      */
     public boolean isTraceEnabled() {
         return (getLogger().isLoggable(Level.FINEST));
@@ -257,7 +257,7 @@ public class Jdk14Logger implements Log, Serializable {
 
 
     /**
-     * Is warning logging currently enabled?
+     * Is warn logging currently enabled?
      */
     public boolean isWarnEnabled() {
         return (getLogger().isLoggable(Level.WARNING));
