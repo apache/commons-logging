@@ -58,6 +58,17 @@ package. In addition, there is a (short)
 
 
 <section name="Releases">
+    <subsection name='1.0.5 Release (Proposed)'>
+    		<p>
+    <strong>Note:</strong> <em>release candidate is currently under preparation.</em>
+    		</p>
+        <p>
+JCL 1.0.5 is a service release adding optional improved automatic memory management
+for containers which do not support JCL explicit memory release
+during hot reployment (1.4+ JVMs only). For more details see the
+<a href='guide.html#Classloader%20and%20Memory%20Management'>user guide</a>.
+        </p>
+    </subsection>
     <subsection name='1.0.4 Release'>
         <p>
 The 1.0.4 release of commons-logging is a service
