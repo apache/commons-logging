@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.6 2002/12/12 19:23:34 rsitze Exp $
- * $Revision: 1.6 $
- * $Date: 2002/12/12 19:23:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.7 2002/12/12 19:49:30 rsitze Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/12/12 19:49:30 $
  *
  * ====================================================================
  *
@@ -108,7 +108,7 @@ import org.apache.commons.logging.Log;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.6 2002/12/12 19:23:34 rsitze Exp $
+ * @version $Id: SimpleLog.java,v 1.7 2002/12/12 19:49:30 rsitze Exp $
  */
 public class SimpleLog implements Log {
 
@@ -119,8 +119,9 @@ public class SimpleLog implements Log {
     static protected final String systemPrefix =
         "org.apache.commons.logging.simplelog.";
 
-    /** All system properties which start with {@link #systemPrefix} */
+    /** Properties loaded from simplelog.properties */
     static protected final Properties simpleLogProps = new Properties();
+
     /** Include the instance name in the log message? */
     static protected boolean showLogName = false;
     /** Include the short name ( last component ) of the logger in the log
@@ -156,28 +157,26 @@ public class SimpleLog implements Log {
     public static final int LOG_LEVEL_OFF    = (LOG_LEVEL_FATAL + 1);
 
     // ------------------------------------------------------------ Initializer
+    
+    private static String getStringProperty(String name) {
+        String prop = System.getProperty(name);
+        return (prop == null) ? simpleLogProps.getProperty(name) : prop;
+    }
+
+    private static String getStringProperty(String name, String dephault) {
+        String prop = getStringProperty(name);
+        return (prop == null) ? dephault : prop;
+    }
+
+    private static boolean getBooleanProperty(String name, boolean dephault) {
+        String prop = getStringProperty(name);
+        return (prop == null) ? dephault : "true".equalsIgnoreCase(prop);
+    }
 
     // initialize class attributes
+    // load properties file, if found.
+    // override with system properties.
     static {
-        
-        try {
-            // add all system props that start with the specified prefix
-            Enumeration enum = (Enumeration)AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    public Object run() {
-                        return System.getProperties().propertyNames();
-                    }
-                });
-            while(enum.hasMoreElements()) {
-                String name = (String)(enum.nextElement());
-                if(null != name && name.startsWith(systemPrefix)) {
-                    simpleLogProps.setProperty(name,System.getProperty(name));
-                }
-            }
-        }
-        catch (AccessControlException e) {
-            // ignore access control exceptions when trying to check system properties
-        }
 
         // identify the class loader to attempt resource loading with
         ClassLoader classLoader = null;
@@ -205,33 +204,15 @@ public class SimpleLog implements Log {
             }
         }
 
-        /* That's a strange way to set properties. If the property
-           is not set, we'll override the default
-
-            showLogName = "true".equalsIgnoreCase(
-                    simpleLogProps.getProperty(
-                    systemPrefix + "showlogname","true"));
-        */
-
-        String prop=simpleLogProps.getProperty( systemPrefix + "showlogname");
-
-        if( prop!= null )
-            showLogName = "true".equalsIgnoreCase(prop);
-
-        prop=simpleLogProps.getProperty( systemPrefix + "showShortLogname");
-        if( prop!=null ) {
-            showShortName = "true".equalsIgnoreCase(prop);
-        }
-
-        prop=simpleLogProps.getProperty( systemPrefix + "showdatetime");
-        if( prop!=null ) {
-            showDateTime = "true".equalsIgnoreCase(prop);
-        }
+        showLogName = getBooleanProperty( systemPrefix + "showlogname", showLogName);
+        showShortName = getBooleanProperty( systemPrefix + "showShortLogname", showShortName);
+        showDateTime = getBooleanProperty( systemPrefix + "showdatetime", showDateTime);
+        showLogName = getBooleanProperty( systemPrefix + "showlogname", showLogName);
 
         if(showDateTime) {
             dateFormatter = new SimpleDateFormat(
-                simpleLogProps.getProperty(
-                    systemPrefix + "dateformat","yyyy/MM/dd HH:mm:ss:SSS zzz"));
+                getStringProperty(systemPrefix + "dateformat",
+                                  "yyyy/MM/dd HH:mm:ss:SSS zzz"));
         }
     }
 
@@ -263,16 +244,16 @@ public class SimpleLog implements Log {
         setLevel(SimpleLog.LOG_LEVEL_INFO);
 
         // set log level from properties
-        String lvl = simpleLogProps.getProperty(systemPrefix + "log." + logName);
+        String lvl = getStringProperty(systemPrefix + "log." + logName);
         int i = String.valueOf(name).lastIndexOf(".");
         while(null == lvl && i > -1) {
             name = name.substring(0,i);
-            lvl = simpleLogProps.getProperty(systemPrefix + "log." + name);
+            lvl = getStringProperty(systemPrefix + "log." + name);
             i = String.valueOf(name).lastIndexOf(".");
         }
 
         if(null == lvl) {
-            lvl =  simpleLogProps.getProperty(systemPrefix + "defaultlog");
+            lvl =  getStringProperty(systemPrefix + "defaultlog");
         }
 
         if("all".equalsIgnoreCase(lvl)) {
