@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.3 2002/02/14 03:48:44 craigmcc Exp $
- * $Revision: 1.3 $
- * $Date: 2002/02/14 03:48:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.4 2002/02/14 21:09:19 costin Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/02/14 21:09:19 $
  *
  * ====================================================================
  *
@@ -64,6 +64,8 @@ package org.apache.commons.logging;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
@@ -82,7 +84,7 @@ import java.util.Properties;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.3 $ $Date: 2002/02/14 03:48:44 $
+ * @version $Revision: 1.4 $ $Date: 2002/02/14 21:09:19 $
  */
 
 public abstract class LogFactory {
@@ -104,6 +106,13 @@ public abstract class LogFactory {
      */
     protected static final String FACTORY_PROPERTIES =
         "commons-logging.properties";
+
+    /**
+     * JDK1.3+ 'Service Provider' specification 
+     * ( http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html )
+     */
+    protected static final String SERVICE_ID =
+        "META-INF/services/org.apache.commons.logging.LogFactory";
 
 
     /**
@@ -255,7 +264,7 @@ public abstract class LogFactory {
         if (factory != null) {
             return (factory);
         }
-
+        
         // First, try the system property
         try {
             String factoryClass = System.getProperty(FACTORY_PROPERTY);
@@ -266,37 +275,90 @@ public abstract class LogFactory {
             ;
         }
 
-        // Second, try a properties file
-        if (factory == null) {
+        // Second, try to find a service by using the JDK1.3 jar
+        // discovery mechanism. This will allow users to plug a logger
+        // by just placing it in the lib/ directory of the webapp ( or in
+        // CLASSPATH or equivalent ). This is similar with the second
+        // step, except that it uses the (standard?) jdk1.3 location in the jar.
+
+        if( factory==null ) {
             try {
-                InputStream stream =
-                    classLoader.getResourceAsStream(FACTORY_PROPERTIES);
-                if (stream != null) {
-                    Properties props = new Properties();
-                    props.load(stream);
-                    stream.close();
-                    String factoryClass = props.getProperty(FACTORY_PROPERTY);
+                InputStream is=null;
+                if (classLoader == null) {
+                    is=ClassLoader.getSystemResourceAsStream( SERVICE_ID );
+                } else {
+                    is=classLoader.getResourceAsStream( SERVICE_ID );
+                }
+
+                if( is != null ) {
+                    // This code is needed by EBCDIC and other strange systems.
+                    // It's a fix for bugs reported in xerces
+                    BufferedReader rd;
+                    try {
+                        rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                    } catch (java.io.UnsupportedEncodingException e) {
+                        rd = new BufferedReader(new InputStreamReader(is));
+                    }
+                    
+                    String factoryClassName = rd.readLine();
+                    rd.close();
+                    
+                    if (factoryClassName != null &&
+                        ! "".equals(factoryClassName)) {
+                        
+                        factory= newFactory( factoryClassName, classLoader );
+                    }
+                }
+            } catch( Exception ex ) {
+                ;
+            }
+        }
+
+
+        Properties props=null;
+        
+        // Third try a properties file. 
+        // If the properties file exists, it'll be read and the properties
+        // used. IMHO ( costin ) System property and JDK1.3 jar service
+        // should be enough for detecting the class name. The properties
+        // should be used to set the attributes ( which may be specific to
+        // the webapp, even if a default logger is set at JVM level by a
+        // system property )
+
+        try {
+            InputStream stream =
+                classLoader.getResourceAsStream(FACTORY_PROPERTIES);
+            if (stream != null) {
+                props = new Properties();
+                props.load(stream);
+                stream.close();
+                String factoryClass = props.getProperty(FACTORY_PROPERTY);
+                if( factory==null ) {
                     if (factoryClass == null) {
                         factoryClass = FACTORY_DEFAULT;
                     }
                     factory = newFactory(factoryClass, classLoader);
-                    Enumeration names = props.propertyNames();
-                    while (names.hasMoreElements()) {
-                        String name = (String) names.nextElement();
-                        String value = props.getProperty(name);
-                        factory.setAttribute(name, value);
-                    }
                 }
-            } catch (IOException e) {
-            } catch (SecurityException e) {
             }
+            // the properties will be set at the end.
+        } catch (IOException e) {
+        } catch (SecurityException e) {
         }
 
-        // Third, try the fallback implementation class
+        // Fourth, try the fallback implementation class
         if (factory == null) {
             factory = newFactory(FACTORY_DEFAULT, classLoader);
         }
 
+        if( props!=null ) {
+            Enumeration names = props.propertyNames();
+            while (names.hasMoreElements()) {
+                String name = (String) names.nextElement();
+                String value = props.getProperty(name);
+                factory.setAttribute(name, value);
+            }
+        }
+        
         // Cache and return the new factory instance
         factories.put(classLoader, factory);
         return (factory);
