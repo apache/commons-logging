@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.21 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.21 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.22 2003/05/01 10:32:36 rdonkin Exp $
+ * $Revision: 1.22 $
+ * $Date: 2003/05/01 10:32:36 $
  *
  * ====================================================================
  *
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.21 $ $Date: 2003/03/30 23:42:36 $
+ * @version $Revision: 1.22 $ $Date: 2003/05/01 10:32:36 $
  */
 
 public abstract class LogFactory {
@@ -561,6 +561,9 @@ public abstract class LogFactory {
         Object result = AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
+                    // This will be used to diagnose bad configurations
+                    // and allow a useful message to be sent to the user 
+                    Class logFactoryClass = null;
                     try {
                         if (classLoader != null) {
                             try {
@@ -568,7 +571,9 @@ public abstract class LogFactory {
                                 
                                 // warning: must typecast here & allow exception
                                 // to be generated/caught & recast propertly.
-                                return (LogFactory)classLoader.loadClass(factoryClass).newInstance();
+                                logFactoryClass = classLoader.loadClass(factoryClass);
+                                return (LogFactory) logFactoryClass.newInstance();
+                                
                             } catch (ClassNotFoundException ex) {
                                 if (classLoader == LogFactory.class.getClassLoader()) {
                                     // Nothing more to try, onwards.
@@ -581,7 +586,7 @@ public abstract class LogFactory {
                                     throw e;
                                 }
                               
-                            }catch(ClassCastException e){
+                            } catch(ClassCastException e){
                                 
                               if (classLoader == LogFactory.class.getClassLoader()) {
                                     // Nothing more to try, onwards (bug in loader implementation).
@@ -604,8 +609,17 @@ public abstract class LogFactory {
                          */
                         // warning: must typecast here & allow exception
                         // to be generated/caught & recast propertly.
-                        return (LogFactory)Class.forName(factoryClass).newInstance();
+                        logFactoryClass = Class.forName(factoryClass);
+                        return (LogFactory) logFactoryClass.newInstance();
                     } catch (Exception e) {
+                        // check to see if we've got a bad configuration
+                        if (logFactoryClass != null 
+                            && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
+                            return new LogConfigurationException(
+                                "The chosen LogFactory implementation does not extend LogFactory."
+                                + " Please check your configuration.", 
+                                e);
+                        }
                         return new LogConfigurationException(e);
                     }
                 }
