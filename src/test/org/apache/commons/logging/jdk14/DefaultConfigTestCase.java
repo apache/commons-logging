@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
  * should be automatically configured.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.8 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision$ $Date$
  */
 
 public class DefaultConfigTestCase extends TestCase {

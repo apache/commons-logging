@@ -42,7 +42,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.28 $ $Date$
+ * @version $Revision$ $Date$
  */
 
 public abstract class LogFactory {

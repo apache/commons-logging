@@ -32,7 +32,7 @@ import org.apache.commons.logging.impl.SimpleLog;
  * properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.6 $ $Date: 2004/05/30 10:32:25 $
+ * @version $Revision$ $Date$
  */
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 

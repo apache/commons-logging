@@ -23,7 +23,7 @@ import junit.framework.*;
 /**
   *
   * @author Sean C. Sullivan
-  * @version $Revision:  $
+  * @version $Revision$
   * 
   */
 public abstract class AbstractLogTest extends TestCase {

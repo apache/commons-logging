@@ -52,7 +52,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  *  implementation performs exactly the same algorithm as this class did
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.21 2004/02/28 21:46:45 craigmcc Exp $
+ * @version $Id$
  */
 public class LogSource {
 

@@ -16,7 +16,7 @@
 
 -->
 
-$Id: RELEASE-NOTES.txt,v 1.8 2004/09/27 16:21:40 proyal Exp $
+$Id$
 
                            Commons Logging Package
                                 Version 1.0.4

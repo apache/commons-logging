@@ -57,7 +57,7 @@ package org.apache.commons.logging;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.19 2004/06/06 21:16:04 rdonkin Exp $
+ * @version $Id$
  */
 public interface Log {
 

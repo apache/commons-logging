@@ -32,7 +32,7 @@ import org.apache.log4j.Level;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JLogger.java,v 1.11 2004/05/19 21:01:23 rdonkin Exp $
+ * @version $Id$
  */
 public class Log4JLogger implements Log, Serializable {
 

@@ -22,7 +22,7 @@ import junit.framework.TestSuite;
 /**
  * testcase to emulate container and application isolated from container
  * @author  baliuka
- * @version $Id: LoadTest.java,v 1.5 2004/02/28 21:46:45 craigmcc Exp $
+ * @version $Id$
  */
 public class LoadTest extends TestCase{
     //TODO: need some way to add service provider packages

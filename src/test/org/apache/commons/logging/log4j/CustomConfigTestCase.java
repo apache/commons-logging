@@ -37,7 +37,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.9 $ $Date: 2004/05/19 20:59:56 $
+ * @version $Revision$ $Date$
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {

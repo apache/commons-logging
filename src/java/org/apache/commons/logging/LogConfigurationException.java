@@ -23,7 +23,7 @@ package org.apache.commons.logging;
  * factory methods.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.6 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision$ $Date$
  */
 
 public class LogConfigurationException extends RuntimeException {

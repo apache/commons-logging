@@ -28,7 +28,7 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.8 2004/06/06 21:13:12 rdonkin Exp $
+ * @version $Id$
  */
 public class NoOpLog implements Log, Serializable {
 

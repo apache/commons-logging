@@ -30,7 +30,7 @@ import org.apache.commons.logging.Log;
  * The default log level is TRACE.</p>
  * <p>The code borrows heavily from the SimpleLog class.</p>
  * @author J&ouml;rg Schaible
- * @version $Id: MemoryLog.java,v 1.1 2004/11/04 23:01:39 rdonkin Exp $
+ * @version $Id$
  */
 public class MemoryLog implements Log {
 
