@@ -5,3 +5,5 @@ logging.ipr
 .project
 bin
 .classpath
+maven.log
+velocity.log
