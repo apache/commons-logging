@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.4 2003/07/18 14:14:16 rsitze Exp $
- * $Revision: 1.4 $
- * $Date: 2003/07/18 14:14:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.5 2003/08/16 21:58:59 craigmcc Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/08/16 21:58:59 $
  *
  * ====================================================================
  *
@@ -62,6 +62,7 @@
 
 package org.apache.commons.logging.impl;
 
+import java.io.Serializable;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
@@ -75,9 +76,9 @@ import org.apache.log4j.Priority;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JLogger.java,v 1.4 2003/07/18 14:14:16 rsitze Exp $
+ * @version $Id: Log4JLogger.java,v 1.5 2003/08/16 21:58:59 craigmcc Exp $
  */
-public final class Log4JLogger implements Log {
+public final class Log4JLogger implements Log, Serializable {
 
 
     // ------------------------------------------------------------- Attributes
@@ -86,7 +87,10 @@ public final class Log4JLogger implements Log {
     private static final String FQCN = Log4JLogger.class.getName();
     
     /** Log to this logger */
-    private Logger logger = null;
+    private transient Logger logger = null;
+
+    /** Logger name */
+    private String name = null;
 
 
     // ------------------------------------------------------------ Constructor
@@ -99,17 +103,19 @@ public final class Log4JLogger implements Log {
      * Base constructor
      */
     public Log4JLogger(String name) {
-        this.logger=Logger.getLogger(name);
+        this.name = name;
+        this.logger = getLogger();
     }
 
     /** For use with a log4j factory
      */
     public Log4JLogger(Logger logger ) {
+        this.name = logger.getName();
         this.logger=logger;
     }
 
 
-    // ---------------------------------------------------------- Implmentation
+    // --------------------------------------------------------- Implementation
 
 
     /**
@@ -117,7 +123,7 @@ public final class Log4JLogger implements Log {
      * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message) {
-        logger.log(FQCN, Priority.DEBUG, message, null);
+        getLogger().log(FQCN, Priority.DEBUG, message, null);
     }
 
 
@@ -126,7 +132,7 @@ public final class Log4JLogger implements Log {
      * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message, Throwable t) {
-        logger.log(FQCN, Priority.DEBUG, message, t );
+        getLogger().log(FQCN, Priority.DEBUG, message, t );
     }
 
 
@@ -134,14 +140,14 @@ public final class Log4JLogger implements Log {
      * Log a message to the Log4j Logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message) {
-        logger.log(FQCN, Priority.DEBUG, message, null);
+        getLogger().log(FQCN, Priority.DEBUG, message, null);
     }
 
     /**
      * Log an error to the Log4j Logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message, Throwable t) {
-        logger.log(FQCN, Priority.DEBUG, message, t );
+        getLogger().log(FQCN, Priority.DEBUG, message, t );
     }
 
 
@@ -149,7 +155,7 @@ public final class Log4JLogger implements Log {
      * Log a message to the Log4j Logger with <code>INFO</code> priority.
      */
     public void info(Object message) {
-        logger.log(FQCN, Priority.INFO, message, null );
+        getLogger().log(FQCN, Priority.INFO, message, null );
     }
 
 
@@ -157,7 +163,7 @@ public final class Log4JLogger implements Log {
      * Log an error to the Log4j Logger with <code>INFO</code> priority.
      */
     public void info(Object message, Throwable t) {
-        logger.log(FQCN, Priority.INFO, message, t );
+        getLogger().log(FQCN, Priority.INFO, message, t );
     }
 
 
@@ -165,7 +171,7 @@ public final class Log4JLogger implements Log {
      * Log a message to the Log4j Logger with <code>WARN</code> priority.
      */
     public void warn(Object message) {
-        logger.log(FQCN, Priority.WARN, message, null );
+        getLogger().log(FQCN, Priority.WARN, message, null );
     }
 
 
@@ -173,7 +179,7 @@ public final class Log4JLogger implements Log {
      * Log an error to the Log4j Logger with <code>WARN</code> priority.
      */
     public void warn(Object message, Throwable t) {
-        logger.log(FQCN, Priority.WARN, message, t );
+        getLogger().log(FQCN, Priority.WARN, message, t );
     }
 
 
@@ -181,7 +187,7 @@ public final class Log4JLogger implements Log {
      * Log a message to the Log4j Logger with <code>ERROR</code> priority.
      */
     public void error(Object message) {
-        logger.log(FQCN, Priority.ERROR, message, null );
+        getLogger().log(FQCN, Priority.ERROR, message, null );
     }
 
 
@@ -189,7 +195,7 @@ public final class Log4JLogger implements Log {
      * Log an error to the Log4j Logger with <code>ERROR</code> priority.
      */
     public void error(Object message, Throwable t) {
-        logger.log(FQCN, Priority.ERROR, message, t );
+        getLogger().log(FQCN, Priority.ERROR, message, t );
     }
 
 
@@ -197,7 +203,7 @@ public final class Log4JLogger implements Log {
      * Log a message to the Log4j Logger with <code>FATAL</code> priority.
      */
     public void fatal(Object message) {
-        logger.log(FQCN, Priority.FATAL, message, null );
+        getLogger().log(FQCN, Priority.FATAL, message, null );
     }
 
 
@@ -205,7 +211,7 @@ public final class Log4JLogger implements Log {
      * Log an error to the Log4j Logger with <code>FATAL</code> priority.
      */
     public void fatal(Object message, Throwable t) {
-        logger.log(FQCN, Priority.FATAL, message, t );
+        getLogger().log(FQCN, Priority.FATAL, message, t );
     }
 
 
@@ -213,6 +219,9 @@ public final class Log4JLogger implements Log {
      * Return the native Logger instance we are using.
      */
     public Logger getLogger() {
+        if (logger == null) {
+            logger = Logger.getLogger(name);
+        }
         return (this.logger);
     }
 
@@ -221,7 +230,7 @@ public final class Log4JLogger implements Log {
      * Check whether the Log4j Logger used is enabled for <code>DEBUG</code> priority.
      */
     public boolean isDebugEnabled() {
-        return logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
 
@@ -229,7 +238,7 @@ public final class Log4JLogger implements Log {
      * Check whether the Log4j Logger used is enabled for <code>ERROR</code> priority.
      */
     public boolean isErrorEnabled() {
-        return logger.isEnabledFor(Priority.ERROR);
+        return getLogger().isEnabledFor(Priority.ERROR);
     }
 
 
@@ -237,7 +246,7 @@ public final class Log4JLogger implements Log {
      * Check whether the Log4j Logger used is enabled for <code>FATAL</code> priority.
      */
     public boolean isFatalEnabled() {
-        return logger.isEnabledFor(Priority.FATAL);
+        return getLogger().isEnabledFor(Priority.FATAL);
     }
 
 
@@ -245,7 +254,7 @@ public final class Log4JLogger implements Log {
      * Check whether the Log4j Logger used is enabled for <code>INFO</code> priority.
      */
     public boolean isInfoEnabled() {
-        return logger.isInfoEnabled();
+        return getLogger().isInfoEnabled();
     }
 
 
@@ -254,13 +263,13 @@ public final class Log4JLogger implements Log {
      * For Log4J, this returns the value of <code>isDebugEnabled()</code>
      */
     public boolean isTraceEnabled() {
-        return logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
     /**
      * Check whether the Log4j Logger used is enabled for <code>WARN</code> priority.
      */
     public boolean isWarnEnabled() {
-        return logger.isEnabledFor(Priority.WARN);
+        return getLogger().isEnabledFor(Priority.WARN);
     }
 }

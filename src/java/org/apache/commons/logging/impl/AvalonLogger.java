@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/AvalonLogger.java,v 1.3 2003/08/16 18:21:50 craigmcc Exp $
- * $Revision: 1.3 $
- * $Date: 2003/08/16 18:21:50 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/AvalonLogger.java,v 1.4 2003/08/16 21:58:59 craigmcc Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/08/16 21:58:59 $
  *
  * ====================================================================
  *
@@ -61,6 +61,7 @@
 
 package org.apache.commons.logging.impl;
 
+import java.io.Serializable;
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 
@@ -69,17 +70,19 @@ import org.apache.commons.logging.Log;
  * logging calls to Avalon logging abstraction: the Logger interface.
  * 
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision: 1.3 $ $Date: 2003/08/16 18:21:50 $
+ * @version $Revision: 1.4 $ $Date: 2003/08/16 21:58:59 $
  */
-public class AvalonLogger implements Log {
+public class AvalonLogger implements Log, Serializable {
 
     private static Logger defaultLogger = null;
-    private Logger logger = null;
+    private transient Logger logger = null;
+    private String name = null;
 
     /**
      * @param logger the avalon logger implementation to delegate to 
      */
     public AvalonLogger(Logger logger) {
+        this.name = name;
         this.logger = logger;
     }
 
@@ -89,13 +92,16 @@ public class AvalonLogger implements Log {
     public AvalonLogger(String name) {
         if (defaultLogger == null) 
             throw new NullPointerException("default logger has to be specified if this constructor is used!");
-        this.logger = defaultLogger.getChildLogger(name);
+        this.logger = getLogger();
     }
 
     /**
      * @return avalon logger implementation
      */
     public Logger getLogger() {
+        if (logger == null) {
+            logger = defaultLogger.getChildLogger(name);
+        }
         return logger;
     }
 
@@ -110,126 +116,126 @@ public class AvalonLogger implements Log {
      * @see org.apache.commons.logging.Log#debug(java.lang.Object, java.lang.Throwable)
      */
     public void debug(Object o, Throwable t) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o), t);
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#debug(java.lang.Object)
      */
     public void debug(Object o) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o));
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#error(java.lang.Object, java.lang.Throwable)
      */
     public void error(Object o, Throwable t) {
-        if (this.logger.isErrorEnabled()) this.logger.error(String.valueOf(o), t);
+        if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#error(java.lang.Object)
      */
     public void error(Object o) {
-        if (this.logger.isErrorEnabled()) this.logger.error(String.valueOf(o));
+        if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#fatal(java.lang.Object, java.lang.Throwable)
      */
     public void fatal(Object o, Throwable t) {
-        if (this.logger.isFatalErrorEnabled()) this.logger.fatalError(String.valueOf(o), t);
+        if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
      */
     public void fatal(Object o) {
-        if (this.logger.isFatalErrorEnabled()) this.logger.fatalError(String.valueOf(o));
+        if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#info(java.lang.Object, java.lang.Throwable)
      */
     public void info(Object o, Throwable t) {
-        if (this.logger.isInfoEnabled()) this.logger.info(String.valueOf(o), t);
+        if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#info(java.lang.Object)
      */
     public void info(Object o) {
-        if (this.logger.isInfoEnabled()) this.logger.info(String.valueOf(o));
+        if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#isDebugEnabled()
      */
     public boolean isDebugEnabled() {
-        return this.logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
     /**
      * @see org.apache.commons.logging.Log#isErrorEnabled()
      */
     public boolean isErrorEnabled() {
-        return this.logger.isErrorEnabled();
+        return getLogger().isErrorEnabled();
     }
 
     /**
      * @see org.apache.commons.logging.Log#isFatalEnabled()
      */
     public boolean isFatalEnabled() {
-        return this.logger.isFatalErrorEnabled();
+        return getLogger().isFatalErrorEnabled();
     }
 
     /**
      * @see org.apache.commons.logging.Log#isInfoEnabled()
      */
     public boolean isInfoEnabled() {
-        return this.logger.isInfoEnabled();
+        return getLogger().isInfoEnabled();
     }
 
     /**
      * @see org.apache.commons.logging.Log#isTraceEnabled()
      */
     public boolean isTraceEnabled() {
-        return this.logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
     /**
      * @see org.apache.commons.logging.Log#isWarnEnabled()
      */
     public boolean isWarnEnabled() {
-        return this.logger.isWarnEnabled();
+        return getLogger().isWarnEnabled();
     }
 
     /**
      * @see org.apache.commons.logging.Log#trace(java.lang.Object, java.lang.Throwable)
      */
     public void trace(Object o, Throwable t) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o), t);
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#trace(java.lang.Object)
      */
     public void trace(Object o) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o));
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#warn(java.lang.Object, java.lang.Throwable)
      */
     public void warn(Object o, Throwable t) {
-        if (this.logger.isWarnEnabled()) this.logger.warn(String.valueOf(o), t);
+        if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#warn(java.lang.Object)
      */
     public void warn(Object o) {
-        if (this.logger.isWarnEnabled()) this.logger.warn(String.valueOf(o));
+        if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(o));
     }
 
 }
