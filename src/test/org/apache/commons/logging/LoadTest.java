@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/LoadTest.java,v 1.1 2003/03/01 09:55:07 baliuka Exp $
- * $Revision: 1.1 $
- * $Date: 2003/03/01 09:55:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/LoadTest.java,v 1.2 2003/07/18 14:11:45 rsitze Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/07/18 14:11:45 $
  *
  * ====================================================================
  *
@@ -61,14 +61,14 @@
 
 package org.apache.commons.logging;
 
-import junit.framework.*;
-
-import org.apache.commons.logging.impl.*;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * testcase to emulate container and application isolated from container
  * @author  baliuka
- * @version $Id: LoadTest.java,v 1.1 2003/03/01 09:55:07 baliuka Exp $
+ * @version $Id: LoadTest.java,v 1.2 2003/07/18 14:11:45 rsitze Exp $
  */
 public class LoadTest extends TestCase{
     //TODO: need some way to add service provider packages

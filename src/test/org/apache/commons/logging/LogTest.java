@@ -1,7 +1,7 @@
 package org.apache.commons.logging;
 
-import org.apache.commons.logging.impl.SimpleLog;
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * 
