@@ -156,34 +156,38 @@ Yes, the logging methods will perform the same check, but only after resolving p
 <h4>General - Message Priorities/Levels</h4>
 It is important to ensure that log message are
 appropriate in content and severity.
-The following guidelines are strongly suggested:
+The following guidelines are suggested:</a>
 <ul>
 <li><b>fatal</b> - Severe errors that cause premature termination.
-Expect these to be immediately visible on a console,
-and MUST be internationalized.</li>
+Expect these to be immediately visible on a status console.
+See also <a HREF="#Internationalization">Internationalization</a>.
+</li>
 <br>&nbsp;
 <li><b>error</b> - Other runtime errors or unexpected conditions.
-Expect these to be immediately visible on a console,
-and MUST be internationalized.</li>
+Expect these to be immediately visible on a status console.
+See also <a HREF="#Internationalization">Internationalization</a>.
+</li>
 <br>&nbsp;
-<li><b>warn</b> - Use of deprecated APIs, poor use of API, 'almost' errors, other
-runtime situations that are undesirable or unexpected, but not
+<li><b>warn</b> - Use of deprecated APIs, poor use of API, 'almost' errors,
+other runtime situations that are undesirable or unexpected, but not
 necessarily "wrong".
-Expect these to be immediately visible on a console,
-and MUST be internationalized.</li>
+Expect these to be immediately visible on a status console.
+See also <a HREF="#Internationalization">Internationalization</a>.
+</li>
 <br>&nbsp;
 <li><b>info</b> - Interesting runtime events (startup/shutdown).
 Expect these to be immediately visible on a console,
 so be conservative and keep to a minimum.
-These MUST be internationalized.</li>
+See also <a HREF="#Internationalization">Internationalization</a>.
+</li>
 <br>&nbsp;
 <li><b>debug</b> - detailed information on flow of through the system.
 Expect these to be written to logs only.
-These NEED NOT be internationalized, but it never hurts...</li>
+</li>
 <br>&nbsp;
 <li><b>trace</b> - more detailed information.
 Expect these to be written to logs only.
-These NEED NOT be internationalized, but it never hurts...</li>
+</li>
 </ul>
 
 <h4>General - Default Message Priority/Level</h4>
@@ -280,19 +284,26 @@ by most logger implementations.
 
 </p>
 
+<a NAME="Internationalization"></a>
 <h4>Enterprise - National Language Support - Internationalization</h4>
 <p>NLS internationalization involves looking up messages from
-a message file by a message key, and using that message logging.
+a message file by a message key, and using that message for logging.
 There are various tools in Java, and provided by other components,
 for working with NLS messages.
 </p>
 
-<p>NLS internationalization SHOULD be used for
-<b>fatal</b>, <b>error</b>, <b>warn</b>, and <b>info</b> messages.
-It can be considered optional for <b>debug</b> and <b>trace</b> messages.
+<p>
+NLS enabled components are particularly appreciated
+(thats an open-source-correct term for 'required by corporate end-users' :-)
+for <strong>tooling</strong> and <strong>middleware</strong> components.
 </p>
 
-<p>Perhaps a more direct support for internationalizing log messages
+<p>NLS internationalization SHOULD be strongly considered for used for
+<b>fatal</b>, <b>error</b>, <b>warn</b>, and <b>info</b> messages.
+It is generally considered optional for <b>debug</b> and <b>trace</b> messages.
+</p>
+
+<p>Perhaps more direct support for internationalizing log messages
 can be introduced in a future or alternate version of the <code>Log</code> interface.
 </p>
 
