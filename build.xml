@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.10 2002/02/14 21:04:18 costin Exp $
+        $Id: build.xml,v 1.11 2002/02/14 22:00:34 costin Exp $
 -->
 
 
@@ -140,9 +140,11 @@
           description="Compile shareable components">
     <available property="jdk.1.4.present"
                classname="java.util.logging.Logger"/>
-    <available property="log4j.present"
-               classname="org.apache.log4j.Category"/>
+    <available classname="org.apache.log4j.Category" 
+               classpathref="compile.classpath" 
+               property="log4j.present"/>
     <available property="logkit.present"
+               classpathref="compile.classpath" 
                classname="org.apache.log.Logger"/>
 
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
@@ -159,6 +161,8 @@
       <exclude name="org/apache/commons/logging/impl/Jdk14Logger.java"
                unless="jdk.1.4.present"/>
       <exclude name="org/apache/commons/logging/impl/Log4JCategoryLog.java"
+               unless="log4j.present"/>
+      <exclude name="org/apache/commons/logging/impl/Log4jFactory.java"
                unless="log4j.present"/>
       <exclude name="org/apache/commons/logging/impl/LogKitLogger.java"
                unless="logkit.present"/>
