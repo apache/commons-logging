@@ -68,36 +68,29 @@ import java.util.*;
  */
 public final class WeakHashtable extends Hashtable {
 
-    /** Empty array of <code>Entry</code>'s */
-    private static final Entry[] EMPTY_ENTRY_ARRAY = {};
     /** 
-     * The maximum number of times put() can be called before
-     * the map will purged of cleared entries.
+     * The maximum number of times put() or remove() can be called before
+     * the map will be purged of all cleared entries.
      */
-    public static final int MAX_PUTS_BEFORE_PURGE = 100;
-
+    private static final int MAX_CHANGES_BEFORE_PURGE = 100;
+    
+    /** 
+     * The maximum number of times put() or remove() can be called before
+     * the map will be purged of one cleared entry.
+     */
+    private static final int PARTIAL_PURGE_COUNT     = 10;
+    
     /* ReferenceQueue we check for gc'd keys */
     private ReferenceQueue queue = new ReferenceQueue();
     /* Counter used to control how often we purge gc'd entries */
-    private int putCount = 0;
+    private int changeCount = 0;
     
     /**
      * Constructs a WeakHashtable with the Hashtable default
      * capacity and load factor.
      */
     public WeakHashtable() {}
-
-    /**
-     *@see Hashtable
-     */
-    public boolean contains(Object value) {
-        // purge should not be required
-        if (value instanceof Referenced) {
-            return super.contains(value);
-        }
-        Referenced referenced = new Referenced(value);
-        return super.contains(referenced);
-    }
+    
     
     /**
      *@see Hashtable
@@ -111,30 +104,9 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
-    public boolean containsValue(Object value) {
-        // purge should not be required
-        if (value instanceof Referenced) {
-            return super.contains(value);
-        }
-        Referenced referenced = new Referenced(value);
-        return super.containsValue(referenced);
-    }
-    
-    /**
-     *@see Hashtable
-     */
     public Enumeration elements() {
         purge();
-        final Enumeration enum = super.elements();
-        return new Enumeration() {
-            public boolean hasMoreElements() {
-                return enum.hasMoreElements();
-            }
-            public Object nextElement() {
-                 Referenced nextReference = (Referenced) enum.nextElement();
-                 return nextReference.getValue();
-            }
-        };
+        return super.elements();
     }
     
     /**
@@ -148,8 +120,7 @@ public final class WeakHashtable extends Hashtable {
             Map.Entry entry = (Map.Entry) it.next();
             Referenced referencedKey = (Referenced) entry.getKey();
             Object key = referencedKey.getValue();
-            Referenced referencedValue = (Referenced) entry.getValue();
-            Object value = referencedValue.getValue();
+            Object value = entry.getValue();
             if (key != null) {
                 Entry dereferencedEntry = new Entry(key, value);
                 unreferencedEntries.add(dereferencedEntry);
@@ -163,13 +134,8 @@ public final class WeakHashtable extends Hashtable {
      */
     public Object get(Object key) {
         // for performance reasons, no purge
-        Object result = null;
         Referenced referenceKey = new Referenced(key);
-        Referenced referencedValue = (Referenced) super.get(referenceKey);
-        if (referencedValue != null) {
-            result = referencedValue.getValue();
-        }
-        return result;
+        return super.get(referenceKey);
     }
     
     /**
@@ -177,13 +143,13 @@ public final class WeakHashtable extends Hashtable {
      */
     public Enumeration keys() {
         purge();
-        final Enumeration enum = super.keys();
+        final Enumeration enumer = super.keys();
         return new Enumeration() {
             public boolean hasMoreElements() {
-                return enum.hasMoreElements();
+                return enumer.hasMoreElements();
             }
             public Object nextElement() {
-                 Referenced nextReference = (Referenced) enum.nextElement();
+                 Referenced nextReference = (Referenced) enumer.nextElement();
                  return nextReference.getValue();
             }
         };
@@ -220,19 +186,19 @@ public final class WeakHashtable extends Hashtable {
         }
 
         // for performance reasons, only purge every 
-        // MAX_PUTS_BEFORE_PURGE times
-        if (putCount++ > MAX_PUTS_BEFORE_PURGE) {
+        // MAX_CHANGES_BEFORE_PURGE times
+        if (changeCount++ > MAX_CHANGES_BEFORE_PURGE) {
             purge();
-            putCount = 0;
+            changeCount = 0;
         }
+        // do a partial purge more often
+        else if ((changeCount % PARTIAL_PURGE_COUNT) == 0) {
+            purgeOne();
+        }
+        
         Object result = null;
-        Referenced keyRef    = new Referenced(key, value, queue);
-        Referenced valueRef  = new Referenced(value);
-        Referenced lastValue = (Referenced) super.put(keyRef, valueRef);
-        if (lastValue != null) {
-            result = lastValue.getValue();
-        }
-        return result;
+        Referenced keyRef = new Referenced(key, queue);
+        return super.put(keyRef, value);
     }
     
     /**
@@ -253,22 +219,23 @@ public final class WeakHashtable extends Hashtable {
      */      
     public Collection values() {
         purge();
-        Collection referencedValues = super.values();
-        ArrayList unreferencedValues = new ArrayList();
-        for (Iterator it = referencedValues.iterator(); it.hasNext();) {
-            Referenced reference = (Referenced) it.next();
-            Object value = reference.getValue();
-            if (value != null) {
-                unreferencedValues.add(value);
-            }
-        }
-        return unreferencedValues;
+        return super.values();
     }
     
     /**
      *@see Hashtable
      */     
     public Object remove(Object key) {
+        // for performance reasons, only purge every 
+        // MAX_CHANGES_BEFORE_PURGE times
+        if (changeCount++ > MAX_CHANGES_BEFORE_PURGE) {
+            purge();
+            changeCount = 0;
+        }
+        // do a partial purge more often
+        else if ((changeCount % PARTIAL_PURGE_COUNT) == 0) {
+            purgeOne();
+        }
         return super.remove(new Referenced(key));
     }
     
@@ -309,10 +276,26 @@ public final class WeakHashtable extends Hashtable {
      * Purges all entries whose wrapped keys
      * have been garbage collected.
      */
-    private synchronized void purge() {
-        WeakKey key;
-        while ( (key = (WeakKey) queue.poll()) != null) {
-            super.remove(key.getReferenced());
+    private void purge() {
+        synchronized (queue) {
+            WeakKey key;
+            while ((key = (WeakKey) queue.poll()) != null) {
+                super.remove(key.getReferenced());
+            }
+        }
+    }
+    
+    /**
+     * Purges one entry whose wrapped key 
+     * has been garbage collected.
+     */
+    private void purgeOne() {
+        
+        synchronized (queue) {
+            WeakKey key = (WeakKey) queue.poll();
+            if (key != null) {
+                super.remove(key.getReferenced());
+            }
         }
     }
     
@@ -383,8 +366,8 @@ public final class WeakHashtable extends Hashtable {
          * 
          * @throws NullPointerException if key is <code>null</code>
          */
-        private Referenced(Object key, Object value, ReferenceQueue queue) {
-            reference = new WeakKey(key, value, queue, this);
+        private Referenced(Object key, ReferenceQueue queue) {
+            reference = new WeakKey(key, queue, this);
             // Calc a permanent hashCode so calls to Hashtable.remove()
             // work if the WeakReference has been cleared
             hashCode  = key.hashCode();
@@ -437,38 +420,18 @@ public final class WeakHashtable extends Hashtable {
      * the Referenced object holding it.
      */
     private final static class WeakKey extends WeakReference {
-        
-        private final Object     hardValue;
+
         private final Referenced referenced;
         
         private WeakKey(Object key, 
-                        Object value, 
                         ReferenceQueue queue,
                         Referenced referenced) {
             super(key, queue);
-            hardValue = value;
             this.referenced = referenced;
         }
         
         private Referenced getReferenced() {
             return referenced;
         }
-        
-        /* Drop our hard reference to value if we've been cleared
-         * by the gc.
-         * 
-         * Testing shows that with key objects like ClassLoader
-         * that don't override hashCode(), get() is never
-         * called once the key is in a Hashtable. 
-         * So, this method override is commented out. 
-         */
-        //public Object get() {
-        //    Object result = super.get();
-        //    if (result == null) {
-        //        // We've been cleared, so drop our hard reference to value
-        //        hardValue = null;
-        //    }
-        //    return result;
-        //}      
      }
 }
