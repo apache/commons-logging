@@ -1,7 +1,7 @@
 /*
- * /home/cvs/jakarta-commons-sandbox/jelly/jelly-tags/avalon/src/java/org/apache/commons/jelly/avalon/JellyService.java,v 1.1 2003/01/22 09:19:30 jstrachan Exp
- * 1.1
- * 2003/01/22 09:19:30
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/AvalonLogger.java,v 1.2 2003/05/14 11:12:58 rdonkin Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/05/14 11:12:58 $
  *
  * ====================================================================
  *
@@ -57,7 +57,6 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  *
- * JellyServiceImpl.java,v 1.1 2003/01/22 09:19:30 jstrachan Exp
  */
 
 package org.apache.commons.logging.impl;
@@ -70,6 +69,7 @@ import org.apache.commons.logging.Log;
  * logging calls to Avalon logging abstraction: the Logger interface.
  * 
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
+ * @version $Revision: 1.2 $ $Date: 2003/05/14 11:12:58 $
  */
 public class AvalonLogger implements Log {
 
@@ -87,6 +87,8 @@ public class AvalonLogger implements Log {
      * @param logger the avalon logger implementation to delegate to 
      */
     public AvalonLogger(String name) {
+        if (defaultLogger == null) 
+            throw new NullPointerException("default logger has to be specified if this constructor is used!");
         this.logger = defaultLogger.getChildLogger(name);
     }
 
@@ -108,56 +110,56 @@ public class AvalonLogger implements Log {
      * @see org.apache.commons.logging.Log#debug(java.lang.Object, java.lang.Throwable)
      */
     public void debug(Object o, Throwable t) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(o.toString(), t);
+        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#debug(java.lang.Object)
      */
     public void debug(Object o) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(o.toString());
+        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#error(java.lang.Object, java.lang.Throwable)
      */
     public void error(Object o, Throwable t) {
-        if (this.logger.isErrorEnabled()) this.logger.error(o.toString(), t);
+        if (this.logger.isErrorEnabled()) this.logger.error(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#error(java.lang.Object)
      */
     public void error(Object o) {
-        if (this.logger.isErrorEnabled()) this.logger.error(o.toString());
+        if (this.logger.isErrorEnabled()) this.logger.error(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#fatal(java.lang.Object, java.lang.Throwable)
      */
     public void fatal(Object o, Throwable t) {
-        if (this.logger.isFatalErrorEnabled()) this.logger.fatalError(o.toString(), t);
+        if (this.logger.isFatalErrorEnabled()) this.logger.fatalError(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
      */
     public void fatal(Object o) {
-        if (this.logger.isFatalErrorEnabled()) this.logger.fatalError(o.toString());
+        if (this.logger.isFatalErrorEnabled()) this.logger.fatalError(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#info(java.lang.Object, java.lang.Throwable)
      */
     public void info(Object o, Throwable t) {
-        if (this.logger.isInfoEnabled()) this.logger.info(o.toString(), t);
+        if (this.logger.isInfoEnabled()) this.logger.info(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#info(java.lang.Object)
      */
     public void info(Object o) {
-        if (this.logger.isInfoEnabled()) this.logger.info(o.toString());
+        if (this.logger.isInfoEnabled()) this.logger.info(String.valueOf(o));
     }
 
     /**
@@ -206,28 +208,28 @@ public class AvalonLogger implements Log {
      * @see org.apache.commons.logging.Log#trace(java.lang.Object, java.lang.Throwable)
      */
     public void trace(Object o, Throwable t) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(o.toString(), t);
+        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#trace(java.lang.Object)
      */
     public void trace(Object o) {
-        if (this.logger.isDebugEnabled()) this.logger.debug(o.toString());
+        if (this.logger.isDebugEnabled()) this.logger.debug(String.valueOf(o));
     }
 
     /**
      * @see org.apache.commons.logging.Log#warn(java.lang.Object, java.lang.Throwable)
      */
     public void warn(Object o, Throwable t) {
-        if (this.logger.isWarnEnabled()) this.logger.warn(o.toString(), t);
+        if (this.logger.isWarnEnabled()) this.logger.warn(String.valueOf(o), t);
     }
 
     /**
      * @see org.apache.commons.logging.Log#warn(java.lang.Object)
      */
     public void warn(Object o) {
-        if (this.logger.isWarnEnabled()) this.logger.warn(o.toString());
+        if (this.logger.isWarnEnabled()) this.logger.warn(String.valueOf(o));
     }
 
 }
