@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.14 2002/10/19 17:25:18 rsitze Exp $
- * $Revision: 1.14 $
- * $Date: 2002/10/19 17:25:18 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.15 2002/10/19 17:38:06 rsitze Exp $
+ * $Revision: 1.15 $
+ * $Date: 2002/10/19 17:38:06 $
  *
  * ====================================================================
  *
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.14 $ $Date: 2002/10/19 17:25:18 $
+ * @version $Revision: 1.15 $ $Date: 2002/10/19 17:38:06 $
  */
 
 public abstract class LogFactory {
@@ -553,7 +553,7 @@ public abstract class LogFactory {
                 } catch (NoClassDefFoundError e) {
                     if (classLoader == LogFactory.class.getClassLoader()) {
                         // Nothing more to try, onwards.
-                        throw ex;
+                        throw e;
                     }
                     // ignore exception, continue
                 }
