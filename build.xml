@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.32 2003/04/02 00:50:49 craigmcc Exp $
+        $Id: build.xml,v 1.33 2003/04/04 03:13:30 craigmcc Exp $
 -->
 
 
@@ -297,6 +297,8 @@
    description="Create binary distribution">
     <mkdir      dir="${dist.home}"/>
     <copy      file="LICENSE.txt"
+              todir="${dist.home}"/>
+    <copy      file="RELEASE-NOTES.txt"
               todir="${dist.home}"/>
     <copy file="${build.home}/commons-${component.name}.jar"
           tofile="${dist.home}/commons-${component.name}.jar" />
