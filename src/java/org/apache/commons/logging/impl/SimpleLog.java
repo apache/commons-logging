@@ -70,14 +70,14 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.20 2004/05/30 10:32:06 rdonkin Exp $
+ * @version $Id: SimpleLog.java,v 1.21 2004/06/06 20:47:56 rdonkin Exp $
  */
 public class SimpleLog implements Log, Serializable {
 
 
     // ------------------------------------------------------- Class Attributes
 
-    /** All system properties used by <code>Simple</code> start with this */
+    /** All system properties used by <code>SimpleLog</code> start with this */
     static protected final String systemPrefix =
         "org.apache.commons.logging.simplelog.";
 
@@ -91,9 +91,9 @@ public class SimpleLog implements Log, Serializable {
     /** Include the instance name in the log message? */
     static protected boolean showLogName = false;
     /** Include the short name ( last component ) of the logger in the log
-        message. Default to true - otherwise we'll be lost in a flood of
-        messages without knowing who sends them.
-    */
+     *  message. Defaults to true - otherwise we'll be lost in a flood of
+     *  messages without knowing who sends them.
+     */
     static protected boolean showShortName = true;
     /** Include the current time in the log message */
     static protected boolean showDateTime = false;
