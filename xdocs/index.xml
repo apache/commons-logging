@@ -58,10 +58,14 @@ package. In addition, there is a (short)
 
 
 <section name="Releases">
-    <subsection name='1.0.5 Release (Proposed)'>
+    <subsection name='1.0.5 Release (Alpha)'>
     		<p>
-    <strong>Note:</strong> <em>release candidate is currently under preparation.</em>
+    <strong>Note:</strong> <em>this has now been blessed with alpha status.</em>
     		</p>
+		<p>
+Please download and test this release. Reports should be directed to the commons-dev
+mailing list.
+		</p>
         <p>
 JCL 1.0.5 is a service release adding optional improved automatic memory management
 for containers which do not support JCL explicit memory release
