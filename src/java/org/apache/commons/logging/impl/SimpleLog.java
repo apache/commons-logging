@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.3 2002/02/26 04:06:22 jstrachan Exp $
- * $Revision: 1.3 $
- * $Date: 2002/02/26 04:06:22 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.4 2002/06/15 20:54:48 craigmcc Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/06/15 20:54:48 $
  *
  * ====================================================================
  *
@@ -63,6 +63,7 @@
 package org.apache.commons.logging.impl;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.security.AccessControlException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -105,7 +106,7 @@ import org.apache.commons.logging.Log;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.3 2002/02/26 04:06:22 jstrachan Exp $
+ * @version $Id: SimpleLog.java,v 1.4 2002/06/15 20:54:48 craigmcc Exp $
  */
 public class SimpleLog implements Log {
 
@@ -167,9 +168,23 @@ public class SimpleLog implements Log {
                 }
             }
 
+            // identify the class loader to attempt resource loading with
+            ClassLoader classLoader = null;
+            try {
+                Method method =
+                    Thread.class.getMethod("getContextClassLoader", null);
+                classLoader = (ClassLoader)
+                    method.invoke(Thread.currentThread(), null);
+            } catch (Exception e) {
+                ; // Ignored (security exception or JDK 1.1)
+            }
+            if (classLoader == null) {
+                classLoader = SimpleLog.class.getClassLoader();
+            }
+
             // add props from the resource simplelog.properties
             InputStream in =
-                ClassLoader.getSystemResourceAsStream("simplelog.properties");
+                classLoader.getResourceAsStream("simplelog.properties");
             if(null != in) {
                 try {
                     simpleLogProps.load(in);
