@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.7 2002/03/31 00:31:49 craigmcc Exp $
- * $Revision: 1.7 $
- * $Date: 2002/03/31 00:31:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.8 2002/06/06 22:09:09 costin Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/06/06 22:09:09 $
  *
  * ====================================================================
  *
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.7 $ $Date: 2002/03/31 00:31:49 $
+ * @version $Revision: 1.8 $ $Date: 2002/06/06 22:09:09 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -425,7 +425,8 @@ public class LogFactoryImpl extends LogFactory {
             return (logConstructor);
         } catch (Throwable t) {
             throw new LogConfigurationException
-                ("No suitable Log constructor", t);
+                ("No suitable Log constructor " +
+                 logConstructorSignature+ " for " + logClassName, t);
         }
 
     }
@@ -448,7 +449,7 @@ public class LogFactoryImpl extends LogFactory {
         if( isLog4JAvailable() ) {
             try {
                 Class proxyClass=
-                    loadClass( "org.apache.commons.logging.Log4jFactory" );
+                    loadClass( "org.apache.commons.logging.impl.Log4jFactory" );
                 proxyFactory=(LogFactory)proxyClass.newInstance();
             } catch( Throwable t ) {
                 proxyFactory=null;
