@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.8 2002/01/16 00:54:51 craigmcc Exp $
- * $Revision: 1.8 $
- * $Date: 2002/01/16 00:54:51 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.9 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,10 +61,12 @@
 
 package org.apache.commons.logging;
 
+
 import java.util.HashMap;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.lang.reflect.InvocationTargetException;
+
 
 /**
  * <p>Factory for creating {@link Log} instances.  Applications should call
@@ -92,7 +94,7 @@ import java.lang.reflect.InvocationTargetException;
  * </ul>
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.8 2002/01/16 00:54:51 craigmcc Exp $
+ * @version $Id: LogSource.java,v 1.9 2002/01/17 01:47:49 craigmcc Exp $
  */
 public class LogSource {
 
@@ -283,17 +285,6 @@ public class LogSource {
 
     }
 
-    /**
-     * Sets the log level for all {@link Log}s known
-     * to me.
-     */
-    static public void setLevel(int level) {
-        Iterator it = _logs.entrySet().iterator();
-        while(it.hasNext()) {
-            Log log = (Log)(it.next());
-            log.setLevel(level);
-        }
-    }
 
     /**
      * Returns a {@link String} array containing the names of
@@ -302,5 +293,6 @@ public class LogSource {
     static public String[] getLogNames() {
         return (String[])(_logs.keySet().toArray(new String[_logs.size()]));
     }
+
 
 }

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.8 2002/01/03 18:54:29 rdonkin Exp $
- * $Revision: 1.8 $
- * $Date: 2002/01/03 18:54:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.9 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,10 +63,10 @@
 package org.apache.commons.logging;
 
 /**
- * <p> A simple logging interface abstracting logging APIs.  In order to be
+ * <p>A simple logging interface abstracting logging APIs.  In order to be
  * instantiated successfully by {@link LogSource}, classes that implement
  * this interface must have a constructor that takes a single String
- * parameter representing the "name" of this Log. </p>
+ * parameter representing the "name" of this Log.</p>
  *
  * <p> The log level determines whether a particular message
  * should be passed to the logging implementation.
@@ -74,15 +74,21 @@ package org.apache.commons.logging;
  * For example, if the log level is <code>warn</code> 
  * then the message passed to {@link #error} will be passed to the logging 
  * implementation but if the log level is <code>fatal</code> or higher
- * then the message will not.
+ * then the message will not.</p>
+ *
+ * <p>The logging level constants are provided for the convenience of
+ * {@link Log} implementations that wish to support dynamic changes in the
+ * logging level configuration.  However, configuration will generally be done
+ * external to the Logging APIs, through whatever mechanism is supported by
+ * the underlying logging implementation in use.</p>
  *
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.8 2002/01/03 18:54:29 rdonkin Exp $
+ * @version $Id: Log.java,v 1.9 2002/01/17 01:47:49 craigmcc Exp $
  */
 public interface Log {
 
 
-    // --------------------------------------------------------- Log Level Constants
+    // ---------------------------------------------------- Log Level Constants
     
     /** All logging level. */
     public static final int ALL  = Integer.MIN_VALUE;
@@ -100,8 +106,9 @@ public interface Log {
     public static final int OFF  = Integer.MAX_VALUE;
     
     
-    // --------------------------------------------------------- Logging Properties
+    // ----------------------------------------------------- Logging Properties
     
+
     /**
      * <p> Is debug logging currently enabled? </p>
      *
@@ -111,37 +118,56 @@ public interface Log {
      */
     public boolean isDebugEnabled();
     
+
+    /**
+     * <p> Is error logging currently enabled? </p>
+     *
+     * <p> Call this method to prevent having to perform expensive operations
+     * (for example, <code>String</code> concatination)
+     * when the log level is more than error. </p> 
+     */
+    public boolean isErrorEnabled();
+    
+
+    /**
+     * <p> Is fatal logging currently enabled? </p>
+     *
+     * <p> Call this method to prevent having to perform expensive operations
+     * (for example, <code>String</code> concatination)
+     * when the log level is more than fatal. </p> 
+     */
+    public boolean isFatalEnabled();
+    
+
     /**
      * <p> Is info logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatination)
-     * when the log level is more than debug. </p> 
+     * when the log level is more than info. </p> 
      */
     public boolean isInfoEnabled();
 
     
     /**
-     * <p> Set logging level. </p> 
+     * <p> Is warning logging currently enabled? </p>
      *
-     * @param level new logging level
+     * <p> Call this method to prevent having to perform expensive operations
+     * (for example, <code>String</code> concatination)
+     * when the log level is more than warning. </p> 
      */
-    public void setLevel(int level);
-    
-    /**
-     * <p> Get logging level. </p> 
-     */
-    public int getLevel();
+    public boolean isWarnEnabled();
 
     
+    // -------------------------------------------------------- Logging Methods
 
-    // --------------------------------------------------------- Logging Methods
 
     /**
      * <p> Log a message with debug log level </p> 
      */
     public void debug(Object message);
     
+
     /**
      * <p> Log an error with debug log level </p> 
      */
@@ -153,6 +179,7 @@ public interface Log {
      */
     public void info(Object message);
     
+
     /**
      * <p> Log an error with info log level </p> 
      */
@@ -163,6 +190,7 @@ public interface Log {
      * <p> Log a message with warn log level </p> 
      */
     public void warn(Object message);
+
 
     /**
      * <p> Log an error with warn log level </p> 
@@ -175,6 +203,7 @@ public interface Log {
      */
     public void error(Object message);
 
+
     /**
      * <p> Log an error with error log level </p> 
      */
@@ -186,9 +215,11 @@ public interface Log {
      */
     public void fatal(Object message);
 
+
     /**
      * <p> Log an error with fatal log level </p> 
      */
     public void fatal(Object message, Throwable t);
+
 
 }

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/LogKitLogger.java,v 1.1 2002/01/07 23:06:10 rdonkin Exp $
- * $Revision: 1.1 $
- * $Date: 2002/01/07 23:06:10 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/LogKitLogger.java,v 1.2 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,20 +70,25 @@ import org.apache.log.Hierarchy;
  *
  * @author Robert Burrell Donkin
  *
- * @version $Id: LogKitLogger.java,v 1.1 2002/01/07 23:06:10 rdonkin Exp $
+ * @version $Id: LogKitLogger.java,v 1.2 2002/01/17 01:47:49 craigmcc Exp $
  */
-public class LogKitLogger extends AbstractLog {
 
-    // --------------------------------------------------------- Attributes
+public final class LogKitLogger implements Log {
+
+
+    // ------------------------------------------------------------- Attributes
+
 
     /** Logging goes to this <code>LogKit</code> logger */
     protected Logger logger = null;
 
 
-    // --------------------------------------------------------- Constructor
+    // ------------------------------------------------------------ Constructor
     
+
     /**  
-     * Constructor <code>LogKitLogger</code> which wrappers <code>LogKit</code> category with given name.
+     * Construct <code>LogKitLogger</code> which wraps the <code>LogKit</code>
+     * logger with given name.
      * 
      * @param name log name
      */
@@ -91,109 +96,148 @@ public class LogKitLogger extends AbstractLog {
         logger = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
     }
 
-    // --------------------------------------------------------- Log Implementation
+
+    // ----------------------------------------------------- Log Implementation
+
 
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void debugImpl(Object message) {
+    public void debug(Object message) {
         if (message != null) {
             logger.debug(message.toString());
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void debugImpl(Object message, Throwable t) {
+    public void debug(Object message, Throwable t) {
         if (message != null) {
             logger.debug(message.toString(), t);
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void infoImpl(Object message) {
+    public void info(Object message) {
         if (message != null) {
             logger.info(message.toString());
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void infoImpl(Object message, Throwable t) {
+    public void info(Object message, Throwable t) {
         if (message != null) {
             logger.info(message.toString(), t);
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void warnImpl(Object message) {
+    public void warn(Object message) {
         if (message != null) {
             logger.warn(message.toString());
         }
     }
     
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void warnImpl(Object message, Throwable t) {
+    public void warn(Object message, Throwable t) {
         if (message != null) {
             logger.warn(message.toString(), t);
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void errorImpl(Object message) {
+    public void error(Object message) {
         if (message != null) {
             logger.error(message.toString());
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void errorImpl(Object message, Throwable t) {
+    public void error(Object message, Throwable t) {
         if (message != null) {
             logger.error(message.toString(), t);
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void fatalImpl(Object message) {
+    public void fatal(Object message) {
         if (message != null) {
             logger.fatalError(message.toString());
         }
     }
 
+
     /**
      * Log to <code>LogKit</code> logger.
      */
-    protected final void fatalImpl(Object message, Throwable t) {
+    public void fatal(Object message, Throwable t) {
         if (message != null) {
             logger.fatalError(message.toString(), t);
         }
     }
 
-    /**
-     * Check that info is enabled for <code>LogKit</code> logger.
-     */    
-    protected boolean isInfoEnabledImpl() {
-        return logger.isInfoEnabled();
-    }
 
     /**
      * Check that debug is enabled for <code>LogKit</code> logger.
      */       
-    protected boolean isDebugEnabledImpl() {
+    public boolean isDebugEnabled() {
         return logger.isDebugEnabled();
     }
+
+
+    /**
+     * Check that error is enabled for <code>LogKit</code> logger.
+     */       
+    public boolean isErrorEnabled() {
+        return logger.isErrorEnabled();
+    }
+
+
+    /**
+     * Check that fatal is enabled for <code>LogKit</code> logger.
+     */       
+    public boolean isFatalEnabled() {
+        return logger.isFatalErrorEnabled();
+    }
+
+
+    /**
+     * Check that info is enabled for <code>LogKit</code> logger.
+     */    
+    public boolean isInfoEnabled() {
+        return logger.isInfoEnabled();
+    }
+
+
+    /**
+     * Check that warn is enabled for <code>LogKit</code> logger.
+     */       
+    public boolean isWarnEnabled() {
+        return logger.isWarnEnabled();
+    }
+
+
 }
