@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.3 2002/02/14 03:48:44 craigmcc Exp $
- * $Revision: 1.3 $
- * $Date: 2002/02/14 03:48:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.4 2002/02/15 05:42:35 costin Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/02/15 05:42:35 $
  *
  * ====================================================================
  *
@@ -104,11 +104,10 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.3 $ $Date: 2002/02/14 03:48:44 $
+ * @version $Revision: 1.4 $ $Date: 2002/02/15 05:42:35 $
  */
 
 public class LogFactoryImpl extends LogFactory {
-
 
     // ----------------------------------------------------------- Constructors
 
@@ -117,20 +116,22 @@ public class LogFactoryImpl extends LogFactory {
      * Public no-arguments constructor required by the lookup mechanism.
      */
     public LogFactoryImpl() {
-
         super();
-
+        guessConfig();
     }
 
 
     // ----------------------------------------------------- Manifest Constants
 
 
+    // Defaulting to NullLogger means important messages will be lost if
+    // no other logger is available. This is as bad as having a catch() and
+    // ignoring the exception because 'it can't happen'
     /**
      * The fully qualified name of the default {@link Log} implementation.
      */
     public static final String LOG_DEFAULT =
-        "org.apache.commons.logging.impl.NoOpLog";
+        "org.apache.commons.logging.impl.SimpleLog";
 
 
     /**
@@ -173,6 +174,8 @@ public class LogFactoryImpl extends LogFactory {
     protected Constructor logConstructor = null;
 
 
+    protected LogFactory proxyFactory=null;
+
     /**
      * The signature of the Constructor to be used.
      */
@@ -204,7 +207,8 @@ public class LogFactoryImpl extends LogFactory {
      * @param name Name of the attribute to return
      */
     public Object getAttribute(String name) {
-
+        if( proxyFactory != null )
+            return proxyFactory.getAttribute( name );
         return (attributes.get(name));
 
     }
@@ -216,6 +220,8 @@ public class LogFactoryImpl extends LogFactory {
      * length array is returned.
      */
     public String[] getAttributeNames() {
+        if( proxyFactory != null )
+            return proxyFactory.getAttributeNames();
 
         Vector names = new Vector();
         Enumeration keys = attributes.keys();
@@ -241,7 +247,10 @@ public class LogFactoryImpl extends LogFactory {
      *  instance cannot be returned
      */
     public Log getInstance(Class clazz)
-        throws LogConfigurationException {
+        throws LogConfigurationException
+    {
+        if( proxyFactory != null )
+            return proxyFactory.getInstance(clazz);
 
         return (getInstance(clazz.getName()));
 
@@ -266,7 +275,10 @@ public class LogFactoryImpl extends LogFactory {
      *  instance cannot be returned
      */
     public Log getInstance(String name)
-        throws LogConfigurationException {
+        throws LogConfigurationException
+    {
+        if( proxyFactory != null )
+            return proxyFactory.getInstance(name);
 
         Log instance = (Log) instances.get(name);
         if (instance == null) {
@@ -286,6 +298,8 @@ public class LogFactoryImpl extends LogFactory {
      * class loader would prevent garbage collection.
      */
     public void release() {
+        if( proxyFactory != null )
+            proxyFactory.release();
 
         instances.clear();
 
@@ -299,9 +313,10 @@ public class LogFactoryImpl extends LogFactory {
      * @param name Name of the attribute to remove
      */
     public void removeAttribute(String name) {
+        if( proxyFactory != null )
+            proxyFactory.removeAttribute(name);
 
         attributes.remove(name);
-
     }
 
 
@@ -315,6 +330,8 @@ public class LogFactoryImpl extends LogFactory {
      *  to remove any setting for this attribute
      */
     public void setAttribute(String name, Object value) {
+        if( proxyFactory != null )
+            proxyFactory.setAttribute(name,value);
 
         if (value == null) {
             attributes.remove(name);
@@ -406,6 +423,20 @@ public class LogFactoryImpl extends LogFactory {
 
     }
 
+    protected void guessConfig() {
+        if( isLog4JAvailable() ) {
+            try {
+                Class proxyClass=findClassLoader().
+                    loadClass( "org.apache.commons.logging.Log4jFactory" );
+                proxyFactory=(LogFactory)proxyClass.newInstance();
+            } catch( Throwable t ) {
+                proxyFactory=null;
+            }
+        }
+        // other logger specific initialization
+        // ...
+    }
+    
 
     /**
      * Is <em>JDK 1.4 or later</em> logging available?
