@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.5 2002/01/03 18:58:00 rdonkin Exp $
- * $Revision: 1.5 $
- * $Date: 2002/01/03 18:58:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.6 2002/01/05 15:55:00 rdonkin Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/01/05 15:55:00 $
  *
  * ====================================================================
  *
@@ -68,11 +68,11 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * <p>Factory for creating {@link Log} instances.  Applications should call
- * the <code>makeNewLogInstance()</code> method to instantiate new instances
+ * the {@link #makeNewLogInstance} method to instantiate new instances
  * of the configured {@link Log} implementation class.</p>
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.5 2002/01/03 18:58:00 rdonkin Exp $
+ * @version $Id: LogSource.java,v 1.6 2002/01/05 15:55:00 rdonkin Exp $
  */
 public class LogSource {
 
