@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.18 2002/08/13 01:17:54 craigmcc Exp $
+        $Id: build.xml,v 1.19 2002/08/13 01:22:33 craigmcc Exp $
 -->
 
 
@@ -45,7 +45,7 @@
   <property name="component.title"         value="Logging Library"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="1.0.1"/>
+  <property name="component.version"       value="1.1-dev"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="target"/>
