@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.4 2002/06/15 20:54:48 craigmcc Exp $
- * $Revision: 1.4 $
- * $Date: 2002/06/15 20:54:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.5 2002/10/19 17:19:05 rsitze Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/10/19 17:19:05 $
  *
  * ====================================================================
  *
@@ -106,7 +106,7 @@ import org.apache.commons.logging.Log;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.4 2002/06/15 20:54:48 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.5 2002/10/19 17:19:05 rsitze Exp $
  */
 public class SimpleLog implements Log {
 
@@ -360,7 +360,12 @@ public class SimpleLog implements Log {
             buf.append(" <");
             buf.append(t.toString());
             buf.append(">");
-            t.printStackTrace();
+
+            java.io.StringWriter sw= new java.io.StringWriter(1024); 
+            java.io.PrintWriter pw= new java.io.PrintWriter(sw); 
+            t.printStackTrace(pw);
+            pw.close();
+            buf.append(sw.toString());
         }
 
         // print to System.err
