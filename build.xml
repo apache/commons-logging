@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.4 2002/01/05 00:34:46 craigmcc Exp $
+        $Id: build.xml,v 1.5 2002/01/05 22:40:40 craigmcc Exp $
 -->
 
 
@@ -129,12 +129,17 @@
 
   <target name="compile" depends="static"
    description="Compile shareable components">
+    <available property="jdk.1.4.present"
+              classname="java.util.logging.Logger"/>
+    <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
     <javac  srcdir="${source.home}"
            destdir="${build.home}/classes"
              debug="${compile.debug}"
        deprecation="${compile.deprecation}"
           optimize="${compile.optimize}">
       <classpath refid="compile.classpath"/>
+      <exclude name="org/apache/commons/logging/Jdk14Logger.java"
+             unless="jdk.1.4.present"/>
     </javac>
     <copy    todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>

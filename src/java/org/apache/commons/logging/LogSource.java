@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.6 2002/01/05 15:55:00 rdonkin Exp $
- * $Revision: 1.6 $
- * $Date: 2002/01/05 15:55:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.7 2002/01/05 22:40:40 craigmcc Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/01/05 22:40:40 $
  *
  * ====================================================================
  *
@@ -68,66 +68,123 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * <p>Factory for creating {@link Log} instances.  Applications should call
- * the {@link #makeNewLogInstance} method to instantiate new instances
+ * the <code>makeNewLogInstance()</code> method to instantiate new instances
  * of the configured {@link Log} implementation class.</p>
  *
+ * <p>By default, calling <code>getInstance()</code> will use the following
+ * algorithm:</p>
+ * <ul>
+ * <li>If Log4J is available, return an instance of
+ *     <code>org.apache.commons.logging.Log4JCategoryLog</code>.</li>
+ * <li>If JDK 1.4 or later is available, return an instance of
+ *     <code>org.apache.commons.logging.Jdk14Logger</code>.</li>
+ * <li>Otherwise, return an instance of
+ *     <code>org.apache.commons.logging.NoOpLog</code>.</li>
+ * </ul>
+ *
+ * <p>You can change the default behavior in one of two ways:</p>
+ * <ul>
+ * <li>On the startup command line, set the system property
+ *     <code>org.apache.commons.logging.log</code> to the name of the
+ *     <code>org.apache.commons.logging.Log</code> implementation class
+ *     you want to use.</li>
+ * <li>At runtime, call <code>LogSource.setLogImplementation()</code>.</li>
+ * </ul>
+ *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.6 2002/01/05 15:55:00 rdonkin Exp $
+ * @version $Id: LogSource.java,v 1.7 2002/01/05 22:40:40 craigmcc Exp $
  */
 public class LogSource {
 
-    // --------------------------------------------------------- Class Attributes
+    // ------------------------------------------------------- Class Attributes
     
     static protected HashMap _logs = new HashMap();
+
     /** Is log4j available (in the current classpath) */
     static protected boolean _log4jIsAvailable = false;
+
+    /** Is JD 1.4 logging available */
+    static protected boolean _jdk14IsAvailable = false;
     
-    
-    // --------------------------------------------------------- Class Initializers
+    /** Constructor for current log class */
+    static protected Constructor _logimplctor = null;
+
+
+    // ----------------------------------------------------- Class Initializers
     
     static {
+
+        // Is Log4J Available?
         try {
             if(null != Class.forName("org.apache.log4j.Category")) {
                 _log4jIsAvailable = true;
             } else {
                 _log4jIsAvailable = false;
             }
-        } catch(ClassNotFoundException e) {
-            _log4jIsAvailable = false;
-        } catch(ExceptionInInitializerError e) {
-            _log4jIsAvailable = false;
-        } catch(LinkageError e) {
+        } catch (Throwable t) {
             _log4jIsAvailable = false;
         }
-    }
 
-    /** Constructor for current log class */
-    static protected Constructor _logimplctor = null;
-    static {
+        // Is JDK 1.4 Logging Available?
         try {
-            setLogImplementation(
-                System.getProperty(
-                    "org.apache.commons.logging.log","org.apache.commons.logging.NoOpLog"));
-                    
-        } catch(SecurityException e) {
-            _logimplctor = null;
-        } catch(LinkageError e) {
-            _logimplctor = null;
-        } catch(NoSuchMethodException e) {
-            _logimplctor = null;
-        } catch(ClassNotFoundException e) {
-            _logimplctor = null;
+            if(null != Class.forName("java.util.logging.Logger")) {
+                _jdk14IsAvailable = true;
+            } else {
+                _jdk14IsAvailable = false;
+            }
+        } catch (Throwable t) {
+            _jdk14IsAvailable = false;
         }
+
+        // Set the default Log implementation
+        String name =
+            System.getProperty("org.apache.commons.logging.log");
+        if (name != null) {
+            try {
+                setLogImplementation(name);
+            } catch (Throwable t) {
+                try {
+                    setLogImplementation
+                        ("org.apache.commons.logging.NoOpLog");
+                } catch (Throwable u) {
+                    ;
+                }
+            }
+        } else {
+            try {
+                if (_log4jIsAvailable) {
+                    setLogImplementation
+                        ("org.apache.commons.logging.Log4JCategoryLog");
+                } else if (_jdk14IsAvailable) {
+                    setLogImplementation
+                        ("org.apache.commons.logging.Jdk14Logger");
+                } else {
+                    setLogImplementation
+                        ("org.apache.commons.logging.NoOpLog");
+                }
+            } catch (Throwable t) {
+                try {
+                    setLogImplementation
+                        ("org.apache.commons.logging.NoOpLog");
+                } catch (Throwable u) {
+                    ;
+                }
+            }
+        }
+
     }
 
 
-    // --------------------------------------------------------- Constructor
+    // ------------------------------------------------------------ Constructor
     
+
     /** Don't allow others to create instances */
     private LogSource() {
     }
 
-    // --------------------------------------------------------- Class Methods
+
+    // ---------------------------------------------------------- Class Methods
+
 
     /**
      * Set the log implementation/log implementation factory
@@ -140,11 +197,16 @@ public class LogSource {
                        LinkageError, ExceptionInInitializerError,
                        NoSuchMethodException, SecurityException,
                        ClassNotFoundException {
-        Class logclass = Class.forName(classname);
-        Class[] argtypes = new Class[1];
-        argtypes[0] = "".getClass();
-        _logimplctor = logclass.getConstructor(argtypes);
+        try {
+            Class logclass = Class.forName(classname);
+            Class[] argtypes = new Class[1];
+            argtypes[0] = "".getClass();
+            _logimplctor = logclass.getConstructor(argtypes);
+        } catch (Throwable t) {
+            _logimplctor = null;
+        }
     }
+
 
     /**
      * Set the log implementation/log implementation factory
@@ -171,10 +233,12 @@ public class LogSource {
         return log;
     }
 
+
     /** Get a <code>Log</code> instance by class */
     static public Log getInstance(Class clazz) {
         return getInstance(clazz.getName());
     }
+
 
     /**
      * Create a new {@link Log} implementation, based
@@ -194,36 +258,27 @@ public class LogSource {
      * or when no corresponding class can be found,
      * this method will return a {@link Log4JCategoryLog}
      * if the log4j {@link org.apache.log4j.Category} class is
-     * available in the {@link LogSource}'s classpath, or
-     * a {@link NoOpLog} if it is not.
+     * available in the {@link LogSource}'s classpath, or a
+     * {@link Jdk14Logger} if we are on a JDK 1.4 or later system, or
+     * a {@link NoOpLog} if neither of the above conditions is true.
      *
      * @param name the log name (or category)
      */
     static public Log makeNewLogInstance(String name) {
+
         Log log = null;
         try {
             Object[] args = new Object[1];
             args[0] = name;
             log = (Log)(_logimplctor.newInstance(args));
-        } catch (InstantiationException e) {
-            log = null;
-        } catch (IllegalAccessException e) {
-            log = null;
-        } catch (IllegalArgumentException e) {
-            log = null;
-        } catch (InvocationTargetException e) {
-            log = null;
-        } catch (NullPointerException e) {
+        } catch (Throwable t) {
             log = null;
         }
         if(null == log) {
-            if(_log4jIsAvailable) {
-                return new Log4JCategoryLog(name);
-            } else {
-                log = new NoOpLog(name);
-            }
+            log = new NoOpLog(name);
         }
         return log;
+
     }
 
     /**
