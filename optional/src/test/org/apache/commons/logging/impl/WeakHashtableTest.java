@@ -232,5 +232,8 @@ public class WeakHashtableTest extends TestCase {
                 bytz = bytz * 2;
             }
         }
+        
+        // Test that the released objects are not taking space in the table
+        assertEquals("underlying table not emptied", 0, weakHashtable.size());
     }
 }
