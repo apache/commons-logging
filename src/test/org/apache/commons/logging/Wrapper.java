@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/Wrapper.java,v 1.1 2003/03/30 02:30:36 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2003/03/30 02:30:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/Wrapper.java,v 1.2 2003/04/02 00:50:49 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/04/02 00:50:49 $
  *
  * ====================================================================
  *
@@ -66,6 +66,8 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -108,7 +110,7 @@ import java.net.URLClassLoader;
  * only the wrapper class itself.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2003/03/30 02:30:36 $
+ * @version $Revision: 1.2 $ $Date: 2003/04/02 00:50:49 $
  */
 
 public class Wrapper {
@@ -117,6 +119,11 @@ public class Wrapper {
     public static void main(String args[]) {
 
         try {
+
+            // Create variables we will need
+            List parentList = new ArrayList();
+            List childList = new ArrayList();
+            URL urls[] = null;
 
             // Construct URLs for the various JAR files
             File target = new File(System.getProperty("wrapper.target"));
@@ -128,62 +135,55 @@ public class Wrapper {
                 (new File(target, "commons-logging-tests.jar")).toURL();
             URL junit =
                 (new File(System.getProperty("wrapper.junit"))).toURL();
+            URL appender = null;
             URL log4j = null;
             if (System.getProperty("wrapper.log4j") != null) {
-                log4j = (new File(System.getProperty("wrapper.log4j"))).toURL();
+                log4j =
+                    (new File(System.getProperty("wrapper.log4j"))).toURL();
+                appender =
+                    (new File(target, "commons-logging-appender.jar")).toURL();
             }
 
-            // Configure the parent class loader
-            URL parentURLs[] = null;
+            // Construct class loader repository lists for supported scenarios
             if ("API".equals(System.getProperty("wrapper.hierarchy"))) {
-                parentURLs = new URL[1];
-                parentURLs[0] = commonsLoggingApi;
-            } else {
+                parentList.add(commonsLoggingApi);
+                childList.add(commonsLogging);
                 if (log4j != null) {
-                    parentURLs = new URL[2];
-                    parentURLs[0] = commonsLogging;
-                    parentURLs[1] = log4j;
-                } else {
-                    parentURLs = new URL[1];
-                    parentURLs[0] = commonsLogging;
+                    childList.add(log4j);
+                    childList.add(appender);
+                }
+            } else { // Assumes "FULL"
+                parentList.add(commonsLogging);
+                if (log4j != null) {
+                    parentList.add(log4j);
+                    childList.add(appender);
                 }
             }
+            childList.add(commonsLoggingTests);
+            childList.add(junit);
+
+            // Construt the parent and child class loaders
+            urls = (URL[]) parentList.toArray(new URL[parentList.size()]);
             ClassLoader parent =
-                new URLClassLoader(parentURLs,
+                new URLClassLoader(urls,
                                    ClassLoader.getSystemClassLoader());
-
-            // Configure the child class loader
-            URL childURLs[] = null;
-            if ("API".equals(System.getProperty("wrapper.hierarchy"))) {
-                if (log4j != null) {
-                    childURLs = new URL[4];
-                } else {
-                    childURLs = new URL[3];
-                }
-                childURLs[0] = commonsLogging;
-                childURLs[1] = commonsLoggingTests;
-                childURLs[2] = junit;
-                if (log4j != null) {
-                    childURLs[3] = log4j;
-                }
-            } else {
-                childURLs = new URL[2];
-                childURLs[0] = commonsLoggingTests;
-                childURLs[1] = junit;
-            }
-            ClassLoader child = new URLClassLoader(childURLs, parent);
+            urls = (URL[]) childList.toArray(new URL[childList.size()]);
+            ClassLoader child = new URLClassLoader(urls, parent);
 
             // Execute the test runner for this TestCase
+            ClassLoader old = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(child);
             Class clazz = child.loadClass("junit.textui.TestRunner");
             String params[] = new String[1];
             params[0] = System.getProperty("wrapper.testcase");
             Method method = clazz.getMethod("main",
                                             new Class[] { params.getClass() });
             method.invoke(null, new Object[] { params });
+            Thread.currentThread().setContextClassLoader(old);
 
         } catch (Exception e) {
 
-            System.out.println("Exception Occurred:  " + e);
+            System.out.println("Wrapper Exception Occurred:  " + e);
             e.printStackTrace(System.out);
             System.exit(1);
 
