@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.1 2002/02/13 02:18:11 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/13 02:18:11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.2 2002/02/14 00:19:03 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/02/14 00:19:03 $
  *
  * ====================================================================
  *
@@ -101,7 +101,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2002/02/13 02:18:11 $
+ * @version $Revision: 1.2 $ $Date: 2002/02/14 00:19:03 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -229,8 +229,31 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
+     * Convenience method to derive a name from the specified class and
+     * call <code>getInstance(String)</code> with it.
+     *
+     * @param clazz Class for which a suitable Log name will be derived
+     *
+     * @exception LogConfigurationException if a suitable <code>Log</code>
+     *  instance cannot be returned
+     */
+    public Log getInstance(Class clazz)
+        throws LogConfigurationException {
+
+        return (getInstance(clazz.getName()));
+
+    }
+
+
+    /**
      * <p>Construct (if necessary) and return a <code>Log</code> instance,
      * using the factory's current set of configuration attributes.</p>
+     *
+     * <p><strong>NOTE</strong> - Depending upon the implementation of
+     * the <code>LogFactory</code> you are using, the <code>Log</code>
+     * instance you are returned may or may not be local to the current
+     * application, and may or may not be returned again on a subsequent
+     * call with the same name argument.</p>
      *
      * @param name Logical name of the <code>Log</code> instance to be
      *  returned (the meaning of this name is only known to the underlying
@@ -248,6 +271,20 @@ public class LogFactoryImpl extends LogFactory {
             instances.put(name, instance);
         }
         return (instance);
+
+    }
+
+
+    /**
+     * Release any internal references to previously created {@link Log}
+     * instances returned by this factory.  This is useful environments
+     * like servlet containers, which implement application reloading by
+     * throwing away a ClassLoader.  Dangling references to objects in that
+     * class loader would prevent garbage collection.
+     */
+    public void release() {
+
+        instances.clear();
 
     }
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.12 2002/02/03 01:31:54 sanders Exp $
- * $Revision: 1.12 $
- * $Date: 2002/02/03 01:31:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.13 2002/02/14 00:19:03 craigmcc Exp $
+ * $Revision: 1.13 $
+ * $Date: 2002/02/14 00:19:03 $
  *
  * ====================================================================
  *
@@ -93,8 +93,11 @@ import org.apache.commons.logging.impl.NoOpLog;
  * <li>At runtime, call <code>LogSource.setLogImplementation()</code>.</li>
  * </ul>
  *
+ * @deprecated Use {@link LogFactory} instead - The default factory
+ *  implementation performs exactly the same algorithm as this class did
+ *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.12 2002/02/03 01:31:54 sanders Exp $
+ * @version $Id: LogSource.java,v 1.13 2002/02/14 00:19:03 craigmcc Exp $
  */
 public class LogSource {
 

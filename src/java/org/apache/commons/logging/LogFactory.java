@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.1 2002/02/13 02:18:11 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/13 02:18:11 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.2 2002/02/14 00:19:03 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/02/14 00:19:03 $
  *
  * ====================================================================
  *
@@ -67,6 +67,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Properties;
 
 
@@ -81,7 +82,7 @@ import java.util.Properties;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.1 $ $Date: 2002/02/13 02:18:11 $
+ * @version $Revision: 1.2 $ $Date: 2002/02/14 00:19:03 $
  */
 
 public abstract class LogFactory {
@@ -143,8 +144,27 @@ public abstract class LogFactory {
 
 
     /**
+     * Convenience method to derive a name from the specified class and
+     * call <code>getInstance(String)</code> with it.
+     *
+     * @param clazz Class for which a suitable Log name will be derived
+     *
+     * @exception LogConfigurationException if a suitable <code>Log</code>
+     *  instance cannot be returned
+     */
+    public abstract Log getInstance(Class clazz)
+        throws LogConfigurationException;
+
+
+    /**
      * <p>Construct (if necessary) and return a <code>Log</code> instance,
      * using the factory's current set of configuration attributes.</p>
+     *
+     * <p><strong>NOTE</strong> - Depending upon the implementation of
+     * the <code>LogFactory</code> you are using, the <code>Log</code>
+     * instance you are returned may or may not be local to the current
+     * application, and may or may not be returned again on a subsequent
+     * call with the same name argument.</p>
      *
      * @param name Logical name of the <code>Log</code> instance to be
      *  returned (the meaning of this name is only known to the underlying
@@ -155,6 +175,16 @@ public abstract class LogFactory {
      */
     public abstract Log getInstance(String name)
         throws LogConfigurationException;
+
+
+    /**
+     * Release any internal references to previously created {@link Log}
+     * instances returned by this factory.  This is useful environments
+     * like servlet containers, which implement application reloading by
+     * throwing away a ClassLoader.  Dangling references to objects in that
+     * class loader would prevent garbage collection.
+     */
+    public abstract void release();
 
 
     /**
@@ -178,13 +208,23 @@ public abstract class LogFactory {
     public abstract void setAttribute(String name, Object value);
 
 
+    // ------------------------------------------------------- Static Variables
+
+
+    /**
+     * The previously constructed <code>LogFactory</code> instances, keyed by
+     * the <code>ClassLoader</code> with which it was created.
+     */
+    protected static Hashtable factories = new Hashtable();
+
+
     // --------------------------------------------------------- Static Methods
 
 
     /**
-     * <p>Construct and return a new <code>LogFactory</code> instance, using
-     * the following ordered lookup procedure to determine the name of the
-     * implementation class to be loaded:</p>
+     * <p>Construct (if necessary) and return a <code>LogFactory</code>
+     * instance, using the following ordered lookup procedure to determine
+     * the name of the implementation class to be loaded:</p>
      * <ul>
      * <li>The <code>org.apache.commons.logging.LogFactory</code> system
      *     property.</li>
@@ -205,48 +245,118 @@ public abstract class LogFactory {
      * @exception LogConfigurationException if the implementation class is not
      *  available or cannot be instantiated.
      */
-    public static LogFactory newFactory() throws LogConfigurationException {
+    public static LogFactory getFactory() throws LogConfigurationException {
 
         // Identify the class loader we will be using
         ClassLoader classLoader = findClassLoader();
+
+        // Return any previously registered factory for this class loader
+        LogFactory factory = (LogFactory) factories.get(classLoader);
+        if (factory != null) {
+            return (factory);
+        }
 
         // First, try the system property
         try {
             String factoryClass = System.getProperty(FACTORY_PROPERTY);
             if (factoryClass != null) {
-                return (newInstance(factoryClass, classLoader));
+                factory = newFactory(factoryClass, classLoader);
             }
         } catch (SecurityException e) {
             ;
         }
 
         // Second, try a properties file
-        try {
-            InputStream stream =
-                classLoader.getResourceAsStream(FACTORY_PROPERTIES);
-            if (stream != null) {
-                Properties props = new Properties();
-                props.load(stream);
-                stream.close();
-                String factoryClass = props.getProperty(FACTORY_PROPERTY);
-                if (factoryClass != null) {
-                    LogFactory instance =
-                        newInstance(factoryClass, classLoader);
-                    Enumeration names = props.propertyNames();
-                    while (names.hasMoreElements()) {
-                        String name = (String) names.nextElement();
-                        String value = props.getProperty(name);
-                        instance.setAttribute(name, value);
+        if (factory == null) {
+            try {
+                InputStream stream =
+                    classLoader.getResourceAsStream(FACTORY_PROPERTIES);
+                if (stream != null) {
+                    Properties props = new Properties();
+                    props.load(stream);
+                    stream.close();
+                    String factoryClass = props.getProperty(FACTORY_PROPERTY);
+                    if (factoryClass != null) {
+                        factory = newFactory(factoryClass, classLoader);
+                        Enumeration names = props.propertyNames();
+                        while (names.hasMoreElements()) {
+                            String name = (String) names.nextElement();
+                            String value = props.getProperty(name);
+                            factory.setAttribute(name, value);
+                        }
                     }
-                    return (instance);
                 }
+            } catch (IOException e) {
+            } catch (SecurityException e) {
             }
-        } catch (IOException e) {
-        } catch (SecurityException e) {
         }
 
         // Third, try the fallback implementation class
-        return (newInstance(FACTORY_DEFAULT, classLoader));
+        if (factory == null) {
+            factory = newFactory(FACTORY_DEFAULT, classLoader);
+        }
+
+        // Cache and return the new factory instance
+        factories.put(classLoader, factory);
+        return (factory);
+
+    }
+
+
+    /**
+     * Convenience method to return a named logger, without the application
+     * having to care about factories.
+     *
+     * @param clazz Class for which a log name will be derived
+     *
+     * @exception LogConfigurationException if a suitable <code>Log</code>
+     *  instance cannot be returned
+     */
+    public static Log getLog(Class clazz)
+        throws LogConfigurationException {
+
+        return (getFactory().getInstance(clazz));
+
+    }
+
+
+    /**
+     * Convenience method to return a named logger, without the application
+     * having to care about factories.
+     *
+     * @param name Logical name of the <code>Log</code> instance to be
+     *  returned (the meaning of this name is only known to the underlying
+     *  logging implementation that is being wrapped)
+     *
+     * @exception LogConfigurationException if a suitable <code>Log</code>
+     *  instance cannot be returned
+     */
+    public static Log getLog(String name)
+        throws LogConfigurationException {
+
+        return (getFactory().getInstance(name));
+
+    }
+
+
+    /**
+     * Release any internal references to previously created {@link LogFactory}
+     * instances, after calling the instance method <code>release()</code> on
+     * each of them.  This is useful environments like servlet containers,
+     * which implement application reloading by throwing away a ClassLoader.
+     * Dangling references to objects in that class loader would prevent
+     * garbage collection.
+     */
+    public static void releaseAll() {
+
+        synchronized (factories) {
+            Enumeration elements = factories.elements();
+            while (elements.hasMoreElements()) {
+                LogFactory element = (LogFactory) elements.nextElement();
+                element.release();
+            }
+            factories.clear();
+        }
 
     }
 
@@ -308,8 +418,8 @@ public abstract class LogFactory {
      * @exception LogConfigurationException if a suitable instance
      *  cannot be created
      */
-    private static LogFactory newInstance(String factoryClass,
-                                          ClassLoader classLoader)
+    protected static LogFactory newFactory(String factoryClass,
+                                           ClassLoader classLoader)
         throws LogConfigurationException {
 
         try {
