@@ -1,4 +1,4 @@
-Extension-Name: org.apache.commons.logging
+Extension-Name: org.apache.commons.logging-optional
 Specification-Vendor: Apache Software Foundation
 Specification-Version: 1.0
 Implementation-Vendor: Apache Software Foundation
