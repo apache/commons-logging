@@ -64,7 +64,7 @@ public class LogManager {
 			String discoveryProperty = System.getProperty(DISCOVERY_CONFIGURATION);
 			if (discoveryProperty == null) {
 				try {
-					Class discoveryClass = Class.forName("org.apache.commons.logging.LogFactory");
+					Class discoveryClass = Class.forName("org.apache.commons.logging.LogFactory$Manager");
 					result = (LogManager) discoveryClass.newInstance();
 				} catch (Throwable t) {
 					// swallow
@@ -97,7 +97,7 @@ public class LogManager {
      * @return <code>Log</code>, not null
      */
 	public static Log getLog(Object param) {
-		return manager.getLogImpl(param);
+		return manager.getLogInstance(param);
 	}
 	
     /**
@@ -106,7 +106,7 @@ public class LogManager {
      * @param param  <code>Object</code> identifying the <code>Log</code>, not null
      * @return <code>Log</code>, not null
      */
-	protected Log getLogImpl(Object param) {
+	protected Log getLogInstance(Object param) {
 		return fallbackLog;
 	}
 	
