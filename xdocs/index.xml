@@ -63,7 +63,7 @@ package. In addition, there is a (short)
     <strong>Note:</strong> <em>this has now been blessed with alpha status.</em>
     		</p>
 		<p>
-Please download and test this release. Reports should be directed to the commons-dev
+Please <a href='http://cvs.apache.org/dist/jakarta/commons/logging'>download</a> and test this release. Reports should be directed to the commons-dev
 mailing list.
 		</p>
         <p>
