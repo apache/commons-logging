@@ -58,16 +58,13 @@
 package org.apache.commons.logging.impl;
 
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.LogSource;
-
 import org.apache.log4j.Logger;
 
 /**

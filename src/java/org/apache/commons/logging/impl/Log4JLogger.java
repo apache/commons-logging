@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.3 2003/04/02 01:29:38 craigmcc Exp $
- * $Revision: 1.3 $
- * $Date: 2003/04/02 01:29:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.4 2003/07/18 14:14:16 rsitze Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/07/18 14:14:16 $
  *
  * ====================================================================
  *
@@ -62,9 +62,9 @@
 
 package org.apache.commons.logging.impl;
 
-import org.apache.log4j.*;
 import org.apache.commons.logging.Log;
-import java.util.Enumeration;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 /**
  * <p>Implementation of {@link Log} that maps directly to a Log4J
@@ -75,7 +75,7 @@ import java.util.Enumeration;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JLogger.java,v 1.3 2003/04/02 01:29:38 craigmcc Exp $
+ * @version $Id: Log4JLogger.java,v 1.4 2003/07/18 14:14:16 rsitze Exp $
  */
 public final class Log4JLogger implements Log {
 
