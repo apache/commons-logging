@@ -7,13 +7,13 @@
 
 <div align="center">
 <h1>The Jakarta Commons <em>Logging</em> Component</h1>
-$Id: STATUS.html,v 1.4 2002/01/20 04:48:27 craigmcc Exp $<br>
+$Id: STATUS.html,v 1.5 2002/01/29 20:30:34 sanders Exp $<br />
 <a href="#Introduction">[Introduction]</a>
 <a href="#Dependencies">[Dependencies]</a>
 <a href="#Release Info">[Release Info]</a>
 <a href="#Committers">[Committers]</a>
 <a href="#Action Items">[Action Items]</a>
-<br><br>
+<br /><br />
 </div>
 
 
@@ -29,12 +29,20 @@ In addition, a small number of basic implementations are provided
 to allow users to use the package standalone.
 </p>
 
+<p>commons-logging was heavily influenced by Avalon's Logkit and Log4J.  The commons-logging
+abstraction is meant to minimixe the differences between the two, and to allow a
+developer to not tie himself to a particular logging implementation.
+</p>
+
 <p>
-The package should :
+The package does :
 <ul>
 <li>Have an API which should be as simple to use as possible</li>
+<li>Provide support for Avalon's Logkit</li>
+<li>Provide support for JDK 1.4 logging</li>
 <li>Provide support for log4j</li>
 <li>Provide pluggable support for other logging APIs</li>
+<li>Privide a simple System.out logger</li>
 </ul>
 </p>
 
@@ -89,6 +97,7 @@ component to ensure that it continues to meet a variety of needs.</p>
   <li>Rodney Waldhoff</li>
   <li>Craig McClanahan</li>
   <li>Robert Burrell Donkin</li>
+  <li>Scott Sanders</li>
 </ul>
 
 
