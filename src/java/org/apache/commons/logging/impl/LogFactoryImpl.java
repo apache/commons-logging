@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.10 2002/06/11 22:35:33 rsitze Exp $
- * $Revision: 1.10 $
- * $Date: 2002/06/11 22:35:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.11 2002/06/11 22:47:21 rsitze Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/06/11 22:47:21 $
  *
  * ====================================================================
  *
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.10 $ $Date: 2002/06/11 22:35:33 $
+ * @version $Revision: 1.11 $ $Date: 2002/06/11 22:47:21 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -403,6 +403,10 @@ public class LogFactoryImpl extends LogFactory {
         Class logClass = null;
         try {
             logClass = loadClass(logClassName);
+            if (logClass == null) {
+                throw new LogConfigurationException
+                    ("No suitable Log implementation for " + logClassName);
+            }
             if (!Log.class.isAssignableFrom(logClass)) {
                 throw new LogConfigurationException
                     ("Class " + logClassName + " does not implement Log");
@@ -438,21 +442,29 @@ public class LogFactoryImpl extends LogFactory {
         throws ClassNotFoundException
     {
         ClassLoader threadCL = getContextClassLoader();
-        try {
-            return threadCL.loadClass(name);
-        } catch( ClassNotFoundException ex ) {
-            return Class.forName( name );
+        
+        if (threadCL != null) {
+            try {
+                return threadCL.loadClass(name);
+            } catch( ClassNotFoundException ex ) {
+                return Class.forName( name );
+            }
         }
+
+        return null;
     }
 
     protected void guessConfig() {
         if( isLog4JAvailable() ) {
+            proxyFactory = null;
             try {
                 Class proxyClass=
                     loadClass( "org.apache.commons.logging.impl.Log4jFactory" );
-                proxyFactory=(LogFactory)proxyClass.newInstance();
+                if (proxyClass != null) {
+                    proxyFactory = (LogFactory)proxyClass.newInstance();
+                }
             } catch( Throwable t ) {
-                proxyFactory=null;
+                ; // ignore
             }
         }
         // other logger specific initialization
