@@ -38,6 +38,24 @@
             href="/guide.html"/>
       <item name="Wiki"
             href="http://wiki.apache.org/jakarta-commons/Logging"/>
+      <item name='1.0.4 Release'>
+            <item   name='Documentation'
+                    href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/'/>
+            <item   name='Release Notes'
+                    href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/RELEASE-NOTES.txt'/>
+      </item>
+      <item name='1.0.3 Release'>
+            <item   name='Userguide'
+                    href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.3/usersguide.html'/>
+            <item   name='API'
+                    href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.3/docs/api/'/>
+            <item   name='Release Notes'
+                    href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.3/RELEASE-NOTES.txt'/>
+      </item>      
+      <item name='1.0.2 Release'>
+            <item   name='API'
+                    href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.2/docs/api/'/>
+      </item>  
     </menu>
     
     &common-menus;
