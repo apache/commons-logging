@@ -36,7 +36,7 @@ import org.apache.commons.logging.impl.SimpleLog;
  * other than selecting the SimpleLog implementation.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.5 $ $Date: 2004/05/29 10:43:35 $
+ * @version $Revision$ $Date$
  */
 
 public class DefaultConfigTestCase extends TestCase {

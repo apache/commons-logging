@@ -63,7 +63,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.36 $ $Date: 2004/10/31 17:53:48 $
+ * @version $Revision$ $Date$
  */
 
 public class LogFactoryImpl extends LogFactory {

@@ -26,7 +26,7 @@ import org.apache.commons.logging.impl.WeakHashtableTest;
   * All tests should be written into separate <code>TestSuite</code>'s
   * and added to this. Don't clutter this class with implementations. </p>
   *
-  * @version $Revision: 1.2 $
+  * @version $Revision$
  */
 public class TestAll extends TestCase {
 

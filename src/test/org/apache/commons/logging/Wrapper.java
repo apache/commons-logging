@@ -65,7 +65,7 @@ import java.util.List;
  * only the wrapper class itself.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.5 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision$ $Date$
  */
 
 public class Wrapper {

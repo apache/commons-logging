@@ -28,7 +28,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * <p>Test implementation of <code>org.apache.log4j.Appender</code>.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.4 $ $Date: 2004/02/28 21:46:46 $
+ * @version $Revision$ $Date$
  */
 
 public class TestAppender extends AppenderSkeleton {

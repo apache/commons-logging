@@ -70,7 +70,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.21 2004/06/06 20:47:56 rdonkin Exp $
+ * @version $Id$
  */
 public class SimpleLog implements Log, Serializable {
 

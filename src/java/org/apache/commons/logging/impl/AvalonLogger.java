@@ -46,7 +46,7 @@ import org.apache.commons.logging.Log;
  * However, serializable is not recommended.
  * </p>
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision: 1.10 $ $Date$
+ * @version $Revision$ $Date$
  */
 public class AvalonLogger implements Log, Serializable {
 

@@ -35,7 +35,7 @@ import junit.framework.TestSuite;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.9 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision$ $Date$
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {

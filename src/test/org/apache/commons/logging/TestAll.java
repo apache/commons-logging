@@ -29,7 +29,7 @@ import junit.framework.*;
   * coded by James Strachan. </p>
   *
   * @author Robert Burrell Donkin
-  * @version $Revision: 1.7 $
+  * @version $Revision$
  */
 public class TestAll extends TestCase {
 

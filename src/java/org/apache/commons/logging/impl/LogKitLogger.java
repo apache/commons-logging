@@ -34,7 +34,7 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Robert Burrell Donkin
- * @version $Id: LogKitLogger.java,v 1.9 2004/06/01 19:56:46 rdonkin Exp $
+ * @version $Id$
  */
 
 public class LogKitLogger implements Log, Serializable {
