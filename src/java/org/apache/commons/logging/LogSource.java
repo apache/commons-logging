@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.13 2002/02/14 00:19:03 craigmcc Exp $
- * $Revision: 1.13 $
- * $Date: 2002/02/14 00:19:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.14 2002/03/04 00:41:37 craigmcc Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/03/04 00:41:37 $
  *
  * ====================================================================
  *
@@ -97,7 +97,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  *  implementation performs exactly the same algorithm as this class did
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.13 2002/02/14 00:19:03 craigmcc Exp $
+ * @version $Id: LogSource.java,v 1.14 2002/03/04 00:41:37 craigmcc Exp $
  */
 public class LogSource {
 
@@ -132,7 +132,8 @@ public class LogSource {
 
         // Is JDK 1.4 Logging Available?
         try {
-            if (null != Class.forName("java.util.logging.Logger")) {
+            if ((null != Class.forName("java.util.logging.Logger")) &&
+                (null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger"))) {
                 jdk14IsAvailable = true;
             } else {
                 jdk14IsAvailable = false;
@@ -145,6 +146,9 @@ public class LogSource {
         String name = null;
         try {
             name = System.getProperty("org.apache.commons.logging.log");
+            if (name == null) {
+                name = System.getProperty("org.apache.commons.logging.Log");
+            }
         } catch (Throwable t) {
         }
         if (name != null) {
