@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.5 2002/01/05 22:40:40 craigmcc Exp $
+        $Id: build.xml,v 1.6 2002/01/07 23:06:10 rdonkin Exp $
 -->
 
 
@@ -20,6 +20,7 @@
 
   <!-- The directories corresponding to your necessary dependencies -->
   <property name="junit.home"              value="/usr/local/junit3.5"/>
+  <property name="jakarta.home"            value="../.."/>
 
 
 <!-- ========== Derived Values ============================================ -->
@@ -27,6 +28,8 @@
 
   <!-- The locations of necessary jar files -->
   <property name="junit.jar"               value="${junit.home}/junit.jar"/>
+  <property name="log4j.jar"               value="${jakarta.home}/jakarta-log4j/dist/lib/log4j.jar"/>
+  <property name="logkit.jar"              value="${jakarta.home}/jakarta-avalon-logkit/build/log/logkit"/>
 
 
 <!-- ========== Component Declarations ==================================== -->
@@ -73,6 +76,7 @@
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${junit.jar}"/>
     <pathelement location="${log4j.jar}"/>
+    <pathelement location="${logkit.jar}"/>
   </path>
 
 
