@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.18 2002/11/11 16:52:54 rsitze Exp $
- * $Revision: 1.18 $
- * $Date: 2002/11/11 16:52:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.19 2002/11/23 03:07:58 craigmcc Exp $
+ * $Revision: 1.19 $
+ * $Date: 2002/11/23 03:07:58 $
  *
  * ====================================================================
  *
@@ -90,7 +90,7 @@ import org.apache.commons.logging.LogFactory;
  * <li>If <em>JDK 1.4 or later</em> is available, return an instance of
  *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
  * <li>Otherwise, return an instance of
- *     <code>org.apache.commons.logging.impl.NoOpLog</code>.</li>
+ *     <code>org.apache.commons.logging.impl.SimpleLog</code>.</li>
  * </ul>
  *
  * <p>If the selected {@link Log} implementation class has a
@@ -107,7 +107,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.18 $ $Date: 2002/11/11 16:52:54 $
+ * @version $Revision: 1.19 $ $Date: 2002/11/23 03:07:58 $
  */
 
 public class LogFactoryImpl extends LogFactory {
