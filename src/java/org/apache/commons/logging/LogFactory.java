@@ -34,7 +34,7 @@ import java.util.Properties;
  * <p>Factory for creating {@link Log} instances, with discovery and
  * configuration features similar to that employed by standard Java APIs
  * such as JAXP.</p>
- *
+ * 
  * <p><strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.</p>
@@ -232,7 +232,7 @@ public abstract class LogFactory {
             Class implementationClass = Class.forName(storeImplementationClass);
             result = (Hashtable) implementationClass.newInstance();
             
-        } catch (Exception e) {
+        } catch (Throwable t) {
             // ignore
         	if (!WEAK_HASHTABLE_CLASSNAME.equals(storeImplementationClass)) {
         		// if the user's trying to set up a custom implementation, give a clue
