@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.7 2002/11/23 03:25:33 craigmcc Exp $
- * $Revision: 1.7 $
- * $Date: 2002/11/23 03:25:33 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.8 2002/11/23 03:49:40 craigmcc Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/11/23 03:49:40 $
  *
  * ====================================================================
  *
@@ -72,10 +72,12 @@ import java.util.Enumeration;
  * Category instances should be done in the usual manner, as outlined in
  * the Log4J documentation.</p>
  *
+ * @deprecated Use {@link Log4JLogger} instead.
+ *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.7 2002/11/23 03:25:33 craigmcc Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.8 2002/11/23 03:49:40 craigmcc Exp $
  */
 public final class Log4JCategoryLog implements Log {
 

@@ -68,7 +68,7 @@ import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.LogSource;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * <p>Concrete subclass of {@link LogFactory} specific to log4j.
@@ -137,7 +137,7 @@ public final class Log4jFactory extends LogFactory {
         if( instance != null )
             return instance;
 
-        instance=new Log4JCategoryLog( Category.getInstance( clazz ));
+        instance=new Log4JLogger( Logger.getLogger( clazz ));
         instances.put( clazz, instance );
         return instance;
     }
@@ -150,7 +150,7 @@ public final class Log4jFactory extends LogFactory {
         if( instance != null )
             return instance;
 
-        instance=new Log4JCategoryLog( Category.getInstance( name ));
+        instance=new Log4JLogger( Logger.getLogger( name ));
         instances.put( name, instance );
         return instance;
     }
