@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.2 2002/02/15 03:54:19 costin Exp $
- * $Revision: 1.2 $
- * $Date: 2002/02/15 03:54:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.3 2002/03/07 22:32:47 costin Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/03/07 22:32:47 $
  *
  * ====================================================================
  *
@@ -75,13 +75,16 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.2 2002/02/15 03:54:19 costin Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.3 2002/03/07 22:32:47 costin Exp $
  */
 public final class Log4JCategoryLog implements Log {
 
 
     // ------------------------------------------------------------- Attributes
 
+    /** The fully qualified name of the Log4JCategoryLog class. */
+    private static final String FQCN = Log4JCategoryLog.class.getName();
+    
 
     /** Log to this category */
     private Category category = null;
@@ -112,7 +115,7 @@ public final class Log4JCategoryLog implements Log {
      * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message) {
-        category.debug(message);
+        category.log(FQCN, Priority.DEBUG, message, null);
     }
 
 
@@ -121,7 +124,7 @@ public final class Log4JCategoryLog implements Log {
      * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message, Throwable t) {
-        category.debug(message,t);
+        category.log(FQCN, Priority.DEBUG, message, t );
     }
 
 
@@ -129,15 +132,14 @@ public final class Log4JCategoryLog implements Log {
      * Log a message to the Log4j Category with <code>DEBUG</code> priority.
      */
     public void debug(Object message) {
-        category.debug(message);
+        category.log(FQCN, Priority.DEBUG, message, null);
     }
-
 
     /**
      * Log an error to the Log4j Category with <code>DEBUG</code> priority.
      */
     public void debug(Object message, Throwable t) {
-        category.debug(message,t);
+        category.log(FQCN, Priority.DEBUG, message, t );
     }
 
 
@@ -145,7 +147,7 @@ public final class Log4JCategoryLog implements Log {
      * Log a message to the Log4j Category with <code>INFO</code> priority.
      */
     public void info(Object message) {
-        category.info(message);
+        category.log(FQCN, Priority.INFO, message, null );
     }
 
 
@@ -153,7 +155,7 @@ public final class Log4JCategoryLog implements Log {
      * Log an error to the Log4j Category with <code>INFO</code> priority.
      */
     public void info(Object message, Throwable t) {
-        category.info(message,t);
+        category.log(FQCN, Priority.INFO, message, t );
     }
 
 
@@ -161,7 +163,7 @@ public final class Log4JCategoryLog implements Log {
      * Log a message to the Log4j Category with <code>WARN</code> priority.
      */
     public void warn(Object message) {
-        category.warn(message);
+        category.log(FQCN, Priority.WARN, message, null );
     }
 
 
@@ -169,7 +171,7 @@ public final class Log4JCategoryLog implements Log {
      * Log an error to the Log4j Category with <code>WARN</code> priority.
      */
     public void warn(Object message, Throwable t) {
-        category.warn(message,t);
+        category.log(FQCN, Priority.WARN, message, t );
     }
 
 
@@ -177,7 +179,7 @@ public final class Log4JCategoryLog implements Log {
      * Log a message to the Log4j Category with <code>ERROR</code> priority.
      */
     public void error(Object message) {
-        category.error(message);
+        category.log(FQCN, Priority.ERROR, message, null );
     }
 
 
@@ -185,7 +187,7 @@ public final class Log4JCategoryLog implements Log {
      * Log an error to the Log4j Category with <code>ERROR</code> priority.
      */
     public void error(Object message, Throwable t) {
-        category.error(message,t);
+        category.log(FQCN, Priority.ERROR, message, t );
     }
 
 
@@ -193,7 +195,7 @@ public final class Log4JCategoryLog implements Log {
      * Log a message to the Log4j Category with <code>FATAL</code> priority.
      */
     public void fatal(Object message) {
-        category.fatal(message);
+        category.log(FQCN, Priority.FATAL, message, null );
     }
 
 
@@ -201,7 +203,7 @@ public final class Log4JCategoryLog implements Log {
      * Log an error to the Log4j Category with <code>FATAL</code> priority.
      */
     public void fatal(Object message, Throwable t) {
-        category.fatal(message,t);
+        category.log(FQCN, Priority.FATAL, message, t );
     }
 
 
