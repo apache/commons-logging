@@ -62,7 +62,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.30 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision: 1.31 $ $Date: 2004/02/28 22:16:16 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -453,9 +453,10 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * Is <em>JDK 1.4 or later</em> logging available?  Also checks that
-     * the Throwable class supports <code>getStackTrace()</code>, which is
-     * required by Jdk14Logger.
+     * <p>Return <code>true</code> if <em>JDK 1.4 or later</em> logging
+     * is available.  Also checks that the <code>Throwable</code> class
+     * supports <code>getStackTrace()</code>, which is required by
+     * Jdk14Logger.</p>
      */
     protected boolean isJdk14Available() {
 
