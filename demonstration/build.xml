@@ -1,0 +1,125 @@
+<?xml version='1.0'?>
+<!-- $Id: overview.html 132718 2004-09-09 20:38:21Z rdonkin $
+  
+ Copyright 2005 The Apache Software Foundation.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<project name='classloader-examplars' default='build'>
+
+	<property name='build.home' value='target'/>
+	<property name='bin.tests' value='${build.home}/test-classes'/>
+	<property name='bin.caller' value='${build.home}/caller-classes'/>
+	<property name='bin.static' value='${build.home}/static-classes'/>
+	<property name='bin.docs' value='${build.home}/docs'/>
+	<property name='source' value='src/java'/>
+	
+	  <path id="static.classpath">
+	    <pathelement location="commons-logging.jar"/>
+	  	<pathelement location="log4j.jar"/>
+	  </path>
+	
+	  <path id="caller.classpath">
+	    <pathelement location="commons-logging.jar"/>
+	  	<pathelement location="log4j.jar"/>
+	  	<pathelement location="static.jar"/>
+	  </path>
+	
+	  <path id="tests.classpath">
+	    <pathelement location="commons-logging.jar"/>
+	  	<pathelement location="log4j.jar"/>
+	  	<pathelement location="static.jar"/>
+	  	<pathelement location="caller.jar"/>
+	  </path>
+	
+	  <path id="run.classpath">
+	  	<pathelement location="tests.jar"/>
+	  </path>
+
+	
+	<target name='clean'>
+		<delete dir='${build.home}'/>
+		<mkdir dir='${build.home}'/>
+		<mkdir dir='${bin.tests}'/>
+		<mkdir dir='${bin.caller}'/>
+		<mkdir dir='${bin.static}'/>
+	</target>
+	
+	<target name='build-static'>
+	    <javac srcdir="${source}"
+	           destdir="${bin.static}"
+	           debug="true">
+	    	<classpath refid="static.classpath"/>
+	    	<include name='org/apache/commons/logging/proofofconcept/staticlogger/*.java'/>
+	    </javac>
+	    <jar jarfile="static.jar"
+	         basedir="${bin.static}">
+	    </jar>
+	</target>
+	
+	<target name='build-caller'>
+	    <javac srcdir="${source}"
+	           destdir="${bin.caller}"
+	           debug="true">
+	    	<classpath refid="caller.classpath"/>
+		    	<include name='org/apache/commons/logging/proofofconcept/caller/*.java'/>
+	    </javac>
+	    <jar jarfile="caller.jar"
+	         basedir="${bin.caller}">
+	    </jar>
+	</target>
+	
+	
+	<target name='build-tests'>
+	    <javac srcdir="${source}"
+	           destdir="${bin.tests}"
+	           debug="true">
+	    	<classpath refid="tests.classpath"/>
+	    	<include name='org/apache/commons/logging/proofofconcept/runner/*.java'/>
+	    </javac>
+	    <jar jarfile="tests.jar"
+	         basedir="${bin.tests}">
+	    </jar>
+	</target>
+	
+	  <target name="javadoc">
+	  	<delete dir='${bin.docs}'/>
+	    <mkdir dir="${bin.docs}"/>
+	    <javadoc sourcepath="${source}"
+	                destdir="${bin.docs}"
+	           packagenames="org.apache.commons.logging.proofofconcept.*"
+	                 author="true"
+	                private="true"
+	                version="true"
+	               overview="${source}/overview.html"
+	               doctitle="JCL Proof Of Concept Demonstrations"
+	            windowtitle="JCL Proof Of Concept Demonstrations"
+	                 bottom='Copyright 2005 The Apache Software Foundation or its licensors, as applicable.'>
+	      <classpath  refid="static.classpath"/>
+	    </javadoc>
+	  </target>
+	
+	<target name='build' depends='build-static, build-caller, build-tests, javadoc'>
+	
+	
+	</target>
+	
+	<target name='run'>
+	    <java classname="org.apache.commons.logging.proofofconcept.runner.ParentFirstRunner" fork="yes" failonerror="true">
+	      <classpath refid="run.classpath"/>
+	    </java>
+	    <java classname="org.apache.commons.logging.proofofconcept.runner.ChildFirstRunner" fork="yes" failonerror="true">
+	      <classpath refid="run.classpath"/>
+	    </java>
+	</target>
+</project>
