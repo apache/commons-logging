@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.7 2002/01/05 22:40:40 craigmcc Exp $
- * $Revision: 1.7 $
- * $Date: 2002/01/05 22:40:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.8 2002/01/16 00:54:51 craigmcc Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/01/16 00:54:51 $
  *
  * ====================================================================
  *
@@ -92,7 +92,7 @@ import java.lang.reflect.InvocationTargetException;
  * </ul>
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.7 2002/01/05 22:40:40 craigmcc Exp $
+ * @version $Id: LogSource.java,v 1.8 2002/01/16 00:54:51 craigmcc Exp $
  */
 public class LogSource {
 
@@ -137,8 +137,10 @@ public class LogSource {
         }
 
         // Set the default Log implementation
-        String name =
-            System.getProperty("org.apache.commons.logging.log");
+        String name = null;
+        try {
+            name = System.getProperty("org.apache.commons.logging.log");
+        } catch (Throwable t) { }
         if (name != null) {
             try {
                 setLogImplementation(name);
