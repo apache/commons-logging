@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.15 2002/10/19 17:38:06 rsitze Exp $
- * $Revision: 1.15 $
- * $Date: 2002/10/19 17:38:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.16 2002/12/12 20:29:16 rsitze Exp $
+ * $Revision: 1.16 $
+ * $Date: 2002/12/12 20:29:16 $
  *
  * ====================================================================
  *
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.15 $ $Date: 2002/10/19 17:38:06 $
+ * @version $Revision: 1.16 $ $Date: 2002/12/12 20:29:16 $
  */
 
 public abstract class LogFactory {
@@ -278,9 +278,9 @@ public abstract class LogFactory {
 
         Properties props=null;
         try {
-            InputStream stream = (contextClassLoader == null
-                                 ? ClassLoader.getSystemResourceAsStream( FACTORY_PROPERTIES )
-                                 : contextClassLoader.getResourceAsStream( FACTORY_PROPERTIES ));
+            InputStream stream = getResourceAsStream(contextClassLoader,
+                                                     FACTORY_PROPERTIES);
+
             if (stream != null) {
                 props = new Properties();
                 props.load(stream);
@@ -310,9 +310,8 @@ public abstract class LogFactory {
 
         if (factory == null) {
             try {
-                InputStream is = (contextClassLoader == null
-                                  ? ClassLoader.getSystemResourceAsStream( SERVICE_ID )
-                                  : contextClassLoader.getResourceAsStream( SERVICE_ID ));
+                InputStream is = getResourceAsStream(contextClassLoader,
+                                                     SERVICE_ID);
 
                 if( is != null ) {
                     // This code is needed by EBCDIC and other strange systems.
@@ -574,5 +573,20 @@ public abstract class LogFactory {
         } catch (Exception e) {
             throw new LogConfigurationException(e);
         }
+    }
+    
+    private static InputStream getResourceAsStream(final ClassLoader loader,
+                                                   final String name)
+    {
+        return (InputStream)AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                    if (loader != null) {
+                        return loader.getResourceAsStream(name);
+                    } else {
+                        return ClassLoader.getSystemResourceAsStream(name);
+                    }
+                }
+            });
     }
 }

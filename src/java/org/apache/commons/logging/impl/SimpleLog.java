@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.7 2002/12/12 19:49:30 rsitze Exp $
- * $Revision: 1.7 $
- * $Date: 2002/12/12 19:49:30 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.8 2002/12/12 20:29:16 rsitze Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/12/12 20:29:16 $
  *
  * ====================================================================
  *
@@ -63,17 +63,17 @@
 package org.apache.commons.logging.impl;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogConfigurationException;
 
 /**
  * <p>Simple implementation of Log that sends all enabled log messages,
@@ -108,7 +108,7 @@ import org.apache.commons.logging.Log;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.7 2002/12/12 19:49:30 rsitze Exp $
+ * @version $Id: SimpleLog.java,v 1.8 2002/12/12 20:29:16 rsitze Exp $
  */
 public class SimpleLog implements Log {
 
@@ -177,24 +177,8 @@ public class SimpleLog implements Log {
     // load properties file, if found.
     // override with system properties.
     static {
-
-        // identify the class loader to attempt resource loading with
-        ClassLoader classLoader = null;
-        try {
-            Method method =
-                Thread.class.getMethod("getContextClassLoader", null);
-            classLoader = (ClassLoader)
-                method.invoke(Thread.currentThread(), null);
-        } catch (Exception e) {
-            ; // Ignored (security exception or JDK 1.1)
-        }
-        if (classLoader == null) {
-            classLoader = SimpleLog.class.getClassLoader();
-        }
-
         // add props from the resource simplelog.properties
-        InputStream in =
-            classLoader.getResourceAsStream("simplelog.properties");
+        InputStream in = getResourceAsStream("simplelog.properties");
         if(null != in) {
             try {
                 simpleLogProps.load(in);
@@ -583,6 +567,87 @@ public class SimpleLog implements Log {
     public final boolean isWarnEnabled() {
 
         return isLevelEnabled(SimpleLog.LOG_LEVEL_WARN);
+    }
+
+
+    /**
+     * Return the thread context class loader if available.
+     * Otherwise return null.
+     * 
+     * The thread context class loader is available for JDK 1.2
+     * or later, if certain security conditions are met.
+     *
+     * @exception LogConfigurationException if a suitable class loader
+     * cannot be identified.
+     */
+    private static ClassLoader getContextClassLoader()
+    {
+        ClassLoader classLoader = null;
+
+        if (classLoader == null) {
+            try {
+                // Are we running on a JDK 1.2 or later system?
+                Method method = Thread.class.getMethod("getContextClassLoader", null);
+    
+                // Get the thread context class loader (if there is one)
+                try {
+                    classLoader = (ClassLoader)method.invoke(Thread.currentThread(), null);
+                } catch (IllegalAccessException e) {
+                    ;  // ignore
+                } catch (InvocationTargetException e) {
+                    /**
+                     * InvocationTargetException is thrown by 'invoke' when
+                     * the method being invoked (getContextClassLoader) throws
+                     * an exception.
+                     * 
+                     * getContextClassLoader() throws SecurityException when
+                     * the context class loader isn't an ancestor of the
+                     * calling class's class loader, or if security
+                     * permissions are restricted.
+                     * 
+                     * In the first case (not related), we want to ignore and
+                     * keep going.  We cannot help but also ignore the second
+                     * with the logic below, but other calls elsewhere (to
+                     * obtain a class loader) will trigger this exception where
+                     * we can make a distinction.
+                     */
+                    if (e.getTargetException() instanceof SecurityException) {
+                        ;  // ignore
+                    } else {
+                        // Capture 'e.getTargetException()' exception for details
+                        // alternate: log 'e.getTargetException()', and pass back 'e'.
+                        throw new LogConfigurationException
+                            ("Unexpected InvocationTargetException", e.getTargetException());
+                    }
+                }
+            } catch (NoSuchMethodException e) {
+                // Assume we are running on JDK 1.1
+                ;  // ignore
+            }
+        }
+    
+        if (classLoader == null) {
+            classLoader = SimpleLog.class.getClassLoader();
+        }
+
+        // Return the selected class loader
+        return classLoader;
+    }
+    
+    private static InputStream getResourceAsStream(final String name)
+    {
+        return (InputStream)AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                    ClassLoader threadCL = getContextClassLoader();
+
+                    if (threadCL != null) {
+                        return threadCL.getResourceAsStream(name);
+                    } else {
+                        return ClassLoader.getSystemResourceAsStream(name);
+                    }
+                }
+            });
     }
 }
 
