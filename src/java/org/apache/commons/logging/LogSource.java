@@ -1,9 +1,62 @@
 /*
- * Copyright (C) The Apache Software Foundation. All rights reserved.
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.5 2002/01/03 18:58:00 rdonkin Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/01/03 18:58:00 $
  *
- * This software is published under the terms of the Apache Software License
- * version 1.1, a copy of which has been included with this distribution in
- * the LICENSE file.
+ * ====================================================================
+ *
+ * The Apache Software License, Version 1.1
+ *
+ * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The end-user documentation included with the redistribution, if
+ *    any, must include the following acknowlegement:
+ *       "This product includes software developed by the
+ *        Apache Software Foundation (http://www.apache.org/)."
+ *    Alternately, this acknowlegement may appear in the software itself,
+ *    if and wherever such third-party acknowlegements normally appear.
+ *
+ * 4. The names "The Jakarta Project", "Commons", and "Apache Software
+ *    Foundation" must not be used to endorse or promote products derived
+ *    from this software without prior written permission. For written
+ *    permission, please contact apache@apache.org.
+ *
+ * 5. Products derived from this software may not be called "Apache"
+ *    nor may "Apache" appear in their names without prior written
+ *    permission of the Apache Group.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation.  For more
+ * information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ *
  */
 
 package org.apache.commons.logging;
@@ -19,11 +72,19 @@ import java.lang.reflect.InvocationTargetException;
  * of the configured {@link Log} implementation class.</p>
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.4 2001/12/04 04:28:03 craigmcc Exp $
+ * @version $Id: LogSource.java,v 1.5 2002/01/03 18:58:00 rdonkin Exp $
  */
 public class LogSource {
+
+    // --------------------------------------------------------- Class Attributes
+    
     static protected HashMap _logs = new HashMap();
+    /** Is log4j available (in the current classpath) */
     static protected boolean _log4jIsAvailable = false;
+    
+    
+    // --------------------------------------------------------- Class Initializers
+    
     static {
         try {
             if(null != Class.forName("org.apache.log4j.Category")) {
@@ -40,10 +101,14 @@ public class LogSource {
         }
     }
 
+    /** Constructor for current log class */
     static protected Constructor _logimplctor = null;
     static {
         try {
-            setLogImplementation(System.getProperty("org.apache.commons.logging.log","org.apache.commons.logging.NoOpLog"));
+            setLogImplementation(
+                System.getProperty(
+                    "org.apache.commons.logging.log","org.apache.commons.logging.NoOpLog"));
+                    
         } catch(SecurityException e) {
             _logimplctor = null;
         } catch(LinkageError e) {
@@ -55,8 +120,14 @@ public class LogSource {
         }
     }
 
+
+    // --------------------------------------------------------- Constructor
+    
+    /** Don't allow others to create instances */
     private LogSource() {
     }
+
+    // --------------------------------------------------------- Class Methods
 
     /**
      * Set the log implementation/log implementation factory
@@ -89,6 +160,8 @@ public class LogSource {
         _logimplctor = logclass.getConstructor(argtypes);
     }
 
+
+    /** Get a <code>Log</code> instance by class name */
     static public Log getInstance(String name) {
         Log log = (Log)(_logs.get(name));
         if(null == log) {
@@ -98,6 +171,7 @@ public class LogSource {
         return log;
     }
 
+    /** Get a <code>Log</code> instance by class */
     static public Log getInstance(Class clazz) {
         return getInstance(clazz.getName());
     }
@@ -116,7 +190,7 @@ public class LogSource {
      * {@link String} argument (containing the <i>name</i>
      * of the {@link Log} to be constructed.
      * <p>
-     * When <tt>httpclient.log</tt> is not set,
+     * When <tt>org.apache.commons.logging.log</tt> is not set,
      * or when no corresponding class can be found,
      * this method will return a {@link Log4JCategoryLog}
      * if the log4j {@link org.apache.log4j.Category} class is
