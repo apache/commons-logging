@@ -17,6 +17,7 @@
 
 package org.apache.commons.logging.impl;
 
+import java.lang.ref.*;
 import junit.framework.*;
 import java.util.*;
 
@@ -206,7 +207,10 @@ public class WeakHashtableTest extends TestCase {
     }
     
     public void testRelease() throws Exception {
-        
+        assertNotNull(weakHashtable.get(new Long(1)));
+        ReferenceQueue testQueue = new ReferenceQueue();
+        WeakReference weakKeyOne = new WeakReference(keyOne, testQueue);
+
         // lose our references
         keyOne = null;
         keyTwo = null;
@@ -232,6 +236,12 @@ public class WeakHashtableTest extends TestCase {
                 bytz = bytz * 2;
             }
         }
+        
+        // some JVMs seem to take a little time to put references on 
+        // the reference queue once the reference has been collected
+        // need to think about whether this is enough to justify
+        // stepping through the collection each time...
+        while(testQueue.poll() == null) {}
         
         // Test that the released objects are not taking space in the table
         assertEquals("underlying table not emptied", 0, weakHashtable.size());
