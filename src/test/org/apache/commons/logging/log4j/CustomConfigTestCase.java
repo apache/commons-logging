@@ -37,7 +37,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.8 $ $Date: 2004/02/28 21:46:46 $
+ * @version $Revision: 1.9 $ $Date: 2004/05/19 20:59:56 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
@@ -223,10 +223,11 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             */
             if (thrown) {
                 assertNotNull("LoggingEvent thrown",
-                              event.getThrowableInformation().getThrowable());
+                              event.getThrowableInformation().getThrowableStrRep());
                 assertTrue("LoggingEvent thrown type",
-                           event.getThrowableInformation().getThrowable()
-                             instanceof IndexOutOfBoundsException);
+                           event.getThrowableInformation()
+                                .getThrowableStrRep()[0]
+                                    .indexOf("IndexOutOfBoundsException")>0);
             } else {
                 assertNull("LoggingEvent thrown",
                            event.getThrowableInformation());
