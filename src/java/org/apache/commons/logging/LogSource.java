@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.14 2002/03/04 00:41:37 craigmcc Exp $
- * $Revision: 1.14 $
- * $Date: 2002/03/04 00:41:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.15 2002/06/15 18:13:01 craigmcc Exp $
+ * $Revision: 1.15 $
+ * $Date: 2002/06/15 18:13:01 $
  *
  * ====================================================================
  *
@@ -97,7 +97,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  *  implementation performs exactly the same algorithm as this class did
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.14 2002/03/04 00:41:37 craigmcc Exp $
+ * @version $Id: LogSource.java,v 1.15 2002/06/15 18:13:01 craigmcc Exp $
  */
 public class LogSource {
 
@@ -254,7 +254,7 @@ public class LogSource {
 
     /**
      * Create a new {@link Log} implementation, based
-     * on the given <i>name</i>
+     * on the given <i>name</i>.
      * <p>
      * The specific {@link Log} implementation returned
      * is determined by the value of the
@@ -268,11 +268,11 @@ public class LogSource {
      * <p>
      * When <tt>org.apache.commons.logging.log</tt> is not set,
      * or when no corresponding class can be found,
-     * this method will return a {@link Log4JCategoryLog}
-     * if the log4j {@link org.apache.log4j.Category} class is
+     * this method will return a Log4JCategoryLog
+     * if the log4j Category class is
      * available in the {@link LogSource}'s classpath, or a
-     * {@link Jdk14Logger} if we are on a JDK 1.4 or later system, or
-     * a {@link NoOpLog} if neither of the above conditions is true.
+     * Jdk14Logger if we are on a JDK 1.4 or later system, or
+     * NoOpLog if neither of the above conditions is true.
      *
      * @param name the log name (or category)
      */

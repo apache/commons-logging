@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.11 2002/06/11 22:47:21 rsitze Exp $
- * $Revision: 1.11 $
- * $Date: 2002/06/11 22:47:21 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.12 2002/06/15 18:13:02 craigmcc Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/06/15 18:13:02 $
  *
  * ====================================================================
  *
@@ -76,7 +76,7 @@ import org.apache.commons.logging.LogSource;
 /**
  * <p>Concrete subclass of {@link LogFactory} that implements the
  * following algorithm to dynamically select a logging implementation
- * class to instantiate a wrapper for:</p>
+ * class to instantiate a wrapper for.</p>
  * <ul>
  * <li>Use a factory configuration attribute named
  *     <code>org.apache.commons.logging.Log</code> to identify the
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.11 $ $Date: 2002/06/11 22:47:21 $
+ * @version $Revision: 1.12 $ $Date: 2002/06/15 18:13:02 $
  */
 
 public class LogFactoryImpl extends LogFactory {

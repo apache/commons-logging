@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.8 2002/06/11 22:29:14 rsitze Exp $
- * $Revision: 1.8 $
- * $Date: 2002/06/11 22:29:14 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.9 2002/06/15 18:13:01 craigmcc Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/06/15 18:13:01 $
  *
  * ====================================================================
  *
@@ -85,7 +85,7 @@ import java.lang.SecurityException;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.8 $ $Date: 2002/06/11 22:29:14 $
+ * @version $Revision: 1.9 $ $Date: 2002/06/15 18:13:01 $
  */
 
 public abstract class LogFactory {
@@ -234,7 +234,7 @@ public abstract class LogFactory {
     /**
      * <p>Construct (if necessary) and return a <code>LogFactory</code>
      * instance, using the following ordered lookup procedure to determine
-     * the name of the implementation class to be loaded:</p>
+     * the name of the implementation class to be loaded.</p>
      * <ul>
      * <li>The <code>org.apache.commons.logging.LogFactory</code> system
      *     property.</li>
