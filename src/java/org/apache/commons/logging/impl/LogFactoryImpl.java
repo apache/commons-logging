@@ -63,7 +63,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.35 $ $Date: 2004/10/17 09:14:10 $
+ * @version $Revision: 1.36 $ $Date: 2004/10/31 17:53:48 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -417,6 +417,14 @@ public class LogFactoryImpl extends LogFactory {
                 ("No suitable Log constructor " +
                  logConstructorSignature+ " for " + logClassName, t);
         }
+    }
+
+    /**
+     * Gets the context classloader.
+     * This method is a workaround for a java 1.2 compiler bug.
+     */
+    protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
+        return LogFactory.getContextClassLoader();
     }
 
 
