@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.16 2002/12/12 20:29:16 rsitze Exp $
- * $Revision: 1.16 $
- * $Date: 2002/12/12 20:29:16 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.17 2002/12/13 16:48:06 rsitze Exp $
+ * $Revision: 1.17 $
+ * $Date: 2002/12/13 16:48:06 $
  *
  * ====================================================================
  *
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.16 $ $Date: 2002/12/12 20:29:16 $
+ * @version $Revision: 1.17 $ $Date: 2002/12/13 16:48:06 $
  */
 
 public abstract class LogFactory {
@@ -533,46 +533,55 @@ public abstract class LogFactory {
      * @exception LogConfigurationException if a suitable instance
      *  cannot be created
      */
-    protected static LogFactory newFactory(String factoryClass,
-                                           ClassLoader classLoader)
+    protected static LogFactory newFactory(final String factoryClass,
+                                           final ClassLoader classLoader)
         throws LogConfigurationException
     {
-        
-        try {
-            if (classLoader != null) {
-                try {
-                    // first the given class loader param (thread class loader)
-                    return (LogFactory)classLoader.loadClass(factoryClass).newInstance();
-                } catch (ClassNotFoundException ex) {
-                    if (classLoader == LogFactory.class.getClassLoader()) {
-                        // Nothing more to try, onwards.
-                        throw ex;
+        Object result = AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                    try {
+                        if (classLoader != null) {
+                            try {
+                                // first the given class loader param (thread class loader)
+                                return classLoader.loadClass(factoryClass).newInstance();
+                            } catch (ClassNotFoundException ex) {
+                                if (classLoader == LogFactory.class.getClassLoader()) {
+                                    // Nothing more to try, onwards.
+                                    throw ex;
+                                }
+                                // ignore exception, continue
+                            } catch (NoClassDefFoundError e) {
+                                if (classLoader == LogFactory.class.getClassLoader()) {
+                                    // Nothing more to try, onwards.
+                                    throw e;
+                                }
+                                // ignore exception, continue
+                            }
+                        }
+            
+                        /* At this point, either classLoader == null, OR
+                         * classLoader was unable to load factoryClass..
+                         * try the class loader that loaded this class:
+                         * LogFactory.getClassLoader().
+                         * 
+                         * Notes:
+                         * a) LogFactory.class.getClassLoader() may return 'null'
+                         *    if LogFactory is loaded by the bootstrap classloader.
+                         * b) The Java endorsed library mechanism is instead
+                         *    Class.forName(factoryClass);
+                         */
+                        return (LogFactory)Class.forName(factoryClass).newInstance();
+                    } catch (Exception e) {
+                        return new LogConfigurationException(e);
                     }
-                    // ignore exception, continue
-                } catch (NoClassDefFoundError e) {
-                    if (classLoader == LogFactory.class.getClassLoader()) {
-                        // Nothing more to try, onwards.
-                        throw e;
-                    }
-                    // ignore exception, continue
                 }
-            }
+            });
 
-            /* At this point, either classLoader == null, OR
-             * classLoader was unable to load factoryClass..
-             * try the class loader that loaded this class:
-             * LogFactory.getClassLoader().
-             * 
-             * Notes:
-             * a) LogFactory.class.getClassLoader() may return 'null'
-             *    if LogFactory is loaded by the bootstrap classloader.
-             * b) The Java endorsed library mechanism is instead
-             *    Class.forName(factoryClass);
-             */
-            return (LogFactory)Class.forName(factoryClass).newInstance();
-        } catch (Exception e) {
-            throw new LogConfigurationException(e);
-        }
+        if (result instanceof LogConfigurationException)
+            throw (LogConfigurationException)result;
+            
+        return (LogFactory)result;
     }
     
     private static InputStream getResourceAsStream(final ClassLoader loader,
