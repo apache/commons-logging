@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogConfigurationException.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogConfigurationException.java,v 1.3 2003/05/01 10:32:36 rdonkin Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/05/01 10:32:36 $
  *
  * ====================================================================
  *
@@ -68,7 +68,7 @@ package org.apache.commons.logging;
  * factory methods.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.2 $ $Date: 2003/03/30 23:42:36 $
+ * @version $Revision: 1.3 $ $Date: 2003/05/01 10:32:36 $
  */
 
 public class LogConfigurationException extends RuntimeException {
@@ -117,7 +117,7 @@ public class LogConfigurationException extends RuntimeException {
      */
     public LogConfigurationException(String message, Throwable cause) {
 
-        super(message);
+        super(message + " (Caused by " + cause + ")");
         this.cause = cause; // Two-argument version requires JDK 1.4 or later
 
     }
