@@ -25,6 +25,11 @@ import java.util.*;
  * to hold it's keys thus allowing them to be reclaimed by the garbage collector.
  * This class follows the symantics of <code>Hashtable</code> as closely as possible.
  * It therefore does not accept null values or keys.
+ * <p>
+ * This implementation is also tuned towards a particular purpose: for use as a replacement
+ * for <code>Hashtable</code> in <code>LogFactory</code>. This application requires
+ * good liveliness for <code>get</code> and <code>put</code>. Various tradeoffs
+ * have been made with this in mind.
  * </p>
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement 
@@ -35,6 +40,8 @@ import java.util.*;
  */
 public final class WeakHashtable extends Hashtable {
 
+    /** Empty array of <code>Entry</code>'s */
+    private static final Entry[] EMPTY_ENTRY_ARRAY = {};
     
     public WeakHashtable() {}
 
@@ -42,6 +49,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public boolean contains(Object value) {
+        // purge should not be required
         if (value instanceof Referenced) {
             return super.contains(value);
         }
@@ -53,6 +61,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public boolean containsKey(Object key) {
+        // purge should not be required
         Referenced referenced = new Referenced(key);
         return super.containsKey(referenced);
     }
@@ -61,6 +70,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public boolean containsValue(Object value) {
+        // purge should not be required
         if (value instanceof Referenced) {
             return super.contains(value);
         }
@@ -72,6 +82,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public Enumeration elements() {
+        purge();
         final Enumeration enum = super.elements();
         return new Enumeration() {
             public boolean hasMoreElements() {
@@ -88,6 +99,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public Set entrySet() {
+        purge();
         Set referencedEntries = super.entrySet();
         Set unreferencedEntries = new HashSet();
         for (Iterator it=referencedEntries.iterator(); it.hasNext();) {
@@ -108,6 +120,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public Object get(Object key) {
+        // for performance reasons, no purge
         Object result = null;
         Referenced referenceKey = new Referenced(key);
         Referenced referencedValue = (Referenced) super.get(referenceKey);
@@ -121,6 +134,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public Enumeration keys() {
+        purge();
         final Enumeration enum = super.keys();
         return new Enumeration() {
             public boolean hasMoreElements() {
@@ -138,6 +152,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     public Set keySet() {
+        purge();
         Set referencedKeys = super.keySet();
         Set unreferencedKeys = new HashSet();
         for (Iterator it=referencedKeys.iterator(); it.hasNext();) {
@@ -154,6 +169,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */    
     public Object put(Object key, Object value) {
+        // for performance reasons, no purge
         // check for nulls, ensuring symantics match superclass
         if (key == null) {
             throw new NullPointerException("Null keys are not allowed");
@@ -187,6 +203,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */      
     public Collection values() {
+        purge();
         Collection referencedValues = super.values();
         ArrayList unreferencedValues = new ArrayList();
         for (Iterator it = referencedValues.iterator(); it.hasNext();) {
@@ -206,6 +223,52 @@ public final class WeakHashtable extends Hashtable {
         return super.remove(new Referenced(key));
     }
     
+    /**
+     *@see Hashtable
+     */    
+    public boolean isEmpty() {
+        purge();
+        return super.isEmpty();
+    }
+    
+    /**
+     *@see Hashtable
+     */    
+    public int size() {
+        purge();
+        return super.size();
+    }
+    
+    /**
+     *@see Hashtable
+     */        
+    public String toString() {
+        purge();
+        return super.toString();
+    }
+    
+    /**
+     * Purges all entries whose wrapped keys or values
+     * have been garbage collected.
+     */
+    private synchronized void purge() {
+        Set entrySet = super.entrySet();
+        for (Iterator it=entrySet.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            Referenced referencedKey = (Referenced) entry.getKey();
+            Referenced referencedValue = (Referenced) entry.getValue();
+            
+            // test whether either referant has been collected
+            if (referencedKey.getValue() == null || referencedValue.getValue() == null) {
+                // if so, purge this entry
+                it.remove();
+            }
+        }
+    }
+    
+    
+    
+    /** Entry implementation */
     private final static class Entry implements Map.Entry {
     
         private Object key;
