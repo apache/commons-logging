@@ -63,7 +63,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.32 $ $Date: 2004/03/06 21:25:36 $
+ * @version $Revision: 1.33 $ $Date: 2004/03/06 21:52:59 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -96,6 +96,13 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected static final String LOG_PROPERTY_OLD =
         "org.apache.commons.logging.log";
+
+
+    /**
+     * <p>The name of the {@link Log} interface class.</p>
+     */
+    private static final String LOG_INTERFACE =
+        "org.apache.commons.logging.Log";
 
 
     // ----------------------------------------------------- Instance Variables
@@ -362,15 +369,29 @@ public class LogFactoryImpl extends LogFactory {
 
         // Attempt to load the Log implementation class
         Class logClass = null;
+        Class logInterface = null;
         try {
+            logInterface = this.getClass().getClassLoader().loadClass
+                (LOG_INTERFACE);
             logClass = loadClass(logClassName);
             if (logClass == null) {
                 throw new LogConfigurationException
                     ("No suitable Log implementation for " + logClassName);
             }
-            if (!Log.class.isAssignableFrom(logClass)) {
+            if (!logInterface.isAssignableFrom(logClass)) {
+                Class interfaces[] = logClass.getInterfaces();
+                for (int i = 0; i < interfaces.length; i++) {
+                    if (LOG_INTERFACE.equals(interfaces[i].getName())) {
+                        throw new LogConfigurationException
+                            ("Invalid class loader hierarchy.  " +
+                             "You have more than one version of '" +
+                             LOG_INTERFACE + "' visible, which is " +
+                             "not allowed.");
+                    }
+                }
                 throw new LogConfigurationException
-                    ("Class " + logClassName + " does not implement Log");
+                    ("Class " + logClassName + " does not implement '" +
+                     LOG_INTERFACE + "'.");
             }
         } catch (Throwable t) {
             throw new LogConfigurationException(t);
