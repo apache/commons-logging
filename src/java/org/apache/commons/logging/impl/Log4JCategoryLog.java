@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.6 2002/06/07 00:22:54 costin Exp $
- * $Revision: 1.6 $
- * $Date: 2002/06/07 00:22:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.7 2002/11/23 03:25:33 craigmcc Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/11/23 03:25:33 $
  *
  * ====================================================================
  *
@@ -75,7 +75,7 @@ import java.util.Enumeration;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.6 2002/06/07 00:22:54 costin Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.7 2002/11/23 03:25:33 craigmcc Exp $
  */
 public final class Log4JCategoryLog implements Log {
 
@@ -234,6 +234,14 @@ public final class Log4JCategoryLog implements Log {
      */
     public void fatal(Object message, Throwable t) {
         category.log(FQCN, Priority.FATAL, message, t );
+    }
+
+
+    /**
+     * Return the native Category instance we are using.
+     */
+    public Category getCategory() {
+        return (this.category);
     }
 
 
