@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/CustomConfigTestCase.java,v 1.1 2003/03/29 22:04:54 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2003/03/29 22:04:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/CustomConfigTestCase.java,v 1.2 2003/03/30 02:30:37 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/03/30 02:30:37 $
  *
  * ====================================================================
  *
@@ -84,13 +84,21 @@ import org.apache.commons.logging.LogFactory;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2003/03/29 22:04:54 $
+ * @version $Revision: 1.2 $ $Date: 2003/03/30 02:30:37 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // ----------------------------------------------------------- Constructors
+
+
+    /**
+     * <p>Construct a new instance of this test case.</p>
+     */
+    public CustomConfigTestCase() {
+        super();
+    }
 
 
     /**
@@ -181,27 +189,20 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     // ----------------------------------------------------------- Test Methods
 
 
+    // Test logging message strings with exceptions
+    public void testExceptionMessages() throws Exception {
+
+        logExceptionMessages();
+        checkLogRecords(true);
+
+    }
+
+
     // Test logging plain message strings
     public void testPlainMessages() throws Exception {
 
         logPlainMessages();
-        Iterator records = handler.records();
-        for (int i = 0; i < testMessages.length; i++) {
-            assertTrue(records.hasNext());
-            LogRecord record = (LogRecord) records.next();
-            assertEquals("LogRecord level",
-                         testLevels[i], record.getLevel());
-            assertEquals("LogRecord message",
-                         testMessages[i], record.getMessage());
-            assertEquals("LogRecord class",
-                         this.getClass().getName(),
-                         record.getSourceClassName());
-            assertEquals("LogRecord method",
-                         "logPlainMessages",
-                         record.getSourceMethodName());
-        }
-        assertTrue(!records.hasNext());
-        handler.flush();
+        checkLogRecords(false);
 
     }
 
@@ -251,6 +252,53 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // -------------------------------------------------------- Support Methods
+
+
+    // Check the recorded messages
+    protected void checkLogRecords(boolean thrown) {
+        Iterator records = handler.records();
+        for (int i = 0; i < testMessages.length; i++) {
+            assertTrue(records.hasNext());
+            LogRecord record = (LogRecord) records.next();
+            assertEquals("LogRecord level",
+                         testLevels[i], record.getLevel());
+            assertEquals("LogRecord message",
+                         testMessages[i], record.getMessage());
+            assertEquals("LogRecord class",
+                         this.getClass().getName(),
+                         record.getSourceClassName());
+            if (thrown) {
+                assertEquals("LogRecord method",
+                             "logExceptionMessages",
+                             record.getSourceMethodName());
+            } else {
+                assertEquals("LogRecord method",
+                             "logPlainMessages",
+                             record.getSourceMethodName());
+            }
+            if (thrown) {
+                assertNotNull("LogRecord thrown", record.getThrown());
+                assertTrue("LogRecord thrown type",
+                           record.getThrown() instanceof IndexOutOfBoundsException);
+            } else {
+                assertNull("LogRecord thrown",
+                           record.getThrown());
+            }
+        }
+        assertTrue(!records.hasNext());
+        handler.flush();
+    }
+
+
+    // Log the messages with exceptions
+    protected void logExceptionMessages() {
+        Throwable t = new IndexOutOfBoundsException();
+        log.trace("trace", t); // Should not actually get logged
+        log.debug("debug", t);
+        log.info("info", t);
+        log.warn("warn", t);
+        log.error("error", t);
+    }
 
 
     // Log the plain messages
