@@ -64,7 +64,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.17 2004/02/28 23:00:57 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.18 2004/03/01 02:12:48 craigmcc Exp $
  */
 public class SimpleLog implements Log, Serializable {
 
@@ -250,7 +250,11 @@ public class SimpleLog implements Log, Serializable {
     /**
      * <p> Do the actual logging.
      * This method assembles the message
-     * and then prints to <code>System.err</code>.</p>
+     * and then calls <code>write()</code> to cause it to be written.</p>
+     *
+     * @param type One of the LOG_LEVE_XXX constants defining the log level
+     * @param message The message itself (typically a String)
+     * @param t The exception whose stack trace should be logged
      */
     protected void log(int type, Object message, Throwable t) {
         // Use a string buffer for better performance
@@ -301,8 +305,24 @@ public class SimpleLog implements Log, Serializable {
             buf.append(sw.toString());
         }
 
-        // Print to System.err
-        System.err.println(buf.toString());
+        // Print to the appropriate destination
+        write(buf);
+
+    }
+
+
+    /**
+     * <p>Write the content of the message accumulated in the specified
+     * <code>StringBuffer</code> to the appropriate output destination.  The
+     * default implementation writes to <code>System.err</code>.</p>
+     *
+     * @param buffer A <code>StringBuffer</code> containing the accumulated
+     *  text to be logged
+     */
+    protected void write(StringBuffer buffer) {
+
+        System.err.println(buffer.toString());
+
     }
 
 
