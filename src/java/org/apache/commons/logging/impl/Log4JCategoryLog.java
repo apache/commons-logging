@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.9 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.9 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.10 2003/04/02 01:29:38 craigmcc Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/04/02 01:29:38 $
  *
  * ====================================================================
  *
@@ -77,7 +77,7 @@ import java.util.Enumeration;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.9 2003/03/30 23:42:36 craigmcc Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.10 2003/04/02 01:29:38 craigmcc Exp $
  */
 public final class Log4JCategoryLog implements Log {
 
@@ -87,9 +87,6 @@ public final class Log4JCategoryLog implements Log {
     /** The fully qualified name of the Log4JCategoryLog class. */
     private static final String FQCN = Log4JCategoryLog.class.getName();
     
-    private static boolean initialized=false;
-    private static String LAYOUT="%r [%t] %p %c{2} %x - %m%n";
-
     /** Log to this category */
     private Category category = null;
 
@@ -97,9 +94,6 @@ public final class Log4JCategoryLog implements Log {
     // ------------------------------------------------------------ Constructor
 
     public Log4JCategoryLog() {
-        if( ! initialized ) {
-            initialize();
-        }
     }
 
 
@@ -107,40 +101,18 @@ public final class Log4JCategoryLog implements Log {
      * Base constructor
      */
     public Log4JCategoryLog(String name) {
-        if( ! initialized ) {
-            initialize();
-        }
         this.category=Category.getInstance(name);
     }
 
     /** For use with a log4j factory
      */
     public Log4JCategoryLog(Category category ) {
-        if( ! initialized ) {
-            initialize();
-        }
         this.category=category;
     }
 
 
     // ---------------------------------------------------------- Implmentation
 
-    private void initialize() {
-        Category root=Category.getRoot();
-        Enumeration appenders=root.getAllAppenders();
-        if( appenders==null || ! appenders.hasMoreElements() ) {
-            // No config, set some defaults ( consistent with
-            // commons-logging patterns ).
-            ConsoleAppender app=new ConsoleAppender(new PatternLayout( LAYOUT ),
-                                                    ConsoleAppender.SYSTEM_ERR );
-            app.setName("commons-logging");
-            
-            root.addAppender( app );
-            root.setPriority( Priority.INFO );
-        }
-        initialized=true;
-    }
-    
 
     /**
      * Log a message to the Log4j Category with <code>TRACE</code> priority.

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.3 2003/04/02 01:29:38 craigmcc Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/04/02 01:29:38 $
  *
  * ====================================================================
  *
@@ -75,7 +75,7 @@ import java.util.Enumeration;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JLogger.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
+ * @version $Id: Log4JLogger.java,v 1.3 2003/04/02 01:29:38 craigmcc Exp $
  */
 public final class Log4JLogger implements Log {
 
@@ -85,9 +85,6 @@ public final class Log4JLogger implements Log {
     /** The fully qualified name of the Log4JLogger class. */
     private static final String FQCN = Log4JLogger.class.getName();
     
-    private static boolean initialized=false;
-    private static String LAYOUT="%r [%t] %p %c{2} %x - %m%n";
-
     /** Log to this logger */
     private Logger logger = null;
 
@@ -95,9 +92,6 @@ public final class Log4JLogger implements Log {
     // ------------------------------------------------------------ Constructor
 
     public Log4JLogger() {
-        if( ! initialized ) {
-            initialize();
-        }
     }
 
 
@@ -105,40 +99,18 @@ public final class Log4JLogger implements Log {
      * Base constructor
      */
     public Log4JLogger(String name) {
-        if( ! initialized ) {
-            initialize();
-        }
         this.logger=Logger.getLogger(name);
     }
 
     /** For use with a log4j factory
      */
     public Log4JLogger(Logger logger ) {
-        if( ! initialized ) {
-            initialize();
-        }
         this.logger=logger;
     }
 
 
     // ---------------------------------------------------------- Implmentation
 
-    private void initialize() {
-        Logger root=Logger.getRootLogger();
-        Enumeration appenders=root.getAllAppenders();
-        if( appenders==null || ! appenders.hasMoreElements() ) {
-            // No config, set some defaults ( consistent with
-            // commons-logging patterns ).
-            ConsoleAppender app=new ConsoleAppender(new PatternLayout( LAYOUT ),
-                                                    ConsoleAppender.SYSTEM_ERR );
-            app.setName("commons-logging");
-            
-            root.addAppender( app );
-            root.setPriority( Priority.INFO );
-        }
-        initialized=true;
-    }
-    
 
     /**
      * Log a message to the Log4j Logger with <code>TRACE</code> priority.
