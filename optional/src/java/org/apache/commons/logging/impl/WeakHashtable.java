@@ -23,6 +23,8 @@ import java.util.*;
 /**
  * <p>Implementation of <code>Hashtable</code> that uses <code>WeakReference</code>'s
  * to hold it's keys thus allowing them to be reclaimed by the garbage collector.
+ * This class follows the symantics of <code>Hashtable</code> as closely as possible.
+ * It therefore does not accept null values or keys.
  * </p>
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement 
@@ -152,6 +154,14 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */    
     public Object put(Object key, Object value) {
+        // check for nulls, ensuring symantics match superclass
+        if (key == null) {
+            throw new NullPointerException("Null keys are not allowed");
+        }
+        if (value == null) {
+            throw new NullPointerException("Null values are not allowed");
+        }
+        
         Object result = null;
         Referenced lastValue = (Referenced) super.put(new Referenced(key), new Referenced(value));
         if (lastValue != null) {

@@ -153,6 +153,24 @@ public class WeakHashtableTest extends TestCase {
         weakHashtable.put(anotherKey, new Long(1066));
         
         assertEquals(new Long(1066), weakHashtable.get(anotherKey));
+               
+        // Test compliance with the hashtable API re nulls
+        Exception caught = null;
+        try {
+            weakHashtable.put(null, new Object());
+        }
+        catch (Exception e) {
+            caught = e;
+        }
+        assertNotNull("did not throw an exception adding a null key", caught);
+        caught = null;
+        try {
+            weakHashtable.put(new Object(), null);
+        }
+        catch (Exception e) {
+            caught = e;
+        }
+        assertNotNull("did not throw an exception adding a null value", caught);
     }
     
     /** Tests public void putAll(Map t) */
