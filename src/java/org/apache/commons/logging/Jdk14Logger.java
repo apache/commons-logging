@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.1 2002/01/05 22:40:40 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2002/01/05 22:40:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.2 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
@@ -73,10 +73,10 @@ import java.util.logging.Logger;
  * introduced in the Merlin release (JDK 1.4).</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2002/01/05 22:40:40 $
+ * @version $Revision: 1.2 $ $Date: 2002/01/17 01:47:49 $
  */
 
-public class Jdk14Logger implements Log {
+public final class Jdk14Logger implements Log {
 
 
     // ----------------------------------------------------------- Constructors
@@ -169,35 +169,6 @@ public class Jdk14Logger implements Log {
 
 
     /**
-     * Return the current logging level.
-     */
-    public int getLevel() {
-
-        Level level = logger.getLevel();
-        if (level == Level.ALL) {
-            return (ALL);
-        } else if (level == Level.SEVERE) {
-            return (ERROR);
-        } else if (level == Level.WARNING) {
-            return (WARN);
-        } else if (level == Level.INFO) {
-            return (INFO);
-        } else if (level == Level.CONFIG) {
-            return (DEBUG);
-        } else if (level == Level.FINE) {
-            return (DEBUG);
-        } else if (level == Level.FINER) {
-            return (DEBUG);
-        } else if (level == Level.FINEST) {
-            return (DEBUG);
-        } else {
-            return (OFF);
-        }
-
-    }
-
-
-    /**
      * Return the native Logger instance we are using.
      */
     public Logger getLogger() {
@@ -238,6 +209,26 @@ public class Jdk14Logger implements Log {
 
 
     /**
+     * Is error logging currently enabled?
+     */
+    public boolean isErrorEnabled() {
+
+        return (logger.isLoggable(Level.SEVERE));
+
+    }
+
+
+    /**
+     * Is fatal logging currently enabled?
+     */
+    public boolean isFatalEnabled() {
+
+        return (logger.isLoggable(Level.SEVERE));
+
+    }
+
+
+    /**
      * Is info logging currently enabled?
      */
     public boolean isInfoEnabled() {
@@ -248,27 +239,11 @@ public class Jdk14Logger implements Log {
 
 
     /**
-     * Set the new logging level.
-     *
-     * @param level New logging level
+     * Is warning logging currently enabled?
      */
-    public void setLevel(int level) {
+    public boolean isWarnEnabled() {
 
-        if (level == OFF) {
-            logger.setLevel(Level.OFF);
-        } else if (level >= FATAL) {
-            logger.setLevel(Level.SEVERE);
-        } else if (level >= ERROR) {
-            logger.setLevel(Level.SEVERE);
-        } else if (level >= WARN) {
-            logger.setLevel(Level.WARNING);
-        } else if (level >= INFO) {
-            logger.setLevel(Level.INFO);
-        } else if (level >= DEBUG) {
-            logger.setLevel(Level.FINEST);
-        } else if (level >= ALL) {
-            logger.setLevel(Level.ALL);
-        }
+        return (logger.isLoggable(Level.WARNING));
 
     }
 

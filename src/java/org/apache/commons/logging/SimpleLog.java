@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.7 2002/01/03 19:00:19 rdonkin Exp $
- * $Revision: 1.7 $
- * $Date: 2002/01/03 19:00:19 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -98,11 +98,12 @@ import java.util.Date;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.7 2002/01/03 19:00:19 rdonkin Exp $
+ * @version $Id: SimpleLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
  */
 public class SimpleLog extends AbstractLog {
 
-    // --------------------------------------------------------- Class Attributes
+
+    // ------------------------------------------------------- Class Attributes
     
     /** All system properties used by <code>Simple</code> start with this */
     static protected final String _prefix =
@@ -119,7 +120,7 @@ public class SimpleLog extends AbstractLog {
 
 
 
-    // --------------------------------------------------------- Initializer
+    // ------------------------------------------------------------ Initializer
 
     // initialize class attributes
     static {
@@ -165,13 +166,13 @@ public class SimpleLog extends AbstractLog {
     }
 
 
-    // --------------------------------------------------------- Attributes
+    // ------------------------------------------------------------- Attributes
 
     /** The name of this simple log instance */
     protected String _name = null;
 
 
-    // --------------------------------------------------------- Constructor
+    // ------------------------------------------------------------ Constructor
     
     /** 
      * Construct a simple log with given name.
@@ -213,8 +214,9 @@ public class SimpleLog extends AbstractLog {
     }
 
 
-    // --------------------------------------------------------- Methods
+    // -------------------------------------------------------- Logging Methods
     
+
     /**
      * <p> Do the actual logging.
      * This method assembles the message 
@@ -259,7 +261,8 @@ public class SimpleLog extends AbstractLog {
         System.out.println(buf.toString());
     }
 
-    // --------------------------------------------------------- Log Implementation
+
+    // ----------------------------------------------------- Log Implementation
 
     /**
      * Prepare then call {@link #log}.

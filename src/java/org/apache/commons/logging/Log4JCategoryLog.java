@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Log4JCategoryLog.java,v 1.7 2002/01/03 18:59:57 rdonkin Exp $
- * $Revision: 1.7 $
- * $Date: 2002/01/03 18:59:57 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Log4JCategoryLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,120 +71,153 @@ import org.apache.log4j.Priority;
  * Category instances should be done in the usual manner, as outlined in
  * the Log4J documentation.</p>
  *
- * <p> Log level management is now independent of the Log4J configuration.
- * Log4J will not be called unless the log level is currently enabled. </p>
- *
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: Log4JCategoryLog.java,v 1.7 2002/01/03 18:59:57 rdonkin Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
  */
-public final class Log4JCategoryLog  extends AbstractLog {
+public final class Log4JCategoryLog implements Log {
     
-    // --------------------------------------------------------- Attributes
+
+    // ------------------------------------------------------------- Attributes
     
+
     /** Log to this category */
-    Category _category = null;
+    Category category = null;
 
 
-
-    // --------------------------------------------------------- Constructor
+    // ------------------------------------------------------------ Constructor
     
     
     /** 
      * Base constructor 
      */
     public Log4JCategoryLog(String name) {
-        // the default log level for log4j should be ALL
-        // so that control of logging is delegated to Log4J.
-        // of course, this can be override programmatically for a particular log instance.
-        setLevel(Log.ALL);
-        _category = Category.getInstance(name);
+        category = Category.getInstance(name);
     }
 
-    // --------------------------------------------------------- Implmentation
+
+    // ---------------------------------------------------------- Implmentation
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void debugImpl(Object message) {
-        _category.debug(message);
+    public void debug(Object message) {
+        category.debug(message);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void debugImpl(Object message, Throwable t) {
-        _category.debug(message,t);
+    public void debug(Object message, Throwable t) {
+        category.debug(message,t);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void infoImpl(Object message) {
-        _category.info(message);
+    public void info(Object message) {
+        category.info(message);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void infoImpl(Object message, Throwable t) {
-        _category.info(message,t);
+    public void info(Object message, Throwable t) {
+        category.info(message,t);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void warnImpl(Object message) {
-        _category.warn(message);
+    public void warn(Object message) {
+        category.warn(message);
     }
+
     
     /**
      * Simply call log4j category.
      */
-    protected final void warnImpl(Object message, Throwable t) {
-        _category.warn(message,t);
+    public void warn(Object message, Throwable t) {
+        category.warn(message,t);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void errorImpl(Object message) {
-        _category.error(message);
+    public void error(Object message) {
+        category.error(message);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void errorImpl(Object message, Throwable t) {
-        _category.error(message,t);
+    public void error(Object message, Throwable t) {
+        category.error(message,t);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void fatalImpl(Object message) {
-        _category.fatal(message);
+    public void fatal(Object message) {
+        category.fatal(message);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final void fatalImpl(Object message, Throwable t) {
-        _category.fatal(message,t);
+    public void fatal(Object message, Throwable t) {
+        category.fatal(message,t);
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final boolean isDebugEnabledImpl() {
-        return _category.isDebugEnabled();
+    public boolean isDebugEnabled() {
+        return category.isDebugEnabled();
     }
+
 
     /**
      * Simply call log4j category.
      */
-    protected final boolean isInfoEnabledImpl() {
-        return _category.isInfoEnabled();
+    public boolean isErrorEnabled() {
+        return category.isEnabledFor(Priority.ERROR);
     }
+
+
+    /**
+     * Simply call log4j category.
+     */
+    public boolean isFatalEnabled() {
+        return category.isEnabledFor(Priority.FATAL);
+    }
+
+
+    /**
+     * Simply call log4j category.
+     */
+    public boolean isInfoEnabled() {
+        return category.isInfoEnabled();
+    }
+
+
+    /**
+     * Simply call log4j category.
+     */
+    public boolean isWarnEnabled() {
+        return category.isEnabledFor(Priority.WARN);
+    }
+
+
 }

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/NoOpLog.java,v 1.7 2002/01/03 18:56:54 rdonkin Exp $
- * $Revision: 1.7 $
- * $Date: 2002/01/03 18:56:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/NoOpLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,7 +67,7 @@ package org.apache.commons.logging;
  * configurable system properties are supported.</p>
  *
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.7 2002/01/03 18:56:54 rdonkin Exp $
+ * @version $Id: NoOpLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
  */
 public final class NoOpLog implements Log {
 
@@ -104,18 +104,32 @@ public final class NoOpLog implements Log {
     public final boolean isDebugEnabled() { return false; }
     
     /** 
+     * Error is never enabled. 
+     *
+     * @return false
+     */
+    public final boolean isErrorEnabled() { return false; }
+    
+    /** 
+     * Fatal is never enabled. 
+     *
+     * @return false
+     */
+    public final boolean isFatalEnabled() { return false; }
+    
+    /** 
      * Info is never enabled. 
      *
      * @return false
      */
     public final boolean isInfoEnabled() { return false; }
 
-    /** Do nothing */
-    public final void setLevel(int level) { }
     /** 
-     * Always return off.
-     * 
-     * @return <code>Log.OFF</code> 
+     * Warning is never enabled. 
+     *
+     * @return false
      */
-    public final int getLevel() { return Log.OFF; }
+    public final boolean isWarnEnabled() { return false; }
+
+
 }

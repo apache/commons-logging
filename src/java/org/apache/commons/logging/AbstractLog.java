@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/AbstractLog.java,v 1.1 2002/01/03 18:52:25 rdonkin Exp $
- * $Revision: 1.1 $
- * $Date: 2002/01/03 18:52:25 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/AbstractLog.java,v 1.2 2002/01/17 01:47:49 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/01/17 01:47:49 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,27 +65,30 @@ package org.apache.commons.logging;
 
 /**
   * <p> This is an abstract implementation of the <code>Log</code> interface.
-  * It provides the following common services for the actual concrete implementations:
+  * It provides the following common services for the actual concrete
+  * implementations:
   * 
   * <h4> Log Level Property </h4> 
   * <p> Property getter and setter for log levels. </p>
   * 
   * <h4> Log Level Enforcement</h4>
-  * <p> The current log level is checked and then the message will be passed onto the
-  * subclass implementation if the level is currently enabled. </p>
+  * <p> The current log level is checked and then the message will be passed
+  * onto the subclass implementation if the level is currently enabled. </p>
   *
   * @author Robert Burrell Donkin
-  * @version $Revision: 1.1 $
+  * @version $Revision: 1.2 $
  */
 public abstract class AbstractLog implements Log {
 
-    // --------------------------------------------------------- Attributes
+
+    // ------------------------------------------------------------- Attributes
     
     /** Default log level is currently <code>OFF</code> */
     private int currentLogLevel = Log.OFF;
 
 
-    // --------------------------------------------------------- Properties
+    // ------------------------------------------------------------- Properties
+
 
     /**
      * <p> Set logging level. </p> 
@@ -97,6 +100,7 @@ public abstract class AbstractLog implements Log {
         this.currentLogLevel = currentLogLevel;
     }
     
+
     /**
      * <p> Get logging level. </p> 
      */
@@ -105,44 +109,9 @@ public abstract class AbstractLog implements Log {
         return currentLogLevel;
     }
     
-    /**
-     * <p> Are debug messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code> concatination
-     * to be avoided when the message will be ignored by the logger. </p>
-     *
-     * <p> This implementation checks that the log level is debug or lower.
-     * If it is, then it passes the request onto {@link #isDebugEnabledImpl}.
-     */
-    public final boolean isDebugEnabled() {
-    
-        if (isLevelEnabled(Log.DEBUG)) {
-            return isDebugEnabledImpl();
-        }
-        
-        return false;
-    }
-    
-    /**
-     * <p> Are info messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code> concatination
-     * to be avoided when the message will be ignored by the logger. </p>
-     *
-     * <p> This implementation checks that the log level is debug or lower.
-     * If it is, then it passes the request onto {@link #isInfoEnabledImpl}.
-     */
-    public final boolean isInfoEnabled() {
-    
-        if (isLevelEnabled(Log.INFO)) {
-            return isInfoEnabledImpl();
-        }
-        
-        return false;
-    }  
 
-    
-    // --------------------------------------------------------- Logging Methods
+    // -------------------------------------------------------- Logging Methods
+
 
     /**
      * <p> Log a message with debug log level.</p> 
@@ -157,6 +126,7 @@ public abstract class AbstractLog implements Log {
         }
     }
     
+
     /**
      * <p> Log an error with debug log level.</p> 
      *
@@ -169,6 +139,7 @@ public abstract class AbstractLog implements Log {
             debugImpl(message, t);
         }
     }
+
 
     /**
      * <p> Log a message with info log level.</p> 
@@ -183,6 +154,7 @@ public abstract class AbstractLog implements Log {
         }
     }
     
+
     /**
      * <p> Log an error with info log level.</p> 
      *
@@ -196,6 +168,7 @@ public abstract class AbstractLog implements Log {
         }
     }
     
+
     /**
      * <p> Log a message with warn log level.</p> 
      *
@@ -208,6 +181,7 @@ public abstract class AbstractLog implements Log {
             warnImpl(message);
         }
     }
+
 
     /**
      * <p> Log an error with warn log level.</p> 
@@ -222,6 +196,7 @@ public abstract class AbstractLog implements Log {
         }
     }
     
+
     /**
      * <p> Log a message with error log level.</p> 
      *
@@ -235,6 +210,7 @@ public abstract class AbstractLog implements Log {
         }
     }
     
+
     /**
      * <p> Log an error with error log level.</p> 
      *
@@ -248,6 +224,7 @@ public abstract class AbstractLog implements Log {
         }
     }
     
+
     /**
      * <p> Log a message with fatal log level.</p> 
      *
@@ -260,6 +237,7 @@ public abstract class AbstractLog implements Log {
             fatalImpl(message);
         }
     }
+
 
     /**
      * <p> Log an error with fatal log level.</p> 
@@ -275,8 +253,107 @@ public abstract class AbstractLog implements Log {
     }
   
     
+    /**
+     * <p> Are debug messages currently enabled? </p>
+     *
+     * <p> This allows expensive operations such as <code>String</code>
+     * concatenation to be avoided when the message will be ignored by the
+     * logger. </p>
+     *
+     * <p> This implementation checks that the log level is debug or lower.
+     * If it is, then it passes the request onto {@link #isDebugEnabledImpl}.
+     */
+    public final boolean isDebugEnabled() {
     
-    // --------------------------------------------------------- Decorated Implementation
+        if (isLevelEnabled(Log.DEBUG)) {
+            return isDebugEnabledImpl();
+        }
+        
+        return false;
+    }
+    
+
+    /**
+     * <p> Are error messages currently enabled? </p>
+     *
+     * <p> This allows expensive operations such as <code>String</code>
+     * concatenation to be avoided when the message will be ignored by the
+     * logger. </p>
+     *
+     * <p> This implementation checks that the log level is error or lower.
+     * If it is, then it passes the request onto {@link #isErrorEnabledImpl}.
+     */
+    public final boolean isErrorEnabled() {
+    
+        if (isLevelEnabled(Log.ERROR)) {
+            return isErrorEnabledImpl();
+        }
+        
+        return false;
+    }
+    
+
+    /**
+     * <p> Are fatal messages currently enabled? </p>
+     *
+     * <p> This allows expensive operations such as <code>String</code>
+     * concatenation to be avoided when the message will be ignored by the
+     * logger. </p>
+     *
+     * <p> This implementation checks that the log level is fatal or lower.
+     * If it is, then it passes the request onto {@link #isFatalEnabledImpl}.
+     */
+    public final boolean isFatalEnabled() {
+    
+        if (isLevelEnabled(Log.FATAL)) {
+            return isFatalEnabledImpl();
+        }
+        
+        return false;
+    }
+    
+
+    /**
+     * <p> Are info messages currently enabled? </p>
+     *
+     * <p> This allows expensive operations such as <code>String</code>
+     * concatenation to be avoided when the message will be ignored by the
+     * logger. </p>
+     *
+     * <p> This implementation checks that the log level is info or lower.
+     * If it is, then it passes the request onto {@link #isInfoEnabledImpl}.
+     */
+    public final boolean isInfoEnabled() {
+    
+        if (isLevelEnabled(Log.INFO)) {
+            return isInfoEnabledImpl();
+        }
+        
+        return false;
+    }  
+
+    
+    /**
+     * <p> Are warn messages currently enabled? </p>
+     *
+     * <p> This allows expensive operations such as <code>String</code>
+     * concatenation to be avoided when the message will be ignored by the
+     * logger. </p>
+     *
+     * <p> This implementation checks that the log level is warn or lower.
+     * If it is, then it passes the request onto {@link #isWarnEnabledImpl}.
+     */
+    public final boolean isWarnEnabled() {
+    
+        if (isLevelEnabled(Log.WARN)) {
+            return isWarnEnabledImpl();
+        }
+        
+        return false;
+    }
+    
+
+    // ----------------------------------------------- Decorated Implementation
  
     /**
      * <p> [OVERRIDE] Log a message with debug log level. 
@@ -356,6 +433,30 @@ public abstract class AbstractLog implements Log {
     }
 
     /**
+     * <p> Are error messages currently enabled? </p>
+     *
+     * <p> Subclasses should override this method if their logger provides 
+     * a special implementation. </p>
+     *
+     * @return true
+     */
+    protected boolean isErrorEnabledImpl() {
+        return true;
+    }
+
+    /**
+     * <p> Are fatal messages currently enabled? </p>
+     *
+     * <p> Subclasses should override this method if their logger provides 
+     * a special implementation. </p>
+     *
+     * @return true
+     */
+    protected boolean isFatalEnabledImpl() {
+        return true;
+    }
+
+    /**
      * <p> Are info messages currently enabled? </p>
      *
      * <p> Subclasses should override this method if their logger provides 
@@ -367,9 +468,22 @@ public abstract class AbstractLog implements Log {
         return true;
     }
 
+    /**
+     * <p> Are warn messages currently enabled? </p>
+     *
+     * <p> Subclasses should override this method if their logger provides 
+     * a special implementation. </p>
+     *
+     * @return true
+     */
+    protected boolean isWarnEnabledImpl() {
+        return true;
+    }
+
     
     
-    // --------------------------------------------------------- Implementation Methods
+    // ------------------------------------------------- Implementation Methods
+
 
     /**
      * Is the given log level currently enabled?
@@ -377,7 +491,10 @@ public abstract class AbstractLog implements Log {
      * @param logLevel is this level enabled?
      */
     protected boolean isLevelEnabled(int logLevel) {
-        // log level are numerically ordered so can use simple numeric comparison
+        // log level are numerically ordered so can use simple numeric
+        // comparison
         return (logLevel >= currentLogLevel);
     }
+
+
 }
