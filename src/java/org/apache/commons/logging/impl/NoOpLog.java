@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/NoOpLog.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/NoOpLog.java,v 1.3 2003/10/02 16:17:57 craigmcc Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/10/02 16:17:57 $
  *
  * ====================================================================
  *
@@ -72,9 +72,9 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
+ * @version $Id: NoOpLog.java,v 1.3 2003/10/02 16:17:57 craigmcc Exp $
  */
-public final class NoOpLog implements Log {
+public class NoOpLog implements Log {
 
     /** Convenience constructor */
     public NoOpLog() { }

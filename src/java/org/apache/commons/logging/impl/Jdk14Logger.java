@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.7 2003/08/16 21:58:59 craigmcc Exp $
- * $Revision: 1.7 $
- * $Date: 2003/08/16 21:58:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.8 2003/10/02 16:17:57 craigmcc Exp $
+ * $Revision: 1.8 $
+ * $Date: 2003/10/02 16:17:57 $
  *
  * ====================================================================
  *
@@ -78,10 +78,10 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.7 $ $Date: 2003/08/16 21:58:59 $
+ * @version $Revision: 1.8 $ $Date: 2003/10/02 16:17:57 $
  */
 
-public final class Jdk14Logger implements Log, Serializable {
+public class Jdk14Logger implements Log, Serializable {
 
 
     // ----------------------------------------------------------- Constructors
