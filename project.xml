@@ -59,6 +59,29 @@
     <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/${pom.artifactId.substring(8)}/trunk</url>
   </repository>
   
+  <versions>
+      <version>
+          <id>1.0.1</id>
+          <name>1.0.1</name>
+          <tag>LOGGING_1_0_1</tag>
+      </version>
+      <version>
+          <id>1.0.2</id>
+          <name>1.0.2</name>
+          <tag>LOGGING_1_0_2</tag>
+      </version>      
+      <version>
+          <id>1.0.3</id>
+          <name>1.0.3</name>
+          <tag>LOGGING_1_0_3</tag>
+      </version>
+      <version>
+          <id>1.0.4</id>
+          <name>1.0.4</name>
+          <tag>LOGGING_1_0_4</tag>
+      </version>
+  </versions>
+  
   <mailingLists>
     <mailingList>
       <name>Commons Dev List</name>
