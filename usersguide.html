@@ -28,6 +28,8 @@ Table of Contents</h3>
 <br><a href="#Integration">Integration</a>
 <br>&nbsp; <a href="#Mechanism">Mechanism</a>
 <br>&nbsp; <a href="#Configuring the Logger Implementation">Configuring the Logger Implementation</a>
+<br><a href="#FAQ">Frequently Asked Questions</a>
+<br>&nbsp; <a href="#Thread Safety">Is JCL Thread Safe?</a>
 
 <h2>
 <a NAME="Introduction"></a>Introduction</h2>
@@ -439,6 +441,13 @@ For example: one can capture DEBUG (and higher) level information in a logfile,
 while limiting console output to INFO (and higher).
 </ul>
 
+<h2><a NAME="FAQ">Frequently Asked Questions</a></h2>
+
+<h3><a NAME="Thread Safety">Is JCL Thread Safe?</a></h3>
+
+<p> JCL doesn't (and cannot) impose any requirement on thread safety on the underlying implementation and thus its SPI contract doesn't guarantee thread safety. However, JCL can be safely used a multi-threaded environment as long as the underlying implementation is thread-safe.</p>
+
+<p>It would be very unusual for a logging system to be thread unsafe. Certainly, JCL is thread safe when used with the distributed Log implementations.</p>
 
 </body>
 </html>
