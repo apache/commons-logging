@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.20 2002/09/27 02:02:06 rsitze Exp $
+        $Id: build.xml,v 1.21 2002/10/24 18:26:21 costin Exp $
 -->
 
 
@@ -142,8 +142,10 @@
   </target>
 
 
-  <target name="compile" depends="static"
-          description="Compile shareable components">
+  <target name="compile" depends="static,compile-only"
+          description="Compile shareable components"/>
+
+  <target name="compile-only" depends="init" >
     <available property="jdk.1.4.present"
                classname="java.util.logging.Logger"/>
     <available classname="org.apache.log4j.Category" 
@@ -176,12 +178,19 @@
     <copy  todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>
     </copy>
-    <jar jarfile="${build.home}/commons-${component.name}.jar"
+
+    <property name="commons-logging-api.jar" value="${build.home}/commons-${component.name}-api.jar" />
+    <property name="commons-logging.jar" value="${build.home}/commons-${component.name}.jar" />
+
+    <jar jarfile="${commons-logging.jar}"
          basedir="${build.home}/classes"
-         manifest="${build.home}/conf/MANIFEST.MF"/>
-    <jar jarfile="${build.home}/commons-${component.name}-api.jar"
+         manifest="${conf.home}/MANIFEST.MF">
+      <include name="org/apache/commons/logging/**" />
+    </jar>
+
+    <jar jarfile="${commons-logging-api.jar}"
          basedir="${build.home}/classes"
-         manifest="${build.home}/conf/MANIFEST.MF">
+         manifest="${conf.home}/MANIFEST.MF">
       <include name="org/apache/commons/logging/*.class" />
       <include name="org/apache/commons/logging/impl/LogFactoryImpl*.class" />
       <include name="org/apache/commons/logging/impl/Jdk14*.class" />
