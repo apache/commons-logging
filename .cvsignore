@@ -2,8 +2,9 @@ build.properties
 dist
 target
 logging.ipr
-.project
 bin
-.classpath
 maven.log
 velocity.log
+.project
+.classpath
+.repositoryIndex
