@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.2 2002/02/15 05:46:36 costin Exp $
- * $Revision: 1.2 $
- * $Date: 2002/02/15 05:46:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.3 2002/02/26 04:06:22 jstrachan Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/02/26 04:06:22 $
  *
  * ====================================================================
  *
@@ -62,12 +62,13 @@
 
 package org.apache.commons.logging.impl;
 
-import java.util.Properties;
-import java.util.Enumeration;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
+import java.security.AccessControlException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 
@@ -104,7 +105,7 @@ import org.apache.commons.logging.Log;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.2 2002/02/15 05:46:36 costin Exp $
+ * @version $Id: SimpleLog.java,v 1.3 2002/02/26 04:06:22 jstrachan Exp $
  */
 public class SimpleLog implements Log {
 
@@ -155,54 +156,60 @@ public class SimpleLog implements Log {
 
     // initialize class attributes
     static {
-        // add all system props that start with the specified prefix
-        Enumeration enum = System.getProperties().propertyNames();
-        while(enum.hasMoreElements()) {
-            String name = (String)(enum.nextElement());
-            if(null != name && name.startsWith(systemPrefix)) {
-                simpleLogProps.setProperty(name,System.getProperty(name));
+        
+        try {
+            // add all system props that start with the specified prefix
+            Enumeration enum = System.getProperties().propertyNames();
+            while(enum.hasMoreElements()) {
+                String name = (String)(enum.nextElement());
+                if(null != name && name.startsWith(systemPrefix)) {
+                    simpleLogProps.setProperty(name,System.getProperty(name));
+                }
             }
-        }
 
-        // add props from the resource simplelog.properties
-        InputStream in =
-            ClassLoader.getSystemResourceAsStream("simplelog.properties");
-        if(null != in) {
-            try {
-                simpleLogProps.load(in);
-                in.close();
-            } catch(java.io.IOException e) {
-                // ignored
+            // add props from the resource simplelog.properties
+            InputStream in =
+                ClassLoader.getSystemResourceAsStream("simplelog.properties");
+            if(null != in) {
+                try {
+                    simpleLogProps.load(in);
+                    in.close();
+                } catch(java.io.IOException e) {
+                    // ignored
+                }
             }
-        }
 
-        /* That's a strange way to set properties. If the property
-           is not set, we'll override the default
-         
-            showLogName = "true".equalsIgnoreCase(
+            /* That's a strange way to set properties. If the property
+               is not set, we'll override the default
+
+                showLogName = "true".equalsIgnoreCase(
+                        simpleLogProps.getProperty(
+                        systemPrefix + "showlogname","true"));
+            */
+
+            String prop=simpleLogProps.getProperty( systemPrefix + "showlogname");
+
+            if( prop!= null )
+                showLogName = "true".equalsIgnoreCase(prop);
+
+            prop=simpleLogProps.getProperty( systemPrefix + "showShortLogname");
+            if( prop!=null ) {
+                showShortName = "true".equalsIgnoreCase(prop);
+            }
+
+            prop=simpleLogProps.getProperty( systemPrefix + "showdatetime");
+            if( prop!=null ) {
+                showDateTime = "true".equalsIgnoreCase(prop);
+            }
+
+            if(showDateTime) {
+                dateFormatter = new SimpleDateFormat(
                     simpleLogProps.getProperty(
-                    systemPrefix + "showlogname","true"));
-        */
-
-        String prop=simpleLogProps.getProperty( systemPrefix + "showlogname");
-
-        if( prop!= null )
-            showLogName = "true".equalsIgnoreCase(prop);
-
-        prop=simpleLogProps.getProperty( systemPrefix + "showShortLogname");
-        if( prop!=null ) {
-            showShortName = "true".equalsIgnoreCase(prop);
+                        systemPrefix + "dateformat","yyyy/MM/dd HH:mm:ss:SSS zzz"));
+            }
         }
-
-        prop=simpleLogProps.getProperty( systemPrefix + "showdatetime");
-        if( prop!=null ) {
-            showDateTime = "true".equalsIgnoreCase(prop);
-        }
-
-        if(showDateTime) {
-            dateFormatter = new SimpleDateFormat(
-                simpleLogProps.getProperty(
-                    systemPrefix + "dateformat","yyyy/MM/dd HH:mm:ss:SSS zzz"));
+        catch (AccessControlException e) {
+            // ignore access control exceptions when trying to check system properties
         }
     }
 
