@@ -42,6 +42,13 @@
                     </ol>
                 </li>
                 <li><a href='#Developing With JCL'>Developing With JCL</a></li>
+                <li><a href='#Jars Included in the Standard Distribution'>Jars Included in the Standard Distribution</a>
+                     <ol>
+                        <li><a href='#commons-logging.jar'>commons-logging.jar</a></li>
+                        <li><a href='#commons-logging-optional.jar'>commons-logging-optional.jar</a></li>
+                        <li><a href='#commons-logging-api.jar'>commons-logging-api.jar</a></li>
+                     </ol>
+                </li>
                 <li><a href='#JCL Best Practices'>JCL Best Practices</a></li>
                 <li><a href='#Best Practices (General)'>Best Practices (General)</a>
                     <ol>
@@ -55,7 +62,8 @@
                         <li><a href='#Logging Exceptions'>Logging Exceptions</a></li>
                         <li><a href='#When Info Level Instead of Debug?'>When Info Level Instead of Debug?</a></li>
                         <li><a href='#More Control of Enterprise Exception Logging'>More Control of Enterprise Exception Logging</a></li>                    
-                        <li><a href='#National Language Support And Internationalization'>National Language Support And Internationalization</a></li>                    
+                        <li><a href='#National Language Support And Internationalization'>National Language Support And Internationalization</a></li>
+                        <li><a href='#Classloader and Memory Management'>Classloader and Memory Management</a></li>
                     </ol>
                 </li>
                 <li><a href='#Extending Commons Logging'>Extending Commons Logging</a>
@@ -300,6 +308,61 @@ In addition to the logging methods, the following are provided for code guards:
         </source>
     </ul>
 </section>
+<section name="Jars Included in the Standard Distribution">
+    <subsection name="commons-logging.jar">
+      <p>
+The <code>commons-logging.jar</code> file includes the JCL API, the default 
+<code>LogFactory</code> implemenation and thin-wrapper <code>Log</code> 
+implementations for
+<a href="http://jakarta.apache.org/log4j/docs/index.html">Log4J</a>,
+<a href="http://jakarta.apache.org/avalon/logkit/index.html">Avalon LogKit</a>,
+the Avalon Framework's logging infrastructure,
+JDK 1.4, as well as an implementation of JDK 1.4 logging APIs (JSR-47) for 
+pre-1.4 systems.
+   </p>
+   <p>
+In most cases, including <code>commons-logging.jar</code> and your preferred 
+logging implementation in the classpath should be all that is required to 
+use JCL.
+   </p>
+    </subsection>
+    <subsection name="commons-logging-optional.jar">
+    <p>
+The optional jar includes, oddly enough, optional classes that are useful but 
+not strictly required to make JCL functional.  As these classes introduce 
+dependencies on JDK 1.3+ JVMs and a goal of JCL is to be usable on JDK 1.2 
+and earlier JVMs, these optional classes are not included in the main 
+<code>commons-logging.jar</code>.
+   </p>
+   <p>
+Included in the optional jar are classes which allow JCL to (potentially) improve
+it's memory utilization (see 
+<a href='#Classloader and Memory Management'>Classloader and Memory Management</a> 
+below). It is therefore recommended that (when running on a 1.3+ JDK) the optional jar 
+be deployed alongside the 
+main <code>commons-logging.jar</code>.  It should be deployed such that it will be loaded 
+by the same classloader that loads <code>LogFactory</code>. When so deployed, JCL will
+discover the appropriate classes and configure itself to use them.
+   </p>
+    </subsection>
+    <subsection name="commons-logging-api.jar">
+    <p>
+The <code>commons-logging-api.jar</code> file includes the JCL API and the 
+default <code>LogFactory</code> implementation, but does not include the 
+wrapper <code>Log</code> implementations for <code>Log4j</code>,
+<code>Avalon</code> and <code>Lumberjack</code>.  This jar is intended for 
+use in specialized containers such as 
+<a href='http://jakarta.apache.org/tomcat'>Tomcat</a> that wish to use 
+JCL internally but also need to make JCL available for use by deployed 
+applications.
+   </p>
+  <p>
+  If this jar is used, in order to benefit from improved memory management in modern JVMs (1.3+),
+  it is recommended that the <code>commons-logging-optional.jar</code> is deployed in 
+  the same classloader as this jar.
+  </p>
+    </subsection>
+</section>
         <section name='JCL Best Practices'>
             <p>
 Best practices for JCL are presented in two categories:
@@ -500,6 +563,77 @@ It is generally considered optional for <b>debug</b> and <b>trace</b> messages.
 Perhaps more direct support for internationalizing log messages
 can be introduced in a future or alternate version of the <code>Log</code> interface.
                 </p>
+            </subsection>
+            <subsection name="Classloader and Memory Management">
+            <p>
+The <code>LogFactory</code> discovery process (see 
+<a href='#Configuration'>Configuration</a> above) is a fairly expensive 
+operation, so JCL certainly should not perform it each time user code 
+invokes: 
+</p>
+<source>LogFactory.getLog()</source> 
+<p>
+Instead JCL caches the 
+<code>LogFactory</code> implementation created as a result of the discovery 
+process and uses the cached factory to return <code>Log</code> objects.  
+Since in J2EE and similar multi-classloader environments, the result of the 
+discovery process can vary depending on the thread context classloader 
+(e.g. one webapp in a web container may be configured to use Log4j and 
+another to use JDK 1.4 logging), JCL internally caches the 
+<code>LogFactory</code> instances in a static hashtable, keyed by classloader.
+            </p>
+            <p>
+While this approach is efficient, it can lead to memory leaks if container
+implementors are not careful to call 
+</p>
+<source>LogFactory.release()</source> 
+<p>
+whenever a classloader that has utilized JCL is undeployed.  If 
+<code>release()</code> is not called, a reference to the undeployed 
+classloader (and thus to all the classes loaded by it) will be
+held in <code>LogFactory</code>'s static hashtable.
+            </p>
+            <p>
+Beginning with JCL 1.0.5, <code>LogFactory</code> will attempt to cache factory
+implementations in a 
+<a href='http://jakarta.apache.org/commons/logging/api/org/apache/commons/logging/impl/WeakHashtable.java'>WeakHashtable</a>.  
+This class is analogous to <code>java.util.WeakHashMap</code> in that it holds 
+<code>WeakReference</code>s to its keys, thus allowing classloaders to be GC'd 
+even if <code>LogFactory.release()</code> is never invoked.
+            </p>
+            <p>
+Because <code>WeakHashtable</code> depends on JDK 1.3+ features, it cannot 
+be included in the main <code>commons-logging.jar</code> file.  It is found 
+in <code>commons-logging-optional.jar</code>.  <strong>J2EE container 
+implementors who distribute JCL with their application are strongly 
+encouraged to place <code>commons-logging-optional.jar</code> on the classpath 
+in the same location where <code>LogFactory</code> is loaded.</strong>
+            </p>
+            <p>
+In a particular usage scenario, <code>WeakHashtable</code> alone will
+be insufficent to allow garbage collection of a classloader without a call to
+<code>release</code>.  If the abstract class <code>LogFactory</code> is 
+loaded by a parent classloader and a concrete subclass implementation of 
+<code>LogFactory</code> is loaded by a child classloader, the concrete
+implementation will have a strong reference to the child classloader via the
+chain <code>getClass().getClassLoader()</code>. The <code>WeakHashtable</code>
+will have a strong reference to the <code>LogFactory</code> implementation as
+one of the values in its map. This chain of references will prevent 
+collection of the child classloader.
+           </p>
+           <p>
+Such a situation would typically only occur if commons-logging.jar were
+loaded by a parent classloader (e.g. a server level classloader in a
+servlet container) and a custom <code>LogFactory</code> implementation were
+loaded by a child classloader (e.g. a web app classloader).  If use of
+a custom <code>LogFactory</code> subclass is desired, ensuring that the
+custom subclass is loaded by the same classloader as <code>LogFactory</code>
+will prevent problems.  In normal deployments, the standard implementations 
+of <code>LogFactory</code> found in package <code>org.apache.commons.logging.impl</code> 
+will be loaded by the same classloader that loads <code>LogFactory</code> 
+itself, so use of the standard <code>LogFactory</code> implementation
+should not pose problems.
+         </p>
             </subsection>
     </section>
     <section name='Extending Commons Logging'>
