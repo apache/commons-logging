@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.11 2003/08/16 18:21:50 craigmcc Exp $
- * $Revision: 1.11 $
- * $Date: 2003/08/16 18:21:50 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.12 2003/08/16 21:25:54 craigmcc Exp $
+ * $Revision: 1.12 $
+ * $Date: 2003/08/16 21:25:54 $
  *
  * ====================================================================
  *
@@ -63,6 +63,7 @@
 package org.apache.commons.logging.impl;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
@@ -108,9 +109,9 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.11 2003/08/16 18:21:50 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.12 2003/08/16 21:25:54 craigmcc Exp $
  */
-public class SimpleLog implements Log {
+public class SimpleLog implements Log, Serializable {
 
 
     // ------------------------------------------------------- Class Attributes
