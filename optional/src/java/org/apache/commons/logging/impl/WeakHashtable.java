@@ -17,6 +17,7 @@
 
 package org.apache.commons.logging.impl;
 
+import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
@@ -37,12 +38,28 @@ import java.util.*;
  * running 1.3+ JVMs. Use of this class will allow classloaders to be collected by 
  * the garbage collector without the need to call release.
  * </p>
+ * 
+ * @author Brian Stansberry
  */
 public final class WeakHashtable extends Hashtable {
 
     /** Empty array of <code>Entry</code>'s */
     private static final Entry[] EMPTY_ENTRY_ARRAY = {};
+    /** 
+     * The maximum number of times put() can be called before
+     * the map will purged of cleared entries.
+     */
+    public static final int MAX_PUTS_BEFORE_PURGE = 100;
+
+    /* ReferenceQueue we check for gc'd keys */
+    private ReferenceQueue queue = new ReferenceQueue();
+    /* Counter used to control how often we purge gc'd entries */
+    private int putCount = 0;
     
+    /**
+     * Constructs a WeakHashtable with the Hashtable default
+     * capacity and load factor.
+     */
     public WeakHashtable() {}
 
     /**
@@ -169,7 +186,6 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */    
     public Object put(Object key, Object value) {
-        // for performance reasons, no purge
         // check for nulls, ensuring symantics match superclass
         if (key == null) {
             throw new NullPointerException("Null keys are not allowed");
@@ -177,9 +193,17 @@ public final class WeakHashtable extends Hashtable {
         if (value == null) {
             throw new NullPointerException("Null values are not allowed");
         }
-        
+
+        // for performance reasons, only purge every 
+        // MAX_PUTS_BEFORE_PURGE times
+        if (putCount++ > MAX_PUTS_BEFORE_PURGE) {
+            purge();
+            putCount = 0;
+        }
         Object result = null;
-        Referenced lastValue = (Referenced) super.put(new Referenced(key), new Referenced(value));
+        Referenced keyRef    = new Referenced(key, value, queue);
+        Referenced valueRef  = new Referenced(value);
+        Referenced lastValue = (Referenced) super.put(keyRef, valueRef);
         if (lastValue != null) {
             result = lastValue.getValue();
         }
@@ -248,31 +272,30 @@ public final class WeakHashtable extends Hashtable {
     }
     
     /**
-     * Purges all entries whose wrapped keys or values
+     * @see Hashtable
+     */
+    protected void rehash() {
+        // purge here to save the effort of rehashing dead entries
+        purge();
+        super.rehash();
+    }
+    
+    /**
+     * Purges all entries whose wrapped keys
      * have been garbage collected.
      */
     private synchronized void purge() {
-        Set entrySet = super.entrySet();
-        for (Iterator it=entrySet.iterator(); it.hasNext();) {
-            Map.Entry entry = (Map.Entry) it.next();
-            Referenced referencedKey = (Referenced) entry.getKey();
-            Referenced referencedValue = (Referenced) entry.getValue();
-            
-            // test whether either referant has been collected
-            if (referencedKey.getValue() == null || referencedValue.getValue() == null) {
-                // if so, purge this entry
-                it.remove();
-            }
+        WeakKey key;
+        while ( (key = (WeakKey) queue.poll()) != null) {
+            super.remove(key.getReferenced());
         }
     }
-    
-    
     
     /** Entry implementation */
     private final static class Entry implements Map.Entry {
     
-        private Object key;
-        private Object value;
+        private final Object key;
+        private final Object value;
         
         private Entry(Object key, Object value) {
             this.key = key;
@@ -318,18 +341,33 @@ public final class WeakHashtable extends Hashtable {
     private final static class Referenced {
         
         private final WeakReference reference;
-        
+        private final int           hashCode;
+
+        /**
+         * 
+         * @throws NullPointerException if referant is <code>null</code>
+         */        
         private Referenced(Object referant) {
             reference = new WeakReference(referant);
+            // Calc a permanent hashCode so calls to Hashtable.remove()
+            // work if the WeakReference has been cleared
+            hashCode  = referant.hashCode();
+        }
+        
+        /**
+         * 
+         * @throws NullPointerException if key is <code>null</code>
+         */
+        private Referenced(Object key, Object value, ReferenceQueue queue) {
+            reference = new WeakKey(key, value, queue, this);
+            // Calc a permanent hashCode so calls to Hashtable.remove()
+            // work if the WeakReference has been cleared
+            hashCode  = key.hashCode();
+
         }
         
         public int hashCode() {
-            int result = 0;
-            Object keyValue = getValue();
-            if (keyValue != null) {
-                result = keyValue.hashCode();
-            }
-            return result;
+            return hashCode;
         }
         
         private Object getValue() {
@@ -342,8 +380,22 @@ public final class WeakHashtable extends Hashtable {
                 Referenced otherKey = (Referenced) o;
                 Object thisKeyValue = getValue();
                 Object otherKeyValue = otherKey.getValue();
-                if (thisKeyValue == null) {
+                if (thisKeyValue == null) {                     
                     result = (otherKeyValue == null);
+                    
+                    // Since our hashcode was calculated from the original
+                    // non-null referant, the above check breaks the 
+                    // hashcode/equals contract, as two cleared Referenced
+                    // objects could test equal but have different hashcodes.
+                    // We can reduce (not eliminate) the chance of this
+                    // happening by comparing hashcodes.
+                    if (result == true) {
+                        result = (this.hashCode() == otherKey.hashCode());
+                    }
+                    // In any case, as our c'tor does not allow null referants
+                    // and Hashtable does not do equality checks between 
+                    // existing keys, normal hashtable operations should never 
+                    // result in an equals comparison between null referants
                 }
                 else
                 {
@@ -353,4 +405,45 @@ public final class WeakHashtable extends Hashtable {
             return result;
         }
     }
+    
+    /**
+     * WeakReference subclass that holds a hard reference to an
+     * associated <code>value</code> and also makes accessible
+     * the Referenced object holding it.
+     */
+    private final static class WeakKey extends WeakReference {
+        
+        private final Object     hardValue;
+        private final Referenced referenced;
+        
+        private WeakKey(Object key, 
+                        Object value, 
+                        ReferenceQueue queue,
+                        Referenced referenced) {
+            super(key, queue);
+            hardValue = value;
+            this.referenced = referenced;
+        }
+        
+        private Referenced getReferenced() {
+            return referenced;
+        }
+        
+        /* Drop our hard reference to value if we've been cleared
+         * by the gc.
+         * 
+         * Testing shows that with key objects like ClassLoader
+         * that don't override hashCode(), get() is never
+         * called once the key is in a Hashtable. 
+         * So, this method override is commented out. 
+         */
+        //public Object get() {
+        //    Object result = super.get();
+        //    if (result == null) {
+        //        // We've been cleared, so drop our hard reference to value
+        //        hardValue = null;
+        //    }
+        //    return result;
+        //}      
+     }
 }
