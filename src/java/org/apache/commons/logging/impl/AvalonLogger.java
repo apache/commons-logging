@@ -16,7 +16,6 @@
 
 package org.apache.commons.logging.impl;
 
-import java.io.Serializable;
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 
@@ -41,16 +40,14 @@ import org.apache.commons.logging.Log;
  * </ul>
  *
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision: 1.9 $ $Date: 2004/06/01 19:56:20 $
+ * @version $Revision: 1.10 $ $Date: 2004/09/27 16:21:40 $
  */
-public class AvalonLogger implements Log, Serializable {
+public class AvalonLogger implements Log {
 
     /** Ancesteral avalon logger  */ 
     private static Logger defaultLogger = null;
     /** Avalon logger used to perform log */
     private transient Logger logger = null;
-    /** The name of this logger */
-    private String name = null;
 
     /**
      * Constructs an <code>AvalonLogger</code> that outputs to the given
@@ -58,7 +55,6 @@ public class AvalonLogger implements Log, Serializable {
      * @param logger the avalon logger implementation to delegate to
      */
     public AvalonLogger(Logger logger) {
-        this.name = name;
         this.logger = logger;
     }
 
@@ -70,17 +66,14 @@ public class AvalonLogger implements Log, Serializable {
     public AvalonLogger(String name) {
         if (defaultLogger == null)
             throw new NullPointerException("default logger has to be specified if this constructor is used!");
-        this.logger = getLogger();
+        this.logger = defaultLogger.getChildLogger(name);
     }
 
     /**
      * Gets the Avalon logger implementation used to perform logging.
      * @return avalon logger implementation
      */
-    public Logger getLogger() {
-        if (logger == null) {
-            logger = defaultLogger.getChildLogger(name);
-        }
+    private final Logger getLogger() {
         return logger;
     }
 
