@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.13 2002/08/09 18:47:34 rsitze Exp $
- * $Revision: 1.13 $
- * $Date: 2002/08/09 18:47:34 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.14 2002/08/30 03:23:34 rsitze Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/08/30 03:23:34 $
  *
  * ====================================================================
  *
@@ -64,13 +64,15 @@ package org.apache.commons.logging.impl;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.LogSource;
 
 
 /**
@@ -104,7 +106,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.13 $ $Date: 2002/08/09 18:47:34 $
+ * @version $Revision: 1.14 $ $Date: 2002/08/30 03:23:34 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -435,23 +437,42 @@ public class LogFactoryImpl extends LogFactory {
 
     }
 
-    /** Load a class, try first the thread class loader, and
-        if it fails use the loader that loaded this class
-    */
-    static Class loadClass( String name )
+    /**
+     * <p>** MUST KEEP THIS METHOD PRIVATE **
+     * </p>
+     * 
+     * <p>This method uses <code>AccessController.doPrivileged()</code>.
+     * </p>
+     * 
+     * Load a class, try first the thread class loader, and
+     * if it fails use the loader that loaded this class.
+     */  
+    private static Class loadClass( final String name )
         throws ClassNotFoundException
     {
-        ClassLoader threadCL = getContextClassLoader();
-        
-        if (threadCL != null) {
-            try {
-                return threadCL.loadClass(name);
-            } catch( ClassNotFoundException ex ) {
-                return Class.forName( name );
-            }
-        }
+        Object result = AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                    ClassLoader threadCL = getContextClassLoader();
+                    if (threadCL != null) {
+                        try {
+                            return threadCL.loadClass(name);
+                        } catch( ClassNotFoundException ex ) {
+                            // ignore
+                        }
+                    }
+                    try {
+                        return Class.forName( name );
+                    } catch (ClassNotFoundException e) {
+                        return e;
+                    }
+                }
+            });
 
-        return null;
+        if (result instanceof Class)
+            return (Class)result;
+
+        throw (ClassNotFoundException)result;
     }
 
     protected void guessConfig() {
