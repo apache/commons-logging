@@ -21,19 +21,40 @@ import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 
 /**
- * Implementation of commons-logging Log interface that delegates all
+ * <p>Implementation of commons-logging Log interface that delegates all
  * logging calls to the Avalon logging abstraction: the Logger interface.
+ * </p>
+ * <p>
+ * There are two ways in which this class can be used:
+ * </p>
+ * <ul>
+ * <li>the instance can be constructed with an Avalon logger 
+ * (by calling {@link #AvalonLogger(Logger)}). In this case, it acts 
+ * as a simple thin wrapping implementation over the logger. This is 
+ * particularly useful when using a property setter.
+ * </li>
+ * <li>the {@link #setDefaultLogger} class property can be called which
+ * sets the ancesteral Avalon logger for this class. Any <code>AvalonLogger</code> 
+ * instances created through the <code>LogFactory</code> mechanisms will output
+ * to child loggers of this <code>Logger</code>.
+ * </li>
+ * </ul>
  *
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision: 1.8 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision: 1.9 $ $Date: 2004/06/01 19:56:20 $
  */
 public class AvalonLogger implements Log, Serializable {
 
+    /** Ancesteral avalon logger  */ 
     private static Logger defaultLogger = null;
+    /** Avalon logger used to perform log */
     private transient Logger logger = null;
+    /** The name of this logger */
     private String name = null;
 
     /**
+     * Constructs an <code>AvalonLogger</code> that outputs to the given
+     * <code>Logger</code> instance.
      * @param logger the avalon logger implementation to delegate to
      */
     public AvalonLogger(Logger logger) {
@@ -42,6 +63,8 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
+     * Constructs an <code>AvalonLogger</code> that will log to a child
+     * of the <code>Logger</code> set by calling {@link #setDefaultLogger}.
      * @param name the name of the avalon logger implementation to delegate to
      */
     public AvalonLogger(String name) {
@@ -51,6 +74,7 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
+     * Gets the Avalon logger implementation used to perform logging.
      * @return avalon logger implementation
      */
     public Logger getLogger() {
@@ -61,7 +85,10 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
-     * @param logger the default avalon logger, in case there is no logger instance supplied in constructor
+     * Sets the ancesteral Avalon logger from which the delegating loggers 
+     * will descend.
+     * @param logger the default avalon logger, 
+     * in case there is no logger instance supplied in constructor
      */
     public static void setDefaultLogger(Logger logger) {
         defaultLogger = logger;

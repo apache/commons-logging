@@ -33,8 +33,8 @@ import org.apache.commons.logging.Log;
  * by called their <code>toString()</code> method before logging them.</p>
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
- * @author Robert Burrell Donkin                                 *
- * @version $Id: LogKitLogger.java,v 1.8 2004/02/28 21:46:45 craigmcc Exp $
+ * @author Robert Burrell Donkin
+ * @version $Id: LogKitLogger.java,v 1.9 2004/06/01 19:56:46 rdonkin Exp $
  */
 
 public class LogKitLogger implements Log, Serializable {
