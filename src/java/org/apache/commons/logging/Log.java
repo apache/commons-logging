@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.10 2002/01/17 22:55:43 rdonkin Exp $
- * $Revision: 1.10 $
- * $Date: 2002/01/17 22:55:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.11 2002/01/23 20:14:30 rdonkin Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/01/23 20:14:30 $
  *
  * ====================================================================
  *
@@ -68,22 +68,39 @@ package org.apache.commons.logging;
  * this interface must have a constructor that takes a single String
  * parameter representing the "name" of this Log.</p>
  *
- * <p> The log level determines whether a particular message
- * should be passed to the logging implementation.
- * Log levels are ordered numerically.
- * For example, if the log level is <code>warn</code> 
- * then the message passed to {@link #error} will be passed to the logging 
- * implementation but if the log level is <code>fatal</code> or higher
- * then the message will not.</p>
+ * <p> The five logging levels used by <code>Log</code> are (in order):
+ * <ol> 
+ * <li>debug (the least serious)</li>
+ * <li>info</li>
+ * <li>warn</li>
+ * <li>error</li> 
+ * <li>fatal (the most serious)</li>
+ * </ol>
+ * The mapping of these log levels to the concepts used by the underlying
+ * logging system is implementation dependent.
+ * The implemention should ensure, though, that this ordering behaves
+ * as expected.</p>
  *
- * <p>The logging level constants are provided for the convenience of
- * {@link Log} implementations that wish to support dynamic changes in the
- * logging level configuration.  However, configuration will generally be done
+ * <p>Performance is often a logging concern.
+ * By examining the appropriate property,
+ * a component can avoid expensive operations (producing information
+ * to be logged).</p>
+ *
+ * <p> For example, 
+ * <code><pre>
+ *    if (log.isDebugEnabled()) {
+ *        ... do something expensive ...
+ *        log.debug(theResult);
+ *    }
+ * </pre></code>
+ * </p>
+ * 
+ * <p>Configuration of the underlying logging system will generally be done
  * external to the Logging APIs, through whatever mechanism is supported by
- * the underlying logging implementation in use.</p>
+ * that system.</p>
  *
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.10 2002/01/17 22:55:43 rdonkin Exp $
+ * @version $Id: Log.java,v 1.11 2002/01/23 20:14:30 rdonkin Exp $
  */
 public interface Log {
     
@@ -146,60 +163,85 @@ public interface Log {
 
     /**
      * <p> Log a message with debug log level </p> 
+     *
+     * @param message log this message
      */
     public void debug(Object message);
     
 
     /**
      * <p> Log an error with debug log level </p> 
+     *
+     * @param message log this message
+     * @param t log this cause
      */
     public void debug(Object message, Throwable t);
 
     
     /**
      * <p> Log a message with info log level </p> 
+     *
+     * @param message log this message
      */
     public void info(Object message);
     
 
     /**
      * <p> Log an error with info log level </p> 
+     *
+     * @param message log this message
+     * @param t log this cause
      */
     public void info(Object message, Throwable t);
     
     
     /**
      * <p> Log a message with warn log level </p> 
+     *
+     * @param message log this message
      */
     public void warn(Object message);
 
 
     /**
      * <p> Log an error with warn log level </p> 
+     *
+     * @param message log this message
+     * @param t log this cause
      */
     public void warn(Object message, Throwable t);
     
     
     /**
      * <p> Log a message with error log level </p> 
+     *
+     * @param message log this message
      */
     public void error(Object message);
 
 
     /**
      * <p> Log an error with error log level </p> 
+     *
+     * @param message log this message
+     * @param t log this cause
      */
     public void error(Object message, Throwable t);
     
     
     /**
      * <p> Log a message with fatal log level </p> 
+     *
+     * @param message log this message
      */
     public void fatal(Object message);
 
 
     /**
      * <p> Log an error with fatal log level </p> 
+     *
+     * @param message log this message
+     * @param t log this cause
      */
     public void fatal(Object message, Throwable t);
 
