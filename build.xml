@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.6 2002/01/07 23:06:10 rdonkin Exp $
+        $Id: build.xml,v 1.7 2002/01/08 22:55:38 craigmcc Exp $
 -->
 
 
@@ -37,6 +37,9 @@
 
   <!-- The name of this component -->
   <property name="component.name"          value="logging"/>
+
+  <!-- The primary package name of this component -->
+  <property name="component.package"       value="org.apache.commons.logging"/>
 
   <!-- The title of this component -->
   <property name="component.title"         value="Logging Library"/>
@@ -106,6 +109,7 @@
    description="Initialize and evaluate conditionals">
     <echo message="-------- ${component.title} ${component.version} --------"/>
     <filter  token="name"                  value="${component.name}"/>
+    <filter  token="package"               value="${component.package}"/>
     <filter  token="version"               value="${component.version}"/>
   </target>
 
@@ -124,10 +128,10 @@
   <target name="static" depends="prepare"
    description="Copy static files to build directory">
     <tstamp/>
-    <!-- <copy  todir="${build.home}/conf" filtering="on">
+    <copy  todir="${build.home}/conf" filtering="on">
       <fileset dir="${conf.home}" includes="*.MF"/>
       <fileset dir="${conf.home}" includes="*.properties"/>
-    </copy> -->
+    </copy>
   </target>
 
 
@@ -206,7 +210,8 @@
     <copy      file="../LICENSE"
              tofile="${build.home}/classes/META-INF/LICENSE.txt"/>
     <jar    jarfile="${dist.home}/commons-${component.name}.jar"
-            basedir="${build.home}/classes"/>
+            basedir="${build.home}/classes"
+           manifest="${build.home}/conf/MANIFEST.MF"/>
     <mkdir      dir="${dist.home}/src"/>
     <copy     todir="${dist.home}/src" filtering="on">
       <fileset  dir="${source.home}"/>
