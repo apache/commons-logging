@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.7 2002/05/04 19:50:29 sanders Exp $
- * $Revision: 1.7 $
- * $Date: 2002/05/04 19:50:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.8 2002/06/11 22:29:14 rsitze Exp $
+ * $Revision: 1.8 $
+ * $Date: 2002/06/11 22:29:14 $
  *
  * ====================================================================
  *
@@ -71,6 +71,7 @@ import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
+import java.lang.SecurityException;
 
 
 /**
@@ -84,7 +85,7 @@ import java.util.Properties;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.7 $ $Date: 2002/05/04 19:50:29 $
+ * @version $Revision: 1.8 $ $Date: 2002/06/11 22:29:14 $
  */
 
 public abstract class LogFactory {
@@ -257,22 +258,21 @@ public abstract class LogFactory {
     public static LogFactory getFactory() throws LogConfigurationException {
 
         // Identify the class loader we will be using
-        ClassLoader classLoader = findClassLoader();
+        ClassLoader contextClassLoader = getContextClassLoader();
 
         // Return any previously registered factory for this class loader
-        LogFactory factory = (LogFactory) factories.get(classLoader);
-        if (factory != null) {
-            return (factory);
-        }
-        
+        LogFactory factory = getCachedFactory(contextClassLoader);
+        if (factory != null)
+            return factory;
+
         // First, try the system property
         try {
             String factoryClass = System.getProperty(FACTORY_PROPERTY);
             if (factoryClass != null) {
-                factory = newFactory(factoryClass, classLoader);
+                factory = newFactory(factoryClass, contextClassLoader);
             }
         } catch (SecurityException e) {
-            ;
+            ;  // ignore
         }
 
         // Second, try to find a service by using the JDK1.3 jar
@@ -281,14 +281,11 @@ public abstract class LogFactory {
         // CLASSPATH or equivalent ). This is similar with the second
         // step, except that it uses the (standard?) jdk1.3 location in the jar.
 
-        if( factory==null ) {
+        if (factory == null) {
             try {
-                InputStream is=null;
-                if (classLoader == null) {
-                    is=ClassLoader.getSystemResourceAsStream( SERVICE_ID );
-                } else {
-                    is=classLoader.getResourceAsStream( SERVICE_ID );
-                }
+                InputStream is = (contextClassLoader == null
+                                  ? ClassLoader.getSystemResourceAsStream( SERVICE_ID )
+                                  : contextClassLoader.getResourceAsStream( SERVICE_ID ));
 
                 if( is != null ) {
                     // This code is needed by EBCDIC and other strange systems.
@@ -306,7 +303,7 @@ public abstract class LogFactory {
                     if (factoryClassName != null &&
                         ! "".equals(factoryClassName)) {
                         
-                        factory= newFactory( factoryClassName, classLoader );
+                        factory= newFactory( factoryClassName, contextClassLoader );
                     }
                 }
             } catch( Exception ex ) {
@@ -327,7 +324,7 @@ public abstract class LogFactory {
 
         try {
             InputStream stream =
-                classLoader.getResourceAsStream(FACTORY_PROPERTIES);
+                contextClassLoader.getResourceAsStream(FACTORY_PROPERTIES);
             if (stream != null) {
                 props = new Properties();
                 props.load(stream);
@@ -337,7 +334,7 @@ public abstract class LogFactory {
                     if (factoryClass == null) {
                         factoryClass = FACTORY_DEFAULT;
                     }
-                    factory = newFactory(factoryClass, classLoader);
+                    factory = newFactory(factoryClass, contextClassLoader);
                 }
             }
             // the properties will be set at the end.
@@ -359,10 +356,7 @@ public abstract class LogFactory {
             }
         }
         
-        // Cache and return the new factory instance
-        factories.put(classLoader, factory);
-        return (factory);
-
+        return factory;
     }
 
 
@@ -428,51 +422,92 @@ public abstract class LogFactory {
 
 
     /**
-     * Return the class loader to be used for loading the selected
-     * <code>LogFactory</code> implementation class.  On a JDK 1.2 or later
-     * system, the context class loader for the current thread will be used
-     * if it is present.
+     * Return the thread context class loader if available.
+     * Otherwise return null.
+     * 
+     * The thread context class loader is available for JDK 1.2
+     * or later, if certain security conditions are met.
      *
      * @exception LogConfigurationException if a suitable class loader
-     *  cannot be identified
+     * cannot be identified.
      */
-    protected static ClassLoader findClassLoader()
-        throws LogConfigurationException {
+    protected static ClassLoader getContextClassLoader()
+        throws LogConfigurationException
+    {
+        ClassLoader classLoader = null;
 
-        // Are we running on a JDK 1.2 or later system?
-        Method method = null;
         try {
-            method = Thread.class.getMethod("getContextClassLoader", null);
+            // Are we running on a JDK 1.2 or later system?
+            Method method = Thread.class.getMethod("getContextClassLoader", null);
+
+            // Get the thread context class loader (if there is one)
+            try {
+                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), null);
+            } catch (IllegalAccessException e) {
+                throw new LogConfigurationException
+                    ("Unexpected IllegalAccessException", e);
+            } catch (InvocationTargetException e) {
+                /**
+                 * InvocationTargetException is thrown by 'invoke' when
+                 * the method being invoked (getContextClassLoader) throws
+                 * an exception.
+                 * 
+                 * getContextClassLoader() throws SecurityException when
+                 * the context class loader isn't an ancestor of the
+                 * calling class's class loader, or if security
+                 * permissions are restricted.
+                 * 
+                 * In the first case (not related), we want to ignore and
+                 * keep going.  We cannot help but also ignore the second
+                 * with the logic below, but other calls elsewhere (to
+                 * obtain a class loader) will trigger this exception where
+                 * we can make a distinction.
+                 */
+                if (e.getTargetException() instanceof SecurityException) {
+                    ;  // ignore
+                } else {
+                    // Capture 'e.getTargetException()' exception for details
+                    // alternate: log 'e.getTargetException()', and pass back 'e'.
+                    throw new LogConfigurationException
+                        ("Unexpected InvocationTargetException", e.getTargetException());
+                }
+            }
         } catch (NoSuchMethodException e) {
             // Assume we are running on JDK 1.1
-            return (LogFactory.class.getClassLoader());
-        }
-
-        // Get the thread context class loader (if there is one)
-        ClassLoader classLoader = null;
-        try {
-            classLoader = (ClassLoader)
-                method.invoke(Thread.currentThread(), null);
-            if (classLoader == null) {
-                classLoader = LogFactory.class.getClassLoader();
-            }
-        } catch (IllegalAccessException e) {
-            throw new LogConfigurationException
-                ("Unexpected IllegalAccessException", e);
-        } catch (InvocationTargetException e) {
-            throw new LogConfigurationException
-                ("Unexpected InvocationTargetException", e);
+            classLoader = LogFactory.class.getClassLoader();
         }
 
         // Return the selected class loader
-        return (classLoader);
-
+        return classLoader;
     }
 
+    /**
+     * Check cached factories (keyed by classLoader)
+     */
+    private static LogFactory getCachedFactory(ClassLoader contextClassLoader)
+    {
+        LogFactory factory = null;
+        
+        if (contextClassLoader != null)
+            factory = (LogFactory) factories.get(contextClassLoader);
+            
+        if (factory==null)
+            factory = (LogFactory) factories.get(LogFactory.class.getClassLoader());
+        
+        return factory;
+    }
+    
+    private static void cacheFactory(ClassLoader classLoader, LogFactory factory)
+    {
+        if (classLoader != null && factory != null)
+            factories.put(classLoader, factory);
+    }
 
     /**
      * Return a new instance of the specified <code>LogFactory</code>
      * implementation class, loaded by the specified class loader.
+     * If that fails, try the class loader used to load this
+     * (abstract) LogFactory.
      *
      * @param factoryClass Fully qualified name of the <code>LogFactory</code>
      *  implementation class
@@ -487,21 +522,29 @@ public abstract class LogFactory {
     {
         
         try {
+            if (classLoader == null)
+                classLoader = LogFactory.class.getClassLoader();
+
             Class clazz = null;
-            if (classLoader == null) {
-                clazz = Class.forName(factoryClass);
-            } else {
-                try {
-                    // first the thread class loader
+            try {
+                // first the thread class loader
+                clazz = classLoader.loadClass(factoryClass);
+            } catch (ClassNotFoundException ex) {
+                // if this failed (i.e. no implementation is
+                // found in the webapp), try the caller's loader
+                // if we haven't already...
+                if (classLoader != LogFactory.class.getClassLoader()) {
+                    classLoader = LogFactory.class.getClassLoader();
                     clazz = classLoader.loadClass(factoryClass);
-                } catch( ClassNotFoundException ex ) {
-                    // if this failed ( i.e. no implementation is
-                    // found in the webapp itself ) try the
-                    // caller's loader 
-                    clazz = Class.forName( factoryClass );
                 }
             }
-            return ((LogFactory) clazz.newInstance());
+            
+            LogFactory factory = (LogFactory)clazz.newInstance();
+            
+            // Cache using correct classLoader
+            cacheFactory(classLoader, factory);
+            
+            return factory;
         } catch (Exception e) {
             throw new LogConfigurationException(e);
         }
