@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.2 2002/01/17 01:47:49 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2002/01/17 01:47:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.3 2002/01/29 20:48:10 sanders Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/01/29 20:48:10 $
  *
  * ====================================================================
  *
@@ -73,7 +73,7 @@ import java.util.logging.Logger;
  * introduced in the Merlin release (JDK 1.4).</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.2 $ $Date: 2002/01/17 01:47:49 $
+ * @version $Revision: 1.3 $ $Date: 2002/01/29 20:48:10 $
  */
 
 public final class Jdk14Logger implements Log {
@@ -113,7 +113,7 @@ public final class Jdk14Logger implements Log {
      */
     public void debug(Object message) {
 
-        logger.log(Level.FINEST, message.toString());
+        logger.log(Level.FINE, message.toString());
 
     }
 
@@ -123,7 +123,7 @@ public final class Jdk14Logger implements Log {
      */
     public void debug(Object message, Throwable exception) {
 
-        logger.log(Level.FINEST, message.toString(), exception);
+        logger.log(Level.FINE, message.toString(), exception);
 
     }
 
@@ -203,7 +203,7 @@ public final class Jdk14Logger implements Log {
      */
     public boolean isDebugEnabled() {
 
-        return (logger.isLoggable(Level.FINEST));
+        return (logger.isLoggable(Level.FINE));
 
     }
 
