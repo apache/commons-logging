@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.20 2002/11/23 03:49:40 craigmcc Exp $
- * $Revision: 1.20 $
- * $Date: 2002/11/23 03:49:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.21 2003/02/01 04:11:03 craigmcc Exp $
+ * $Revision: 1.21 $
+ * $Date: 2003/02/01 04:11:03 $
  *
  * ====================================================================
  *
@@ -107,7 +107,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.20 $ $Date: 2002/11/23 03:49:40 $
+ * @version $Revision: 1.21 $ $Date: 2003/02/01 04:11:03 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -456,16 +456,16 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * MUST KEEP THIS METHOD PRIVATE
-     * 
+     *
      * <p>Exposing this method outside of
      * <code>org.apache.commons.logging.LogFactoryImpl</code>
      * will create a security violation:
      * This method uses <code>AccessController.doPrivileged()</code>.
      * </p>
-     * 
+     *
      * Load a class, try first the thread class loader, and
      * if it fails use the loader that loaded this class.
-     */  
+     */
     private static Class loadClass( final String name )
         throws ClassNotFoundException
     {
@@ -519,7 +519,7 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isJdk14Available() {
 
         try {
-            loadClass("java.util.logging.Logger");
+            loadClass("java.sql.Savepoint");
             loadClass("org.apache.commons.logging.impl.Jdk14Logger");
             return (true);
         } catch (Throwable t) {
