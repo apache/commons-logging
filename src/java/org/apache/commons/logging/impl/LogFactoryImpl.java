@@ -18,6 +18,7 @@ package org.apache.commons.logging.impl;
 
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -62,7 +63,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.31 $ $Date: 2004/02/28 22:16:16 $
+ * @version $Revision: 1.32 $ $Date: 2004/03/06 21:25:36 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -510,6 +511,13 @@ public class LogFactoryImpl extends LogFactory {
                 logMethod.invoke(instance, params);
             }
             return (instance);
+        } catch (InvocationTargetException e) {
+            Throwable c = e.getTargetException();
+            if (c != null) {
+                throw new LogConfigurationException(c);
+            } else {
+                throw new LogConfigurationException(e);
+            }
         } catch (Throwable t) {
             throw new LogConfigurationException(t);
         }
