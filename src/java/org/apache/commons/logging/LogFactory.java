@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.24 2003/10/09 21:37:47 rdonkin Exp $
- * $Revision: 1.24 $
- * $Date: 2003/10/09 21:37:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.25 2004/02/28 17:54:14 rdonkin Exp $
+ * $Revision: 1.25 $
+ * $Date: 2004/02/28 17:54:14 $
  *
  * ====================================================================
  * 
@@ -79,7 +79,7 @@ import java.util.Properties;
  * <p>Factory for creating {@link Log} instances, with discovery and
  * configuration features similar to that employed by standard Java APIs
  * such as JAXP.</p>
- * 
+ *
  * <p><strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.</p>
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.24 $ $Date: 2003/10/09 21:37:47 $
+ * @version $Revision: 1.25 $ $Date: 2004/02/28 17:54:14 $
  */
 
 public abstract class LogFactory {
@@ -117,7 +117,7 @@ public abstract class LogFactory {
         "commons-logging.properties";
 
     /**
-     * JDK1.3+ 'Service Provider' specification 
+     * JDK1.3+ 'Service Provider' specification
      * ( http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html )
      */
     protected static final String SERVICE_ID =
@@ -189,7 +189,7 @@ public abstract class LogFactory {
 
     /**
      * Release any internal references to previously created {@link Log}
-     * instances returned by this factory.  This is useful environments
+     * instances returned by this factory.  This is useful in environments
      * like servlet containers, which implement application reloading by
      * throwing away a ClassLoader.  Dangling references to objects in that
      * class loader would prevent garbage collection.
@@ -273,8 +273,8 @@ public abstract class LogFactory {
             return factory;
 
 
-        // Load properties file..
-        // will be used one way or another in the end.
+        // Load properties file.
+        // Will be used one way or another in the end.
 
         Properties props=null;
         try {
@@ -290,7 +290,7 @@ public abstract class LogFactory {
         } catch (SecurityException e) {
         }
 
-        
+
         // First, try the system property
         try {
             String factoryClass = System.getProperty(FACTORY_PROPERTY);
@@ -305,7 +305,7 @@ public abstract class LogFactory {
         // Second, try to find a service by using the JDK1.3 jar
         // discovery mechanism. This will allow users to plug a logger
         // by just placing it in the lib/ directory of the webapp ( or in
-        // CLASSPATH or equivalent ). This is similar with the second
+        // CLASSPATH or equivalent ). This is similar to the second
         // step, except that it uses the (standard?) jdk1.3 location in the jar.
 
         if (factory == null) {
@@ -322,13 +322,13 @@ public abstract class LogFactory {
                     } catch (java.io.UnsupportedEncodingException e) {
                         rd = new BufferedReader(new InputStreamReader(is));
                     }
-                    
+
                     String factoryClassName = rd.readLine();
                     rd.close();
-                    
+
                     if (factoryClassName != null &&
                         ! "".equals(factoryClassName)) {
-                        
+
                         factory= newFactory( factoryClassName, contextClassLoader );
                     }
                 }
@@ -338,7 +338,7 @@ public abstract class LogFactory {
         }
 
 
-        // Third try a properties file. 
+        // Third try a properties file.
         // If the properties file exists, it'll be read and the properties
         // used. IMHO ( costin ) System property and JDK1.3 jar service
         // should be enough for detecting the class name. The properties
@@ -359,10 +359,10 @@ public abstract class LogFactory {
         if (factory == null) {
             factory = newFactory(FACTORY_DEFAULT, LogFactory.class.getClassLoader());
         }
-        
+
         if (factory != null) {
             /**
-             * Always cache using context class loader..
+             * Always cache using context class loader.
              */
             cacheFactory(contextClassLoader, factory);
 
@@ -375,7 +375,7 @@ public abstract class LogFactory {
                 }
             }
         }
-        
+
         return factory;
     }
 
@@ -384,7 +384,7 @@ public abstract class LogFactory {
      * Convenience method to return a named logger, without the application
      * having to care about factories.
      *
-     * @param clazz Class for which a log name will be derived
+     * @param clazz Class from which a log name will be derived
      *
      * @exception LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
@@ -440,7 +440,7 @@ public abstract class LogFactory {
     /**
      * Release any internal references to previously created {@link LogFactory}
      * instances, after calling the instance method <code>release()</code> on
-     * each of them.  This is useful environments like servlet containers,
+     * each of them.  This is useful in environments like servlet containers,
      * which implement application reloading by throwing away a ClassLoader.
      * Dangling references to objects in that class loader would prevent
      * garbage collection.
@@ -465,7 +465,7 @@ public abstract class LogFactory {
     /**
      * Return the thread context class loader if available.
      * Otherwise return null.
-     * 
+     *
      * The thread context class loader is available for JDK 1.2
      * or later, if certain security conditions are met.
      *
@@ -492,12 +492,12 @@ public abstract class LogFactory {
                  * InvocationTargetException is thrown by 'invoke' when
                  * the method being invoked (getContextClassLoader) throws
                  * an exception.
-                 * 
+                 *
                  * getContextClassLoader() throws SecurityException when
                  * the context class loader isn't an ancestor of the
                  * calling class's class loader, or if security
                  * permissions are restricted.
-                 * 
+                 *
                  * In the first case (not related), we want to ignore and
                  * keep going.  We cannot help but also ignore the second
                  * with the logic below, but other calls elsewhere (to
@@ -523,18 +523,18 @@ public abstract class LogFactory {
     }
 
     /**
-     * Check cached factories (keyed by classLoader)
+     * Check cached factories (keyed by contextClassLoader)
      */
     private static LogFactory getCachedFactory(ClassLoader contextClassLoader)
     {
         LogFactory factory = null;
-        
+
         if (contextClassLoader != null)
             factory = (LogFactory) factories.get(contextClassLoader);
-        
+
         return factory;
     }
-    
+
     private static void cacheFactory(ClassLoader classLoader, LogFactory factory)
     {
         if (classLoader != null && factory != null)
@@ -562,18 +562,18 @@ public abstract class LogFactory {
             new PrivilegedAction() {
                 public Object run() {
                     // This will be used to diagnose bad configurations
-                    // and allow a useful message to be sent to the user 
+                    // and allow a useful message to be sent to the user
                     Class logFactoryClass = null;
                     try {
                         if (classLoader != null) {
                             try {
-                                // first the given class loader param (thread class loader)
-                                
-                                // warning: must typecast here & allow exception
-                                // to be generated/caught & recast propertly.
+                                // First the given class loader param (thread class loader)
+
+                                // Warning: must typecast here & allow exception
+                                // to be generated/caught & recast properly.
                                 logFactoryClass = classLoader.loadClass(factoryClass);
                                 return (LogFactory) logFactoryClass.newInstance();
-                                
+
                             } catch (ClassNotFoundException ex) {
                                 if (classLoader == LogFactory.class.getClassLoader()) {
                                     // Nothing more to try, onwards.
@@ -585,39 +585,39 @@ public abstract class LogFactory {
                                     // Nothing more to try, onwards.
                                     throw e;
                                 }
-                              
+
                             } catch(ClassCastException e){
-                                
+
                               if (classLoader == LogFactory.class.getClassLoader()) {
                                     // Nothing more to try, onwards (bug in loader implementation).
                                     throw e;
                                }
                             }
-                            // ignore exception, continue  
+                            // Ignore exception, continue
                         }
-            
+
                         /* At this point, either classLoader == null, OR
-                         * classLoader was unable to load factoryClass..
-                         * try the class loader that loaded this class:
+                         * classLoader was unable to load factoryClass.
+                         * Try the class loader that loaded this class:
                          * LogFactory.getClassLoader().
-                         * 
+                         *
                          * Notes:
                          * a) LogFactory.class.getClassLoader() may return 'null'
                          *    if LogFactory is loaded by the bootstrap classloader.
                          * b) The Java endorsed library mechanism is instead
                          *    Class.forName(factoryClass);
                          */
-                        // warning: must typecast here & allow exception
-                        // to be generated/caught & recast propertly.
+                        // Warning: must typecast here & allow exception
+                        // to be generated/caught & recast properly.
                         logFactoryClass = Class.forName(factoryClass);
                         return (LogFactory) logFactoryClass.newInstance();
                     } catch (Exception e) {
-                        // check to see if we've got a bad configuration
-                        if (logFactoryClass != null 
+                        // Check to see if we've got a bad configuration
+                        if (logFactoryClass != null
                             && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
                             return new LogConfigurationException(
                                 "The chosen LogFactory implementation does not extend LogFactory."
-                                + " Please check your configuration.", 
+                                + " Please check your configuration.",
                                 e);
                         }
                         return new LogConfigurationException(e);
@@ -627,10 +627,10 @@ public abstract class LogFactory {
 
         if (result instanceof LogConfigurationException)
             throw (LogConfigurationException)result;
-            
+
         return (LogFactory)result;
     }
-    
+
     private static InputStream getResourceAsStream(final ClassLoader loader,
                                                    final String name)
     {

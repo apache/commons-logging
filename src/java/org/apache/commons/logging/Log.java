@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.16 2003/10/09 21:37:47 rdonkin Exp $
- * $Revision: 1.16 $
- * $Date: 2003/10/09 21:37:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.17 2004/02/28 17:54:14 rdonkin Exp $
+ * $Revision: 1.17 $
+ * $Date: 2004/02/28 17:54:14 $
  *
  * ====================================================================
  * 
@@ -102,7 +102,7 @@ package org.apache.commons.logging;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.16 2003/10/09 21:37:47 rdonkin Exp $
+ * @version $Id: Log.java,v 1.17 2004/02/28 17:54:14 rdonkin Exp $
  */
 public interface Log {
 
@@ -114,7 +114,7 @@ public interface Log {
      * <p> Is debug logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
-     * (for example, <code>String</code> concatination)
+     * (for example, <code>String</code> concatenation)
      * when the log level is more than debug. </p>
      */
     public boolean isDebugEnabled();
@@ -124,7 +124,7 @@ public interface Log {
      * <p> Is error logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
-     * (for example, <code>String</code> concatination)
+     * (for example, <code>String</code> concatenation)
      * when the log level is more than error. </p>
      */
     public boolean isErrorEnabled();
@@ -134,7 +134,7 @@ public interface Log {
      * <p> Is fatal logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
-     * (for example, <code>String</code> concatination)
+     * (for example, <code>String</code> concatenation)
      * when the log level is more than fatal. </p>
      */
     public boolean isFatalEnabled();
@@ -144,7 +144,7 @@ public interface Log {
      * <p> Is info logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
-     * (for example, <code>String</code> concatination)
+     * (for example, <code>String</code> concatenation)
      * when the log level is more than info. </p>
      */
     public boolean isInfoEnabled();
@@ -154,7 +154,7 @@ public interface Log {
      * <p> Is trace logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
-     * (for example, <code>String</code> concatination)
+     * (for example, <code>String</code> concatenation)
      * when the log level is more than trace. </p>
      */
     public boolean isTraceEnabled();
@@ -164,8 +164,8 @@ public interface Log {
      * <p> Is warning logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
-     * (for example, <code>String</code> concatination)
-     * when the log level is more than warning. </p>
+     * (for example, <code>String</code> concatenation)
+     * when the log level is more than warn. </p>
      */
     public boolean isWarnEnabled();
 

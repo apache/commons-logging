@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.28 2003/10/09 21:37:47 rdonkin Exp $
- * $Revision: 1.28 $
- * $Date: 2003/10/09 21:37:47 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.29 2004/02/28 17:54:14 rdonkin Exp $
+ * $Revision: 1.29 $
+ * $Date: 2004/02/28 17:54:14 $
  *
  * ====================================================================
  * 
@@ -107,7 +107,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.28 $ $Date: 2003/10/09 21:37:47 $
+ * @version $Revision: 1.29 $ $Date: 2004/02/28 17:54:14 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -146,7 +146,7 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * Configuration attributes
+     * Configuration attributes.
      */
     protected Hashtable attributes = new Hashtable();
 
@@ -280,7 +280,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * Release any internal references to previously created
      * {@link org.apache.commons.logging.Log}
-     * instances returned by this factory.  This is useful environments
+     * instances returned by this factory.  This is useful in environments
      * like servlet containers, which implement application reloading by
      * throwing away a ClassLoader.  Dangling references to objects in that
      * class loader would prevent garbage collection.
