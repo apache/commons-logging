@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.12 2002/02/20 22:07:04 craigmcc Exp $
+        $Id: build.xml,v 1.13 2002/02/20 23:02:01 craigmcc Exp $
 -->
 
 
@@ -45,7 +45,7 @@
   <property name="component.title"         value="Logging Library"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="1.0"/>
+  <property name="component.version"       value="1.0.1-dev"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="target"/>
@@ -210,9 +210,9 @@
                  author="true"
                 private="true"
                 version="true"
-               doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
+               doctitle="&lt;h1&gt;${component.title} (Version ${component.version})&lt;/h1&gt;"
             windowtitle="${component.title} (Version ${component.version})"
-                 bottom="Copyright (c) 2001 - Apache Software Foundation">
+                 bottom="Copyright (c) 2002 - Apache Software Foundation">
       <classpath refid="test.classpath"/>
     </javadoc>
   </target>
