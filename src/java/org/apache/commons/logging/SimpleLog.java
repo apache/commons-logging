@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.11 2002/01/25 18:41:48 sanders Exp $
- * $Revision: 1.11 $
- * $Date: 2002/01/25 18:41:48 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.12 2002/01/31 00:14:31 sanders Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/01/31 00:14:31 $
  *
  * ====================================================================
  *
@@ -76,11 +76,11 @@ import java.util.Date;
  * <ul>
  * <li><code>org.apache.commons.logging.simplelog.defaultlog</code> -
  *     Default logging detail level for all instances of SimpleLog.
- *     Must be one of ("debug", "info", "warn", "error", or "fatal").
+ *     Must be one of ("trace", "debug", "info", "warn", "error", or "fatal").
  *     If not specified, defaults to "error". </li>
  * <li><code>org.apache.commons.logging.simplelog.log.xxxxx</code> -
  *     Logging detail level for a SimpleLog instance named "xxxxx".
- *     Must be one of ("debug", "info", "warn", "error", or "fatal").
+ *     Must be one of ("trace", "debug", "info", "warn", "error", or "fatal").
  *     If not specified, the default logging detail level is used.</li>
  * <li><code>org.apache.commons.logging.simplelog.showlogname</code> -
  *     Set to <code>true</code> if you want the Log instance name to be
@@ -95,20 +95,21 @@ import java.util.Date;
  * <code>"simplelog.properties"</code>, and includes any matching definitions
  * from this resource (if it exists).</p>
  *
+ * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.11 2002/01/25 18:41:48 sanders Exp $
+ * @version $Id: SimpleLog.java,v 1.12 2002/01/31 00:14:31 sanders Exp $
  */
 public class SimpleLog implements Log {
 
 
     // ------------------------------------------------------- Class Attributes
-    
+
     /** All system properties used by <code>Simple</code> start with this */
     static protected final String systemPrefix =
         "org.apache.commons.logging.simplelog.";
-    
+
     /** All system properties which start with {@link #systemPrefix} */
     static protected final Properties simpleLogProps = new Properties();
     /** Include the instance name in the log message? */
@@ -119,21 +120,23 @@ public class SimpleLog implements Log {
     static protected DateFormat dateFormatter = null;
 
     // ---------------------------------------------------- Log Level Constants
-    
 
+
+    /** "Trace" level logging. */
+    public static final int LOG_LEVEL_TRACE  = 1;
     /** "Debug" level logging. */
-    public static final int LOG_LEVEL_DEBUG  = 1;
+    public static final int LOG_LEVEL_DEBUG  = 2;
     /** "Info" level logging. */
-    public static final int LOG_LEVEL_INFO   = 2;
+    public static final int LOG_LEVEL_INFO   = 3;
     /** "Warn" level logging. */
-    public static final int LOG_LEVEL_WARN   = 3;
+    public static final int LOG_LEVEL_WARN   = 4;
     /** "Error" level logging. */
-    public static final int LOG_LEVEL_ERROR  = 4;
+    public static final int LOG_LEVEL_ERROR  = 5;
     /** "Fatal" level logging. */
-    public static final int LOG_LEVEL_FATAL  = 5;
+    public static final int LOG_LEVEL_FATAL  = 6;
 
     /** Enable all logging levels */
-    public static final int LOG_LEVEL_ALL    = (LOG_LEVEL_DEBUG - 1);
+    public static final int LOG_LEVEL_ALL    = (LOG_LEVEL_TRACE - 1);
 
     /** Enable no logging levels */
     public static final int LOG_LEVEL_OFF    = (LOG_LEVEL_FATAL + 1);
@@ -162,15 +165,15 @@ public class SimpleLog implements Log {
                 // ignored
             }
         }
-        
+
         showLogName = "true".equalsIgnoreCase(
                 simpleLogProps.getProperty(
                     systemPrefix + "showlogname","true"));
-                    
+
         showDateTime = "true".equalsIgnoreCase(
                 simpleLogProps.getProperty(
                     systemPrefix + "showdatetime","true"));
-                    
+
         if(showDateTime) {
             dateFormatter = new SimpleDateFormat(
                 simpleLogProps.getProperty(
@@ -188,20 +191,20 @@ public class SimpleLog implements Log {
 
 
     // ------------------------------------------------------------ Constructor
-    
-    /** 
+
+    /**
      * Construct a simple log with given name.
      *
      * @param name log name
      */
     public SimpleLog(String name) {
-    
+
         logName = name;
 
         // set initial log level
         // set default log level to ERROR
         setLevel(SimpleLog.LOG_LEVEL_ERROR);
-        
+
         // set log level from properties
         String lvl = simpleLogProps.getProperty(systemPrefix + "log." + logName);
         int i = String.valueOf(name).lastIndexOf(".");
@@ -210,13 +213,15 @@ public class SimpleLog implements Log {
             lvl = simpleLogProps.getProperty(systemPrefix + "log." + name);
             i = String.valueOf(name).lastIndexOf(".");
         }
-        
+
         if(null == lvl) {
             lvl =  simpleLogProps.getProperty(systemPrefix + "defaultlog");
         }
 
         if("all".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_ALL);
+        } else if("trace".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_TRACE);
         } else if("debug".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_DEBUG);
         } else if("info".equalsIgnoreCase(lvl)) {
@@ -235,62 +240,63 @@ public class SimpleLog implements Log {
 
 
     // -------------------------------------------------------- Properties
-    
+
     /**
-     * <p> Set logging level. </p> 
+     * <p> Set logging level. </p>
      *
      * @param level new logging level
      */
     public void setLevel(int currentLogLevel) {
-    
+
         this.currentLogLevel = currentLogLevel;
     }
-    
+
 
     /**
-     * <p> Get logging level. </p> 
+     * <p> Get logging level. </p>
      */
     public int getLevel() {
-    
+
         return currentLogLevel;
     }
 
 
     // -------------------------------------------------------- Logging Methods
-    
+
 
     /**
      * <p> Do the actual logging.
-     * This method assembles the message 
+     * This method assembles the message
      * and then prints to <code>System.out</code>.</p>
      */
     protected void log(int type, Object message, Throwable t) {
-        // use a string buffer for better performance 
+        // use a string buffer for better performance
         StringBuffer buf = new StringBuffer();
-        
+
         // append date-time if so configured
         if(showDateTime) {
             buf.append(dateFormatter.format(new Date()));
             buf.append(" ");
         }
-        
+
         // append a readable representation of the log leve
         switch(type) {
+            case SimpleLog.LOG_LEVEL_TRACE: buf.append("[TRACE] "); break;
             case SimpleLog.LOG_LEVEL_DEBUG: buf.append("[DEBUG] "); break;
             case SimpleLog.LOG_LEVEL_INFO:  buf.append("[INFO] ");  break;
             case SimpleLog.LOG_LEVEL_WARN:  buf.append("[WARN] ");  break;
             case SimpleLog.LOG_LEVEL_ERROR: buf.append("[ERROR] "); break;
             case SimpleLog.LOG_LEVEL_FATAL: buf.append("[FATAL] "); break;
         }
-        
+
         // append the name of the log instance if so configured
         if(showLogName) {
             buf.append(String.valueOf(logName)).append(" - ");
         }
-        
+
         // append the message
         buf.append(String.valueOf(message));
-        
+
         // append stack trace if not null
         if(t != null) {
             buf.append(" <");
@@ -298,7 +304,7 @@ public class SimpleLog implements Log {
             buf.append(">");
             t.printStackTrace();
         }
-        
+
         // print to System.out
         System.out.println(buf.toString());
     }
@@ -314,27 +320,27 @@ public class SimpleLog implements Log {
         // comparison
         return (logLevel >= currentLogLevel);
     }
-    
+
 
     // -------------------------------------------------------- Log Implementation
 
 
     /**
-     * <p> Log a message with debug log level.</p> 
+     * <p> Log a message with debug log level.</p>
      */
     public final void debug(Object message) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, null);
         }
     }
-    
+
 
     /**
-     * <p> Log an error with debug log level.</p> 
-     */    
+     * <p> Log an error with debug log level.</p>
+     */
     public final void debug(Object message, Throwable t) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, t);
         }
@@ -342,32 +348,54 @@ public class SimpleLog implements Log {
 
 
     /**
-     * <p> Log a message with info log level.</p> 
-     */    
+     * <p> Log a message with debug log level.</p>
+     */
+    public final void trace(Object message) {
+
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
+            log(SimpleLog.LOG_LEVEL_TRACE, message, null);
+        }
+    }
+
+
+    /**
+     * <p> Log an error with debug log level.</p>
+     */
+    public final void trace(Object message, Throwable t) {
+
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
+            log(SimpleLog.LOG_LEVEL_TRACE, message, t);
+        }
+    }
+
+
+    /**
+     * <p> Log a message with info log level.</p>
+     */
     public final void info(Object message) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO,message,null);
         }
     }
-    
+
 
     /**
-     * <p> Log an error with info log level.</p> 
+     * <p> Log an error with info log level.</p>
      */
     public final void info(Object message, Throwable t) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO, message, t);
         }
     }
-    
+
 
     /**
-     * <p> Log a message with warn log level.</p> 
+     * <p> Log a message with warn log level.</p>
      */
     public final void warn(Object message) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, null);
         }
@@ -375,43 +403,43 @@ public class SimpleLog implements Log {
 
 
     /**
-     * <p> Log an error with warn log level.</p> 
+     * <p> Log an error with warn log level.</p>
      */
     public final void warn(Object message, Throwable t) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, t);
         }
     }
-    
+
 
     /**
-     * <p> Log a message with error log level.</p> 
+     * <p> Log a message with error log level.</p>
      */
     public final void error(Object message) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, null);
         }
     }
-    
+
 
     /**
-     * <p> Log an error with error log level.</p> 
+     * <p> Log an error with error log level.</p>
      */
     public final void error(Object message, Throwable t) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, t);
         }
     }
-    
+
 
     /**
-     * <p> Log a message with fatal log level.</p> 
+     * <p> Log a message with fatal log level.</p>
      */
     public final void fatal(Object message) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, null);
         }
@@ -419,16 +447,16 @@ public class SimpleLog implements Log {
 
 
     /**
-     * <p> Log an error with fatal log level.</p> 
-     */    
+     * <p> Log an error with fatal log level.</p>
+     */
     public final void fatal(Object message, Throwable t) {
-    
+
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, t);
         }
     }
-  
-    
+
+
     /**
      * <p> Are debug messages currently enabled? </p>
      *
@@ -437,10 +465,10 @@ public class SimpleLog implements Log {
      * logger. </p>
      */
     public final boolean isDebugEnabled() {
-    
+
         return isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG);
     }
-    
+
 
     /**
      * <p> Are error messages currently enabled? </p>
@@ -450,10 +478,10 @@ public class SimpleLog implements Log {
      * logger. </p>
      */
     public final boolean isErrorEnabled() {
-    
+
         return isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR);
     }
-    
+
 
     /**
      * <p> Are fatal messages currently enabled? </p>
@@ -463,10 +491,10 @@ public class SimpleLog implements Log {
      * logger. </p>
      */
     public final boolean isFatalEnabled() {
-    
+
         return isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL);
     }
-    
+
 
     /**
      * <p> Are info messages currently enabled? </p>
@@ -476,11 +504,24 @@ public class SimpleLog implements Log {
      * logger. </p>
      */
     public final boolean isInfoEnabled() {
-    
-        return isLevelEnabled(SimpleLog.LOG_LEVEL_INFO);
-    }  
 
-    
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_INFO);
+    }
+
+
+    /**
+     * <p> Are trace messages currently enabled? </p>
+     *
+     * <p> This allows expensive operations such as <code>String</code>
+     * concatenation to be avoided when the message will be ignored by the
+     * logger. </p>
+     */
+    public final boolean isTraceEnabled() {
+
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE);
+    }
+
+
     /**
      * <p> Are warn messages currently enabled? </p>
      *
@@ -489,7 +530,7 @@ public class SimpleLog implements Log {
      * logger. </p>
      */
     public final boolean isWarnEnabled() {
-    
+
         return isLevelEnabled(SimpleLog.LOG_LEVEL_WARN);
     }
 }

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/LogKitLogger.java,v 1.3 2002/01/24 19:02:35 rdonkin Exp $
- * $Revision: 1.3 $
- * $Date: 2002/01/24 19:02:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/LogKitLogger.java,v 1.4 2002/01/31 00:14:31 sanders Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/01/31 00:14:31 $
  *
  * ====================================================================
  *
@@ -66,17 +66,17 @@ import org.apache.log.Logger;
 import org.apache.log.Hierarchy;
 
 /**
- * <p>Implementation of <code>org.apache.commons.logging.Log</code> 
+ * <p>Implementation of <code>org.apache.commons.logging.Log</code>
  * that wraps the <a href="http://jakarta.apache.org/avalon/logkit/">jakarta-avalon-logkit</a>
  * logging system. Configuration of <code>LogKit</code> is left to the user.</p>
  *
- * <p><code>LogKit</code> accepts only <code>String</code> messages. 
- * Therefore, this implementation converts object messages into strings 
+ * <p><code>LogKit</code> accepts only <code>String</code> messages.
+ * Therefore, this implementation converts object messages into strings
  * by called their <code>toString()</code> method before logging them.</p>
  *
- * @author Robert Burrell Donkin
- *
- * @version $Id: LogKitLogger.java,v 1.3 2002/01/24 19:02:35 rdonkin Exp $
+ * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
+ * @author Robert Burrell Donkin                                 *
+ * @version $Id: LogKitLogger.java,v 1.4 2002/01/31 00:14:31 sanders Exp $
  */
 
 public final class LogKitLogger implements Log {
@@ -90,12 +90,12 @@ public final class LogKitLogger implements Log {
 
 
     // ------------------------------------------------------------ Constructor
-    
 
-    /**  
+
+    /**
      * Construct <code>LogKitLogger</code> which wraps the <code>LogKit</code>
      * logger with given name.
-     * 
+     *
      * @param name log name
      */
     public LogKitLogger(String name) {
@@ -104,6 +104,22 @@ public final class LogKitLogger implements Log {
 
 
     // ----------------------------------------------------- Log Implementation
+
+
+    /**
+     * Log message to <code>LogKit</code> logger with <code>DEBUG</code> priority.
+     */
+    public void trace(Object message) {
+        debug(message);
+    }
+
+
+    /**
+     * Log error to <code>LogKit</code> logger with <code>DEBUG</code> priority.
+     */
+    public void trace(Object message, Throwable t) {
+        debug(message, t);
+    }
 
 
     /**
@@ -154,7 +170,7 @@ public final class LogKitLogger implements Log {
             logger.warn(message.toString());
         }
     }
-    
+
 
     /**
      * Log error to <code>LogKit</code> logger with <code>WARN</code> priority.
@@ -208,7 +224,7 @@ public final class LogKitLogger implements Log {
 
     /**
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
-     */       
+     */
     public boolean isDebugEnabled() {
         return logger.isDebugEnabled();
     }
@@ -216,7 +232,7 @@ public final class LogKitLogger implements Log {
 
     /**
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
-     */       
+     */
     public boolean isErrorEnabled() {
         return logger.isErrorEnabled();
     }
@@ -224,7 +240,7 @@ public final class LogKitLogger implements Log {
 
     /**
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
-     */      
+     */
     public boolean isFatalEnabled() {
         return logger.isFatalErrorEnabled();
     }
@@ -232,15 +248,23 @@ public final class LogKitLogger implements Log {
 
     /**
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
-     */    
+     */
     public boolean isInfoEnabled() {
         return logger.isInfoEnabled();
     }
 
 
     /**
+     * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
+     */
+    public boolean isTraceEnabled() {
+        return logger.isDebugEnabled();
+    }
+
+
+    /**
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
-     */      
+     */
     public boolean isWarnEnabled() {
         return logger.isWarnEnabled();
     }
