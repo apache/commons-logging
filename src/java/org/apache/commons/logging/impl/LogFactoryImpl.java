@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.17 2002/10/19 17:25:04 rsitze Exp $
- * $Revision: 1.17 $
- * $Date: 2002/10/19 17:25:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.18 2002/11/11 16:52:54 rsitze Exp $
+ * $Revision: 1.18 $
+ * $Date: 2002/11/11 16:52:54 $
  *
  * ====================================================================
  *
@@ -106,7 +106,8 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.17 $ $Date: 2002/10/19 17:25:04 $
+ * @author Richard A. Sitze
+ * @version $Revision: 1.18 $ $Date: 2002/11/11 16:52:54 $
  */
 
 public class LogFactoryImpl extends LogFactory {
