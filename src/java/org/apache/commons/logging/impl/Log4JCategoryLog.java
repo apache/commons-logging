@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/03 01:31:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.2 2002/02/15 03:54:19 costin Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/02/15 03:54:19 $
  *
  * ====================================================================
  *
@@ -75,7 +75,7 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.2 2002/02/15 03:54:19 costin Exp $
  */
 public final class Log4JCategoryLog implements Log {
 
@@ -84,7 +84,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /** Log to this category */
-    Category category = null;
+    private Category category = null;
 
 
     // ------------------------------------------------------------ Constructor
@@ -95,6 +95,12 @@ public final class Log4JCategoryLog implements Log {
      */
     public Log4JCategoryLog(String name) {
         category = Category.getInstance(name);
+    }
+
+    /** For use with a log4j factory
+     */
+    public Log4JCategoryLog(Category category ) {
+        this.category=category;
     }
 
 
