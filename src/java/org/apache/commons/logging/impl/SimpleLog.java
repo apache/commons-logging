@@ -64,7 +64,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.16 2004/02/28 21:46:45 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.17 2004/02/28 23:00:57 craigmcc Exp $
  */
 public class SimpleLog implements Log, Serializable {
 
@@ -152,7 +152,6 @@ public class SimpleLog implements Log, Serializable {
         showLogName = getBooleanProperty( systemPrefix + "showlogname", showLogName);
         showShortName = getBooleanProperty( systemPrefix + "showShortLogname", showShortName);
         showDateTime = getBooleanProperty( systemPrefix + "showdatetime", showDateTime);
-        showLogName = getBooleanProperty( systemPrefix + "showlogname", showLogName);
 
         if(showDateTime) {
             dateFormatter = new SimpleDateFormat(
@@ -168,8 +167,8 @@ public class SimpleLog implements Log, Serializable {
     protected String logName = null;
     /** The current log level */
     protected int currentLogLevel;
-
-    private String prefix=null;
+    /** The short name of this simple log instance */
+    private String shortLogName = null;
 
     
     // ------------------------------------------------------------ Constructor
@@ -275,12 +274,13 @@ public class SimpleLog implements Log, Serializable {
 
         // Append the name of the log instance if so configured
  	if( showShortName) {
-            if( prefix==null ) {
-                // cut all but the last component of the name for both styles
-                prefix = logName.substring( logName.lastIndexOf(".") +1) + " - ";
-                prefix = prefix.substring( prefix.lastIndexOf("/") +1) + "-";
+            if( shortLogName==null ) {
+                // Cut all but the last component of the name for both styles
+                shortLogName = logName.substring(logName.lastIndexOf(".") + 1);
+                shortLogName =
+                    shortLogName.substring(shortLogName.lastIndexOf("/") + 1);
             }
-            buf.append( prefix );
+            buf.append(String.valueOf(shortLogName)).append(" - ");
         } else if(showLogName) {
             buf.append(String.valueOf(logName)).append(" - ");
         }
