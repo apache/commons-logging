@@ -1,10 +1,64 @@
 /*
- * Copyright (C) The Apache Software Foundation. All rights reserved.
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.7 2002/01/03 19:00:19 rdonkin Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/01/03 19:00:19 $
  *
- * This software is published under the terms of the Apache Software License
- * version 1.1, a copy of which has been included with this distribution in
- * the LICENSE file.
+ * ====================================================================
+ *
+ * The Apache Software License, Version 1.1
+ *
+ * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The end-user documentation included with the redistribution, if
+ *    any, must include the following acknowlegement:
+ *       "This product includes software developed by the
+ *        Apache Software Foundation (http://www.apache.org/)."
+ *    Alternately, this acknowlegement may appear in the software itself,
+ *    if and wherever such third-party acknowlegements normally appear.
+ *
+ * 4. The names "The Jakarta Project", "Commons", and "Apache Software
+ *    Foundation" must not be used to endorse or promote products derived
+ *    from this software without prior written permission. For written
+ *    permission, please contact apache@apache.org.
+ *
+ * 5. Products derived from this software may not be called "Apache"
+ *    nor may "Apache" appear in their names without prior written
+ *    permission of the Apache Group.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation.  For more
+ * information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ *
  */
+
 
 package org.apache.commons.logging;
 
@@ -23,7 +77,7 @@ import java.util.Date;
  * <li><code>org.apache.commons.logging.simplelog.defaultlog</code> -
  *     Default logging detail level for all instances of SimpleLog.
  *     Must be one of ("debug", "info", "warn", "error", or "fatal").
- *     If not specified, defaults to "error".</li>
+ *     If not specified, defaults to "error". </li>
  * <li><code>org.apache.commons.logging.simplelog.log.xxxxx</code> -
  *     Logging detail level for a SimpleLog instance named "xxxxx".
  *     Must be one of ("debug", "info", "warn", "error", or "fatal").
@@ -42,16 +96,32 @@ import java.util.Date;
  * from this resource (if it exists).</p>
  *
  * @author Rod Waldhoff
- * @version $Id: SimpleLog.java,v 1.6 2001/12/04 04:28:03 craigmcc Exp $
+ * @author Robert Burrell Donkin
+ *
+ * @version $Id: SimpleLog.java,v 1.7 2002/01/03 19:00:19 rdonkin Exp $
  */
-public class SimpleLog implements Log {
+public class SimpleLog extends AbstractLog {
+
+    // --------------------------------------------------------- Class Attributes
+    
+    /** All system properties used by <code>Simple</code> start with this */
     static protected final String _prefix =
         "org.apache.commons.logging.simplelog.";
+    
+    /** All system properties which start with {@link #_prefix} */
     static protected final Properties _simplelogProps = new Properties();
+    /** Include the instance name in the log message? */
     static protected boolean _showlogname = false;
+    /** Include the current time in the log message */
     static protected boolean _showtime = false;
+    /** Used to format times */
     static protected DateFormat _df = null;
 
+
+
+    // --------------------------------------------------------- Initializer
+
+    // initialize class attributes
     static {
         // add all system props that start with the specified prefix
         Enumeration enum = System.getProperties().propertyNames();
@@ -73,29 +143,50 @@ public class SimpleLog implements Log {
                 // ignored
             }
         }
+        
         try {
         } catch(Throwable t) {
             // ignored
         }
-        _showlogname = "true".equalsIgnoreCase(_simplelogProps.getProperty(_prefix + "showlogname","true"));
-        _showtime = "true".equalsIgnoreCase(_simplelogProps.getProperty(_prefix + "showdate","true"));
+        
+        _showlogname = "true".equalsIgnoreCase(
+                _simplelogProps.getProperty(
+                    _prefix + "showlogname","true"));
+                    
+        _showtime = "true".equalsIgnoreCase(
+                _simplelogProps.getProperty(
+                    _prefix + "showdate","true"));
+                    
         if(_showtime) {
-            _df = new SimpleDateFormat(_simplelogProps.getProperty(_prefix + "dateformat","yyyy/MM/dd HH:mm:ss:SSS zzz"));
+            _df = new SimpleDateFormat(
+                _simplelogProps.getProperty(
+                    _prefix + "dateformat","yyyy/MM/dd HH:mm:ss:SSS zzz"));
         }
     }
 
-    protected static final int DEBUG  = 5;
-    protected static final int INFO   = 4;
-    protected static final int WARN   = 3;
-    protected static final int ERROR  = 2;
-    protected static final int FATAL  = 1;
-    protected int _logLevel = 2;
 
+    // --------------------------------------------------------- Attributes
+
+    /** The name of this simple log instance */
     protected String _name = null;
 
+
+    // --------------------------------------------------------- Constructor
+    
+    /** 
+     * Construct a simple log with given name.
+     *
+     * @param name log name
+     */
     public SimpleLog(String name) {
+    
         _name = name;
 
+        // set initial log level
+        // set default log level to ERROR
+        setLevel(Log.ERROR);
+        
+        // set log level from properties
         String lvl = _simplelogProps.getProperty(_prefix + "log." + _name);
         int i = String.valueOf(name).lastIndexOf(".");
         while(null == lvl && i > -1) {
@@ -103,104 +194,140 @@ public class SimpleLog implements Log {
             lvl = _simplelogProps.getProperty(_prefix + "log." + name);
             i = String.valueOf(name).lastIndexOf(".");
         }
+        
         if(null == lvl) {
             lvl =  _simplelogProps.getProperty(_prefix + "defaultlog");
         }
 
         if("debug".equalsIgnoreCase(lvl)) {
-            _logLevel = DEBUG;
+            setLevel(Log.DEBUG);
         } else if("info".equalsIgnoreCase(lvl)) {
-            _logLevel = INFO;
+            setLevel(Log.INFO);
         } else if("warn".equalsIgnoreCase(lvl)) {
-            _logLevel = WARN;
+            setLevel(Log.WARN);
         } else if("error".equalsIgnoreCase(lvl)) {
-            _logLevel = ERROR;
+            setLevel(Log.ERROR);
         } else if("fatal".equalsIgnoreCase(lvl)) {
-            _logLevel = FATAL;
+            setLevel(Log.FATAL);
         }
     }
 
+
+    // --------------------------------------------------------- Methods
+    
+    /**
+     * <p> Do the actual logging.
+     * This method assembles the message 
+     * and then prints to <code>System.out</code>.</p>
+     */
     protected void log(int type, Object message, Throwable t) {
-        if(_logLevel >= type) {
-            StringBuffer buf = new StringBuffer();
-            if(_showtime) {
-                buf.append(_df.format(new Date()));
-                buf.append(" ");
-            }
-            switch(type) {
-                case DEBUG: buf.append("[DEBUG] "); break;
-                case INFO:  buf.append("[INFO] ");  break;
-                case WARN:  buf.append("[WARN] ");  break;
-                case ERROR: buf.append("[ERROR] "); break;
-                case FATAL: buf.append("[FATAL] "); break;
-            }
-            if(_showlogname) {
-                buf.append(String.valueOf(_name)).append(" - ");
-            }
-            buf.append(String.valueOf(message));
-            if(t != null) {
-                buf.append(" <");
-                buf.append(t.toString());
-                buf.append(">");
-                t.printStackTrace();
-            }
-            System.out.println(buf.toString());
+        // use a string buffer for better performance 
+        StringBuffer buf = new StringBuffer();
+        
+        // append date-time if so configured
+        if(_showtime) {
+            buf.append(_df.format(new Date()));
+            buf.append(" ");
         }
+        
+        // append a readable representation of the log leve
+        switch(type) {
+            case DEBUG: buf.append("[DEBUG] "); break;
+            case INFO:  buf.append("[INFO] ");  break;
+            case WARN:  buf.append("[WARN] ");  break;
+            case ERROR: buf.append("[ERROR] "); break;
+            case FATAL: buf.append("[FATAL] "); break;
+        }
+        
+        // append the name of the log instance if so configured
+        if(_showlogname) {
+            buf.append(String.valueOf(_name)).append(" - ");
+        }
+        
+        // append the message
+        buf.append(String.valueOf(message));
+        
+        // append stack trace if not null
+        if(t != null) {
+            buf.append(" <");
+            buf.append(t.toString());
+            buf.append(">");
+            t.printStackTrace();
+        }
+        
+        // print to System.out
+        System.out.println(buf.toString());
     }
 
-    public final void debug(Object message) {
-        log(DEBUG,message,null);
+    // --------------------------------------------------------- Log Implementation
+
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void debugImpl(Object message) {
+        log(Log.DEBUG,message,null);
     }
 
-    public final void debug(Object message, Throwable t) {
-        log(DEBUG,message,t);
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void debugImpl(Object message, Throwable t) {
+        log(Log.DEBUG,message,t);
     }
 
-    public final void info(Object message) {
-        log(INFO,message,null);
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void infoImpl(Object message) {
+        log(Log.INFO,message,null);
     }
 
-    public final void info(Object message, Throwable t) {
-        log(INFO,message,t);
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void infoImpl(Object message, Throwable t) {
+        log(Log.INFO,message,t);
     }
 
-    public final void warn(Object message) {
-        log(WARN,message,null);
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void warnImpl(Object message) {
+        log(Log.WARN,message,null);
     }
-    public final void warn(Object message, Throwable t) {
-        log(WARN,message,t);
-    }
-
-    public final void error(Object message) {
-        log(ERROR,message,null);
-    }
-
-    public final void error(Object message, Throwable t) {
-        log(ERROR,message,t);
-    }
-
-    public final void fatal(Object message) {
-        log(FATAL,message,null);
+    
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void warnImpl(Object message, Throwable t) {
+        log(Log.WARN,message,t);
     }
 
-    public final void fatal(Object message, Throwable t) {
-        log(FATAL,message,t);
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void errorImpl(Object message) {
+        log(Log.ERROR,message,null);
     }
 
-    public final boolean isDebugEnabled() {
-        return (_logLevel >= DEBUG);
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void errorImpl(Object message, Throwable t) {
+        log(Log.ERROR,message,t);
     }
 
-    public final boolean isInfoEnabled() {
-        return (_logLevel >= INFO);
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void fatalImpl(Object message) {
+        log(Log.FATAL,message,null);
     }
 
-    public final void setLevel(int level) {
-        _logLevel = level;
+    /**
+     * Prepare then call {@link #log}.
+     */
+    protected final void fatalImpl(Object message, Throwable t) {
+        log(Log.FATAL,message,t);
     }
-
-    public final int getLevel() {
-        return _logLevel;
-    }
-
 }
