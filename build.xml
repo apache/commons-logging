@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.35 2003/04/07 09:36:10 rdonkin Exp $
+        $Id: build.xml,v 1.36 2003/05/07 16:02:20 rdonkin Exp $
 -->
 
 
@@ -30,6 +30,7 @@
   <property name="junit.jar"               value="${junit.home}/junit.jar"/>
   <property name="log4j.jar"               value="${jakarta.home}/jakarta-log4j/dist/lib/log4j.jar"/>
   <property name="logkit.jar"              value="${jakarta.home}/jakarta-avalon-logkit/build/log/logkit"/>
+  <property name="avalon-framework.jar"    value="../../Avalon-4.1.4/avalon-framework-4.1.4.jar"/>
 
 
 <!-- ========== Component Declarations ==================================== -->
@@ -81,6 +82,7 @@
     <pathelement location="${junit.jar}"/>
     <pathelement location="${log4j.jar}"/>
     <pathelement location="${logkit.jar}"/>
+    <pathelement location="${avalon-framework.jar}"/>
   </path>
 
 
@@ -94,6 +96,7 @@
     <pathelement location="${junit.jar}"/>
     <pathelement location="${log4j.jar}"/>
     <pathelement location="${logkit.jar}"/>
+    <pathelement location="${avalon-framework.jar}"/>
     <pathelement location="${conf.home}"/>
   </path>
 
@@ -134,15 +137,15 @@
     <filter  token="name"                  value="${component.name}"/>
     <filter  token="package"               value="${component.package}"/>
     <filter  token="version"               value="${component.version}"/>
-  </target>
-
-
+  </target>  
+  
   <target name="prepare" depends="init"
    description="Prepare build directory">
 
     <echo>
-    ${log4j.jar}
-    ${logkit.jar}
+    Log4j: ${log4j.jar}
+    LogKit: ${logkit.jar}
+    Avalon-Framework: ${avalon-framework.jar}
     </echo>
 
     <mkdir dir="${build.home}"/>
@@ -163,12 +166,10 @@
     </copy>
   </target>
 
-
   <target name="compile" depends="static,compile-only"
           description="Compile shareable components"/>
 
-  <target name="compile-only" depends="init" >
-
+  <target name='discovery' depends='init'>
     <available property="jdk.1.4.present"
                classname="java.util.logging.Logger"/>
     <available classname="org.apache.log4j.Logger"
@@ -177,10 +178,48 @@
     <available property="logkit.present"
                classpathref="compile.classpath"
                classname="org.apache.log.Logger"/>
+    <available property="avalon-framework.present"
+               classpathref="compile.classpath"
+               classname="org.apache.avalon.framework.logger.Logger"/>
+  </target>
+
+  <target name="log4j-warning" unless='log4j.present' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    Log4j not found: Cannot Build Log4jLogger
+    </echo>
+  </target>
+  
+  <target name="logkit-warning" unless='logkit.present' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    LogKit not found: Cannot Build LogKitLogger
+    </echo>
+  </target>
+  
+  <target name="avalon-framework-warning" unless='avalon-framework.present' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    Avalon-Framework not found: Cannot Build AvalonLogger
+    </echo>
+  </target>
+  
+  <target name="jdk1.4-warning" unless='jdk.1.4.present' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    JDK 1.4 not present: Cannot Build Jdk14Logger
+    </echo>
+  </target>
+  
+  <target name='warning' depends='log4j-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning'/>
+
+
+  <target name="compile-only" depends="init,discovery,warning" >
 
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
     <echo  message="log4j.present=${log4j.present}"/>
     <echo  message="logkit.present=${logkit.present}"/>
+    <echo  message="avalon-framework.present=${avalon-framework.present}"/>
 
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
@@ -196,6 +235,8 @@
                unless="log4j.present"/>
       <exclude name="org/apache/commons/logging/impl/LogKitLogger.java"
                unless="logkit.present"/>
+      <exclude name="org/apache/commons/logging/impl/AvalonLogger.java"
+               unless="avalon-framework.present"/>
     </javac>
     <copy  todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>
