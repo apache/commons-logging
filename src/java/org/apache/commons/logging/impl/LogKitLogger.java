@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.4 2003/08/16 21:58:59 craigmcc Exp $
- * $Revision: 1.4 $
- * $Date: 2003/08/16 21:58:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.5 2003/10/02 16:17:57 craigmcc Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/10/02 16:17:57 $
  *
  * ====================================================================
  *
@@ -79,10 +79,10 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Robert Burrell Donkin                                 *
- * @version $Id: LogKitLogger.java,v 1.4 2003/08/16 21:58:59 craigmcc Exp $
+ * @version $Id: LogKitLogger.java,v 1.5 2003/10/02 16:17:57 craigmcc Exp $
  */
 
-public final class LogKitLogger implements Log, Serializable {
+public class LogKitLogger implements Log, Serializable {
 
 
     // ------------------------------------------------------------- Attributes

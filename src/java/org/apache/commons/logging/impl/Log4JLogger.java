@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.5 2003/08/16 21:58:59 craigmcc Exp $
- * $Revision: 1.5 $
- * $Date: 2003/08/16 21:58:59 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Log4JLogger.java,v 1.6 2003/10/02 16:17:57 craigmcc Exp $
+ * $Revision: 1.6 $
+ * $Date: 2003/10/02 16:17:57 $
  *
  * ====================================================================
  *
@@ -76,9 +76,9 @@ import org.apache.log4j.Priority;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JLogger.java,v 1.5 2003/08/16 21:58:59 craigmcc Exp $
+ * @version $Id: Log4JLogger.java,v 1.6 2003/10/02 16:17:57 craigmcc Exp $
  */
-public final class Log4JLogger implements Log, Serializable {
+public class Log4JLogger implements Log, Serializable {
 
 
     // ------------------------------------------------------------- Attributes

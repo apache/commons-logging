@@ -79,10 +79,10 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
  * @author <a href="mailto:vince256@comcast.net">Vince Eagen</a>
- * @version $Revision: 1.1 $ $Date: 2003/08/16 22:35:16 $
+ * @version $Revision: 1.2 $ $Date: 2003/10/02 16:17:57 $
  */
 
-public final class Jdk13LumberjackLogger implements Log, Serializable {
+public class Jdk13LumberjackLogger implements Log, Serializable {
 
 
     // ----------------------------------------------------- Instance Variables
