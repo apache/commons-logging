@@ -73,9 +73,18 @@ Non-goals:
 </p>
 
 <ul>
-  <li>Java Development Kit (Version 1.1 or later)
-  </li>
-  <li>log4j (compile-time dependency only) </li>
+  <li>Java Development Kit (Version 1.1 or later)</li>
+  <li>Avalon Framework (compile-time dependency only unless this Log
+      implementation is selected at runtime)
+  <li>Avalon LogKit (compile-time dependency only unless this Log
+      implementation is selected at runtime)
+  <li>JDK 1.4 (compile-time dependency only unless this log implementation
+      is selected at runtime).
+  <li>Log4J (compile-time dependency only unless this Log
+      implementation is selected at runtime)</li>
+  <li><a href="http://sourceforge.net/projects/lumberjack/">Lumberjack</a>
+      (compile-time dependency only unless this Log
+      implementation is selected at runtime)</li>
 </ul>
 
 </subsection>

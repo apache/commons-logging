@@ -40,15 +40,15 @@ a specific logging implementation.
 Familiarity with high-level details of various Logging implementations is presumed.
     </p>
 
-        <p>
-The Jakarta Commons Logging provides a Log interface with thin-wrapper implementations for
+<p>The Jakarta Commons Logging provides a Log interface with thin-wrapper implementations for
 other logging tools, including
-<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>,
-and
-<a>JDK 1.4</a>.
+<a href="http://jakarta.apache.org/log4j/docs/index.html">Log4J</a>,
+<a href="http://jakarta.apache.org/avalon/logkit/index.html">Avalon LogKit</a>,
+the Avalon Framework's logging infrastructure,
+JDK 1.4, and an implementation of JDK 1.4 logging APIs (JSR-47) for pre-1.4
+systems.
 The interface maps closely to Log4J and LogKit.
-    </p>
+</p>
 
 </section>
     <section name="Users Quick Start">

@@ -16,10 +16,10 @@
 
 -->
 
-$Id: RELEASE-NOTES.txt,v 1.3 2004/02/28 22:10:53 craigmcc Exp $
+$Id: RELEASE-NOTES.txt,v 1.4 2004/02/28 23:20:57 craigmcc Exp $
 
                            Commons Logging Package
-                                Version 1.0.3
+                                Version 1.0.4
                                 Release Notes
 
 
@@ -28,71 +28,66 @@ INTRODUCTION:
 
 This document contains the release notes for this version of the Commons
 Logging package.  It is primarily a maintenance and code cleanup release,
-with minimal new features.
+with some new features.
 
 The following paragraphs document changes since the previous release
-(version 1.0.2).
+(version 1.0.3).
 
 
 NEW FEATURES:
 ============
 
-[build.xml]        Refined build process to correctly avoid compiling classes
-                   when dependencies are not available, and to avoid name
-                   clashes over Ant properties used in different ways.
+[ALL FILES]        This version of Commons Logging is released under the
+                   Apache License (Version 2.0).  All source files have been
+                   modified to reflect this.
 
-[unit tests]       Added new suites of tests for the Log4J and JDK 1.4
-                   logging implementations, including tests with multiple
-                   class loaders that closely simulate the scenario of using
-                   commons-logging in a servlet container.
+[maven.xml]        Added beginnings of a Maven-based build, primarily for the
+                   purpose of creating documentation consistent with Mavenized
+                   commons projects.  The official build system for the software
+                   is still the Ant "build.xml" file.
 
-[documentation]    Overall cleanup and correction of the JavaDoc documentation
-                   to correctly reflect the current behavior.  In particular,
-                   the default logging implementation (selected if nothing
-                   else is configured) is now SimpleLog, not NoOpLog.
+[AvalonLogger]     Added AvalonLogger, which wraps the logger used by the
+                   Avalon framework.  As with other implementations, this
+                   is compiled only if the appropriate dependencies are
+                   satisfied.
 
-[LogFactory]       Add a static release(ClassLoader) method that allows,
-                   for example, a webapp to clean up all c-l references
-                   prior to being shut down.
+[Jdk13LumberjackLogger]
+                   Added Jdk13LumberjackLogger, which wraps the implementation
+                   of the JSR-47 logging APIs (for JDKs before 1.4) provided
+                   by the SourceForge "lumberjack" project.
+                   <http://sourceforge.net/projects/lumberjack/>
+
 
 BUG FIXES:
 =========
 
-[build.xml]        Correct the META-INF/MANIFEST.MF that was embedded in the
-                   generated JAR files to properly contain the version number.
+[MANIFEST.MF]      Remove reference to Log4J from the manifest classpath.
 
-[LogFactory]       Fix security violations on several ClassLoader method
-                   invocations.
+[LogConfigurationException]
+                   Include root cause in the text of the message, if present.
 
-[SimpleLog]        Dump stack trace through logger, instead of directly to
-                   System.out, to preserve output sequence.
+[LogFactory]       Improve usability of error messages reporting
+                   configuration problems.
 
-[SimpleLog]        Avoid a security exception if system properties cannot be
-                   read (such as in an applet).
+[JDK14Logger]      Implement Serializable, remove "final" declaration for
+                   easy subclassing.
 
-[Bugzilla 10825]   NullPointerException when Logger.getClassLoader()
-                   returns null.
+[Log4JLogger]      Implement Serializable, remove "final" declaration for
+                   easy subclassing.
 
-[Bugzilla 13118]   Correct detection of JDK 1.4 that was mis-identifying on a
-                   scenario where a JDK 1.3 implementation included an
-                   implementation of JSR-47 logging.
+[NoOpLogger]       Implement Serializable, remove "final" declaration for
+                   easy subclassing.
 
-[Bugzilla 13157]   Incorrect selection of Log4J in a servlet container.
-
-[Bugzilla 13201]   Log4JLogger should not attempt to auto-configure
-                   appenders; this is out of scope for commons-logging.
-
-[Bugzilla 17561]   Attempts to override Log4J configuration.
-
-[Bugzilla 17894]   Unable to configure commons-logging SimpleLog for a webapp.
-
-[Bugzilla 18184]   Jdk14Logger should not waste the effort to create a
-                   Throwable (to extract calling class and method) if the
-                   message is not going to be logged anyway.
+[SimpleLog]        Make SimpleLog more friendly to the security manager
+                   in an applet environment, by swallowing any security
+                   exceptions when looking up system properties that are
+                   not accessible.
 
 
 DEPRECATIONS:
 ============
+
+    (These are carried forward from Version 1.0.3)
 
 [LogSource]        Previously deprecated, replaced by LogFactory.
 
