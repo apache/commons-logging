@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.10 2002/08/09 16:18:36 rsitze Exp $
- * $Revision: 1.10 $
- * $Date: 2002/08/09 16:18:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.11 2002/08/12 21:01:07 rsitze Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/08/12 21:01:07 $
  *
  * ====================================================================
  *
@@ -85,7 +85,7 @@ import java.lang.SecurityException;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.10 $ $Date: 2002/08/09 16:18:36 $
+ * @version $Revision: 1.11 $ $Date: 2002/08/12 21:01:07 $
  */
 
 public abstract class LogFactory {
@@ -346,6 +346,13 @@ public abstract class LogFactory {
         if (factory == null) {
             factory = newFactory(FACTORY_DEFAULT, LogFactory.class.getClassLoader());
         }
+        
+        if (factory != null) {
+            /**
+             * Always cache using context class loader..
+             */
+            cacheFactory(contextClassLoader, factory);
+        }
 
         if( props!=null ) {
             Enumeration names = props.propertyNames();
@@ -540,9 +547,6 @@ public abstract class LogFactory {
             }
             
             LogFactory factory = (LogFactory)clazz.newInstance();
-            
-            // Cache using correct classLoader
-            cacheFactory(classLoader, factory);
             
             return factory;
         } catch (Exception e) {
