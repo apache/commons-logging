@@ -86,53 +86,58 @@ public abstract class AbstractLogTest extends TestCase {
 		
 		assertNotNull(log);
 		
+
 		log.debug(null);
 		
 		log.debug(null, null);
 		
-		log.debug("debug statement");
+		log.debug(log.getClass().getName() + ": debug statement");
 		
-		log.debug("debug statement w/ null exception", new RuntimeException());
+		log.debug(log.getClass().getName() + ": debug statement w/ null exception", new RuntimeException());
 		
+
 		log.error(null);
 		
 		log.error(null, null);
 		
-		log.error("error statement");
+		log.error(log.getClass().getName() + ": error statement");
 		
-		log.error("error statement w/ null exception", new RuntimeException());
+		log.error(log.getClass().getName() + ": error statement w/ null exception", new RuntimeException());
 		
+
 		log.fatal(null);
 		
 		log.fatal(null, null);
 		
-		log.fatal("fatal statement");
+		log.fatal(log.getClass().getName() + ": fatal statement");
 		
-		log.fatal("fatal statement w/ null exception", new RuntimeException());
+		log.fatal(log.getClass().getName() + ": fatal statement w/ null exception", new RuntimeException());
 		
+
 		log.info(null);
 		
 		log.info(null, null);
 		
-		log.info("info statement");
+		log.info(log.getClass().getName() + ": info statement");
 		
-		log.info("info statement w/ null exception", new RuntimeException());
+		log.info(log.getClass().getName() + ": info statement w/ null exception", new RuntimeException());
 		
+
 		log.trace(null);
 		
 		log.trace(null, null);
 		
-		log.trace("trace statement");
+		log.trace(log.getClass().getName() + ": trace statement");
 		
-		log.trace("trace statement w/ null exception", new RuntimeException());
+		log.trace(log.getClass().getName() + ": trace statement w/ null exception", new RuntimeException());
+		
 
 		log.warn(null);
 		
 		log.warn(null, null);
 		
-		log.warn("warn statement");
+		log.warn(log.getClass().getName() + ": warn statement");
 		
-		log.warn("warn statement w/ null exception", new RuntimeException());
-		
+		log.warn(log.getClass().getName() + ": warn statement w/ null exception", new RuntimeException());
 	}    
 }
