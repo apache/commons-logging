@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/DefaultConfigTestCase.java,v 1.1 2003/03/30 05:22:50 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2003/03/30 05:22:50 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/DefaultConfigTestCase.java,v 1.2 2003/04/10 22:40:37 rsitze Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/04/10 22:40:37 $
  *
  * ====================================================================
  *
@@ -76,21 +76,13 @@ import org.apache.commons.logging.LogFactory;
  * should be automatically configured).</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2003/03/30 05:22:50 $
+ * @version $Revision: 1.2 $ $Date: 2003/04/10 22:40:37 $
  */
 
 public class DefaultConfigTestCase extends TestCase {
 
 
     // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * <p>Construct a new instance of this test case.</p>
-     */
-    public DefaultConfigTestCase() {
-        super();
-    }
 
 
     /**

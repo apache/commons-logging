@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/CustomConfigTestCase.java,v 1.2 2003/04/02 00:50:49 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2003/04/02 00:50:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/CustomConfigTestCase.java,v 1.3 2003/04/10 22:40:37 rsitze Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/04/10 22:40:37 $
  *
  * ====================================================================
  *
@@ -85,21 +85,13 @@ import org.apache.log4j.spi.LoggingEvent;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.2 $ $Date: 2003/04/02 00:50:49 $
+ * @version $Revision: 1.3 $ $Date: 2003/04/10 22:40:37 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * <p>Construct a new instance of this test case.</p>
-     */
-    public CustomConfigTestCase() {
-        super();
-    }
 
 
     /**
