@@ -1,0 +1,23 @@
+$Id: RELEASE-NOTES.txt,v 1.1 2002/01/29 20:31:04 sanders Exp $
+
+                           Commons Logging Package
+                                Version 1.0
+                               Release Notes
+
+
+INTRODUCTION:
+
+This document contains the release notes for this version of the Commons
+Logging package. This is the first release of commons-logging.
+
+
+NEW FEATURES:
+
+* commons-logging implements an abstraction between logging and the logging 
+  implementation being used.  You can currently use Avalon's logkit, Log4J, 
+  JDK 1.4's logging, or nothing at all.  It is up to you.
+
+
+BUG FIXES:
+
+
