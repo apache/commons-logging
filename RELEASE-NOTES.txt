@@ -16,10 +16,10 @@
 
 -->
 
-$Id: RELEASE-NOTES.txt,v 1.8 2004/09/27 16:21:40 proyal Exp $
+$Id$
 
                            Commons Logging Package
-                                Version 1.0.4
+                                Version 1.0.5
                                 Release Notes
 
 
@@ -27,91 +27,56 @@ INTRODUCTION:
 ============
 
 This document contains the release notes for this version of the Commons
-Logging package.  It is primarily a service release for downstream users.
-The main emphasis maintenance and code cleanup release,
-with some new features including support for both the old 1.2.x series
-of Log4J releases and the new 1.3.x series of releases.
+Logging package.  
+
+A new commons-logging-optional.jar has been introduced. This contains
+classes which are not considered sufficient core to be included in the
+commons-logging.jar. 
+
+JCL 1.0.5 is adds optional improved automatic memory management
+for containers which do not support JCL explicit memory release
+during hot reployment (1.4+ JVMs only). To take advantage of this new
+feature, the optional jar must be deployed with the core one. Use of
+this feature is strongly recommended.
+
+Note that the deprecated Log4JCategoryLog has been moved from the core
+to the optional jar. Those using the 1.1.x series of Log4J releases 
+should add the optional jar to their classpath. Others setting this
+log explicitly are recommended to change to use Log4JLogger. This
+change should not effect those relying on automatic discovery of 
+Log4J by JCL.
 
 The following paragraphs document changes since the previous release
-(version 1.0.3). The documentation (userguide and javadoc) 
-has also been improved.
-
+(version 1.0.4). 
 
 NEW FEATURES:
 ============
 
-[ALL FILES]        This version of Commons Logging is released under the
-                   Apache License (Version 2.0).  All source files have been
-                   modified to reflect this.
+[MemoryLog]        An in-memory log implementation. May prove useful
+                   in unit tests. Optional.
+[ALL]              Improved memory management for hot deployment in containers
+                   that do not explictly flush JCL. Use of this feature is strongly
+                   recommended for all modern JVMs. Optional.
 
-[maven.xml]        Added beginnings of a Maven-based build, primarily for the
-                   purpose of creating documentation consistent with Mavenized
-                   commons projects.  The official build system for the software
-                   is still the Ant "build.xml" file.
+ENHANCEMENTS:
+=============
 
-[AvalonLogger]     Added AvalonLogger, which wraps the logger used by the
-                   Avalon framework.  As with other implementations, this
-                   is compiled only if the appropriate dependencies are
-                   satisfied. This implementation is *NOT* Serializable
-
-[Jdk13LumberjackLogger]
-                   Added Jdk13LumberjackLogger, which wraps the implementation
-                   of the JSR-47 logging APIs (for JDKs before 1.4) provided
-                   by the SourceForge "lumberjack" project.
-                   <http://sourceforge.net/projects/lumberjack/>
-
-[LogFactoryImpl]   If an InvocationTargetException is returned during the
-                   creation of a new Log instance, unwrap the underlying
-                   cause and pass it in to the LogConfigurationException
-                   constructor.  This will make the actual cause of the
-                   problem easier to diagnose.
-
-[LogFactoryImpl]   If the isAssignableFrom() test fails because there is more
-                   than one instance of org.apache.commons.logging.Log visible
-                   in the class loader hierarchy, make the exception message
-                   that is reported explicitly state this, rather than the
-                   potentially misleading claim that an implementation class
-                   does not implement Log.
-
-[Log4JLogger]      Changes to allow this logger to support both the existing 1.2.x 
-                   series of releases and also the upcoming 1.3.x series of Log4J
-                   releases.
-
-[SimpleLog]        Added support for setting date-time format.
+[LogFactory]       Improved discovery for Log4J.
 
 BUG FIXES:
 =========
 
-[MANIFEST.MF]      Remove reference to Log4J from the manifest classpath.
+[AvalonLogger] 	   Fixed 
 
-[LogConfigurationException]
-                   Include root cause in the text of the message, if present.
+[LogFactory]       Fix addressing null pointer when logging is loaded by boot 
+                   classloader for JRE's that return a null classloader in this situtation.
 
-[LogFactory]       Improve usability of error messages reporting
-                   configuration problems.
-
-[JDK14Logger]      Implement Serializable, remove "final" declaration for
-                   easy subclassing.
-
-[Log4JLogger]      Implement Serializable, remove "final" declaration for
-                   easy subclassing.
-
-[NoOpLogger]       Implement Serializable, remove "final" declaration for
-                   easy subclassing.
-
-[SimpleLog]        Make SimpleLog more friendly to the security manager
-                   in an applet environment, by swallowing any security
-                   exceptions when looking up system properties that are
-                   not accessible.
-
-[AvalonLogger]     Fix NullPointerException when it when providing a
-                   default logger.
-
+[ALL]              Added workaround for java 1.2.2 compiler bug.
 
 DEPRECATIONS:
 ============
 
-    (These are carried forward from Version 1.0.3)
+    (These are carried forward from Version 1.0.4)
 
 [LogSource]        Previously deprecated, replaced by LogFactory.
 
@@ -122,5 +87,5 @@ DEPRECATIONS:
 
 [Log4JCategoryLog] This class has been replaced by Log4JLogger, which
                    corresponds to the availability of the new Logger class
-                   in Log4J 1.2 and later.
+                   in Log4J 1.2 and later. This is now distributed as optional.
 
