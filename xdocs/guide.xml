@@ -69,8 +69,8 @@
                     <ol>
                         <li><a href='#Is JCL Thread Safe?'>Is JCL Thread Safe?</a></li>
                         <li><a href='#Why "xxxLogger does not implement Log"?'>Why "xxxLogger does not implement Log"?</a></li>
-                        <li><a href='#Why "How Can I Switch Logging Levels On And Off?'>How Can I Switch Logging Levels On And Off?</a></li>
-                        <li><a href='#Why "How Can I Change The Logging System Configuration?"?'>How Can I Change The Logging System Configuration?</a></li>
+                        <li><a href='#How Can I Switch Logging Levels On And Off?'>How Can I Switch Logging Levels On And Off?</a></li>
+                        <li><a href='#How Do I Change The Logging System Configuration?'>How Do I Change The Logging System Configuration?</a></li>
                     </ol>
                 </li>
             </ol>
@@ -616,11 +616,11 @@ should be removed from the application's library.
     </subsection>
         <subsection name='How Can I Switch Logging Levels On And Off?'>
             <p>
-See <a href='How Can I Change The Logging System Configuration?'>
+See <a href='#How Do I Change The Logging System Configuration?'>
 How Can I Change The Logging System Configuration?</a>
         </p>
     </subsection>
-        <subsection name='How Can I Change The Logging System Configuration?'>
+        <subsection name='How Do I Change The Logging System Configuration?'>
             <p>
 The configuration supported by JCL is limited to choosing the underlying logging system.
 JCL does not (and will never) support changing the configuration of the wrapped logging system.
