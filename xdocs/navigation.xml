@@ -17,11 +17,7 @@
  limitations under the License.
 
 -->
-
-<!DOCTYPE project [
-<!ENTITY commons-nav SYSTEM "../../commons-build/incl_nav.xml">
-]>
-
+<!DOCTYPE org.apache.commons.menus SYSTEM '../../commons-build/menus/menus.dtd'>
 <project name="Logging">
 
   <title>Logging</title>
@@ -42,7 +38,7 @@
             href="/guide.html"/>
     </menu>
     
-    &commons-nav;
+    &common-menus;
 
   </body>
 </project>
