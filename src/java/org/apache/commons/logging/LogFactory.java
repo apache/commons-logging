@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.17 2002/12/13 16:48:06 rsitze Exp $
- * $Revision: 1.17 $
- * $Date: 2002/12/13 16:48:06 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.18 2002/12/13 16:55:39 rsitze Exp $
+ * $Revision: 1.18 $
+ * $Date: 2002/12/13 16:55:39 $
  *
  * ====================================================================
  *
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.17 $ $Date: 2002/12/13 16:48:06 $
+ * @version $Revision: 1.18 $ $Date: 2002/12/13 16:55:39 $
  */
 
 public abstract class LogFactory {
@@ -544,7 +544,10 @@ public abstract class LogFactory {
                         if (classLoader != null) {
                             try {
                                 // first the given class loader param (thread class loader)
-                                return classLoader.loadClass(factoryClass).newInstance();
+                                
+                                // warning: must typecast here & allow exception
+                                // to be generated/caught & recast propertly.
+                                return (LogFactory)classLoader.loadClass(factoryClass).newInstance();
                             } catch (ClassNotFoundException ex) {
                                 if (classLoader == LogFactory.class.getClassLoader()) {
                                     // Nothing more to try, onwards.
@@ -571,6 +574,8 @@ public abstract class LogFactory {
                          * b) The Java endorsed library mechanism is instead
                          *    Class.forName(factoryClass);
                          */
+                        // warning: must typecast here & allow exception
+                        // to be generated/caught & recast propertly.
                         return (LogFactory)Class.forName(factoryClass).newInstance();
                     } catch (Exception e) {
                         return new LogConfigurationException(e);
