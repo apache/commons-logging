@@ -1,0 +1,43 @@
+# Copyright 2001-2004 The Apache Software Foundation.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# log4j.jar - log4j classes (see http://jakarta.apache.org/log4j)
+log4j.jar= /home/robert/.maven/repository/log4j/jars/log4j-1.2.8.jar
+
+# Used for testing against older 1.2.x Log4J versions
+log4j12.jar=/home/robert/.maven/repository/log4j/jars/log4j-1.2.6.jar
+
+# logkit.jar - Avalon LogKit classes (see http://jakarta.apache.org/avalon)
+logkit.jar=/home/robert/.maven/repository/logkit/jars/logkit-1.0.1.jar
+
+# Avalon framework - used for wrapper for avalon framework logger
+avalon-framework.jar=/home/robert/.maven/repository/avalon-framework/jars/avalon-framework-4.1.3.jar
+
+#
+# if you want to run the test cases, junit needs to be in the classpath.
+# the build.xml uses a default value so you might not need to set this property.
+#
+junit.jar=/home/robert/.maven/repository/junit/jars/junit-3.8.1.jar
+commons-logging-kernel.jar=../kernel/dist/commons-logging-kernel.jar
+
+#
+# if you want to run the test cases, junit needs to be in the classpath.
+# the build.xml uses a default value so you might not need to set this property.
+#
+# junit.jar=../../jakarta-velocity/build/lib/junit-3.7.jar
+
+# Maven properties (for web site build)
+# Those committers using agents may like to use
+#maven.username=rdonkin
+#logging.cvs=lserver:rdonkin@cvs.apache.org:/home/cvs
