@@ -21,6 +21,7 @@ import java.io.Serializable;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.apache.log4j.Level;
 
 /**
  * <p>Implementation of {@link Log} that maps directly to a Log4J
@@ -31,7 +32,7 @@ import org.apache.log4j.Priority;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JLogger.java,v 1.10 2004/02/28 21:46:45 craigmcc Exp $
+ * @version $Id: Log4JLogger.java,v 1.11 2004/05/19 21:01:23 rdonkin Exp $
  */
 public class Log4JLogger implements Log, Serializable {
 
@@ -40,6 +41,8 @@ public class Log4JLogger implements Log, Serializable {
 
     /** The fully qualified name of the Log4JLogger class. */
     private static final String FQCN = Log4JLogger.class.getName();
+    
+    private static final boolean is12 = Priority.class.isAssignableFrom(Level.class);
 
     /** Log to this logger */
     private transient Logger logger = null;
@@ -78,7 +81,11 @@ public class Log4JLogger implements Log, Serializable {
      * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message) {
-        getLogger().log(FQCN, Priority.DEBUG, message, null);
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.DEBUG, message, null );
+        } else {
+            getLogger().log(FQCN, Level.DEBUG, message, null );
+        }
     }
 
 
@@ -87,7 +94,11 @@ public class Log4JLogger implements Log, Serializable {
      * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message, Throwable t) {
-        getLogger().log(FQCN, Priority.DEBUG, message, t );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.DEBUG, message, t );
+        } else {
+            getLogger().log(FQCN, Level.DEBUG, message, t );
+        }
     }
 
 
@@ -95,14 +106,22 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message) {
-        getLogger().log(FQCN, Priority.DEBUG, message, null);
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.DEBUG, message, null );
+        } else {
+            getLogger().log(FQCN, Level.DEBUG, message, null );
+        }
     }
 
     /**
      * Log an error to the Log4j Logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message, Throwable t) {
-        getLogger().log(FQCN, Priority.DEBUG, message, t );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.DEBUG, message, t );
+        } else {
+            getLogger().log(FQCN, Level.DEBUG, message, t );
+        }
     }
 
 
@@ -110,7 +129,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>INFO</code> priority.
      */
     public void info(Object message) {
-        getLogger().log(FQCN, Priority.INFO, message, null );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.INFO, message, null );
+        } else {
+            getLogger().log(FQCN, Level.INFO, message, null );
+        }    
     }
 
 
@@ -118,7 +141,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>INFO</code> priority.
      */
     public void info(Object message, Throwable t) {
-        getLogger().log(FQCN, Priority.INFO, message, t );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.INFO, message, t );
+        } else {
+            getLogger().log(FQCN, Level.INFO, message, t );
+        }
     }
 
 
@@ -126,7 +153,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>WARN</code> priority.
      */
     public void warn(Object message) {
-        getLogger().log(FQCN, Priority.WARN, message, null );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.WARN, message, null );
+        } else {
+            getLogger().log(FQCN, Level.WARN, message, null );
+        }
     }
 
 
@@ -134,7 +165,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>WARN</code> priority.
      */
     public void warn(Object message, Throwable t) {
-        getLogger().log(FQCN, Priority.WARN, message, t );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.WARN, message, t );
+        } else {
+            getLogger().log(FQCN, Level.WARN, message, t );
+        }
     }
 
 
@@ -142,7 +177,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>ERROR</code> priority.
      */
     public void error(Object message) {
-        getLogger().log(FQCN, Priority.ERROR, message, null );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.ERROR, message, null );
+        } else {
+            getLogger().log(FQCN, Level.ERROR, message, null );
+        }
     }
 
 
@@ -150,7 +189,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>ERROR</code> priority.
      */
     public void error(Object message, Throwable t) {
-        getLogger().log(FQCN, Priority.ERROR, message, t );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.ERROR, message, t );
+        } else {
+            getLogger().log(FQCN, Level.ERROR, message, t );
+        }
     }
 
 
@@ -158,7 +201,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>FATAL</code> priority.
      */
     public void fatal(Object message) {
-        getLogger().log(FQCN, Priority.FATAL, message, null );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.FATAL, message, null );
+        } else {
+            getLogger().log(FQCN, Level.FATAL, message, null );
+        }
     }
 
 
@@ -166,7 +213,11 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>FATAL</code> priority.
      */
     public void fatal(Object message, Throwable t) {
-        getLogger().log(FQCN, Priority.FATAL, message, t );
+        if(is12) {
+            getLogger().log(FQCN, (Priority) Level.FATAL, message, t );
+        } else {
+            getLogger().log(FQCN, Level.FATAL, message, t );
+        }
     }
 
 
@@ -193,7 +244,11 @@ public class Log4JLogger implements Log, Serializable {
      * Check whether the Log4j Logger used is enabled for <code>ERROR</code> priority.
      */
     public boolean isErrorEnabled() {
-        return getLogger().isEnabledFor(Priority.ERROR);
+        if(is12) {
+            return getLogger().isEnabledFor((Priority) Level.ERROR);
+        } else {
+            return getLogger().isEnabledFor(Level.ERROR);
+        }
     }
 
 
@@ -201,7 +256,11 @@ public class Log4JLogger implements Log, Serializable {
      * Check whether the Log4j Logger used is enabled for <code>FATAL</code> priority.
      */
     public boolean isFatalEnabled() {
-        return getLogger().isEnabledFor(Priority.FATAL);
+        if(is12) {
+            return getLogger().isEnabledFor((Priority) Level.FATAL);
+        } else {
+            return getLogger().isEnabledFor(Level.FATAL);
+        }
     }
 
 
@@ -225,6 +284,10 @@ public class Log4JLogger implements Log, Serializable {
      * Check whether the Log4j Logger used is enabled for <code>WARN</code> priority.
      */
     public boolean isWarnEnabled() {
-        return getLogger().isEnabledFor(Priority.WARN);
+        if(is12) {
+            return getLogger().isEnabledFor((Priority) Level.WARN);
+        } else {
+            return getLogger().isEnabledFor(Level.WARN);
+        }
     }
 }
