@@ -13,17 +13,13 @@ import org.apache.log4j.Priority;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: Log4JCategoryLog.java,v 1.2 2001/08/02 22:14:41 rwaldhoff Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.3 2001/08/07 17:37:22 rwaldhoff Exp $
  */
 public class Log4JCategoryLog  implements Log {
     Category _category = null;
 
     public Log4JCategoryLog(String name) {
         _category = Category.getInstance(name);
-    }
-
-    public final void assert(boolean assertion, String msg) {
-        _category.assert(assertion,msg);
     }
 
     public final void debug(Object message) {

@@ -17,7 +17,7 @@ import java.util.Date;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: SimpleLog.java,v 1.2 2001/08/02 22:14:41 rwaldhoff Exp $
+ * @version $Id: SimpleLog.java,v 1.3 2001/08/07 17:37:22 rwaldhoff Exp $
  */
 public class SimpleLog implements Log {
     static protected final Properties _simplelogProps = new Properties();
@@ -118,10 +118,6 @@ public class SimpleLog implements Log {
             }
             System.out.println(buf.toString());
         }
-    }
-
-    public final void assert(boolean assertion, String msg) {
-        if(!assertion) { error(msg); }
     }
 
     public final void debug(Object message) {
