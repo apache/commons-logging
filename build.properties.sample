@@ -13,3 +13,7 @@ avalon-framework.jar=../../Avalon-4.1.4/avalon-framework-4.1.4.jar
 #
 # junit.jar=../../jakarta-velocity/build/lib/junit-3.7.jar
 
+# Maven properties (for web site build)
+# Those committers using agents may like to use
+#maven.username=rdonkin
+#logging.cvs=lserver:rdonkin@cvs.apache.org:/home/cvs

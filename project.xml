@@ -4,17 +4,90 @@
   <extend>../commons-build/project.xml</extend>
   <name>Logging</name>
   <id>commons-logging</id>
+  <logo></logo>
   <currentVersion>1.0-dev</currentVersion>
+
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://www.apache.org</url>
+    <logo>http://jakarta.apache.org/images/jakarta-logo.gif</logo>
+  </organization>
 
   <inceptionYear>2001</inceptionYear>
   <shortDescription>Commons Logging</shortDescription>
   <description>
-    Commons Logging
+Commons Logging is a thin adapter allowing configurable bridging to other, 
+well known logging systems.
   </description>
+  
+  <logo>/images/logo.png</logo>
+  
+  <repository>
+    <connection>scm:cvs:${logging.cvs}:jakarta-commons/logging/</connection>
+    <url>http://cvs.apache.org/viewcvs/jakarta-commons/logging/</url>
+  </repository>
 
   <url>http://jakarta.apache.org/commons/logging/</url>
   
   <developers>
+    <developer>
+      <name>Morgan Delagrange</name>
+      <id>morgand</id>
+      <email>morgand at apache dot org</email>
+      <organization>Apache</organization>
+      <roles><role>Java Developer</role></roles>
+    </developer>
+    <developer>
+      <name>Rodney Waldhoff</name>
+      <id>rwaldhoff</id>
+      <email>rwaldhoff at apache org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Craig McClanahan</name>
+      <id>craigmcc</id>
+      <email>craigmcc at apache org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Scott Sanders</name>
+      <id>sanders</id> 
+      <email>sanders at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Robert Burrell Donkin</name>
+      <id>rdonkin</id>
+      <email>rdonkin at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Peter Donald</name>
+      <id>donaldp</id>
+      <email>donaldp at apache dot org</email>
+      <organization></organization>
+    </developer>
+    <developer>
+      <name>Costin Manolache</name>
+      <id>costin</id>
+      <email>costin at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Richard Sitze</name>
+      <id>rsitze</id>
+      <email>rsitze at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <name>Juozas Baliuka</name>
+      <id>baliuka</id>
+      <email>baliuka@apache.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
   
   <dependencies>
@@ -36,11 +109,10 @@
     
     <dependency>
       <id>avalon-framework</id>
-      <version>4.0</version>
+      <version>4.1.3</version>
     </dependency>
     
   </dependencies>
-
   <build>
     <sourceModifications>
       <sourceModification>
@@ -50,6 +122,21 @@
         </excludes>
       </sourceModification>
     </sourceModifications>
+    <unitTest>
+        <!--
+At the moment there are problems running the unit tests under maven.
+the unit tests run by custom ant target which perform configuration
+before the tests are run.
+There is no easy way to run these under maven at the moment.
+        -->
+        <directory>${pom.build.unitTestSourceDirectory}</directory>
+        <includes>
+            <include>**/AvalonLoggerTest.java</include>
+        </includes>
+        <resources>
+            <resource>**/*.properties</resource>
+        </resources>
+    </unitTest>
   </build>
 
 </project>
