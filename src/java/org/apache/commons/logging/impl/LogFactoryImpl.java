@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.6 2002/02/27 18:01:41 craigmcc Exp $
- * $Revision: 1.6 $
- * $Date: 2002/02/27 18:01:41 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.7 2002/03/31 00:31:49 craigmcc Exp $
+ * $Revision: 1.7 $
+ * $Date: 2002/03/31 00:31:49 $
  *
  * ====================================================================
  *
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.6 $ $Date: 2002/02/27 18:01:41 $
+ * @version $Revision: 1.7 $ $Date: 2002/03/31 00:31:49 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -367,29 +367,36 @@ public class LogFactoryImpl extends LogFactory {
 
         // Identify the Log implementation class we will be using
         String logClassName = null;
-        try {
+        if (logClassName == null) {
             logClassName = (String) getAttribute(LOG_PROPERTY);
-            if (logClassName == null) { // @deprecated
-                logClassName = (String) getAttribute(LOG_PROPERTY_OLD);
-            }
-            if (logClassName == null) {
+        }
+        if (logClassName == null) { // @deprecated
+            logClassName = (String) getAttribute(LOG_PROPERTY_OLD);
+        }
+        if (logClassName == null) {
+            try {
                 logClassName = System.getProperty(LOG_PROPERTY);
+            } catch (SecurityException e) {
+                ;
             }
-            if (logClassName == null) { // @deprecated
+        }
+        if (logClassName == null) { // @deprecated
+            try {
                 logClassName = System.getProperty(LOG_PROPERTY_OLD);
+            } catch (SecurityException e) {
+                ;
             }
-            if ((logClassName == null) && isLog4JAvailable()) {
-                logClassName =
-                    "org.apache.commons.logging.impl.Log4JCategoryLog";
-            }
-            if ((logClassName == null) && isJdk14Available()) {
-                logClassName =
-                    "org.apache.commons.logging.impl.Jdk14Logger";
-            }
-            if (logClassName == null) {
-                logClassName = LOG_DEFAULT;
-            }
-        } catch (SecurityException e) {
+        }
+        if ((logClassName == null) && isLog4JAvailable()) {
+            logClassName =
+                "org.apache.commons.logging.impl.Log4JCategoryLog";
+        }
+        if ((logClassName == null) && isJdk14Available()) {
+            logClassName =
+                "org.apache.commons.logging.impl.Jdk14Logger";
+        }
+        if (logClassName == null) {
+            logClassName = LOG_DEFAULT;
         }
 
         // Attempt to load the Log implementation class
