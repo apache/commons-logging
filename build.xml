@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.7 2002/01/08 22:55:38 craigmcc Exp $
+        $Id: build.xml,v 1.8 2002/01/22 01:33:45 craigmcc Exp $
 -->
 
 
@@ -92,6 +92,7 @@
     <pathelement location="${build.home}/tests"/>
     <pathelement location="${junit.jar}"/>
     <pathelement location="${log4j.jar}"/>
+    <pathelement location="${logkit.jar}"/>
     <pathelement location="${conf.home}"/>
   </path>
 
