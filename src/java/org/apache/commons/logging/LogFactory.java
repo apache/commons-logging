@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.5 2002/02/26 19:00:27 costin Exp $
- * $Revision: 1.5 $
- * $Date: 2002/02/26 19:00:27 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.6 2002/03/15 22:57:36 craigmcc Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/03/15 22:57:36 $
  *
  * ====================================================================
  *
@@ -84,7 +84,7 @@ import java.util.Properties;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.5 $ $Date: 2002/02/26 19:00:27 $
+ * @version $Revision: 1.6 $ $Date: 2002/03/15 22:57:36 $
  */
 
 public abstract class LogFactory {
@@ -503,7 +503,6 @@ public abstract class LogFactory {
             }
             return ((LogFactory) clazz.newInstance());
         } catch (Exception e) {
-            e.printStackTrace();
             throw new LogConfigurationException(e);
         }
 
