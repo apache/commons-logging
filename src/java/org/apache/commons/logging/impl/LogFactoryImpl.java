@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.19 2002/11/23 03:07:58 craigmcc Exp $
- * $Revision: 1.19 $
- * $Date: 2002/11/23 03:07:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.20 2002/11/23 03:49:40 craigmcc Exp $
+ * $Revision: 1.20 $
+ * $Date: 2002/11/23 03:49:40 $
  *
  * ====================================================================
  *
@@ -86,7 +86,7 @@ import org.apache.commons.logging.LogFactory;
  * <li>Use the <code>org.apache.commons.logging.Log</code> system property
  *     to identify the requested implementation class.</li>
  * <li>If <em>Log4J</em> is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Log4JCategoryLog</code>.</li>
+ *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
  * <li>If <em>JDK 1.4 or later</em> is available, return an instance of
  *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
  * <li>Otherwise, return an instance of
@@ -107,7 +107,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.19 $ $Date: 2002/11/23 03:07:58 $
+ * @version $Revision: 1.20 $ $Date: 2002/11/23 03:49:40 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -154,7 +154,7 @@ public class LogFactoryImpl extends LogFactory {
 
 
     private static final String LOG4JLOGIMPL =
-        "org.apache.commons.logging.impl.Log4JCategoryLog".intern();
+        "org.apache.commons.logging.impl.Log4JLogger".intern();
 
     // ----------------------------------------------------- Instance Variables
 
@@ -534,8 +534,8 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isLog4JAvailable() {
 
         try {
-            loadClass("org.apache.log4j.Category");
-            loadClass("org.apache.commons.logging.impl.Log4JCategoryLog");
+            loadClass("org.apache.log4j.Logger");
+            loadClass("org.apache.commons.logging.impl.Log4JLogger");
             return (true);
         } catch (Throwable t) {
             return (false);

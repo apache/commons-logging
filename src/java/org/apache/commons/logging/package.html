@@ -7,9 +7,9 @@
 can be used around a variety of different logging implementations, including
 prebuilt support for the following:</p>
 <ul>
-<li><a href="http://jakarta.apache.org/log4j/">Log4J</a> from Apache's
-    Jakarta project.  Each named <a href="Log.html">Log</a> instance is
-    connected to a corresponding Log4J Category.</li>
+<li><a href="http://jakarta.apache.org/log4j/">Log4J</a> (version 1.2 or later)
+    from Apache's Jakarta project.  Each named <a href="Log.html">Log</a>
+    instance is connected to a corresponding Log4J Logger.</li>
 <li><a href="http://java.sun.com/j2se/1.4/docs/guide/util/logging/index.html">
     JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
     <a href="Log.html">Log</a> instance is connected to a corresponding
@@ -127,7 +127,7 @@ implementation uses the following rules:</p>
         <code>org.apache.commons.logging.Log</code>.</li>
     <li>If the Log4J logging system is available in the application
         class path, use the corresponding wrapper class
-        (<a href="impl/Log4JCategoryLog.html">Log4JCategoryLog</a>).</li>
+        (<a href="impl/Log4JLogger.html">Log4JLogger</a>).</li>
     <li>If the application is executing on a JDK 1.4 system, use
         the corresponding wrapper class
         (<a href="impl/Jdk14Logger.html">Jdk14Logger</a>).</li>

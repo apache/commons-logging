@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.15 2002/06/15 18:13:01 craigmcc Exp $
- * $Revision: 1.15 $
- * $Date: 2002/06/15 18:13:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.16 2002/11/23 03:49:40 craigmcc Exp $
+ * $Revision: 1.16 $
+ * $Date: 2002/11/23 03:49:40 $
  *
  * ====================================================================
  *
@@ -77,7 +77,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * algorithm:</p>
  * <ul>
  * <li>If Log4J is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Log4JCategoryLog</code>.</li>
+ *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
  * <li>If JDK 1.4 or later is available, return an instance of
  *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
  * <li>Otherwise, return an instance of
@@ -97,7 +97,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  *  implementation performs exactly the same algorithm as this class did
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.15 2002/06/15 18:13:01 craigmcc Exp $
+ * @version $Id: LogSource.java,v 1.16 2002/11/23 03:49:40 craigmcc Exp $
  */
 public class LogSource {
 
@@ -121,7 +121,7 @@ public class LogSource {
 
         // Is Log4J Available?
         try {
-            if (null != Class.forName("org.apache.log4j.Category")) {
+            if (null != Class.forName("org.apache.log4j.Logger")) {
                 log4jIsAvailable = true;
             } else {
                 log4jIsAvailable = false;
@@ -166,7 +166,7 @@ public class LogSource {
             try {
                 if (log4jIsAvailable) {
                     setLogImplementation
-                            ("org.apache.commons.logging.impl.Log4JCategoryLog");
+                            ("org.apache.commons.logging.impl.Log4JLogger");
                 } else if (jdk14IsAvailable) {
                     setLogImplementation
                             ("org.apache.commons.logging.impl.Jdk14Logger");
@@ -268,8 +268,8 @@ public class LogSource {
      * <p>
      * When <tt>org.apache.commons.logging.log</tt> is not set,
      * or when no corresponding class can be found,
-     * this method will return a Log4JCategoryLog
-     * if the log4j Category class is
+     * this method will return a Log4JLogger
+     * if the log4j Logger class is
      * available in the {@link LogSource}'s classpath, or a
      * Jdk14Logger if we are on a JDK 1.4 or later system, or
      * NoOpLog if neither of the above conditions is true.
