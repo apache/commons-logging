@@ -21,7 +21,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.46 2004/05/30 10:32:25 rdonkin Exp $
+        $Id: build.xml,v 1.47 2004/11/04 22:59:02 rdonkin Exp $
 -->
 
 
@@ -64,7 +64,7 @@
   <property name="component.title"         value="Logging Wrapper Library"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="1.0.4"/>
+  <property name="component.version"       value="1.0.5-dev"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="${basedir}/target"/>
@@ -82,6 +82,11 @@
   <property name="test.home"               value="src/test"/>
 
 
+  <!-- Optional build -->
+  <property name="optional.home"               value="optional"/>
+  <property name="optional.dist.home"           value="${optional.home}/dist"/>
+
+  
 <!-- ========== Compiler Defaults ========================================= -->
 
 
@@ -427,6 +432,15 @@ limitations under the License.--&gt;'>
   <target name="dist" depends="compile,javadoc"
    description="Create binary distribution">
     <mkdir      dir="${dist.home}"/>
+    <ant antfile='build.xml' target='dist' dir='${optional.home}'/>
+    <copy       todir="${dist.home}">
+        <fileset dir='${optional.dist.home}'>
+            <include name='*.jar'/>
+        </fileset>
+    </copy>
+    <copy       todir="${dist.home}/docs-optional">
+        <fileset dir='${optional.dist.home}/docs'/>
+    </copy>
     <copy      file="LICENSE.txt"
               todir="${dist.home}"/>
     <copy      file="NOTICE.txt"
