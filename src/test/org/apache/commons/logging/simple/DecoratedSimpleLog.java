@@ -19,6 +19,7 @@ package org.apache.commons.logging.simple;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DateFormat;
 import org.apache.commons.logging.impl.SimpleLog;
 
 
@@ -39,6 +40,10 @@ public class DecoratedSimpleLog extends SimpleLog {
 
 
     // ------------------------------------------------------------- Properties
+
+    public DateFormat getDateTimeFormatter() {
+        return (dateFormatter);
+    }
 
 
     public String getDateTimeFormat() {
