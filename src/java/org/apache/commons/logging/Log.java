@@ -11,7 +11,7 @@ package org.apache.commons.httpclient.log;
 /**
  * A simple logging interface abstracting log4j.
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.1 2001/08/02 16:27:06 rwaldhoff Exp $
+ * @version $Id: Log.java,v 1.2 2001/08/02 22:14:41 rwaldhoff Exp $
  */
 public interface Log {
     public void assert(boolean assertion, String msg);
@@ -25,4 +25,6 @@ public interface Log {
     public void error(Object message, Throwable t);
     public void fatal(Object message);
     public void fatal(Object message, Throwable t);
+    public boolean isDebugEnabled();
+    public boolean isInfoEnabled();
 }

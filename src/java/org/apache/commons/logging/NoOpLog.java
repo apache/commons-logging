@@ -10,7 +10,7 @@ package org.apache.commons.httpclient.log;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.1 2001/08/02 16:27:06 rwaldhoff Exp $
+ * @version $Id: NoOpLog.java,v 1.2 2001/08/02 22:14:41 rwaldhoff Exp $
  */
 public final class NoOpLog implements Log {
     public NoOpLog() { }
@@ -26,4 +26,6 @@ public final class NoOpLog implements Log {
     public void error(Object message, Throwable t) { }
     public void fatal(Object message) { }
     public void fatal(Object message, Throwable t) { }
+    public final boolean isDebugEnabled() { return false; }
+    public final boolean isInfoEnabled() { return false; }
 }
