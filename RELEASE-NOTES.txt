@@ -16,7 +16,7 @@
 
 -->
 
-$Id: RELEASE-NOTES.txt,v 1.5 2004/03/06 21:25:36 craigmcc Exp $
+$Id: RELEASE-NOTES.txt,v 1.6 2004/03/06 22:20:54 craigmcc Exp $
 
                            Commons Logging Package
                                 Version 1.0.4
@@ -57,6 +57,19 @@ NEW FEATURES:
                    by the SourceForge "lumberjack" project.
                    <http://sourceforge.net/projects/lumberjack/>
 
+[LogFactoryImpl]   If an InvocationTargetException is returned during the
+                   creation of a new Log instance, unwrap the underlying
+                   cause and pass it in to the LogConfigurationException
+                   constructor.  This will make the actual cause of the
+                   problem easier to diagnose.
+
+[LogFactoryImpl]   If the isAssignableFrom() test fails because there is more
+                   than one instance of org.apache.commons.logging.Log visible
+                   in the class loader hierarchy, make the exception message
+                   that is reported explicitly state this, rather than the
+                   potentially misleading claim that an implementation class
+                   does not implement Log.
+
 
 BUG FIXES:
 =========
@@ -68,12 +81,6 @@ BUG FIXES:
 
 [LogFactory]       Improve usability of error messages reporting
                    configuration problems.
-
-[LogFactoryImpl]   If an InvocationTargetException is returned during the
-                   creation of a new Log instance, unwrap the underlying
-                   cause and pass it in to the LogConfigurationException
-                   constructor.  This will make the actual cause of the
-                   problem easier to diagnose.
 
 [JDK14Logger]      Implement Serializable, remove "final" declaration for
                    easy subclassing.
@@ -88,6 +95,7 @@ BUG FIXES:
                    in an applet environment, by swallowing any security
                    exceptions when looking up system properties that are
                    not accessible.
+
 
 
 DEPRECATIONS:
