@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/LogKitLogger.java,v 1.2 2002/01/17 01:47:49 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2002/01/17 01:47:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/LogKitLogger.java,v 1.3 2002/01/24 19:02:35 rdonkin Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/01/24 19:02:35 $
  *
  * ====================================================================
  *
@@ -66,11 +66,17 @@ import org.apache.log.Logger;
 import org.apache.log.Hierarchy;
 
 /**
- * <p> Wrapper for jakarta-avalon-logkit logging system. </p>
+ * <p>Implementation of <code>org.apache.commons.logging.Log</code> 
+ * that wraps the <a href="http://jakarta.apache.org/avalon/logkit/">jakarta-avalon-logkit</a>
+ * logging system. Configuration of <code>LogKit</code> is left to the user.</p>
+ *
+ * <p><code>LogKit</code> accepts only <code>String</code> messages. 
+ * Therefore, this implementation converts object messages into strings 
+ * by called their <code>toString()</code> method before logging them.</p>
  *
  * @author Robert Burrell Donkin
  *
- * @version $Id: LogKitLogger.java,v 1.2 2002/01/17 01:47:49 craigmcc Exp $
+ * @version $Id: LogKitLogger.java,v 1.3 2002/01/24 19:02:35 rdonkin Exp $
  */
 
 public final class LogKitLogger implements Log {
@@ -101,7 +107,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log message to <code>LogKit</code> logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message) {
         if (message != null) {
@@ -111,7 +117,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log error to <code>LogKit</code> logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message, Throwable t) {
         if (message != null) {
@@ -121,7 +127,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log message to <code>LogKit</code> logger with <code>INFO</code> priority.
      */
     public void info(Object message) {
         if (message != null) {
@@ -131,7 +137,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log error to <code>LogKit</code> logger with <code>INFO</code> priority.
      */
     public void info(Object message, Throwable t) {
         if (message != null) {
@@ -141,7 +147,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log message to <code>LogKit</code> logger with <code>WARN</code> priority.
      */
     public void warn(Object message) {
         if (message != null) {
@@ -151,7 +157,7 @@ public final class LogKitLogger implements Log {
     
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log error to <code>LogKit</code> logger with <code>WARN</code> priority.
      */
     public void warn(Object message, Throwable t) {
         if (message != null) {
@@ -161,7 +167,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log message to <code>LogKit</code> logger with <code>ERROR</code> priority.
      */
     public void error(Object message) {
         if (message != null) {
@@ -171,7 +177,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log error to <code>LogKit</code> logger with <code>ERROR</code> priority.
      */
     public void error(Object message, Throwable t) {
         if (message != null) {
@@ -181,7 +187,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log message to <code>LogKit</code> logger with <code>FATAL_ERROR</code> priority.
      */
     public void fatal(Object message) {
         if (message != null) {
@@ -191,7 +197,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Log to <code>LogKit</code> logger.
+     * Log error to <code>LogKit</code> logger with <code>FATAL_ERROR</code> priority.
      */
     public void fatal(Object message, Throwable t) {
         if (message != null) {
@@ -201,7 +207,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Check that debug is enabled for <code>LogKit</code> logger.
+     * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */       
     public boolean isDebugEnabled() {
         return logger.isDebugEnabled();
@@ -209,7 +215,7 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Check that error is enabled for <code>LogKit</code> logger.
+     * Check whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
      */       
     public boolean isErrorEnabled() {
         return logger.isErrorEnabled();
@@ -217,15 +223,15 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Check that fatal is enabled for <code>LogKit</code> logger.
-     */       
+     * Check whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
+     */      
     public boolean isFatalEnabled() {
         return logger.isFatalErrorEnabled();
     }
 
 
     /**
-     * Check that info is enabled for <code>LogKit</code> logger.
+     * Check whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
      */    
     public boolean isInfoEnabled() {
         return logger.isInfoEnabled();
@@ -233,8 +239,8 @@ public final class LogKitLogger implements Log {
 
 
     /**
-     * Check that warn is enabled for <code>LogKit</code> logger.
-     */       
+     * Check whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
+     */      
     public boolean isWarnEnabled() {
         return logger.isWarnEnabled();
     }
