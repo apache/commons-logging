@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.16 2002/06/07 20:22:29 costin Exp $
+        $Id: build.xml,v 1.17 2002/07/23 16:55:55 jvanzyl Exp $
 -->
 
 
@@ -117,6 +117,12 @@
 
   <target name="prepare" depends="init"
    description="Prepare build directory">
+   
+    <echo>
+    ${log4j.jar}
+    ${logkit.jar}
+    </echo>
+   
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
