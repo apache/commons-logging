@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.3 2002/05/06 21:32:37 costin Exp $
- * $Revision: 1.3 $
- * $Date: 2002/05/06 21:32:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.4 2002/07/17 16:42:40 rsitze Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/07/17 16:42:40 $
  *
  * ====================================================================
  *
@@ -77,7 +77,7 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.3 $ $Date: 2002/05/06 21:32:37 $
+ * @version $Revision: 1.4 $ $Date: 2002/07/17 16:42:40 $
  */
 
 public final class Jdk14Logger implements Log {
@@ -133,9 +133,7 @@ public final class Jdk14Logger implements Log {
      * Log a message with debug log level.
      */
     public void debug(Object message) {
-
-        log(Level.FINE, message.toString(), null);
-
+        log(Level.FINE, String.valueOf(message), null);
     }
 
 
@@ -143,9 +141,7 @@ public final class Jdk14Logger implements Log {
      * Log a message and exception with debug log level.
      */
     public void debug(Object message, Throwable exception) {
-
-        log(Level.FINE, message.toString(), exception);
-
+        log(Level.FINE, String.valueOf(message), exception);
     }
 
 
@@ -153,9 +149,7 @@ public final class Jdk14Logger implements Log {
      * Log a message with error log level.
      */
     public void error(Object message) {
-
-        log(Level.SEVERE, message.toString(), null);
-
+        log(Level.SEVERE, String.valueOf(message), null);
     }
 
 
@@ -163,9 +157,7 @@ public final class Jdk14Logger implements Log {
      * Log a message and exception with error log level.
      */
     public void error(Object message, Throwable exception) {
-
-        log(Level.SEVERE, message.toString(), exception);
-
+        log(Level.SEVERE, String.valueOf(message), exception);
     }
 
 
@@ -173,9 +165,7 @@ public final class Jdk14Logger implements Log {
      * Log a message with fatal log level.
      */
     public void fatal(Object message) {
-
-        log(Level.SEVERE, message.toString(), null);
-
+        log(Level.SEVERE, String.valueOf(message), null);
     }
 
 
@@ -183,9 +173,7 @@ public final class Jdk14Logger implements Log {
      * Log a message and exception with fatal log level.
      */
     public void fatal(Object message, Throwable exception) {
-
-        log(Level.SEVERE, message.toString(), exception);
-
+        log(Level.SEVERE, String.valueOf(message), exception);
     }
 
 
@@ -193,9 +181,7 @@ public final class Jdk14Logger implements Log {
      * Return the native Logger instance we are using.
      */
     public Logger getLogger() {
-
         return (this.logger);
-
     }
 
 
@@ -203,9 +189,7 @@ public final class Jdk14Logger implements Log {
      * Log a message with info log level.
      */
     public void info(Object message) {
-
-        log(Level.INFO, message.toString(), null);
-
+        log(Level.INFO, String.valueOf(message), null);
     }
 
 
@@ -213,9 +197,7 @@ public final class Jdk14Logger implements Log {
      * Log a message and exception with info log level.
      */
     public void info(Object message, Throwable exception) {
-
-        log(Level.INFO, message.toString(), exception);
-
+        log(Level.INFO, String.valueOf(message), exception);
     }
 
 
@@ -223,9 +205,7 @@ public final class Jdk14Logger implements Log {
      * Is debug logging currently enabled?
      */
     public boolean isDebugEnabled() {
-
         return (logger.isLoggable(Level.FINE));
-
     }
 
 
@@ -233,9 +213,7 @@ public final class Jdk14Logger implements Log {
      * Is error logging currently enabled?
      */
     public boolean isErrorEnabled() {
-
         return (logger.isLoggable(Level.SEVERE));
-
     }
 
 
@@ -243,9 +221,7 @@ public final class Jdk14Logger implements Log {
      * Is fatal logging currently enabled?
      */
     public boolean isFatalEnabled() {
-
         return (logger.isLoggable(Level.SEVERE));
-
     }
 
 
@@ -253,9 +229,7 @@ public final class Jdk14Logger implements Log {
      * Is info logging currently enabled?
      */
     public boolean isInfoEnabled() {
-
         return (logger.isLoggable(Level.INFO));
-
     }
 
 
@@ -263,9 +237,7 @@ public final class Jdk14Logger implements Log {
      * Is tace logging currently enabled?
      */
     public boolean isTraceEnabled() {
-
         return (logger.isLoggable(Level.FINEST));
-
     }
 
 
@@ -273,9 +245,7 @@ public final class Jdk14Logger implements Log {
      * Is warning logging currently enabled?
      */
     public boolean isWarnEnabled() {
-
         return (logger.isLoggable(Level.WARNING));
-
     }
 
 
@@ -283,9 +253,7 @@ public final class Jdk14Logger implements Log {
      * Log a message with trace log level.
      */
     public void trace(Object message) {
-
-        log(Level.FINEST, message.toString(), null);
-
+        log(Level.FINEST, String.valueOf(message), null);
     }
 
 
@@ -293,9 +261,7 @@ public final class Jdk14Logger implements Log {
      * Log a message and exception with trace log level.
      */
     public void trace(Object message, Throwable exception) {
-
-        log(Level.FINEST, message.toString(), exception);
-
+        log(Level.FINEST, String.valueOf(message), exception);
     }
 
 
@@ -303,9 +269,7 @@ public final class Jdk14Logger implements Log {
      * Log a message with warn log level.
      */
     public void warn(Object message) {
-
-        log(Level.WARNING, message.toString(), null);
-
+        log(Level.WARNING, String.valueOf(message), null);
     }
 
 
@@ -313,9 +277,7 @@ public final class Jdk14Logger implements Log {
      * Log a message and exception with warn log level.
      */
     public void warn(Object message, Throwable exception) {
-
-        log(Level.WARNING, message.toString(), exception);
-
+        log(Level.WARNING, String.valueOf(message), exception);
     }
 
 

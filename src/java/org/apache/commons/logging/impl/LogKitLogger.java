@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/03 01:31:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.2 2002/07/17 16:42:40 rsitze Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/07/17 16:42:40 $
  *
  * ====================================================================
  *
@@ -77,7 +77,7 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Robert Burrell Donkin                                 *
- * @version $Id: LogKitLogger.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
+ * @version $Id: LogKitLogger.java,v 1.2 2002/07/17 16:42:40 rsitze Exp $
  */
 
 public final class LogKitLogger implements Log {
@@ -128,7 +128,7 @@ public final class LogKitLogger implements Log {
      */
     public void debug(Object message) {
         if (message != null) {
-            logger.debug(message.toString());
+            logger.debug(String.valueOf(message));
         }
     }
 
@@ -138,7 +138,7 @@ public final class LogKitLogger implements Log {
      */
     public void debug(Object message, Throwable t) {
         if (message != null) {
-            logger.debug(message.toString(), t);
+            logger.debug(String.valueOf(message), t);
         }
     }
 
@@ -148,7 +148,7 @@ public final class LogKitLogger implements Log {
      */
     public void info(Object message) {
         if (message != null) {
-            logger.info(message.toString());
+            logger.info(String.valueOf(message));
         }
     }
 
@@ -158,7 +158,7 @@ public final class LogKitLogger implements Log {
      */
     public void info(Object message, Throwable t) {
         if (message != null) {
-            logger.info(message.toString(), t);
+            logger.info(String.valueOf(message), t);
         }
     }
 
@@ -168,7 +168,7 @@ public final class LogKitLogger implements Log {
      */
     public void warn(Object message) {
         if (message != null) {
-            logger.warn(message.toString());
+            logger.warn(String.valueOf(message));
         }
     }
 
@@ -178,7 +178,7 @@ public final class LogKitLogger implements Log {
      */
     public void warn(Object message, Throwable t) {
         if (message != null) {
-            logger.warn(message.toString(), t);
+            logger.warn(String.valueOf(message), t);
         }
     }
 
@@ -188,7 +188,7 @@ public final class LogKitLogger implements Log {
      */
     public void error(Object message) {
         if (message != null) {
-            logger.error(message.toString());
+            logger.error(String.valueOf(message));
         }
     }
 
@@ -198,7 +198,7 @@ public final class LogKitLogger implements Log {
      */
     public void error(Object message, Throwable t) {
         if (message != null) {
-            logger.error(message.toString(), t);
+            logger.error(String.valueOf(message), t);
         }
     }
 
@@ -208,7 +208,7 @@ public final class LogKitLogger implements Log {
      */
     public void fatal(Object message) {
         if (message != null) {
-            logger.fatalError(message.toString());
+            logger.fatalError(String.valueOf(message));
         }
     }
 
@@ -218,7 +218,7 @@ public final class LogKitLogger implements Log {
      */
     public void fatal(Object message, Throwable t) {
         if (message != null) {
-            logger.fatalError(message.toString(), t);
+            logger.fatalError(String.valueOf(message), t);
         }
     }
 
