@@ -93,6 +93,7 @@
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${junit.jar}"/>
     <pathelement location="${commons-logging-core.jar}"/>
+    <pathelement location="${log4j12.jar}"/>
   </path>
 
 
@@ -106,6 +107,7 @@
     <pathelement location="${junit.jar}"/>
     <pathelement location="${conf.home}"/>
     <pathelement location="${commons-logging-core.jar}"/>
+    <pathelement location="${log4j12.jar}"/>
   </path>
   
   <!-- Should all tests fail if one does? -->
