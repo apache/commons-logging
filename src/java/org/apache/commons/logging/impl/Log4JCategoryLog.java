@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.5 2002/06/06 22:09:09 costin Exp $
- * $Revision: 1.5 $
- * $Date: 2002/06/06 22:09:09 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Attic/Log4JCategoryLog.java,v 1.6 2002/06/07 00:22:54 costin Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/06/07 00:22:54 $
  *
  * ====================================================================
  *
@@ -75,7 +75,7 @@ import java.util.Enumeration;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
- * @version $Id: Log4JCategoryLog.java,v 1.5 2002/06/06 22:09:09 costin Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.6 2002/06/07 00:22:54 costin Exp $
  */
 public final class Log4JCategoryLog implements Log {
 
@@ -94,12 +94,21 @@ public final class Log4JCategoryLog implements Log {
 
     // ------------------------------------------------------------ Constructor
 
+    public Log4JCategoryLog() {
+        if( ! initialized ) {
+            initialize();
+        }
+    }
+
 
     /**
      * Base constructor
      */
     public Log4JCategoryLog(String name) {
-        this( Category.getInstance(name));
+        if( ! initialized ) {
+            initialize();
+        }
+        this.category=Category.getInstance(name);
     }
 
     /** For use with a log4j factory
@@ -122,7 +131,7 @@ public final class Log4JCategoryLog implements Log {
             // commons-logging patterns ).
             ConsoleAppender app=new ConsoleAppender(new PatternLayout( LAYOUT ),
                                                     ConsoleAppender.SYSTEM_ERR );
-            app.setName("stderr");
+            app.setName("commons-logging");
             
             root.addAppender( app );
             root.setPriority( Priority.INFO );
