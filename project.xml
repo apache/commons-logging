@@ -21,7 +21,7 @@
   
   <name>Logging</name>
   <id>commons-logging</id>
-  <currentVersion>1.0.4-dev</currentVersion>
+  <currentVersion>1.0.5-dev</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>Commons Logging</shortDescription>
   <description>
