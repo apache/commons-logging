@@ -35,9 +35,34 @@ import java.util.*;
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement 
  * for the <code>Hashtable</code> use in <code>LogFactory</code> for J2EE enviroments
- * running 1.3+ JVMs. Use of this class will allow classloaders to be collected by 
- * the garbage collector without the need to call release.
+ * running 1.3+ JVMs. Use of this class <i>in most cases</i> (see below) will
+ * allow classloaders to be collected by the garbage collector without the need 
+ * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
  * </p>
+ * <p>
+ * In a particular usage scenario, use of <code>WeakHashtable</code> alone will
+ * be insufficent to allow garbage collection of a classloader without a call to
+ * <code>release</code>.  If the abstract class <code>LogFactory</code> is 
+ * loaded by a parent classloader and a concrete subclass implementation of 
+ * <code>LogFactory</code> is loaded by a child classloader, the concrete
+ * implementation will have a strong reference to the child classloader via the
+ * chain <code>getClass().getClassLoader()</code>. The <code>WeakHashtable</code>
+ * will have a strong reference to the <code>LogFactory</code> implementation as
+ * one of the values in its map. This chain of references will prevent 
+ * collection of the child classloader.
+ * </p>
+ * <p>
+ * Such a situation would typically only occur if commons-logging.jar were
+ * loaded by a parent classloader (e.g. a server level classloader in a
+ * servlet container) and a custom <code>LogFactory</code> implementation were
+ * loaded by a child classloader (e.g. a web app classloader).  If use of
+ * a custom <code>LogFactory</code> subclass is desired, ensuring that the
+ * custom subclass is loaded by the same classloader as <code>LogFactory</code>
+ * will prevent problems.  In normal deployments, the standard implementations 
+ * of <code>LogFactory</code> found in package <code>org.apache.commons.logging.impl</code> 
+ * will be loaded by the same classloader that loads <code>LogFactory</code> 
+ * itself, so use of the standard <code>LogFactory</code> implementations
+ * should not pose problems.
  * 
  * @author Brian Stansberry
  */
