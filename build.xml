@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.28 2003/03/30 05:22:50 craigmcc Exp $
+        $Id: build.xml,v 1.29 2003/03/30 23:42:35 craigmcc Exp $
 -->
 
 
@@ -42,7 +42,7 @@
   <property name="component.package"       value="org.apache.commons.logging"/>
 
   <!-- The title of this component -->
-  <property name="component.title"         value="Logging Library"/>
+  <property name="component.title"         value="Logging Wrapper Library"/>
 
   <!-- The current version number of this component -->
   <property name="component.version"       value="1.0.2"/>
@@ -61,6 +61,7 @@
 
   <!-- The base directory for unit test sources -->
   <property name="test.home"               value="src/test"/>
+
 
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -266,13 +267,14 @@
     <mkdir      dir="${dist.home}/docs/api"/>
     <javadoc sourcepath="${source.home}"
                 destdir="${dist.home}/docs/api"
+               overview="${source.home}/overview.html"
            packagenames="org.apache.commons.*"
                  author="true"
                 private="true"
                 version="true"
                doctitle="&lt;h1&gt;${component.title} (Version ${component.version})&lt;/h1&gt;"
             windowtitle="${component.title} (Version ${component.version})"
-                 bottom="Copyright (c) 2002 - Apache Software Foundation">
+                 bottom="Copyright (c) 2002-2003 - Apache Software Foundation">
       <classpath refid="test.classpath"/>
     </javadoc>
   </target>

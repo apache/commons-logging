@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.13 2002/06/15 18:13:01 craigmcc Exp $
- * $Revision: 1.13 $
- * $Date: 2002/06/15 18:13:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.14 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.14 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ package org.apache.commons.logging;
 
 /**
  * <p>A simple logging interface abstracting logging APIs.  In order to be
- * instantiated successfully by {@link LogSource}, classes that implement
+ * instantiated successfully by {@link LogFactory}, classes that implement
  * this interface must have a constructor that takes a single String
  * parameter representing the "name" of this Log.</p>
  *
@@ -102,7 +102,7 @@ package org.apache.commons.logging;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.13 2002/06/15 18:13:01 craigmcc Exp $
+ * @version $Id: Log.java,v 1.14 2003/03/30 23:42:36 craigmcc Exp $
  */
 public interface Log {
 

@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/NoOpLog.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/03 01:31:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/NoOpLog.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,12 +67,12 @@ import org.apache.commons.logging.Log;
 
 
 /**
- * <p>Default implementation of Log that throws away all messages.  No
+ * <p>Trivial implementation of Log that throws away all messages.  No
  * configurable system properties are supported.</p>
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
+ * @version $Id: NoOpLog.java,v 1.2 2003/03/30 23:42:36 craigmcc Exp $
  */
 public final class NoOpLog implements Log {
 

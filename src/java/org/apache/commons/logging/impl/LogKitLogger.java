@@ -1,13 +1,13 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.2 2002/07/17 16:42:40 rsitze Exp $
- * $Revision: 1.2 $
- * $Date: 2002/07/17 16:42:40 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.3 2003/03/30 23:42:36 craigmcc Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/03/30 23:42:36 $
  *
  * ====================================================================
  *
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,8 +68,9 @@ import org.apache.commons.logging.Log;
 
 /**
  * <p>Implementation of <code>org.apache.commons.logging.Log</code>
- * that wraps the <a href="http://jakarta.apache.org/avalon/logkit/">jakarta-avalon-logkit</a>
- * logging system. Configuration of <code>LogKit</code> is left to the user.</p>
+ * that wraps the <a href="http://avalon.apache.org/logkit/">avalon-logkit</a>
+ * logging system. Configuration of <code>LogKit</code> is left to the user.
+ * </p>
  *
  * <p><code>LogKit</code> accepts only <code>String</code> messages.
  * Therefore, this implementation converts object messages into strings
@@ -77,7 +78,7 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Robert Burrell Donkin                                 *
- * @version $Id: LogKitLogger.java,v 1.2 2002/07/17 16:42:40 rsitze Exp $
+ * @version $Id: LogKitLogger.java,v 1.3 2003/03/30 23:42:36 craigmcc Exp $
  */
 
 public final class LogKitLogger implements Log {

@@ -1,6 +1,7 @@
 <body>
 <p>Simple wrapper API around multiple logging APIs.</p>
 
+
 <h3>Overview</h3>
 
 <p>This package provides an API for logging in server-based applications that
@@ -14,14 +15,14 @@ prebuilt support for the following:</p>
     JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
     <a href="Log.html">Log</a> instance is connected to a corresponding
     <code>java.util.logging.Logger</code> instance.</li>
-<li><a href="http://jakarta.apache.org/avalon/">LogKit</a> from Apache's
-    Jakarta project.  Each named <a href="Log.html">Log</a> instance is
+<li><a href="http://avalong.apache.org/logkit/">LogKit</a> from Apache's
+    Avalon project.  Each named <a href="Log.html">Log</a> instance is
     connected to a corresponding LogKit <code>Logger</code>.</li>
 <li><a href="impl/NoOpLog.html">NoOpLog</a> implementation that simply swallows
     all log output, for all named <a href="Log.html">Log</a> isntances.</li>
 <li><a href="impl/SimpleLog.html">SimpleLog</a> implementation that writes all
     log output, for all named <a href="Log.html">Log</a> instances, to
-    System.out.</li>
+    System.err.</li>
 </ul>
 
 
@@ -37,7 +38,7 @@ convention) after the calling class:
 
     public class Foo {
 
-        Log log = LogFactory.getLog(this.class);
+        static Log log = LogFactory.getLog(this.class);
 
         public void foo() {
             ...
@@ -53,9 +54,10 @@ convention) after the calling class:
         }
 </pre>
 
-<p>Unless you configure things differently, all log output will be thrown
-away.  Therefore, you really will want to review the remainder of this page
-in order to understand how to configure logging for your application.</p>
+<p>Unless you configure things differently, all log output will be written
+to System.err.  Therefore, you really will want to review the remainder of
+this page in order to understand how to configure logging for your
+application.</p>
 
 
 <h3>Configuring the Commons Logging Package</h3>
@@ -65,11 +67,11 @@ in order to understand how to configure logging for your application.</p>
 
 <p>From an application perspective, the first requirement is to retrieve an
 object reference to the <code>LogFactory</code> instance that will be used
-to create <code><a href="Log.html">Log</a></code> instances for this application.
-This is normally accomplished by calling the static <code>getFactory()</code>
-method.  This method implements the following discovery algorithm to select
-the name of the <code>LogFactory</code> implementation class this application
-wants to use:</p>
+to create <code><a href="Log.html">Log</a></code> instances for this
+application.  This is normally accomplished by calling the static
+<code>getFactory()</code> method.  This method implements the following
+discovery algorithm to select the name of the <code>LogFactory</code>
+implementation class this application wants to use:</p>
 <ul>
 <li>Check for a system property named
    <code>org.apache.commons.logging.LogFactory</code>.</li>
@@ -98,7 +100,7 @@ otherwise.  This allows a copy of <code>commons-logging.jar</code> to be
 shared in a multiple class loader environment (such as a servlet container),
 but still allow each web application to provide its own <code>LogFactory</code>
 implementation, if it so desires.  An instance of this class will then be
-created, and
+created, and cached per class loader.
 
 
 <h4>The Default <code>LogFactory</code> Implementation</h4>
@@ -119,12 +121,14 @@ implementation uses the following rules:</p>
     <code>LogFactory</code> implementation uses the following discovery
     process is used:
     <ul>
+    <li>Look for a configuration attribute of this factory named
+        <code>org.apache.commons.logging.Log</code> (for backwards
+        compatibility to pre-1.0 versions of this API, an attribute
+        <code>org.apache.commons.logging.log is also consulted)..</li>
     <li>Look for a system property named
         <code>org.apache.commons.logging.Log</code> (for backwards
         compatibility to pre-1.0 versions of this API, a system property
         <code>org.apache.commons.logging.log</code> is also consulted).</li>
-    <li>Look for a configuration attribute of this factory named
-        <code>org.apache.commons.logging.Log</code>.</li>
     <li>If the Log4J logging system is available in the application
         class path, use the corresponding wrapper class
         (<a href="impl/Log4JLogger.html">Log4JLogger</a>).</li>
@@ -142,20 +146,8 @@ implementation uses the following rules:</p>
     argument to its constructor.</li>
 </ul>
 
-<p>If you wish to receive logging output to <code>System.out</code>, but have
-not installed one of the three supported logging packages, a simple
-<code>Log</code> implementation named <a href="impl/SimpleLog.html">
-SimpleLog</a> is available.  You can select it, based on the above rules,
-by including a system property definition on the command line that starts
-your application:</p>
-<pre>
-    java \
-      -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog \
-      MyApplication
-</pre>
-
 <p>See the <a href="impl/SimpleLog.html">SimpleLog</a> JavaDocs for detailed
-configuration information for this implementation.</p>
+configuration information for this default implementation.</p>
 
 
 <h4>Configuring the Underlying Logging System</h4>
@@ -192,6 +184,16 @@ component, consists of the following steps:</p>
     <code>warn()</code>, <code>error</code>, and <code>fatal()</code>).</li>
 </ol>
 
+<p>For convenience, <code>LogFactory</code> also offers a static method
+<code>getLog()</code> that combines the typical two-step pattern:</p>
+<pre>
+  Log log = LogFactory.getFactory().getInstance("Foo");
+</pre>
+<p>into a single method call:</p>
+<pre>
+  Log log = LogFactory.getLog("Foo");
+</pre>
+
 <p>For example, you might use the following technique to initialize and
 use a <a href="Log.html">Log</a> instance in an application component:</p>
 <pre>
@@ -200,7 +202,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class MyComponent {
 
-  protected Log log = LogFactory.getLog("my.component");
+  protected static Log log =
+    LogFactory.getLog("my.component");
 
   // Called once at startup time
   public void start() {
