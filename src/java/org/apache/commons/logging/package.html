@@ -26,14 +26,14 @@
 can be used around a variety of different logging implementations, including
 prebuilt support for the following:</p>
 <ul>
-<li><a href="http://jakarta.apache.org/log4j/">Log4J</a> (version 1.2 or later)
+<li><a href="http://logging.apache.org/log4j/">Log4J</a> (version 1.2 or later)
     from Apache's Jakarta project.  Each named <a href="Log.html">Log</a>
     instance is connected to a corresponding Log4J Logger.</li>
 <li><a href="http://java.sun.com/j2se/1.4/docs/guide/util/logging/index.html">
     JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
     <a href="Log.html">Log</a> instance is connected to a corresponding
     <code>java.util.logging.Logger</code> instance.</li>
-<li><a href="http://avalong.apache.org/logkit/">LogKit</a> from Apache's
+<li><a href="http://avalon.apache.org/logkit/">LogKit</a> from Apache's
     Avalon project.  Each named <a href="Log.html">Log</a> instance is
     connected to a corresponding LogKit <code>Logger</code>.</li>
 <li><a href="impl/NoOpLog.html">NoOpLog</a> implementation that simply swallows
@@ -137,7 +137,7 @@ implementation uses the following rules:</p>
     parameter, will return the same <code>Log</code> instance.</li>
 <li>When a new <code>Log</code> instance must be created, the default
     <code>LogFactory</code> implementation uses the following discovery
-    process is used:
+    process:
     <ul>
     <li>Look for a configuration attribute of this factory named
         <code>org.apache.commons.logging.Log</code> (for backwards
@@ -198,8 +198,9 @@ component, consists of the following steps:</p>
     purposes.  A typical scenario for a server application is to have each
     major component of the server use its own Log instance.</li>
 <li>Cause messages to be logged (if the corresponding detail level is enabled)
-    by calling appropriate methods (<code>debug()</code>, <code>info()</code>,
-    <code>warn()</code>, <code>error</code>, and <code>fatal()</code>).</li>
+    by calling appropriate methods (<code>trace()</code>, <code>debug()</code>,
+    <code>info()</code>, <code>warn()</code>, <code>error</code>, and
+    <code>fatal()</code>).</li>
 </ol>
 
 <p>For convenience, <code>LogFactory</code> also offers a static method

@@ -31,14 +31,14 @@ import org.apache.commons.logging.Log;
 
 /**
  * <p>Implementation of the <code>org.apache.commons.logging.Log</code>
- * interfaces that wraps the standard JDK logging mechanisms that are
+ * interface that wraps the standard JDK logging mechanisms that are
  * available in SourceForge's Lumberjack for JDKs prior to 1.4.</p>
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
  * @author <a href="mailto:vince256@comcast.net">Vince Eagen</a>
- * @version $Revision: 1.5 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision: 1.6 $ $Date: 2004/06/06 21:13:43 $
  */
 
 public class Jdk13LumberjackLogger implements Log, Serializable {
@@ -233,7 +233,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
 
 
     /**
-     * Is tace logging currently enabled?
+     * Is trace logging currently enabled?
      */
     public boolean isTraceEnabled() {
         return (getLogger().isLoggable(Level.FINEST));
@@ -241,7 +241,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
 
 
     /**
-     * Is warning logging currently enabled?
+     * Is warn logging currently enabled?
      */
     public boolean isWarnEnabled() {
         return (getLogger().isLoggable(Level.WARNING));
