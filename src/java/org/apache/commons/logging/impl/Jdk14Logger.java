@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/03 01:31:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.2 2002/04/29 16:48:09 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/04/29 16:48:09 $
  *
  * ====================================================================
  *
@@ -77,7 +77,7 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.1 $ $Date: 2002/02/03 01:31:29 $
+ * @version $Revision: 1.2 $ $Date: 2002/04/29 16:48:09 $
  */
 
 public final class Jdk14Logger implements Log {
@@ -94,8 +94,6 @@ public final class Jdk14Logger implements Log {
     public Jdk14Logger(String name) {
 
         logger = Logger.getLogger(name);
-        logger.setUseParentHandlers(true);
-        logger.setLevel(Level.INFO);
 
     }
 
