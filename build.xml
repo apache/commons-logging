@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.14 2002/05/06 21:32:37 costin Exp $
+        $Id: build.xml,v 1.15 2002/06/06 22:11:28 costin Exp $
 -->
 
 
@@ -173,6 +173,13 @@
     <jar jarfile="${build.home}/commons-${component.name}.jar"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF"/>
+    <jar jarfile="${build.home}/commons-${component.name}-api.jar"
+         basedir="${build.home}/classes"
+         manifest="${build.home}/conf/MANIFEST.MF">
+      <include name="org/apache/commons/logging/*.class" />
+      <include name="org/apache/commons/logging/impl/LogFactoryImpl*.class" />
+      <include name="org/apache/commons/logging/impl/Jdk14*.class" />
+    </jar>
   </target>
 
 
@@ -233,6 +240,13 @@
     <jar    jarfile="${dist.home}/commons-${component.name}.jar"
             basedir="${build.home}/classes"
            manifest="${build.home}/conf/MANIFEST.MF"/>
+    <jar jarfile="${build.home}/commons-${component.name}-api.jar"
+         basedir="${build.home}/classes"
+         manifest="${build.home}/conf/MANIFEST.MF">
+      <include name="org/apache/commons/logging/*.class" />
+      <include name="org/apache/commons/logging/impl/LogFactoryImpl*.class" />
+      <include name="org/apache/commons/logging/impl/Jdk14*.class" />
+    </jar>
     <mkdir      dir="${dist.home}/src"/>
     <copy     todir="${dist.home}/src" filtering="on">
       <fileset  dir="${source.home}"/>
