@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.11 2002/02/03 01:28:00 sanders Exp $
- * $Revision: 1.11 $
- * $Date: 2002/02/03 01:28:00 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.12 2002/02/03 01:31:54 sanders Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/02/03 01:31:54 $
  *
  * ====================================================================
  *
@@ -65,6 +65,8 @@ package org.apache.commons.logging;
 import java.lang.reflect.Constructor;
 import java.util.Hashtable;
 
+import org.apache.commons.logging.impl.NoOpLog;
+
 
 /**
  * <p>Factory for creating {@link Log} instances.  Applications should call
@@ -75,11 +77,11 @@ import java.util.Hashtable;
  * algorithm:</p>
  * <ul>
  * <li>If Log4J is available, return an instance of
- *     <code>org.apache.commons.logging.Log4JCategoryLog</code>.</li>
+ *     <code>org.apache.commons.logging.impl.Log4JCategoryLog</code>.</li>
  * <li>If JDK 1.4 or later is available, return an instance of
- *     <code>org.apache.commons.logging.Jdk14Logger</code>.</li>
+ *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
  * <li>Otherwise, return an instance of
- *     <code>org.apache.commons.logging.NoOpLog</code>.</li>
+ *     <code>org.apache.commons.logging.impl.NoOpLog</code>.</li>
  * </ul>
  *
  * <p>You can change the default behavior in one of two ways:</p>
@@ -92,7 +94,7 @@ import java.util.Hashtable;
  * </ul>
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.11 2002/02/03 01:28:00 sanders Exp $
+ * @version $Id: LogSource.java,v 1.12 2002/02/03 01:31:54 sanders Exp $
  */
 public class LogSource {
 
@@ -148,7 +150,7 @@ public class LogSource {
             } catch (Throwable t) {
                 try {
                     setLogImplementation
-                            ("org.apache.commons.logging.NoOpLog");
+                            ("org.apache.commons.logging.impl.NoOpLog");
                 } catch (Throwable u) {
                     ;
                 }
@@ -157,18 +159,18 @@ public class LogSource {
             try {
                 if (log4jIsAvailable) {
                     setLogImplementation
-                            ("org.apache.commons.logging.Log4JCategoryLog");
+                            ("org.apache.commons.logging.impl.Log4JCategoryLog");
                 } else if (jdk14IsAvailable) {
                     setLogImplementation
-                            ("org.apache.commons.logging.Jdk14Logger");
+                            ("org.apache.commons.logging.impl.Jdk14Logger");
                 } else {
                     setLogImplementation
-                            ("org.apache.commons.logging.NoOpLog");
+                            ("org.apache.commons.logging.impl.NoOpLog");
                 }
             } catch (Throwable t) {
                 try {
                     setLogImplementation
-                            ("org.apache.commons.logging.NoOpLog");
+                            ("org.apache.commons.logging.impl.NoOpLog");
                 } catch (Throwable u) {
                     ;
                 }
