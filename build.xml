@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.22 2002/10/28 00:41:29 craigmcc Exp $
+        $Id: build.xml,v 1.23 2003/02/01 04:29:05 craigmcc Exp $
 -->
 
 
@@ -117,12 +117,12 @@
 
   <target name="prepare" depends="init"
    description="Prepare build directory">
-   
+
     <echo>
     ${log4j.jar}
     ${logkit.jar}
     </echo>
-   
+
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
@@ -148,11 +148,11 @@
   <target name="compile-only" depends="init" >
     <available property="jdk.1.4.present"
                classname="java.util.logging.Logger"/>
-    <available classname="org.apache.log4j.Category" 
-               classpathref="compile.classpath" 
+    <available classname="org.apache.log4j.Category"
+               classpathref="compile.classpath"
                property="log4j.present"/>
     <available property="logkit.present"
-               classpathref="compile.classpath" 
+               classpathref="compile.classpath"
                classname="org.apache.log.Logger"/>
 
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
@@ -168,9 +168,9 @@
       <classpath refid="compile.classpath"/>
       <exclude name="org/apache/commons/logging/impl/Jdk14Logger.java"
                unless="jdk.1.4.present"/>
-      <exclude name="org/apache/commons/logging/impl/Log4JCategoryLog.java"
+      <exclude name="org/apache/commons/logging/impl/Log4J*.java"
                unless="log4j.present"/>
-      <exclude name="org/apache/commons/logging/impl/Log4jFactory.java"
+      <exclude name="org/apache/commons/logging/impl/Log4j*.java"
                unless="log4j.present"/>
       <exclude name="org/apache/commons/logging/impl/LogKitLogger.java"
                unless="logkit.present"/>
