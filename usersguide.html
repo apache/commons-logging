@@ -153,7 +153,7 @@ that logging should be performed, before incurring the overhead of the logging m
 Yes, the logging methods will perform the same check, but only after resolving parameters.
 </p>
 
-<h4>General - Message Priorities</h4>
+<h4>General - Message Priorities/Levels</h4>
 It is important to ensure that log message are
 appropriate in content and severity.
 The following guidelines are strongly suggested:
@@ -186,6 +186,12 @@ Expect these to be written to logs only.
 These NEED NOT be internationalized, but it never hurts...</li>
 </ul>
 
+<h4>General - Default Message Priority/Level</h4>
+<p>
+By default the message priority should be no lower than <b>info</b>.
+That is, by default <b>debug</b> message should not be seen in the logs.
+</p>
+
 <h4>Enterprise - Logging Exceptions</h4>
 The general rule in dealing with exceptions is to assume that
 the user (developer using a tooling/middleware API) isn't going
@@ -195,14 +201,21 @@ it's in your best interest to be prepared with the proactive
 tools necessary to demonstrate that your component works correctly,
 or at worst that the problem analyzed from your logs.
 For this discussion, we must make a distinction between different types of exceptions
-based on what kind of boundries they cross:
+based on what kind of boundaries they cross:
 <ul>
-<li><p><b>External Boundries - Expected Exceptions</b>.
+<li><p><b>External Boundaries - Expected Exceptions</b>.
 This classification includes exceptions such as <code>FileNotFoundException</code>
-that cross API/SPI boundries, and are exposed to the user of a component/toolkit.
+that cross API/SPI boundaries, and are exposed to the user of a component/toolkit.
 These are listed in the 'throws' clause of a method signature.
 </p>
-<p>These exceptions should be caught immediatly prior to crossing
+<p>
+Appropriate handling of these exceptions depends upon the type
+of code you are developing.
+API's for utility functions and tools should log these at the <b>debug</b> level,
+if they are caught at all by internal code.
+</p>
+<p>For higher level frameworks and middleware components,
+these exceptions should be caught immediatly prior to crossing
 the API/SPI interface back to user code-space,
 logged with full stack trace at <b>info</b> level,
 and rethrown.
@@ -211,13 +224,20 @@ future analysis <i>in the event that the exception is not caught and resolved
 as expected by the user's code</i>.
 </p>
 </li>
-<li><p><b>External Boundries - Unexpected Exceptions</b>.
+<li><p><b>External Boundaries - Unexpected Exceptions</b>.
 This classification includes exceptions such as <code>NullPointerException</code>
-that cross API/SPI boundries, and are exposed to the user of a component/toolkit.
+that cross API/SPI boundaries, and are exposed to the user of a component/toolkit.
 These are runtime exceptions/error that are NOT
 listed in the 'throws' clause of a method signature.
 </p>
-<p>These exceptions should be caught immediatly prior to crossing
+<p>
+Appropriate handling of these exceptions depends upon the type
+of code you are developing.
+API's for utility functions and tools should log these at the <b>debug</b> level,
+if they are caught at all.
+</p>
+<p>For higher level frameworks and middleware components,
+these exceptions should be caught immediatly prior to crossing
 the API/SPI interface back to user code-space,
 logged with full stack trace at <b>info</b> level,
 and rethrown/wrapped as <code><i>Component</i>InternalError</code>.
@@ -225,15 +245,17 @@ The assures that the log contains a record of the root cause for
 future analysis <i>in the event that the exception is not caught and
 logged/reported as expected by the user's code</i>.
 </p></li>
-<li><p><b>Internal Boundries</b>.
+<li><p><b>Internal Boundaries</b>.
 Exceptions that occur internally and are resolved internally.
 These should be logged when caught as <b>debug</b> or <b>info</b> messages,
-at your discretion.
+at the programmer's discretion.
 </p></li>
-<li><p><b>Significant Internal Boundries</b>.
-Exceptions that cross over significant internal component boundries, such as networks.
+<li><p><b>Significant Internal Boundaries</b>.
+This typically only applies to middleware components
+that span networks or runtime processes.
+Exceptions that cross over significant internal component boundaries, such as networks.
 These should be logged when caught as <b>info</b> messages.
-Do not assume that such a (network) boundry will deliver exceptions to the 'other side'.
+Do not assume that such a (process/network) boundary will deliver exceptions to the 'other side'.
 </p></li>
 </ul>
 
