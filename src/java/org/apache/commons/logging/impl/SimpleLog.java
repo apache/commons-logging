@@ -70,7 +70,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.19 2004/05/29 10:43:35 rdonkin Exp $
+ * @version $Id: SimpleLog.java,v 1.20 2004/05/30 10:32:06 rdonkin Exp $
  */
 public class SimpleLog implements Log, Serializable {
 
@@ -168,10 +168,6 @@ public class SimpleLog implements Log, Serializable {
         if(showDateTime) {
             dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat",
                                                dateTimeFormat);
-            if (dateTimeFormat == null || "".equals(dateTimeFormat)) {
-                // if this property has not been set then use the default
-                dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
-            }
             try {
                 dateFormatter = new SimpleDateFormat(dateTimeFormat);
             } catch(IllegalArgumentException e) {
