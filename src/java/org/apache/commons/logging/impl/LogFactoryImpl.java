@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.9 2002/06/11 22:34:32 rsitze Exp $
- * $Revision: 1.9 $
- * $Date: 2002/06/11 22:34:32 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.10 2002/06/11 22:35:33 rsitze Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/06/11 22:35:33 $
  *
  * ====================================================================
  *
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.9 $ $Date: 2002/06/11 22:34:32 $
+ * @version $Revision: 1.10 $ $Date: 2002/06/11 22:35:33 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -437,7 +437,7 @@ public class LogFactoryImpl extends LogFactory {
     static Class loadClass( String name )
         throws ClassNotFoundException
     {
-        ClassLoader threadCL=findClassLoader();
+        ClassLoader threadCL = getContextClassLoader();
         try {
             return threadCL.loadClass(name);
         } catch( ClassNotFoundException ex ) {
