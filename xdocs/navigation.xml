@@ -36,6 +36,8 @@
             href="/index.html"/>
       <item name="User Guide"
             href="/guide.html"/>
+      <item name="Tech Guide"
+            href="/tech.html"/>
       <item name="Wiki"
             href="http://wiki.apache.org/jakarta-commons/Logging"/>
       <item name='1.0.4 Release'>
