@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.25 2003/04/02 01:53:04 craigmcc Exp $
- * $Revision: 1.25 $
- * $Date: 2003/04/02 01:53:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.26 2003/08/16 22:35:16 craigmcc Exp $
+ * $Revision: 1.26 $
+ * $Date: 2003/08/16 22:35:16 $
  *
  * ====================================================================
  *
@@ -107,7 +107,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.25 $ $Date: 2003/04/02 01:53:04 $
+ * @version $Revision: 1.26 $ $Date: 2003/08/16 22:35:16 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -369,6 +369,10 @@ public class LogFactoryImpl extends LogFactory {
             logClassName = "org.apache.commons.logging.impl.Jdk14Logger";
         }
 
+        if ((logClassName == null) && isJdk13LumberjackAvailable()) {
+            logClassName = "org.apache.commons.logging.impl.Jdk13LumberjackLogger";
+        }
+
         if (logClassName == null) {
             logClassName = "org.apache.commons.logging.impl.SimpleLog";
         }
@@ -478,13 +482,35 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * Is <em>JDK 1.4 or later</em> logging available?
+     * Is <em>JDK 1.3 with Lumberjack</em> logging available?
+     */
+    protected boolean isJdk13LumberjackAvailable() {
+
+        try {
+            loadClass("java.util.logging.Logger");
+            loadClass("org.apache.commons.logging.impl.Jdk13LumberjackLogger");
+            return (true);
+        } catch (Throwable t) {
+            return (false);
+        }
+
+    }
+
+
+    /**
+     * Is <em>JDK 1.4 or later</em> logging available?  Also checks that
+     * the Throwable class supports <code>getStackTrace()</code>, which is
+     * required by Jdk14Logger.
      */
     protected boolean isJdk14Available() {
 
         try {
             loadClass("java.util.logging.Logger");
             loadClass("org.apache.commons.logging.impl.Jdk14Logger");
+            Class throwable = loadClass("java.lang.Throwable");
+            if (throwable.getDeclaredMethod("getStackTrace", null) == null) {
+                return (false);
+            }
             return (true);
         } catch (Throwable t) {
             return (false);

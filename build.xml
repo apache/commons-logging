@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.39 2003/08/16 21:25:53 craigmcc Exp $
+        $Id: build.xml,v 1.40 2003/08/16 22:35:16 craigmcc Exp $
 -->
 
 
@@ -227,6 +227,8 @@
            deprecation="${compile.deprecation}"
            optimize="${compile.optimize}">
       <classpath refid="compile.classpath"/>
+      <exclude name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
+               unless="jdk.1.4.present"/>
       <exclude name="org/apache/commons/logging/impl/Jdk14Logger.java"
                unless="jdk.1.4.present"/>
       <exclude name="org/apache/commons/logging/impl/Log4J*.java"
