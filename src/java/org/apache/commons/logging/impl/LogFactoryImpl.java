@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.12 2002/06/15 18:13:02 craigmcc Exp $
- * $Revision: 1.12 $
- * $Date: 2002/06/15 18:13:02 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.13 2002/08/09 18:47:34 rsitze Exp $
+ * $Revision: 1.13 $
+ * $Date: 2002/08/09 18:47:34 $
  *
  * ====================================================================
  *
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.12 $ $Date: 2002/06/15 18:13:02 $
+ * @version $Revision: 1.13 $ $Date: 2002/08/09 18:47:34 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -495,6 +495,7 @@ public class LogFactoryImpl extends LogFactory {
 
         try {
             loadClass("org.apache.log4j.Category");
+            loadClass("org.apache.commons.logging.impl.Log4JCategoryLog");
             return (true);
         } catch (Throwable t) {
             return (false);
