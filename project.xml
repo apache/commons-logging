@@ -27,7 +27,12 @@
       <id>logkit</id>
       <version>1.0.1</version>
     </dependency>
-    
+
+    <dependency>
+      <id>junit</id>
+      <version>3.7</version>
+    </dependency>
+
   </dependencies>
 
 </project>
