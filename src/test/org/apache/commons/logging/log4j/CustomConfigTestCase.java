@@ -1,6 +1,6 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/CustomConfigTestCase.java,v 1.3 2003/03/30 05:22:50 craigmcc Exp $
- * $Revision: 1.3 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/CustomConfigTestCase.java,v 1.1 2003/03/30 05:22:50 craigmcc Exp $
+ * $Revision: 1.1 $
  * $Date: 2003/03/30 05:22:50 $
  *
  * ====================================================================
@@ -59,16 +59,13 @@
  *
  */
 
-package org.apache.commons.logging.jdk14;
+package org.apache.commons.logging.log4j;
 
 
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
+import java.util.Properties;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -76,15 +73,19 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.spi.LoggingEvent;
 
 
 /**
- * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
- * custom configuration, so that JDK 1.4 should be selected and an appropriate
+ * <p>TestCase for Log4J logging when running on a system with Log4J present,
+ * so that Log4J should be selected and an appropriate
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.3 $ $Date: 2003/03/30 05:22:50 $
+ * @version $Revision: 1.1 $ $Date: 2003/03/30 05:22:50 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
@@ -115,41 +116,29 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     /**
-     * <p>The customized <code>Handler</code> we will be using.</p>
+     * <p>The <code>Appender</code> we are utilizing.</p>
      */
-    protected TestHandler handler = null;
+    protected TestAppender appender = null;
 
 
     /**
-     * <p>The underlying <code>Handler</code>s we will be using.</p>
-     */
-    protected Handler handlers[] = null;
-
-
-    /**
-     * <p>The underlying <code>Logger</code> we will be using.</p>
+     * <p>The <code>Logger</code> we are utilizing.</p>
      */
     protected Logger logger = null;
-
-
-    /**
-     * <p>The underlying <code>LogManager</code> we will be using.</p>
-     */
-    protected LogManager manager = null;
 
 
     /**
      * <p>The message levels that should have been logged.</p>
      */
     protected Level testLevels[] =
-    { Level.FINE, Level.INFO, Level.WARNING, Level.SEVERE, Level.SEVERE };
+    { Level.INFO, Level.WARN, Level.ERROR, Level.FATAL };
 
 
     /**
      * <p>The message strings that should have been logged.</p>
      */
     protected String testMessages[] =
-    { "debug", "info", "warn", "error", "fatal" };
+    { "info", "warn", "error", "fatal" };
 
 
     // ------------------------------------------- JUnit Infrastructure Methods
@@ -159,10 +148,9 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * Set up instance variables required by this test case.
      */
     public void setUp() throws Exception {
-        setUpManager
-            ("org/apache/commons/logging/jdk14/CustomConfig.properties");
+        setUpAppender
+            ("org/apache/commons/logging/log4j/CustomConfig.properties");
         setUpLogger("TestLogger");
-        setUpHandlers();
         setUpFactory();
         setUpLog("TestLogger");
     }
@@ -180,9 +168,9 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      */
     public void tearDown() {
         super.tearDown();
-        handlers = null;
+        Logger.getRootLogger().removeAppender(appender);
+        appender = null;
         logger = null;
-        manager = null;
     }
 
 
@@ -193,7 +181,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     public void testExceptionMessages() throws Exception {
 
         logExceptionMessages();
-        checkLogRecords(true);
+        checkLoggingEvents(true);
 
     }
 
@@ -202,18 +190,15 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     public void testPlainMessages() throws Exception {
 
         logPlainMessages();
-        checkLogRecords(false);
+        checkLoggingEvents(false);
 
     }
 
 
-    // Test pristine Handlers instances
-    public void testPristineHandlers() {
+    // Test pristine Appender instance
+    public void testPristineAppender() {
 
-        assertNotNull(handlers);
-        assertEquals(1, handlers.length);
-        assertTrue(handlers[0] instanceof TestHandler);
-        assertNotNull(handler);
+        assertNotNull("Appender exists", appender);
 
     }
 
@@ -224,11 +209,10 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         super.testPristineLog();
 
         // Assert which logging levels have been enabled
-        assertTrue(log.isFatalEnabled());
         assertTrue(log.isErrorEnabled());
         assertTrue(log.isWarnEnabled());
         assertTrue(log.isInfoEnabled());
-        assertTrue(log.isDebugEnabled());
+        assertTrue(!log.isDebugEnabled());
         assertTrue(!log.isTraceEnabled());
 
     }
@@ -238,16 +222,8 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     public void testPristineLogger() {
 
         assertNotNull("Logger exists", logger);
+        assertEquals("Logger level", Level.INFO, logger.getEffectiveLevel());
         assertEquals("Logger name", "TestLogger", logger.getName());
-
-        // Assert which logging levels have been enabled
-        assertTrue(logger.isLoggable(Level.SEVERE));
-        assertTrue(logger.isLoggable(Level.WARNING));
-        assertTrue(logger.isLoggable(Level.INFO));
-        assertTrue(logger.isLoggable(Level.CONFIG));
-        assertTrue(logger.isLoggable(Level.FINE));
-        assertTrue(!logger.isLoggable(Level.FINER));
-        assertTrue(!logger.isLoggable(Level.FINEST));
 
     }
 
@@ -256,38 +232,44 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Check the recorded messages
-    protected void checkLogRecords(boolean thrown) {
-        Iterator records = handler.records();
+    protected void checkLoggingEvents(boolean thrown) {
+        Iterator events = appender.events();
         for (int i = 0; i < testMessages.length; i++) {
-            assertTrue(records.hasNext());
-            LogRecord record = (LogRecord) records.next();
-            assertEquals("LogRecord level",
-                         testLevels[i], record.getLevel());
-            assertEquals("LogRecord message",
-                         testMessages[i], record.getMessage());
-            assertEquals("LogRecord class",
+            assertTrue(events.hasNext());
+            LoggingEvent event = (LoggingEvent) events.next();
+            assertEquals("LoggingEvent level",
+                         testLevels[i], event.getLevel());
+            assertEquals("LoggingEvent message",
+                         testMessages[i], event.getMessage());
+            /* Does not appear to be logged correctly?
+            assertEquals("LoggingEvent class",
                          this.getClass().getName(),
-                         record.getSourceClassName());
+                         event.getLocationInformation().getClassName());
+            */
+            /* Does not appear to be logged correctly?
             if (thrown) {
-                assertEquals("LogRecord method",
+                assertEquals("LoggingEvent method",
                              "logExceptionMessages",
-                             record.getSourceMethodName());
+                             event.getLocationInformation().getMethodName());
             } else {
-                assertEquals("LogRecord method",
+                assertEquals("LoggingEvent method",
                              "logPlainMessages",
-                             record.getSourceMethodName());
+                             event.getLocationInformation().getMethodName());
             }
+            */
             if (thrown) {
-                assertNotNull("LogRecord thrown", record.getThrown());
-                assertTrue("LogRecord thrown type",
-                           record.getThrown() instanceof IndexOutOfBoundsException);
+                assertNotNull("LoggingEvent thrown",
+                              event.getThrowableInformation().getThrowable());
+                assertTrue("LoggingEvent thrown type",
+                           event.getThrowableInformation().getThrowable()
+                             instanceof IndexOutOfBoundsException);
             } else {
-                assertNull("LogRecord thrown",
-                           record.getThrown());
+                assertNull("LoggingEvent thrown",
+                           event.getThrowableInformation());
             }
         }
-        assertTrue(!records.hasNext());
-        handler.flush();
+        assertTrue(!events.hasNext());
+        appender.flush();
     }
 
 
@@ -295,7 +277,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     protected void logExceptionMessages() {
         Throwable t = new IndexOutOfBoundsException();
         log.trace("trace", t); // Should not actually get logged
-        log.debug("debug", t);
+        log.debug("debug", t); // Should not actually get logged
         log.info("info", t);
         log.warn("warn", t);
         log.error("error", t);
@@ -306,7 +288,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     // Log the plain messages
     protected void logPlainMessages() {
         log.trace("trace"); // Should not actually get logged
-        log.debug("debug");
+        log.debug("debug"); // Should not actually get logged
         log.info("info");
         log.warn("warn");
         log.error("error");
@@ -314,33 +296,22 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     }
 
 
-    // Set up handlers instance
-    protected void setUpHandlers() throws Exception {
-        Logger parent = logger;
-        while (parent.getParent() != null) {
-            parent = parent.getParent();
-        }
-        handlers = parent.getHandlers();
-        if ((handlers != null) && (handlers.length == 1) &&
-            (handlers[0] instanceof TestHandler)) {
-            handler = (TestHandler) handlers[0];
-        }
-    }
-
-
-    // Set up logger instance
-    protected void setUpLogger(String name) throws Exception {
-        logger = Logger.getLogger(name);
-    }
-
-
-    // Set up LogManager instance
-    protected void setUpManager(String config) throws Exception {
-        manager = LogManager.getLogManager();
+    // Set up our custom Appender
+    protected void setUpAppender(String config) throws Exception {
+        Properties props = new Properties();
         InputStream is =
             this.getClass().getClassLoader().getResourceAsStream(config);
-        manager.readConfiguration(is);
+        props.load(is);
         is.close();
+        PropertyConfigurator.configure(props);
+        Enumeration appenders = Logger.getRootLogger().getAllAppenders();
+        appender = (TestAppender) appenders.nextElement();
+    }
+
+
+    // Set up our custom Logger
+    protected void setUpLogger(String name) throws Exception {
+        logger = Logger.getLogger(name);
     }
 
 
