@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
- * $Revision: 1.1 $
- * $Date: 2002/02/03 01:31:29 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.2 2002/02/15 05:46:36 costin Exp $
+ * $Revision: 1.2 $
+ * $Date: 2002/02/15 05:46:36 $
  *
  * ====================================================================
  *
@@ -73,23 +73,26 @@ import org.apache.commons.logging.Log;
 
 /**
  * <p>Simple implementation of Log that sends all enabled log messages,
- * for all defined loggers, to System.out.  The following system properties
+ * for all defined loggers, to System.err.  The following system properties
  * are supported to configure the behavior of this logger:</p>
  * <ul>
  * <li><code>org.apache.commons.logging.simplelog.defaultlog</code> -
  *     Default logging detail level for all instances of SimpleLog.
  *     Must be one of ("trace", "debug", "info", "warn", "error", or "fatal").
- *     If not specified, defaults to "error". </li>
+ *     If not specified, defaults to "info". </li>
  * <li><code>org.apache.commons.logging.simplelog.log.xxxxx</code> -
  *     Logging detail level for a SimpleLog instance named "xxxxx".
  *     Must be one of ("trace", "debug", "info", "warn", "error", or "fatal").
  *     If not specified, the default logging detail level is used.</li>
  * <li><code>org.apache.commons.logging.simplelog.showlogname</code> -
  *     Set to <code>true</code> if you want the Log instance name to be
- *     included in output messages.</li>
+ *     included in output messages. Defaults to false</li>
+ * <li><code>org.apache.commons.logging.simplelog.showShortLogname</code> -
+ *     Set to <code>true</code> if you want the last componet of the name to be
+ *     included in output messages. Defaults to true.</li>
  * <li><code>org.apache.commons.logging.simplelog.showdatetime</code> -
  *     Set to <code>true</code> if you want the current date and time
- *     to be included in output messages.</li>
+ *     to be included in output messages. Default is false.</li>
  * </ul>
  *
  * <p>In addition to looking for system properties with the names specified
@@ -101,7 +104,7 @@ import org.apache.commons.logging.Log;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.1 2002/02/03 01:31:29 sanders Exp $
+ * @version $Id: SimpleLog.java,v 1.2 2002/02/15 05:46:36 costin Exp $
  */
 public class SimpleLog implements Log {
 
@@ -116,6 +119,11 @@ public class SimpleLog implements Log {
     static protected final Properties simpleLogProps = new Properties();
     /** Include the instance name in the log message? */
     static protected boolean showLogName = false;
+    /** Include the short name ( last component ) of the logger in the log
+        message. Default to true - otherwise we'll be lost in a flood of
+        messages without knowing who sends them.
+    */
+    static protected boolean showShortName = true;
     /** Include the current time in the log message */
     static protected boolean showDateTime = false;
     /** Used to format times */
@@ -168,13 +176,28 @@ public class SimpleLog implements Log {
             }
         }
 
-        showLogName = "true".equalsIgnoreCase(
-                simpleLogProps.getProperty(
+        /* That's a strange way to set properties. If the property
+           is not set, we'll override the default
+         
+            showLogName = "true".equalsIgnoreCase(
+                    simpleLogProps.getProperty(
                     systemPrefix + "showlogname","true"));
+        */
 
-        showDateTime = "true".equalsIgnoreCase(
-                simpleLogProps.getProperty(
-                    systemPrefix + "showdatetime","true"));
+        String prop=simpleLogProps.getProperty( systemPrefix + "showlogname");
+
+        if( prop!= null )
+            showLogName = "true".equalsIgnoreCase(prop);
+
+        prop=simpleLogProps.getProperty( systemPrefix + "showShortLogname");
+        if( prop!=null ) {
+            showShortName = "true".equalsIgnoreCase(prop);
+        }
+
+        prop=simpleLogProps.getProperty( systemPrefix + "showdatetime");
+        if( prop!=null ) {
+            showDateTime = "true".equalsIgnoreCase(prop);
+        }
 
         if(showDateTime) {
             dateFormatter = new SimpleDateFormat(
@@ -191,7 +214,9 @@ public class SimpleLog implements Log {
     /** The current log level */
     protected int currentLogLevel;
 
+    private String prefix=null;
 
+    
     // ------------------------------------------------------------ Constructor
 
     /**
@@ -204,8 +229,9 @@ public class SimpleLog implements Log {
         logName = name;
 
         // set initial log level
-        // set default log level to ERROR
-        setLevel(SimpleLog.LOG_LEVEL_ERROR);
+        // Used to be: set default log level to ERROR
+        // IMHO it should be lower, but at least info ( costin ).
+        setLevel(SimpleLog.LOG_LEVEL_INFO);
 
         // set log level from properties
         String lvl = simpleLogProps.getProperty(systemPrefix + "log." + logName);
@@ -251,6 +277,7 @@ public class SimpleLog implements Log {
     public void setLevel(int currentLogLevel) {
 
         this.currentLogLevel = currentLogLevel;
+
     }
 
 
@@ -269,7 +296,7 @@ public class SimpleLog implements Log {
     /**
      * <p> Do the actual logging.
      * This method assembles the message
-     * and then prints to <code>System.out</code>.</p>
+     * and then prints to <code>System.err</code>.</p>
      */
     protected void log(int type, Object message, Throwable t) {
         // use a string buffer for better performance
@@ -292,7 +319,14 @@ public class SimpleLog implements Log {
         }
 
         // append the name of the log instance if so configured
-        if(showLogName) {
+ 	if( showShortName) {
+            if( prefix==null ) {
+                // cut all but the last component of the name for both styles
+                prefix = logName.substring( logName.lastIndexOf(".") +1) + " - ";
+                prefix = prefix.substring( prefix.lastIndexOf("/") +1) + "-";
+            }
+            buf.append( prefix );
+        } else if(showLogName) {
             buf.append(String.valueOf(logName)).append(" - ");
         }
 
@@ -307,8 +341,8 @@ public class SimpleLog implements Log {
             t.printStackTrace();
         }
 
-        // print to System.out
-        System.out.println(buf.toString());
+        // print to System.err
+        System.err.println(buf.toString());
     }
 
 
