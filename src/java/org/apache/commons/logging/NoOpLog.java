@@ -6,11 +6,11 @@
  * the LICENSE file.
  */
 
-package org.apache.commons.httpclient.log;
+package org.apache.commons.logging;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.3 2001/08/07 17:37:22 rwaldhoff Exp $
+ * @version $Id: NoOpLog.java,v 1.4 2001/08/08 20:35:22 morgand Exp $
  */
 public final class NoOpLog implements Log {
     public NoOpLog() { }
