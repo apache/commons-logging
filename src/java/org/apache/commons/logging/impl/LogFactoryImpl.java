@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.2 2002/02/14 00:19:03 craigmcc Exp $
- * $Revision: 1.2 $
- * $Date: 2002/02/14 00:19:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.3 2002/02/14 03:48:44 craigmcc Exp $
+ * $Revision: 1.3 $
+ * $Date: 2002/02/14 03:48:44 $
  *
  * ====================================================================
  *
@@ -78,6 +78,9 @@ import org.apache.commons.logging.LogSource;
  * following algorithm to dynamically select a logging implementation
  * class to instantiate a wrapper for:</p>
  * <ul>
+ * <li>Use a factory configuration attribute named
+ *     <code>org.apache.commons.logging.Log</code> to identify the
+ *     requested implementation class.</li>
  * <li>Use the <code>org.apache.commons.logging.Log</code> system property
  *     to identify the requested implementation class.</li>
  * <li>If <em>Log4J</em> is available, return an instance of
@@ -101,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.2 $ $Date: 2002/02/14 00:19:03 $
+ * @version $Revision: 1.3 $ $Date: 2002/02/14 03:48:44 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -127,7 +130,7 @@ public class LogFactoryImpl extends LogFactory {
      * The fully qualified name of the default {@link Log} implementation.
      */
     public static final String LOG_DEFAULT =
-        "org.apache.commons.logging.NoOpLog";
+        "org.apache.commons.logging.impl.NoOpLog";
 
 
     /**
@@ -266,7 +269,7 @@ public class LogFactoryImpl extends LogFactory {
         throws LogConfigurationException {
 
         Log instance = (Log) instances.get(name);
-        if (instance != null) {
+        if (instance == null) {
             instance = newInstance(name);
             instances.put(name, instance);
         }
@@ -348,7 +351,13 @@ public class LogFactoryImpl extends LogFactory {
         // Identify the Log implementation class we will be using
         String logClassName = null;
         try {
-            logClassName = System.getProperty(LOG_PROPERTY);
+            logClassName = (String) getAttribute(LOG_PROPERTY);
+            if (logClassName == null) { // @deprecated
+                logClassName = (String) getAttribute(LOG_PROPERTY_OLD);
+            }
+            if (logClassName == null) {
+                logClassName = System.getProperty(LOG_PROPERTY);
+            }
             if (logClassName == null) { // @deprecated
                 logClassName = System.getProperty(LOG_PROPERTY_OLD);
             }
@@ -361,8 +370,7 @@ public class LogFactoryImpl extends LogFactory {
                     "org.apache.commons.logging.impl.Jdk14Logger";
             }
             if (logClassName == null) {
-                logClassName =
-                    "org.apache.commons.logging.impl.NoOpLog";
+                logClassName = LOG_DEFAULT;
             }
         } catch (SecurityException e) {
         }
