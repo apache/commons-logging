@@ -31,7 +31,7 @@ Release Notes</a> document the new features and bug fixes that have been
 included in the latest release.</p>
 
 <p>The <a href="http://jakarta.apache.org/commons/logging/api/index.html">
-JavaDoc API documents</a> for the latest release are available online.  
+JavaDoc API documents</a> for the latest release are available online.
 In particular, you should read the package overview of the <code>org.apache.commons.logging</code>
 package. In addition, there is a (short)
 <a href="guide.html">User Guide</a>.</p>
@@ -42,13 +42,13 @@ package. In addition, there is a (short)
 <section name="Releases">
     <subsection name='Mirrored Releases'>
 <p>
-Releases after 1.0.2 should be downloaded from a mirror. Please remember to verify the 
-sigature of the release from the 
+Releases after 1.0.2 should be downloaded from a mirror. Please remember to verify the
+signature of the release from the 
 <a href='http://www.apache.org/dist/jakarta/commons/logging/'>main apache site</a>
 when downloading from a mirror.
 </p>
 <p>
-    Binary releases are available 
+    Binary releases are available
        <a href="http://jakarta.apache.org/site/binindex.cgi">here</a>.
     Source releases are available
        <a href="http://jakarta.apache.org/site/sourceindex.cgi">here</a>

@@ -13,7 +13,7 @@
         <p>
 The Jakarta Commons Logging (JCL) provides a Log interface that
 is intended to be both light-weight and independent of numerous logging toolkits.
-It provides the middleware/tooling developer a simple
+It provides the middleware/tooling developer with a simple
 logging abstraction, that allows the user (application developer) to plug in
 a specific logging implementation.
     </p>
@@ -25,8 +25,8 @@ Familiarity with high-level details of various Logging implementations is presum
         <p>
 The Jakarta Commons Logging provides a Log interface with thin-wrapper implementations for
 other logging tools, including
-<a href="http://jakarta.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="http://jakarta.apache.org/avalon/logkit/index.html">Avalon LogKit</a>,
+<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
+<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>,
 and
 <a>JDK 1.4</a>.
 The interface maps closely to Log4J and LogKit.
@@ -35,7 +35,7 @@ The interface maps closely to Log4J and LogKit.
 </section>
     <section name="Users Quick Start">
         <p>
-As far as possible, <em>Commons-Logging</em> tries to be as unobtrusive as possible. 
+As far as possible, <em>Commons-Logging</em> tries to be as unobtrusive as possible.
 In most cases, including the (full) <code>commons-logging.jar</code> in the classpath
 should result in <em>Commons-Logging</em> configuring itself in a reasonable manner.
 There's a good chance that it'll guess your preferred logging system and you won't
@@ -43,10 +43,10 @@ need to do any configuration at all!
     </p>
         <subsection name='Configuration'>
             <p>
-There are two base abstractions used by <em>Commons-Logging</em>: <code>Log</code> 
+There are two base abstractions used by <em>Commons-Logging</em>: <code>Log</code>
 (the basic logger) and <code>LogFactory</code> (which knows how to create <code>Log</code>
-instances). Using <code>LogFactory</code> implementations other than the default is a 
-subject for advanced users only, so let's concentrate on configuring the default 
+instances). Using <code>LogFactory</code> implementations other than the default is a
+subject for advanced users only, so let's concentrate on configuring the default
 implementation.
         </p>
             <p>
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogFactory;
         </code>
     </ul>
         <p>
-Note that some components using commons-logging may 
+Note that some components using commons-logging may
 either extend Log,
 or provide a component-specific LogFactory implementation.
 Review the component documentation for guidelines
@@ -165,7 +165,7 @@ In addition to the logging methods, the following are provided for code guards:
     </ul>
         <subsection name='Best Practices'>
             <p>
-Best practices for programming/planning are presented in two categories: 
+Best practices for programming/planning are presented in two categories:
 General and Enterprise.
 The general principles are fairly clear.  Enterprise practices are a bit more involved
 and it is not always as clear as to why they are important.
@@ -187,7 +187,7 @@ only needs to execute in support of logging,
 that otherwise introduces undesirable runtime overhead
 in the general case (logging disabled).
 Examples are multiple parameters, or expressions (i.e. string + " more") for parameters.
-Use the guard methods of the form <code>log.is&lt;<i>Priority</i>>()</code> to verify
+Use the guard methods of the form <code>log.is&lt;<i>Priority</i>&gt;()</code> to verify
 that logging should be performed, before incurring the overhead of the logging method call.
 Yes, the logging methods will perform the same check, but only after resolving parameters.
             </p>
@@ -223,7 +223,7 @@ so be conservative and keep to a minimum.
 See also <a HREF="#Internationalization">Internationalization</a>.
                 </li>
                     <li>
-<b>debug</b> - detailed information on flow of through the system.
+<b>debug</b> - detailed information on the flow through the system.
 Expect these to be written to logs only.
                 </li>
                     <li>
@@ -246,7 +246,7 @@ to follow the rules.
 Since any problems that result are going to be assigned to you,
 it's in your best interest to be prepared with the proactive
 tools necessary to demonstrate that your component works correctly,
-or at worst that the problem analyzed from your logs.
+or at worst that the problem can be analyzed from your logs.
 For this discussion, we must make a distinction between different types of exceptions
 based on what kind of boundaries they cross:
             </p>
@@ -344,7 +344,7 @@ for working with NLS messages.
                 </p>
             <p>
 NLS enabled components are particularly appreciated
-(thats an open-source-correct term for 'required by corporate end-users' :-)
+(that's an open-source-correct term for 'required by corporate end-users' :-)
 for <strong>tooling</strong> and <strong>middleware</strong> components.
                 </p>
             <p>
@@ -391,7 +391,7 @@ for the following toolkits, in order of preference:
         </p>
             <ul>
                 <li>
-<a href="http://jakarta.apache.org/log4j/docs/index.html">Log4J</a> 
+<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>
             </li>
                 <li>
 JDK 1.4
@@ -443,13 +443,13 @@ can be configured to use different logging toolkits.
 Configuration of the behavior of the JCL ultimately depends upon the
 logging toolkit being used.
 The JCL SPI uses
-<a href="http://jakarta.apache.org/log4j/docs/index.html">Log4J</a>
+<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>
 by default if it is available (in the CLASSPATH).
         </p>
             <subsection name='Log4J'>
                 <p>
 As
-<a href="http://jakarta.apache.org/log4j/docs/index.html">Log4J</a>
+<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>
 is the default logger,
 a <i>few</i> details are presented herein to get the developer/integrator going.
             </p>
@@ -510,14 +510,14 @@ while limiting console output to INFO (and higher).
 </section>
     <section name='Frequently Asked Questions'>
         <subsection name='Is JCL Thread Safe?'>
-            <p> 
-JCL doesn't (and cannot) impose any requirement on thread safety on the underlying implementation 
-and thus its SPI contract doesn't guarantee thread safety. 
-However, JCL can be safely used a multi-threaded environment 
+            <p>
+JCL doesn't (and cannot) impose any requirement on thread safety on the underlying implementation
+and thus its SPI contract doesn't guarantee thread safety.
+However, JCL can be safely used in a multi-threaded environment
 as long as the underlying implementation is thread-safe.
         </p>
             <p>
-It would be very unusual for a logging system to be thread unsafe. 
+It would be very unusual for a logging system to be thread unsafe.
 Certainly, JCL is thread safe when used with the distributed Log implementations.
         </p>
     </subsection>

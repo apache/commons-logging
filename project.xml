@@ -4,7 +4,6 @@
   <extend>../commons-build/project.xml</extend>
   <name>Logging</name>
   <id>commons-logging</id>
-  <logo></logo>
   <currentVersion>1.0-dev</currentVersion>
 
   <organization>
@@ -16,7 +15,7 @@
   <inceptionYear>2001</inceptionYear>
   <shortDescription>Commons Logging</shortDescription>
   <description>
-Commons Logging is a thin adapter allowing configurable bridging to other, 
+Commons Logging is a thin adapter allowing configurable bridging to other,
 well known logging systems.
   </description>
   
@@ -51,7 +50,7 @@ well known logging systems.
     </developer>
     <developer>
       <name>Scott Sanders</name>
-      <id>sanders</id> 
+      <id>sanders</id>
       <email>sanders at apache dot org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
