@@ -10,12 +10,11 @@ package org.apache.commons.httpclient.log;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.2 2001/08/02 22:14:41 rwaldhoff Exp $
+ * @version $Id: NoOpLog.java,v 1.3 2001/08/07 17:37:22 rwaldhoff Exp $
  */
 public final class NoOpLog implements Log {
     public NoOpLog() { }
     public NoOpLog(String name) { }
-    public void assert(boolean assertion, String msg) { }
     public void debug(Object message) { }
     public void debug(Object message, Throwable t) { }
     public void info(Object message) { }
