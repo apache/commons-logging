@@ -23,6 +23,7 @@ Users Guide : Jakarta Commons Logging</h1>
 <h3>
 Table of Contents</h3>
 <a href="#Introduction">Introduction</a>
+<br><a href="#Users">Users Quick Start</a>
 <br><a href="#Developers">Developers</a>
 <br>&nbsp; <a href="#Best Practices">Best Practices</a>
 <br><a href="#Integration">Integration</a>
@@ -51,6 +52,51 @@ other logging tools, including
 and
 <a>JDK 1.4</a>.
 The interface maps closely to Log4J and LogKit.
+</p>
+
+<h2><a NAME="Users"></a>Users Quick Start</h2>
+<p>
+As far as possible, <em>Commons-Logging</em> tries to be as unobtrusive as possible. 
+In most cases, including the (full) <code>commons-logging.jar</code> in the classpath
+should result in <em>Commons-Logging</em> configuring itself in a reasonable manner.
+There's a good chance that it'll guess your preferred logging system and you won't
+need to do any configuration at all!
+</p>
+<h3>Configuration</h3>
+<p>
+There are two base abstractions used by <em>Commons-Logging</em>: <code>Log</code> 
+(the basic logger) and <code>LogFactory</code> (which knows how to create <code>Log</code>
+instances). Using <code>LogFactory</code> implementations other than the default is a 
+subject for advanced users only, so let's concentrate on configuring the default 
+implementation.
+</p>
+<p>
+The default <code>LogFactory</code> implementation uses the following discovery process
+to determine what type of <code>Log</code> implementation it should use
+(the process terminates when the first positive match - in order - is found):
+
+    <ol>
+    <li>Look for a configuration attribute of this factory named
+        <code>org.apache.commons.logging.Log</code> (for backwards
+        compatibility to pre-1.0 versions of this API, an attribute
+        <code>org.apache.commons.logging.log</code> is also consulted).</li>
+    <li>Look for a system property named
+        <code>org.apache.commons.logging.Log</code> (for backwards
+        compatibility to pre-1.0 versions of this API, a system property
+        <code>org.apache.commons.logging.log</code> is also consulted).</li>
+    <li>If the Log4J logging system is available in the application
+        class path, use the corresponding wrapper class
+        (<a href="impl/Log4JLogger.html">Log4JLogger</a>).</li>
+    <li>If the application is executing on a JDK 1.4 system, use
+        the corresponding wrapper class
+        (<a href="impl/Jdk14Logger.html">Jdk14Logger</a>).</li>
+    <li>Fall back to the default simple logging wrapper
+        (<a href="impl/SimpleLog.html">SimpleLog</a>).</li>
+    </ol>
+    
+Consult the <em>Commons-Logging</em> javadocs for details of the various <code>Log</code>
+implementations that ship with the component. (The discovery process is also covered in more
+detail there.)
 </p>
 
 <h2><a NAME="Developers"></a>Developers</h2>
