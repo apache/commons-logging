@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.18 2002/12/13 16:55:39 rsitze Exp $
- * $Revision: 1.18 $
- * $Date: 2002/12/13 16:55:39 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.19 2002/12/18 07:20:50 craigmcc Exp $
+ * $Revision: 1.19 $
+ * $Date: 2002/12/18 07:20:50 $
  *
  * ====================================================================
  *
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.18 $ $Date: 2002/12/13 16:55:39 $
+ * @version $Revision: 1.19 $ $Date: 2002/12/18 07:20:50 $
  */
 
 public abstract class LogFactory {
@@ -412,6 +412,27 @@ public abstract class LogFactory {
         throws LogConfigurationException {
 
         return (getFactory().getInstance(name));
+
+    }
+
+
+    /**
+     * Release any internal references to previously created {@link LogFactory}
+     * instances that have been associated with the specified class loader
+     * (if any), after calling the instance method <code>release()</code> on
+     * each of them.
+     *
+     * @param classLoader ClassLoader for which to release the LogFactory
+     */
+    public static void release(ClassLoader classLoader) {
+
+        synchronized (factories) {
+            LogFactory factory = (LogFactory) factories.get(classLoader);
+            if (factory != null) {
+                factory.release();
+                factories.remove(classLoader);
+            }
+        }
 
     }
 
