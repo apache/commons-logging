@@ -63,7 +63,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.34 $ $Date: 2004/10/17 09:02:48 $
+ * @version $Revision: 1.35 $ $Date: 2004/10/17 09:14:10 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -371,8 +371,11 @@ public class LogFactoryImpl extends LogFactory {
         Class logClass = null;
         Class logInterface = null;
         try {
-            logInterface = this.getClass().getClassLoader().loadClass
-                (LOG_INTERFACE);
+            ClassLoader cl = this.getClass().getClassLoader();
+            // handle the case if getClassLoader() returns null
+            // It may mean this class was loaded from the bootstrap classloader
+            logInterface = (cl == null) ? loadClass(LOG_INTERFACE) : 
+                                          cl.loadClass(LOG_INTERFACE);
             logClass = loadClass(logClassName);
             if (logClass == null) {
                 throw new LogConfigurationException
