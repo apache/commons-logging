@@ -78,22 +78,6 @@ public abstract class AbstractLogTest extends TestCase {
     }
 
     
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        
-        // todo suite.addTest(TestLogLevels.suite());
-        
-        return suite;
-    }
-
-    /**
-     * 
-     */
-    public static void main(String args[]) {
-        String[] testCaseName = { AbstractLogTest.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-    
     public abstract Log getLogObject();
 
 	public void testLoggingWithNullParameters()
