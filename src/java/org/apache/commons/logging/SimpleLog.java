@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.9 2002/01/17 22:55:43 rdonkin Exp $
- * $Revision: 1.9 $
- * $Date: 2002/01/17 22:55:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.10 2002/01/21 21:19:38 craigmcc Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/01/21 21:19:38 $
  *
  * ====================================================================
  *
@@ -98,7 +98,7 @@ import java.util.Date;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.9 2002/01/17 22:55:43 rdonkin Exp $
+ * @version $Id: SimpleLog.java,v 1.10 2002/01/21 21:19:38 craigmcc Exp $
  */
 public class SimpleLog implements Log {
 
@@ -132,6 +132,11 @@ public class SimpleLog implements Log {
     /** "Fatal" level logging. */
     public static final int LOG_LEVEL_FATAL  = 5;
 
+    /** Enable all logging levels */
+    public static final int LOG_LEVEL_ALL    = (LOG_LEVEL_DEBUG - 1);
+
+    /** Enable no logging levels */
+    public static final int LOG_LEVEL_OFF    = (LOG_LEVEL_FATAL + 1);
 
     // ------------------------------------------------------------ Initializer
 
@@ -215,7 +220,9 @@ public class SimpleLog implements Log {
             lvl =  simpleLogProps.getProperty(systemPrefix + "defaultlog");
         }
 
-        if("debug".equalsIgnoreCase(lvl)) {
+        if("all".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_ALL);
+        } else if("debug".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_DEBUG);
         } else if("info".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_INFO);
@@ -225,7 +232,10 @@ public class SimpleLog implements Log {
             setLevel(SimpleLog.LOG_LEVEL_ERROR);
         } else if("fatal".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_FATAL);
+        } else if("off".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_OFF);
         }
+
     }
 
 
