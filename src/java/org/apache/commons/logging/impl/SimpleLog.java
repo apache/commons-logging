@@ -1,68 +1,24 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.8 2002/12/12 20:29:16 rsitze Exp $
- * $Revision: 1.8 $
- * $Date: 2002/12/12 20:29:16 $
- *
- * ====================================================================
- *
- * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
- * reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
- * 4. The names "The Jakarta Project", "Commons", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
- * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
- * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- * ====================================================================
- *
- * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
- * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
- *
- */
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ 
 
 
 package org.apache.commons.logging.impl;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
@@ -90,13 +46,19 @@ import org.apache.commons.logging.LogConfigurationException;
  *     If not specified, the default logging detail level is used.</li>
  * <li><code>org.apache.commons.logging.simplelog.showlogname</code> -
  *     Set to <code>true</code> if you want the Log instance name to be
- *     included in output messages. Defaults to false</li>
+ *     included in output messages. Defaults to <code>false</code>.</li>
  * <li><code>org.apache.commons.logging.simplelog.showShortLogname</code> -
- *     Set to <code>true</code> if you want the last componet of the name to be
- *     included in output messages. Defaults to true.</li>
+ *     Set to <code>true</code> if you want the last component of the name to be
+ *     included in output messages. Defaults to <code>true</code>.</li>
  * <li><code>org.apache.commons.logging.simplelog.showdatetime</code> -
  *     Set to <code>true</code> if you want the current date and time
- *     to be included in output messages. Default is false.</li>
+ *     to be included in output messages. Default is <code>false</code>.</li>
+ * <li><code>org.apache.commons.logging.simplelog.dateTimeFormat</code> -
+ *     The date and time format to be used in the output messages.
+ *     The pattern describing the date and time format is the same that is
+ *     used in <code>java.text.SimpleDateFormat</code>. If the format is not
+ *     specified or is invalid, the default format is used.
+ *     The default format is <code>yyyy/MM/dd HH:mm:ss:SSS zzz</code>.</li>
  * </ul>
  *
  * <p>In addition to looking for system properties with the names specified
@@ -108,29 +70,35 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.8 2002/12/12 20:29:16 rsitze Exp $
+ * @version $Id: SimpleLog.java,v 1.21 2004/06/06 20:47:56 rdonkin Exp $
  */
-public class SimpleLog implements Log {
+public class SimpleLog implements Log, Serializable {
 
 
     // ------------------------------------------------------- Class Attributes
 
-    /** All system properties used by <code>Simple</code> start with this */
+    /** All system properties used by <code>SimpleLog</code> start with this */
     static protected final String systemPrefix =
         "org.apache.commons.logging.simplelog.";
 
     /** Properties loaded from simplelog.properties */
     static protected final Properties simpleLogProps = new Properties();
 
+    /** The default format to use when formating dates */
+    static protected final String DEFAULT_DATE_TIME_FORMAT =
+        "yyyy/MM/dd HH:mm:ss:SSS zzz";
+
     /** Include the instance name in the log message? */
     static protected boolean showLogName = false;
     /** Include the short name ( last component ) of the logger in the log
-        message. Default to true - otherwise we'll be lost in a flood of
-        messages without knowing who sends them.
-    */
+     *  message. Defaults to true - otherwise we'll be lost in a flood of
+     *  messages without knowing who sends them.
+     */
     static protected boolean showShortName = true;
     /** Include the current time in the log message */
     static protected boolean showDateTime = false;
+    /** The date and time format to use in the log message */
+    static protected String dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
     /** Used to format times */
     static protected DateFormat dateFormatter = null;
 
@@ -157,9 +125,14 @@ public class SimpleLog implements Log {
     public static final int LOG_LEVEL_OFF    = (LOG_LEVEL_FATAL + 1);
 
     // ------------------------------------------------------------ Initializer
-    
+
     private static String getStringProperty(String name) {
-        String prop = System.getProperty(name);
+        String prop = null;
+	try {
+	    prop = System.getProperty(name);
+	} catch (SecurityException e) {
+	    ; // Ignore
+	}
         return (prop == null) ? simpleLogProps.getProperty(name) : prop;
     }
 
@@ -173,11 +146,11 @@ public class SimpleLog implements Log {
         return (prop == null) ? dephault : "true".equalsIgnoreCase(prop);
     }
 
-    // initialize class attributes
-    // load properties file, if found.
-    // override with system properties.
+    // Initialize class attributes.
+    // Load properties file, if found.
+    // Override with system properties.
     static {
-        // add props from the resource simplelog.properties
+        // Add props from the resource simplelog.properties
         InputStream in = getResourceAsStream("simplelog.properties");
         if(null != in) {
             try {
@@ -191,12 +164,17 @@ public class SimpleLog implements Log {
         showLogName = getBooleanProperty( systemPrefix + "showlogname", showLogName);
         showShortName = getBooleanProperty( systemPrefix + "showShortLogname", showShortName);
         showDateTime = getBooleanProperty( systemPrefix + "showdatetime", showDateTime);
-        showLogName = getBooleanProperty( systemPrefix + "showlogname", showLogName);
 
         if(showDateTime) {
-            dateFormatter = new SimpleDateFormat(
-                getStringProperty(systemPrefix + "dateformat",
-                                  "yyyy/MM/dd HH:mm:ss:SSS zzz"));
+            dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat",
+                                               dateTimeFormat);
+            try {
+                dateFormatter = new SimpleDateFormat(dateTimeFormat);
+            } catch(IllegalArgumentException e) {
+                // If the format pattern is invalid - use the default format
+                dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
+                dateFormatter = new SimpleDateFormat(dateTimeFormat);
+            }
         }
     }
 
@@ -207,10 +185,10 @@ public class SimpleLog implements Log {
     protected String logName = null;
     /** The current log level */
     protected int currentLogLevel;
+    /** The short name of this simple log instance */
+    private String shortLogName = null;
 
-    private String prefix=null;
 
-    
     // ------------------------------------------------------------ Constructor
 
     /**
@@ -222,12 +200,12 @@ public class SimpleLog implements Log {
 
         logName = name;
 
-        // set initial log level
+        // Set initial log level
         // Used to be: set default log level to ERROR
         // IMHO it should be lower, but at least info ( costin ).
         setLevel(SimpleLog.LOG_LEVEL_INFO);
 
-        // set log level from properties
+        // Set log level from properties
         String lvl = getStringProperty(systemPrefix + "log." + logName);
         int i = String.valueOf(name).lastIndexOf(".");
         while(null == lvl && i > -1) {
@@ -266,7 +244,7 @@ public class SimpleLog implements Log {
     /**
      * <p> Set logging level. </p>
      *
-     * @param level new logging level
+     * @param currentLogLevel new logging level
      */
     public void setLevel(int currentLogLevel) {
 
@@ -290,19 +268,23 @@ public class SimpleLog implements Log {
     /**
      * <p> Do the actual logging.
      * This method assembles the message
-     * and then prints to <code>System.err</code>.</p>
+     * and then calls <code>write()</code> to cause it to be written.</p>
+     *
+     * @param type One of the LOG_LEVEL_XXX constants defining the log level
+     * @param message The message itself (typically a String)
+     * @param t The exception whose stack trace should be logged
      */
     protected void log(int type, Object message, Throwable t) {
-        // use a string buffer for better performance
+        // Use a string buffer for better performance
         StringBuffer buf = new StringBuffer();
 
-        // append date-time if so configured
+        // Append date-time if so configured
         if(showDateTime) {
             buf.append(dateFormatter.format(new Date()));
             buf.append(" ");
         }
 
-        // append a readable representation of the log leve
+        // Append a readable representation of the log level
         switch(type) {
             case SimpleLog.LOG_LEVEL_TRACE: buf.append("[TRACE] "); break;
             case SimpleLog.LOG_LEVEL_DEBUG: buf.append("[DEBUG] "); break;
@@ -312,36 +294,53 @@ public class SimpleLog implements Log {
             case SimpleLog.LOG_LEVEL_FATAL: buf.append("[FATAL] "); break;
         }
 
-        // append the name of the log instance if so configured
+        // Append the name of the log instance if so configured
  	if( showShortName) {
-            if( prefix==null ) {
-                // cut all but the last component of the name for both styles
-                prefix = logName.substring( logName.lastIndexOf(".") +1) + " - ";
-                prefix = prefix.substring( prefix.lastIndexOf("/") +1) + "-";
+            if( shortLogName==null ) {
+                // Cut all but the last component of the name for both styles
+                shortLogName = logName.substring(logName.lastIndexOf(".") + 1);
+                shortLogName =
+                    shortLogName.substring(shortLogName.lastIndexOf("/") + 1);
             }
-            buf.append( prefix );
+            buf.append(String.valueOf(shortLogName)).append(" - ");
         } else if(showLogName) {
             buf.append(String.valueOf(logName)).append(" - ");
         }
 
-        // append the message
+        // Append the message
         buf.append(String.valueOf(message));
 
-        // append stack trace if not null
+        // Append stack trace if not null
         if(t != null) {
             buf.append(" <");
             buf.append(t.toString());
             buf.append(">");
 
-            java.io.StringWriter sw= new java.io.StringWriter(1024); 
-            java.io.PrintWriter pw= new java.io.PrintWriter(sw); 
+            java.io.StringWriter sw= new java.io.StringWriter(1024);
+            java.io.PrintWriter pw= new java.io.PrintWriter(sw);
             t.printStackTrace(pw);
             pw.close();
             buf.append(sw.toString());
         }
 
-        // print to System.err
-        System.err.println(buf.toString());
+        // Print to the appropriate destination
+        write(buf);
+
+    }
+
+
+    /**
+     * <p>Write the content of the message accumulated in the specified
+     * <code>StringBuffer</code> to the appropriate output destination.  The
+     * default implementation writes to <code>System.err</code>.</p>
+     *
+     * @param buffer A <code>StringBuffer</code> containing the accumulated
+     *  text to be logged
+     */
+    protected void write(StringBuffer buffer) {
+
+        System.err.println(buffer.toString());
+
     }
 
 
@@ -383,7 +382,7 @@ public class SimpleLog implements Log {
 
 
     /**
-     * <p> Log a message with debug log level.</p>
+     * <p> Log a message with trace log level.</p>
      */
     public final void trace(Object message) {
 
@@ -394,7 +393,7 @@ public class SimpleLog implements Log {
 
 
     /**
-     * <p> Log an error with debug log level.</p>
+     * <p> Log an error with trace log level.</p>
      */
     public final void trace(Object message, Throwable t) {
 
@@ -573,7 +572,7 @@ public class SimpleLog implements Log {
     /**
      * Return the thread context class loader if available.
      * Otherwise return null.
-     * 
+     *
      * The thread context class loader is available for JDK 1.2
      * or later, if certain security conditions are met.
      *
@@ -588,7 +587,7 @@ public class SimpleLog implements Log {
             try {
                 // Are we running on a JDK 1.2 or later system?
                 Method method = Thread.class.getMethod("getContextClassLoader", null);
-    
+
                 // Get the thread context class loader (if there is one)
                 try {
                     classLoader = (ClassLoader)method.invoke(Thread.currentThread(), null);
@@ -599,12 +598,12 @@ public class SimpleLog implements Log {
                      * InvocationTargetException is thrown by 'invoke' when
                      * the method being invoked (getContextClassLoader) throws
                      * an exception.
-                     * 
+                     *
                      * getContextClassLoader() throws SecurityException when
                      * the context class loader isn't an ancestor of the
                      * calling class's class loader, or if security
                      * permissions are restricted.
-                     * 
+                     *
                      * In the first case (not related), we want to ignore and
                      * keep going.  We cannot help but also ignore the second
                      * with the logic below, but other calls elsewhere (to
@@ -625,7 +624,7 @@ public class SimpleLog implements Log {
                 ;  // ignore
             }
         }
-    
+
         if (classLoader == null) {
             classLoader = SimpleLog.class.getClassLoader();
         }
@@ -633,7 +632,7 @@ public class SimpleLog implements Log {
         // Return the selected class loader
         return classLoader;
     }
-    
+
     private static InputStream getResourceAsStream(final String name)
     {
         return (InputStream)AccessController.doPrivileged(

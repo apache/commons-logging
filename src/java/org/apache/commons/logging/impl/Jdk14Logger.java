@@ -1,68 +1,24 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.4 2002/07/17 16:42:40 rsitze Exp $
- * $Revision: 1.4 $
- * $Date: 2002/07/17 16:42:40 $
- *
- * ====================================================================
- *
- * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
- * reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
- * 4. The names "The Jakarta Project", "Commons", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
- * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
- * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- * ====================================================================
- *
- * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
- * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
- *
- */
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ 
 
 
 package org.apache.commons.logging.impl;
 
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,16 +27,16 @@ import org.apache.commons.logging.Log;
 
 /**
  * <p>Implementation of the <code>org.apache.commons.logging.Log</code>
- * interfaces that wraps the standard JDK logging mechanisms that were
+ * interface that wraps the standard JDK logging mechanisms that were
  * introduced in the Merlin release (JDK 1.4).</p>
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.4 $ $Date: 2002/07/17 16:42:40 $
+ * @version $Revision: 1.13 $ $Date: 2004/06/06 21:10:21 $
  */
 
-public final class Jdk14Logger implements Log {
+public class Jdk14Logger implements Log, Serializable {
 
 
     // ----------------------------------------------------------- Constructors
@@ -93,7 +49,8 @@ public final class Jdk14Logger implements Log {
      */
     public Jdk14Logger(String name) {
 
-        logger = Logger.getLogger(name);
+        this.name = name;
+        logger = getLogger();
 
     }
 
@@ -104,29 +61,39 @@ public final class Jdk14Logger implements Log {
     /**
      * The underlying Logger implementation we are using.
      */
-    protected Logger logger = null;
+    protected transient Logger logger = null;
+
+
+    /**
+     * The name of the logger we are wrapping.
+     */
+    protected String name = null;
 
 
     // --------------------------------------------------------- Public Methods
 
     private void log( Level level, String msg, Throwable ex ) {
-        // Hack (?) to get the stack trace.
-        Throwable dummyException=new Throwable();
-        StackTraceElement locations[]=dummyException.getStackTrace();
-        // Caller will be the third element
-        String cname="unknown";
-        String method="unknown";
-        if( locations!=null && locations.length >2 ) {
-            StackTraceElement caller=locations[2];
-            cname=caller.getClassName();
-            method=caller.getMethodName();
+
+        Logger logger = getLogger();
+        if (logger.isLoggable(level)) {
+            // Hack (?) to get the stack trace.
+            Throwable dummyException=new Throwable();
+            StackTraceElement locations[]=dummyException.getStackTrace();
+            // Caller will be the third element
+            String cname="unknown";
+            String method="unknown";
+            if( locations!=null && locations.length >2 ) {
+                StackTraceElement caller=locations[2];
+                cname=caller.getClassName();
+                method=caller.getMethodName();
+            }
+            if( ex==null ) {
+                logger.logp( level, cname, method, msg );
+            } else {
+                logger.logp( level, cname, method, msg, ex );
+            }
         }
 
-        if( ex==null ) {
-            logger.logp( level, cname, method, msg );
-        } else {
-            logger.logp( level, cname, method, msg, ex );
-        }
     }
 
     /**
@@ -181,7 +148,10 @@ public final class Jdk14Logger implements Log {
      * Return the native Logger instance we are using.
      */
     public Logger getLogger() {
-        return (this.logger);
+        if (logger == null) {
+            logger = Logger.getLogger(name);
+        }
+        return (logger);
     }
 
 
@@ -205,7 +175,7 @@ public final class Jdk14Logger implements Log {
      * Is debug logging currently enabled?
      */
     public boolean isDebugEnabled() {
-        return (logger.isLoggable(Level.FINE));
+        return (getLogger().isLoggable(Level.FINE));
     }
 
 
@@ -213,7 +183,7 @@ public final class Jdk14Logger implements Log {
      * Is error logging currently enabled?
      */
     public boolean isErrorEnabled() {
-        return (logger.isLoggable(Level.SEVERE));
+        return (getLogger().isLoggable(Level.SEVERE));
     }
 
 
@@ -221,7 +191,7 @@ public final class Jdk14Logger implements Log {
      * Is fatal logging currently enabled?
      */
     public boolean isFatalEnabled() {
-        return (logger.isLoggable(Level.SEVERE));
+        return (getLogger().isLoggable(Level.SEVERE));
     }
 
 
@@ -229,23 +199,23 @@ public final class Jdk14Logger implements Log {
      * Is info logging currently enabled?
      */
     public boolean isInfoEnabled() {
-        return (logger.isLoggable(Level.INFO));
+        return (getLogger().isLoggable(Level.INFO));
     }
 
 
     /**
-     * Is tace logging currently enabled?
+     * Is trace logging currently enabled?
      */
     public boolean isTraceEnabled() {
-        return (logger.isLoggable(Level.FINEST));
+        return (getLogger().isLoggable(Level.FINEST));
     }
 
 
     /**
-     * Is warning logging currently enabled?
+     * Is warn logging currently enabled?
      */
     public boolean isWarnEnabled() {
-        return (logger.isLoggable(Level.WARNING));
+        return (getLogger().isLoggable(Level.WARNING));
     }
 
 

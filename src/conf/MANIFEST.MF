@@ -1,6 +1,5 @@
-Extension-Name: @package@
+Extension-Name: org.apache.commons.logging
 Specification-Vendor: Apache Software Foundation
 Specification-Version: 1.0
 Implementation-Vendor: Apache Software Foundation
-Implementation-Version: @version@
-Class-Path: log4j.jar log4j-core.jar
+Implementation-Version: 1.0.4

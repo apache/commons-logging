@@ -1,93 +1,53 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.2 2002/07/17 16:42:40 rsitze Exp $
- * $Revision: 1.2 $
- * $Date: 2002/07/17 16:42:40 $
- *
- * ====================================================================
- *
- * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
- * reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
- * 4. The names "The Jakarta Project", "Commons", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
- * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
- * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- * ====================================================================
- *
- * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
- * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
- *
- */
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ 
 
 
 package org.apache.commons.logging.impl;
 
+import java.io.Serializable;
 import org.apache.log.Logger;
 import org.apache.log.Hierarchy;
 import org.apache.commons.logging.Log;
 
 /**
  * <p>Implementation of <code>org.apache.commons.logging.Log</code>
- * that wraps the <a href="http://jakarta.apache.org/avalon/logkit/">jakarta-avalon-logkit</a>
- * logging system. Configuration of <code>LogKit</code> is left to the user.</p>
+ * that wraps the <a href="http://avalon.apache.org/logkit/">avalon-logkit</a>
+ * logging system. Configuration of <code>LogKit</code> is left to the user.
+ * </p>
  *
  * <p><code>LogKit</code> accepts only <code>String</code> messages.
  * Therefore, this implementation converts object messages into strings
  * by called their <code>toString()</code> method before logging them.</p>
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
- * @author Robert Burrell Donkin                                 *
- * @version $Id: LogKitLogger.java,v 1.2 2002/07/17 16:42:40 rsitze Exp $
+ * @author Robert Burrell Donkin
+ * @version $Id: LogKitLogger.java,v 1.9 2004/06/01 19:56:46 rdonkin Exp $
  */
 
-public final class LogKitLogger implements Log {
+public class LogKitLogger implements Log, Serializable {
 
 
     // ------------------------------------------------------------- Attributes
 
 
     /** Logging goes to this <code>LogKit</code> logger */
-    protected Logger logger = null;
+    protected transient Logger logger = null;
+
+    /** Name of this logger */
+    protected String name = null;
 
 
     // ------------------------------------------------------------ Constructor
@@ -100,7 +60,24 @@ public final class LogKitLogger implements Log {
      * @param name log name
      */
     public LogKitLogger(String name) {
-        logger = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
+        this.name = name;
+        this.logger = getLogger();
+    }
+
+
+    // --------------------------------------------------------- Public Methods
+
+
+    /**
+     * <p>Return the underlying Logger we are using.</p>
+     */
+    public Logger getLogger() {
+
+        if (logger == null) {
+            logger = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
+        }
+        return (logger);
+
     }
 
 
@@ -128,7 +105,7 @@ public final class LogKitLogger implements Log {
      */
     public void debug(Object message) {
         if (message != null) {
-            logger.debug(String.valueOf(message));
+            getLogger().debug(String.valueOf(message));
         }
     }
 
@@ -138,7 +115,7 @@ public final class LogKitLogger implements Log {
      */
     public void debug(Object message, Throwable t) {
         if (message != null) {
-            logger.debug(String.valueOf(message), t);
+            getLogger().debug(String.valueOf(message), t);
         }
     }
 
@@ -148,7 +125,7 @@ public final class LogKitLogger implements Log {
      */
     public void info(Object message) {
         if (message != null) {
-            logger.info(String.valueOf(message));
+            getLogger().info(String.valueOf(message));
         }
     }
 
@@ -158,7 +135,7 @@ public final class LogKitLogger implements Log {
      */
     public void info(Object message, Throwable t) {
         if (message != null) {
-            logger.info(String.valueOf(message), t);
+            getLogger().info(String.valueOf(message), t);
         }
     }
 
@@ -168,7 +145,7 @@ public final class LogKitLogger implements Log {
      */
     public void warn(Object message) {
         if (message != null) {
-            logger.warn(String.valueOf(message));
+            getLogger().warn(String.valueOf(message));
         }
     }
 
@@ -178,7 +155,7 @@ public final class LogKitLogger implements Log {
      */
     public void warn(Object message, Throwable t) {
         if (message != null) {
-            logger.warn(String.valueOf(message), t);
+            getLogger().warn(String.valueOf(message), t);
         }
     }
 
@@ -188,7 +165,7 @@ public final class LogKitLogger implements Log {
      */
     public void error(Object message) {
         if (message != null) {
-            logger.error(String.valueOf(message));
+            getLogger().error(String.valueOf(message));
         }
     }
 
@@ -198,7 +175,7 @@ public final class LogKitLogger implements Log {
      */
     public void error(Object message, Throwable t) {
         if (message != null) {
-            logger.error(String.valueOf(message), t);
+            getLogger().error(String.valueOf(message), t);
         }
     }
 
@@ -208,7 +185,7 @@ public final class LogKitLogger implements Log {
      */
     public void fatal(Object message) {
         if (message != null) {
-            logger.fatalError(String.valueOf(message));
+            getLogger().fatalError(String.valueOf(message));
         }
     }
 
@@ -218,7 +195,7 @@ public final class LogKitLogger implements Log {
      */
     public void fatal(Object message, Throwable t) {
         if (message != null) {
-            logger.fatalError(String.valueOf(message), t);
+            getLogger().fatalError(String.valueOf(message), t);
         }
     }
 
@@ -227,7 +204,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
     public boolean isDebugEnabled() {
-        return logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
 
@@ -235,7 +212,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
      */
     public boolean isErrorEnabled() {
-        return logger.isErrorEnabled();
+        return getLogger().isErrorEnabled();
     }
 
 
@@ -243,7 +220,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
      */
     public boolean isFatalEnabled() {
-        return logger.isFatalErrorEnabled();
+        return getLogger().isFatalErrorEnabled();
     }
 
 
@@ -251,7 +228,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
      */
     public boolean isInfoEnabled() {
-        return logger.isInfoEnabled();
+        return getLogger().isInfoEnabled();
     }
 
 
@@ -259,7 +236,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
     public boolean isTraceEnabled() {
-        return logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
 
@@ -267,7 +244,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
      */
     public boolean isWarnEnabled() {
-        return logger.isWarnEnabled();
+        return getLogger().isWarnEnabled();
     }
 
 
