@@ -9,10 +9,11 @@
 package org.apache.commons.httpclient.log;
 
 import org.apache.log4j.Category;
+import org.apache.log4j.Priority;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: Log4JCategoryLog.java,v 1.1 2001/08/02 16:27:06 rwaldhoff Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.2 2001/08/02 22:14:41 rwaldhoff Exp $
  */
 public class Log4JCategoryLog  implements Log {
     Category _category = null;
@@ -62,5 +63,17 @@ public class Log4JCategoryLog  implements Log {
 
     public final void fatal(Object message, Throwable t) {
         _category.fatal(message,t);
+    }
+
+    public final boolean isDebugEnabled() {
+        return _category.isDebugEnabled();
+    }
+
+    public final boolean isInfoEnabled() {
+        return _category.isInfoEnabled();
+    }
+
+    public final boolean isEnabledFor(Priority p) {
+        return _category.isEnabledFor(p);
     }
 }

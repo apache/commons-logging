@@ -17,7 +17,7 @@ import java.util.Date;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: SimpleLog.java,v 1.1 2001/08/02 16:27:06 rwaldhoff Exp $
+ * @version $Id: SimpleLog.java,v 1.2 2001/08/02 22:14:41 rwaldhoff Exp $
  */
 public class SimpleLog implements Log {
     static protected final Properties _simplelogProps = new Properties();
@@ -161,5 +161,13 @@ public class SimpleLog implements Log {
 
     public final void fatal(Object message, Throwable t) {
         log(FATAL,message,t);
+    }
+
+    public final boolean isDebugEnabled() {
+        return (_logLevel >= DEBUG);
+    }
+
+    public final boolean isInfoEnabled() {
+        return (_logLevel >= INFO);
     }
 }
