@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/CustomConfigTestCase.java,v 1.4 2003/04/10 22:40:37 rsitze Exp $
- * $Revision: 1.4 $
- * $Date: 2003/04/10 22:40:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/CustomConfigTestCase.java,v 1.5 2003/07/18 14:11:45 rsitze Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/07/18 14:11:45 $
  *
  * ====================================================================
  *
@@ -66,16 +66,12 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -84,7 +80,7 @@ import org.apache.commons.logging.LogFactory;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.4 $ $Date: 2003/04/10 22:40:37 $
+ * @version $Revision: 1.5 $ $Date: 2003/07/18 14:11:45 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {

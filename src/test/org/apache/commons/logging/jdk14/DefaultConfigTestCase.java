@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/DefaultConfigTestCase.java,v 1.3 2003/04/10 22:40:37 rsitze Exp $
- * $Revision: 1.3 $
- * $Date: 2003/04/10 22:40:37 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/DefaultConfigTestCase.java,v 1.4 2003/07/18 14:11:45 rsitze Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/07/18 14:11:45 $
  *
  * ====================================================================
  *
@@ -76,7 +76,7 @@ import org.apache.commons.logging.LogFactory;
  * should be automatically configured.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.3 $ $Date: 2003/04/10 22:40:37 $
+ * @version $Revision: 1.4 $ $Date: 2003/07/18 14:11:45 $
  */
 
 public class DefaultConfigTestCase extends TestCase {
@@ -134,10 +134,8 @@ public class DefaultConfigTestCase extends TestCase {
      */
     public void tearDown() {
         log = null;
-        if (factory != null) {
-            factory.releaseAll();
-            factory = null;
-        }
+        factory = null;
+        LogFactory.releaseAll();
     }
 
 
@@ -190,7 +188,7 @@ public class DefaultConfigTestCase extends TestCase {
 
     // Set up log instance
     protected void setUpLog(String name) throws Exception {
-        log = factory.getLog(name);
+        log = LogFactory.getLog(name);
     }
 
 
