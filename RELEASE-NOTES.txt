@@ -16,7 +16,7 @@
 
 -->
 
-$Id: RELEASE-NOTES.txt,v 1.7 2004/06/01 20:39:50 rdonkin Exp $
+$Id: RELEASE-NOTES.txt,v 1.8 2004/09/27 16:21:40 proyal Exp $
 
                            Commons Logging Package
                                 Version 1.0.4
@@ -52,7 +52,7 @@ NEW FEATURES:
 [AvalonLogger]     Added AvalonLogger, which wraps the logger used by the
                    Avalon framework.  As with other implementations, this
                    is compiled only if the appropriate dependencies are
-                   satisfied.
+                   satisfied. This implementation is *NOT* Serializable
 
 [Jdk13LumberjackLogger]
                    Added Jdk13LumberjackLogger, which wraps the implementation
@@ -104,6 +104,8 @@ BUG FIXES:
                    exceptions when looking up system properties that are
                    not accessible.
 
+[AvalonLogger]     Fix NullPointerException when it when providing a
+                   default logger.
 
 
 DEPRECATIONS:
