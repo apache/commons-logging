@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Log4JCategoryLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
- * $Revision: 1.8 $
- * $Date: 2002/01/17 01:47:49 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Log4JCategoryLog.java,v 1.9 2002/01/24 18:29:36 rdonkin Exp $
+ * $Revision: 1.9 $
+ * $Date: 2002/01/24 18:29:36 $
  *
  * ====================================================================
  *
@@ -74,7 +74,7 @@ import org.apache.log4j.Priority;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: Log4JCategoryLog.java,v 1.8 2002/01/17 01:47:49 craigmcc Exp $
+ * @version $Id: Log4JCategoryLog.java,v 1.9 2002/01/24 18:29:36 rdonkin Exp $
  */
 public final class Log4JCategoryLog implements Log {
     
@@ -101,7 +101,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log a message to the Log4j Category with <code>DEBUG</code> priority.
      */
     public void debug(Object message) {
         category.debug(message);
@@ -109,7 +109,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log an error to the Log4j Category with <code>DEBUG</code> priority.
      */
     public void debug(Object message, Throwable t) {
         category.debug(message,t);
@@ -117,7 +117,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log a message to the Log4j Category with <code>INFO</code> priority.
      */
     public void info(Object message) {
         category.info(message);
@@ -125,7 +125,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log an error to the Log4j Category with <code>INFO</code> priority.
      */
     public void info(Object message, Throwable t) {
         category.info(message,t);
@@ -133,7 +133,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log a message to the Log4j Category with <code>WARN</code> priority.
      */
     public void warn(Object message) {
         category.warn(message);
@@ -141,7 +141,7 @@ public final class Log4JCategoryLog implements Log {
 
     
     /**
-     * Simply call log4j category.
+     * Log an error to the Log4j Category with <code>WARN</code> priority.
      */
     public void warn(Object message, Throwable t) {
         category.warn(message,t);
@@ -149,7 +149,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log a message to the Log4j Category with <code>ERROR</code> priority.
      */
     public void error(Object message) {
         category.error(message);
@@ -157,7 +157,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log an error to the Log4j Category with <code>ERROR</code> priority.
      */
     public void error(Object message, Throwable t) {
         category.error(message,t);
@@ -165,7 +165,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log a message to the Log4j Category with <code>FATAL</code> priority.
      */
     public void fatal(Object message) {
         category.fatal(message);
@@ -173,7 +173,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Log an error to the Log4j Category with <code>FATAL</code> priority.
      */
     public void fatal(Object message, Throwable t) {
         category.fatal(message,t);
@@ -181,15 +181,15 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Check whether the Log4j Category used is enabled for <code>DEBUG</code> priority.
      */
     public boolean isDebugEnabled() {
         return category.isDebugEnabled();
     }
 
 
-    /**
-     * Simply call log4j category.
+     /**
+     * Check whether the Log4j Category used is enabled for <code>ERROR</code> priority.
      */
     public boolean isErrorEnabled() {
         return category.isEnabledFor(Priority.ERROR);
@@ -197,7 +197,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Check whether the Log4j Category used is enabled for <code>FATAL</code> priority.
      */
     public boolean isFatalEnabled() {
         return category.isEnabledFor(Priority.FATAL);
@@ -205,7 +205,7 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Check whether the Log4j Category used is enabled for <code>INFO</code> priority.
      */
     public boolean isInfoEnabled() {
         return category.isInfoEnabled();
@@ -213,11 +213,9 @@ public final class Log4JCategoryLog implements Log {
 
 
     /**
-     * Simply call log4j category.
+     * Check whether the Log4j Category used is enabled for <code>WARN</code> priority.
      */
     public boolean isWarnEnabled() {
         return category.isEnabledFor(Priority.WARN);
     }
-
-
 }
