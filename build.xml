@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.8 2002/01/22 01:33:45 craigmcc Exp $
+        $Id: build.xml,v 1.9 2002/02/03 01:44:03 sanders Exp $
 -->
 
 
@@ -125,7 +125,7 @@
     <mkdir dir="${build.home}/tests"/>
   </target>
 
-  
+
   <target name="static" depends="prepare"
    description="Copy static files to build directory">
     <tstamp/>
@@ -147,7 +147,7 @@
        deprecation="${compile.deprecation}"
           optimize="${compile.optimize}">
       <classpath refid="compile.classpath"/>
-      <exclude name="org/apache/commons/logging/Jdk14Logger.java"
+      <exclude name="org/apache/commons/logging/impl/Jdk14Logger.java"
              unless="jdk.1.4.present"/>
     </javac>
     <copy    todir="${build.home}/classes" filtering="on">
