@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.9 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.9 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.10 2003/07/15 15:47:38 craigmcc Exp $
+ * $Revision: 1.10 $
+ * $Date: 2003/07/15 15:47:38 $
  *
  * ====================================================================
  *
@@ -108,7 +108,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.9 2003/03/30 23:42:36 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.10 2003/07/15 15:47:38 craigmcc Exp $
  */
 public class SimpleLog implements Log {
 
@@ -159,7 +159,12 @@ public class SimpleLog implements Log {
     // ------------------------------------------------------------ Initializer
     
     private static String getStringProperty(String name) {
-        String prop = System.getProperty(name);
+        String prop = null;
+	try {
+	    prop = System.getProperty(name);
+	} catch (SecurityException e) {
+	    ; // Ignore
+	}
         return (prop == null) ? simpleLogProps.getProperty(name) : prop;
     }
 
