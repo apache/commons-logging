@@ -15,6 +15,9 @@
 # log4j.jar - log4j classes (see http://jakarta.apache.org/log4j)
 log4j.jar=/java/log4j/log4j.jar
 
+# Used for testing against older 1.2.x Log4J versions
+log4j12.jar=/java/log4j/log4j-1.2.7.jar
+
 # logkit.jar - Avalon LogKit classes (see http://jakarta.apache.org/avalon)
 logkit.jar=/java/logkit/logkit.jar
 
