@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.30 2003/03/31 00:20:19 craigmcc Exp $
+        $Id: build.xml,v 1.31 2003/03/31 00:38:22 craigmcc Exp $
 -->
 
 
@@ -168,9 +168,10 @@
           description="Compile shareable components"/>
 
   <target name="compile-only" depends="init" >
+
     <available property="jdk.1.4.present"
                classname="java.util.logging.Logger"/>
-    <available classname="org.apache.log4j.Category"
+    <available classname="org.apache.log4j.Logger"
                classpathref="compile.classpath"
                property="log4j.present"/>
     <available property="logkit.present"
@@ -180,7 +181,6 @@
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
     <echo  message="log4j.present=${log4j.present}"/>
     <echo  message="logkit.present=${logkit.present}"/>
-
 
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
@@ -200,11 +200,15 @@
     <copy  todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>
     </copy>
+    <mkdir      dir="${build.home}/classes/META-INF"/>
+    <copy      file="LICENSE.txt"
+              todir="${build.home}/classes/META-INF"/>
 
     <jar jarfile="${build.home}/commons-${component.name}.jar"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/**" />
+      <include name="META-INF/LICENSE.txt"/>
     </jar>
 
     <jar jarfile="${build.home}/commons-${component.name}-api.jar"
@@ -215,6 +219,7 @@
       <include name="org/apache/commons/logging/impl/Jdk14*.class" />
       <include name="org/apache/commons/logging/impl/SimpleLog*.class" />
       <include name="org/apache/commons/logging/impl/NoOpLog*.class" />
+      <include name="META-INF/LICENSE.txt"/>
     </jar>
   </target>
 
@@ -282,13 +287,9 @@
 
   <target name="dist" depends="compile,javadoc"
    description="Create binary distribution">
-    <!-- TODO: top level files like LICENSE and README -->
     <mkdir      dir="${dist.home}"/>
-    <copy      file="../LICENSE"
+    <copy      file="LICENSE.txt"
               todir="${dist.home}"/>
-    <mkdir      dir="${build.home}/classes/META-INF"/>
-    <copy      file="../LICENSE"
-             tofile="${build.home}/classes/META-INF/LICENSE.txt"/>
     <copy file="${build.home}/commons-${component.name}.jar"
           tofile="${dist.home}/commons-${component.name}.jar" />
     <copy file="${build.home}/commons-${component.name}-api.jar"
