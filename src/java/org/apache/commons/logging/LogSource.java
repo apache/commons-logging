@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.10 2002/01/17 22:55:43 rdonkin Exp $
- * $Revision: 1.10 $
- * $Date: 2002/01/17 22:55:43 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogSource.java,v 1.11 2002/02/03 01:28:00 sanders Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/02/03 01:28:00 $
  *
  * ====================================================================
  *
@@ -62,10 +62,8 @@
 package org.apache.commons.logging;
 
 
-import java.util.HashMap;
 import java.lang.reflect.Constructor;
-import java.util.Iterator;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Hashtable;
 
 
 /**
@@ -94,31 +92,31 @@ import java.lang.reflect.InvocationTargetException;
  * </ul>
  *
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.10 2002/01/17 22:55:43 rdonkin Exp $
+ * @version $Id: LogSource.java,v 1.11 2002/02/03 01:28:00 sanders Exp $
  */
 public class LogSource {
 
     // ------------------------------------------------------- Class Attributes
-    
-    static protected HashMap logs = new HashMap();
+
+    static protected Hashtable logs = new Hashtable();
 
     /** Is log4j available (in the current classpath) */
     static protected boolean log4jIsAvailable = false;
 
     /** Is JD 1.4 logging available */
     static protected boolean jdk14IsAvailable = false;
-    
+
     /** Constructor for current log class */
     static protected Constructor logImplctor = null;
 
 
     // ----------------------------------------------------- Class Initializers
-    
+
     static {
 
         // Is Log4J Available?
         try {
-            if(null != Class.forName("org.apache.log4j.Category")) {
+            if (null != Class.forName("org.apache.log4j.Category")) {
                 log4jIsAvailable = true;
             } else {
                 log4jIsAvailable = false;
@@ -129,7 +127,7 @@ public class LogSource {
 
         // Is JDK 1.4 Logging Available?
         try {
-            if(null != Class.forName("java.util.logging.Logger")) {
+            if (null != Class.forName("java.util.logging.Logger")) {
                 jdk14IsAvailable = true;
             } else {
                 jdk14IsAvailable = false;
@@ -142,14 +140,15 @@ public class LogSource {
         String name = null;
         try {
             name = System.getProperty("org.apache.commons.logging.log");
-        } catch (Throwable t) { }
+        } catch (Throwable t) {
+        }
         if (name != null) {
             try {
                 setLogImplementation(name);
             } catch (Throwable t) {
                 try {
                     setLogImplementation
-                        ("org.apache.commons.logging.NoOpLog");
+                            ("org.apache.commons.logging.NoOpLog");
                 } catch (Throwable u) {
                     ;
                 }
@@ -158,18 +157,18 @@ public class LogSource {
             try {
                 if (log4jIsAvailable) {
                     setLogImplementation
-                        ("org.apache.commons.logging.Log4JCategoryLog");
+                            ("org.apache.commons.logging.Log4JCategoryLog");
                 } else if (jdk14IsAvailable) {
                     setLogImplementation
-                        ("org.apache.commons.logging.Jdk14Logger");
+                            ("org.apache.commons.logging.Jdk14Logger");
                 } else {
                     setLogImplementation
-                        ("org.apache.commons.logging.NoOpLog");
+                            ("org.apache.commons.logging.NoOpLog");
                 }
             } catch (Throwable t) {
                 try {
                     setLogImplementation
-                        ("org.apache.commons.logging.NoOpLog");
+                            ("org.apache.commons.logging.NoOpLog");
                 } catch (Throwable u) {
                     ;
                 }
@@ -180,7 +179,7 @@ public class LogSource {
 
 
     // ------------------------------------------------------------ Constructor
-    
+
 
     /** Don't allow others to create instances */
     private LogSource() {
@@ -198,9 +197,9 @@ public class LogSource {
      * of the log).
      */
     static public void setLogImplementation(String classname) throws
-                       LinkageError, ExceptionInInitializerError,
-                       NoSuchMethodException, SecurityException,
-                       ClassNotFoundException {
+            LinkageError, ExceptionInInitializerError,
+            NoSuchMethodException, SecurityException,
+            ClassNotFoundException {
         try {
             Class logclass = Class.forName(classname);
             Class[] argtypes = new Class[1];
@@ -219,8 +218,8 @@ public class LogSource {
      * argument (containing the name of the log).
      */
     static public void setLogImplementation(Class logclass) throws
-                       LinkageError, ExceptionInInitializerError,
-                       NoSuchMethodException, SecurityException {
+            LinkageError, ExceptionInInitializerError,
+            NoSuchMethodException, SecurityException {
         Class[] argtypes = new Class[1];
         argtypes[0] = "".getClass();
         logImplctor = logclass.getConstructor(argtypes);
@@ -229,10 +228,10 @@ public class LogSource {
 
     /** Get a <code>Log</code> instance by class name */
     static public Log getInstance(String name) {
-        Log log = (Log)(logs.get(name));
-        if(null == log) {
+        Log log = (Log) (logs.get(name));
+        if (null == log) {
             log = makeNewLogInstance(name);
-            logs.put(name,log);
+            logs.put(name, log);
         }
         return log;
     }
@@ -274,11 +273,11 @@ public class LogSource {
         try {
             Object[] args = new Object[1];
             args[0] = name;
-            log = (Log)(logImplctor.newInstance(args));
+            log = (Log) (logImplctor.newInstance(args));
         } catch (Throwable t) {
             log = null;
         }
-        if(null == log) {
+        if (null == log) {
             log = new NoOpLog(name);
         }
         return log;
@@ -291,7 +290,7 @@ public class LogSource {
      * all logs known to me.
      */
     static public String[] getLogNames() {
-        return (String[])(logs.keySet().toArray(new String[logs.size()]));
+        return (String[]) (logs.keySet().toArray(new String[logs.size()]));
     }
 
 
