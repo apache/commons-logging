@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.19 2002/12/18 07:20:50 craigmcc Exp $
- * $Revision: 1.19 $
- * $Date: 2002/12/18 07:20:50 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.20 2003/03/01 09:55:06 baliuka Exp $
+ * $Revision: 1.20 $
+ * $Date: 2003/03/01 09:55:06 $
  *
  * ====================================================================
  *
@@ -87,7 +87,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.19 $ $Date: 2002/12/18 07:20:50 $
+ * @version $Revision: 1.20 $ $Date: 2003/03/01 09:55:06 $
  */
 
 public abstract class LogFactory {
@@ -580,8 +580,15 @@ public abstract class LogFactory {
                                     // Nothing more to try, onwards.
                                     throw e;
                                 }
-                                // ignore exception, continue
+                              
+                            }catch(ClassCastException e){
+                                
+                              if (classLoader == LogFactory.class.getClassLoader()) {
+                                    // Nothing more to try, onwards (bug in loader implementation).
+                                    throw e;
+                               }
                             }
+                            // ignore exception, continue  
                         }
             
                         /* At this point, either classLoader == null, OR
