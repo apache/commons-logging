@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.11 2002/08/12 21:01:07 rsitze Exp $
- * $Revision: 1.11 $
- * $Date: 2002/08/12 21:01:07 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.12 2002/08/30 03:23:34 rsitze Exp $
+ * $Revision: 1.12 $
+ * $Date: 2002/08/30 03:23:34 $
  *
  * ====================================================================
  *
@@ -62,16 +62,17 @@
 package org.apache.commons.logging;
 
 
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
-import java.lang.SecurityException;
 
 
 /**
@@ -85,7 +86,7 @@ import java.lang.SecurityException;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.11 $ $Date: 2002/08/12 21:01:07 $
+ * @version $Revision: 1.12 $ $Date: 2002/08/30 03:23:34 $
  */
 
 public abstract class LogFactory {
@@ -258,7 +259,13 @@ public abstract class LogFactory {
     public static LogFactory getFactory() throws LogConfigurationException {
 
         // Identify the class loader we will be using
-        ClassLoader contextClassLoader = getContextClassLoader();
+        ClassLoader contextClassLoader =
+            (ClassLoader)AccessController.doPrivileged(
+                new PrivilegedAction() {
+                    public Object run() {
+                        return getContextClassLoader();
+                    }
+                });
 
         // Return any previously registered factory for this class loader
         LogFactory factory = getCachedFactory(contextClassLoader);
@@ -323,8 +330,9 @@ public abstract class LogFactory {
         // system property )
 
         try {
-            InputStream stream =
-                contextClassLoader.getResourceAsStream(FACTORY_PROPERTIES);
+            InputStream stream = (contextClassLoader == null
+                                 ? ClassLoader.getSystemResourceAsStream( FACTORY_PROPERTIES )
+                                 : contextClassLoader.getResourceAsStream( FACTORY_PROPERTIES ));
             if (stream != null) {
                 props = new Properties();
                 props.load(stream);
@@ -497,9 +505,6 @@ public abstract class LogFactory {
         
         if (contextClassLoader != null)
             factory = (LogFactory) factories.get(contextClassLoader);
-            
-        if (factory==null)
-            factory = (LogFactory) factories.get(LogFactory.class.getClassLoader());
         
         return factory;
     }
