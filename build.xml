@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.13 2002/02/20 23:02:01 craigmcc Exp $
+        $Id: build.xml,v 1.14 2002/05/06 21:32:37 costin Exp $
 -->
 
 
@@ -72,7 +72,7 @@
   <property name="compile.deprecation"     value="false"/>
 
   <!-- Should Java compilations set the 'optimize' compiler option? -->
-  <property name="compile.optimize"        value="true"/>
+  <property name="compile.optimize"        value="false"/>
 
   <!-- Construct compile classpath -->
   <path id="compile.classpath">
@@ -170,6 +170,9 @@
     <copy  todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>
     </copy>
+    <jar jarfile="${build.home}/commons-${component.name}.jar"
+         basedir="${build.home}/classes"
+         manifest="${build.home}/conf/MANIFEST.MF"/>
   </target>
 
 
