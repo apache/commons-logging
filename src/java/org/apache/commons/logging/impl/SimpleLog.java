@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.10 2003/07/15 15:47:38 craigmcc Exp $
- * $Revision: 1.10 $
- * $Date: 2003/07/15 15:47:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.11 2003/08/16 18:21:50 craigmcc Exp $
+ * $Revision: 1.11 $
+ * $Date: 2003/08/16 18:21:50 $
  *
  * ====================================================================
  *
@@ -108,7 +108,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.10 2003/07/15 15:47:38 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.11 2003/08/16 18:21:50 craigmcc Exp $
  */
 public class SimpleLog implements Log {
 
@@ -271,7 +271,7 @@ public class SimpleLog implements Log {
     /**
      * <p> Set logging level. </p>
      *
-     * @param level new logging level
+     * @param currentLogLevel new logging level
      */
     public void setLevel(int currentLogLevel) {
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/AvalonLogger.java,v 1.2 2003/05/14 11:12:58 rdonkin Exp $
- * $Revision: 1.2 $
- * $Date: 2003/05/14 11:12:58 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/AvalonLogger.java,v 1.3 2003/08/16 18:21:50 craigmcc Exp $
+ * $Revision: 1.3 $
+ * $Date: 2003/08/16 18:21:50 $
  *
  * ====================================================================
  *
@@ -69,7 +69,7 @@ import org.apache.commons.logging.Log;
  * logging calls to Avalon logging abstraction: the Logger interface.
  * 
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision: 1.2 $ $Date: 2003/05/14 11:12:58 $
+ * @version $Revision: 1.3 $ $Date: 2003/08/16 18:21:50 $
  */
 public class AvalonLogger implements Log {
 
@@ -84,7 +84,7 @@ public class AvalonLogger implements Log {
     }
 
     /**
-     * @param logger the avalon logger implementation to delegate to 
+     * @param name the name of the avalon logger implementation to delegate to 
      */
     public AvalonLogger(String name) {
         if (defaultLogger == null) 
