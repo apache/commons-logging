@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.9 2002/06/15 18:13:01 craigmcc Exp $
- * $Revision: 1.9 $
- * $Date: 2002/06/15 18:13:01 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.10 2002/08/09 16:18:36 rsitze Exp $
+ * $Revision: 1.10 $
+ * $Date: 2002/08/09 16:18:36 $
  *
  * ====================================================================
  *
@@ -85,7 +85,7 @@ import java.lang.SecurityException;
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.9 $ $Date: 2002/06/15 18:13:01 $
+ * @version $Revision: 1.10 $ $Date: 2002/08/09 16:18:36 $
  */
 
 public abstract class LogFactory {
@@ -95,17 +95,25 @@ public abstract class LogFactory {
 
 
     /**
+     * The name of the property used to identify the LogFactory implementation
+     * class name.
+     */
+    public static final String FACTORY_PROPERTY =
+        "org.apache.commons.logging.LogFactory";
+
+
+    /**
      * The fully qualified class name of the fallback <code>LogFactory</code>
      * implementation class to use, if no other can be found.
      */
-    protected static final String FACTORY_DEFAULT =
+    public static final String FACTORY_DEFAULT =
         "org.apache.commons.logging.impl.LogFactoryImpl";
 
 
     /**
      * The name of the properties file to search for.
      */
-    protected static final String FACTORY_PROPERTIES =
+    public static final String FACTORY_PROPERTIES =
         "commons-logging.properties";
 
     /**
@@ -114,14 +122,6 @@ public abstract class LogFactory {
      */
     protected static final String SERVICE_ID =
         "META-INF/services/org.apache.commons.logging.LogFactory";
-
-
-    /**
-     * The name of the property used to identify the LogFactory implementation
-     * class name.
-     */
-    public static final String FACTORY_PROPERTY =
-        "org.apache.commons.logging.LogFactory";
 
 
     // ----------------------------------------------------------- Constructors
