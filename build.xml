@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.37 2003/05/14 11:12:58 rdonkin Exp $
+        $Id: build.xml,v 1.38 2003/05/22 13:55:28 rdonkin Exp $
 -->
 
 
@@ -379,6 +379,8 @@
     <copy      file="LICENSE.txt"
               todir="${dist.home}"/>
     <copy      file="RELEASE-NOTES.txt"
+              todir="${dist.home}"/>
+    <copy      file="usersguide.html"
               todir="${dist.home}"/>
     <copy file="${build.home}/commons-${component.name}.jar"
           tofile="${dist.home}/commons-${component.name}.jar" />
