@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.3 2002/01/29 20:48:10 sanders Exp $
- * $Revision: 1.3 $
- * $Date: 2002/01/29 20:48:10 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/Jdk14Logger.java,v 1.4 2002/01/30 03:56:26 craigmcc Exp $
+ * $Revision: 1.4 $
+ * $Date: 2002/01/30 03:56:26 $
  *
  * ====================================================================
  *
@@ -72,8 +72,9 @@ import java.util.logging.Logger;
  * interfaces that wraps the standard JDK logging mechanisms that were
  * introduced in the Merlin release (JDK 1.4).</p>
  *
- * @author Craig R. McClanahan
- * @version $Revision: 1.3 $ $Date: 2002/01/29 20:48:10 $
+ * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
+ * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
+ * @version $Revision: 1.4 $ $Date: 2002/01/30 03:56:26 $
  */
 
 public final class Jdk14Logger implements Log {
