@@ -58,6 +58,15 @@ package. In addition, there is a (short)
 
 
 <section name="Releases">
+    <subsection name='1.0.4 Release'>
+        <p>
+The 1.0.4 release of commons-logging is currently under preparation. This is a service
+release containing support for both the 1.2.x and 1.3.x series of Log4J releases. For
+more details, see the 
+<a href='http://wiki.apache.org/jakarta-commons/Logging/1_2e0_2e4ReleasePlan'>release plan</a>
+for more details.
+        </p>
+    </subsection>
     <subsection name='Mirrored Releases'>
 <p>
 Releases after 1.0.2 should be downloaded from a mirror. Please remember to verify the
