@@ -30,8 +30,8 @@
   </description>
   <logo>/images/logo.png</logo>
   
-  <url>http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</url>
-  <package>org.apache.commons.${pom.artifactId.substring(8)}</package>
+  <url>http://jakarta.apache.org/commons/logging/optional</url>
+  <package>org.apache.commons.logging</package>
 
   <organization>
     <name>The Apache Software Foundation</name>
@@ -50,13 +50,12 @@
   <gumpRepositoryId>jakarta</gumpRepositoryId>
   <issueTrackingUrl>http://issues.apache.org/bugzilla/</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</siteDirectory>
-  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/${pom.artifactId.substring(8)}/</distributionDirectory>
+  <siteDirectory>/www/jakarta.apache.org/commons/logging/optional</siteDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/logging/optional/</distributionDirectory>
   
   <repository>
-    <!--<connection>scm:cvs:${logging.cvs}:jakarta-commons/logging/</connection>-->
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/${pom.artifactId.substring(8)}/trunk</connection>
-    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/${pom.artifactId.substring(8)}/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</connection>
+    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</url>
   </repository>
   
   <mailingLists>
@@ -158,11 +157,8 @@
 
   <reports>
     <report>maven-javadoc-plugin</report>
-    <report>maven-jdepend-plugin</report>
-    <report>maven-junit-report-plugin</report>
+	<report>maven-jdepend-plugin</report>
     <report>maven-jxr-plugin</report>
-    <report>maven-license-plugin</report>
-    <report>maven-tasklist-plugin</report>
   </reports>
   
 </project>
