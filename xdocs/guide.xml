@@ -181,7 +181,8 @@ In addition to the logging methods, the following are provided for code guards:
     log.isTraceEnabled();
         </source>
     </ul>
-        <subsection name='Best Practices'>
+</section>
+        <section name='Best Practices'>
             <p>
 Best practices for programming/planning are presented in two categories:
 General and Enterprise.
@@ -198,8 +199,9 @@ Enterprise requires more effort and planning, but are strongly encouraged (if no
 in production level systems.  Different corporate enterprises/environments have different
 requirements, so being flexible always helps.
         </p>
-            <subsection name='General - Code Guards'>
-                <p>
+            <subsection name='General'>
+                <subsection name='Code Guards'>
+                    <p>
 Code guards are typically used to guard code that
 only needs to execute in support of logging,
 that otherwise introduces undesirable runtime overhead
@@ -208,10 +210,10 @@ Examples are multiple parameters, or expressions (i.e. string + " more") for par
 Use the guard methods of the form <code>log.is&lt;<i>Priority</i>&gt;()</code> to verify
 that logging should be performed, before incurring the overhead of the logging method call.
 Yes, the logging methods will perform the same check, but only after resolving parameters.
-            </p>
-        </subsection>
-            <subsection name='General - Message Priorities/Levels'>
-                <p>
+                </p>
+            </subsection>
+                <subsection name='Message Priorities/Levels'>
+                    <p>
 It is important to ensure that log message are
 appropriate in content and severity.
 The following guidelines are suggested:
@@ -220,25 +222,29 @@ The following guidelines are suggested:
                     <li>
 <b>fatal</b> - Severe errors that cause premature termination.
 Expect these to be immediately visible on a status console.
-See also <a HREF="#Internationalization">Internationalization</a>.
+See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+Internationalization</a>.
                 </li>
                     <li>
 <b>error</b> - Other runtime errors or unexpected conditions.
 Expect these to be immediately visible on a status console.
-See also <a HREF="#Internationalization">Internationalization</a>.
+See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+Internationalization</a>.
                 </li>
                     <li>
 <b>warn</b> - Use of deprecated APIs, poor use of API, 'almost' errors,
 other runtime situations that are undesirable or unexpected, but not
 necessarily "wrong".
 Expect these to be immediately visible on a status console.
-See also <a HREF="#Internationalization">Internationalization</a>.
+See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+Internationalization</a>.
                 </li>
                     <li>
 <b>info</b> - Interesting runtime events (startup/shutdown).
 Expect these to be immediately visible on a console,
 so be conservative and keep to a minimum.
-See also <a HREF="#Internationalization">Internationalization</a>.
+See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+Internationalization</a>.
                 </li>
                     <li>
 <b>debug</b> - detailed information on the flow through the system.
@@ -249,15 +255,17 @@ Expect these to be written to logs only.
 Expect these to be written to logs only.
                 </li>
             </ul>
-        </subsection>
-            <subsection name='General - Default Message Priority/Level'>
-                <p>
+            </subsection>
+                <subsection name='Default Message Priority/Level'>
+                    <p>
 By default the message priority should be no lower than <b>info</b>.
 That is, by default <b>debug</b> message should not be seen in the logs.
-            </p>
+                </p>
+            </subsection>
         </subsection>
-            <subsection name='Enterprise - Logging Exceptions'>
-                <p>
+            <subsection name='Enterprise'>
+                <subsection name='Logging Exceptions'>
+                    <p>
 The general rule in dealing with exceptions is to assume that
 the user (developer using a tooling/middleware API) isn't going
 to follow the rules.
@@ -267,9 +275,9 @@ tools necessary to demonstrate that your component works correctly,
 or at worst that the problem can be analyzed from your logs.
 For this discussion, we must make a distinction between different types of exceptions
 based on what kind of boundaries they cross:
-            </p>
-                <ul>
-                    <li>
+                </p>
+                    <ul>
+                        <li>
 <b>External Boundaries - Expected Exceptions</b>.
 This classification includes exceptions such as <code>FileNotFoundException</code>
 that cross API/SPI boundaries, and are exposed to the user of a component/toolkit.
@@ -352,8 +360,7 @@ This allows the 'enterprise' level information to be turned on/off explicitly
 by most logger implementations.
             </p>
         </subsection>
-    </subsection>
-        <subsection name='Enterprise - National Language Support - Internationalization'>
+        <subsection name='National Language Support And Internationalization'>
             <p>
 NLS internationalization involves looking up messages from
 a message file by a message key, and using that message for logging.
@@ -374,6 +381,7 @@ It is generally considered optional for <b>debug</b> and <b>trace</b> messages.
 Perhaps more direct support for internationalizing log messages
 can be introduced in a future or alternate version of the <code>Log</code> interface.
                 </p>
+            </subsection>
     </subsection>
 </section>
     <section name='Integration'>
