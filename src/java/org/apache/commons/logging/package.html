@@ -14,7 +14,7 @@ prebuilt support for the following:</p>
     JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
     <a href="Log.html">Log</a> instance is connected to a corresponding
     <code>java.util.logging.Logger</code> instance.</li>
-<li><a href="http://jakarta.apache.org/jakarta-avalon/">LogKit</a> from Apache's
+<li><a href="http://jakarta.apache.org/avalon/">LogKit</a> from Apache's
     Jakarta project.  Each named <a href="Log.html">Log</a> instance is
     connected to a corresponding LogKit <code>Logger</code>.</li>
 <li><a href="NoOpLog.html">NoOpLog</a> implementation that simply swallows
@@ -25,6 +25,8 @@ prebuilt support for the following:</p>
 </ul>
 
 <h3>Configuring the Logging Package APIs</h3>
+
+<h4>Choosing A <code>Log</code> Implementation</h4>
 
 <p>The Logging Package APIs are configured based on the values of system
 properties, which are normally set on the command line that started your
@@ -49,8 +51,13 @@ following algorithm is applied:</p>
     throws away all logged output.</li>
 </ul>
 
+<h4>Configuring the Underlying Logging System</h4>
 
-<p>Additionally, each individual <a href="Log.html">Log</a> implementation may
+<p>The basic principle is that the user is totally responsible for the 
+configuration of the underlying logging system. 
+Commons-logging should not change the existing configuration.</p>
+
+<p>Each individual <a href="Log.html">Log</a> implementation may
 support its own configuration properties.  These will be documented in the
 class descriptions for the corresponding implementation class.</p>
 
@@ -72,11 +79,6 @@ component, consists of the following steps:</p>
     references to multiple loggers that are used for different
     purposes.  A typical scenario for a server application is to have each
     major component of the server use its own Log instance.</li>
-<li>Optionally, you can dynamically change the logging detail level by
-    calling <a href="Log.html#setLevel(int)">Log.setLevel()</a> with
-    an appropriate constant from the <code>Log</code> interface.  Note that,
-    in most cases, the underlying logging system configuration will have
-    been preconfigured by the system administrator.</li>
 <li>Cause messages to be logged (if the corresponding detail level is enabled)
     by calling appropriate methods (<code>debug()</code>, <code>info()</code>,
     <code>warn()</code>, <code>error</code>, and <code>fatal()</code>).</li>
