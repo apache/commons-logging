@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!DOCTYPE project [
-<!ENTITY commons-nav SYSTEM "../../incl_nav.xml">
+<!ENTITY commons-nav SYSTEM "../../commons-build/incl_nav.xml">
 ]>
 
 <project name="Logging">
@@ -13,7 +13,7 @@
 
   <body>
     <links>
-      <item name="Jakarta Commons"                   
+      <item name="Jakarta Commons"
             href="http://jakarta.apache.org/commons/"/>
     </links>
 
