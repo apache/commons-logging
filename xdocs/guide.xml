@@ -596,7 +596,7 @@ held in <code>LogFactory</code>'s static hashtable.
             <p>
 Beginning with JCL 1.0.5, <code>LogFactory</code> will attempt to cache factory
 implementations in a 
-<a href='http://jakarta.apache.org/commons/logging/api/org/apache/commons/logging/impl/WeakHashtable.java'>WeakHashtable</a>.  
+<a href='http://jakarta.apache.org/commons/logging/optional/apidocs/org/apache/commons/logging/impl/WeakHashtable.html'>WeakHashtable</a>.  
 This class is analogous to <code>java.util.WeakHashMap</code> in that it holds 
 <code>WeakReference</code>s to its keys, thus allowing classloaders to be GC'd 
 even if <code>LogFactory.release()</code> is never invoked.
