@@ -10,12 +10,12 @@ package org.apache.commons.logging;
 
 /**
  * A simple logging interface abstracting logging APIs.  In order to be
- * instantiated successfully by {@link LogFactory}, classes that implement
+ * instantiated successfully by {@link LogSource}, classes that implement
  * this interface must have a constructor that takes a single String
  * parameter representing the "name" of this Log.
  *
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.6 2001/12/04 04:28:03 craigmcc Exp $
+ * @version $Id: Log.java,v 1.7 2001/12/04 04:41:00 craigmcc Exp $
  */
 public interface Log {
     public void debug(Object message);
