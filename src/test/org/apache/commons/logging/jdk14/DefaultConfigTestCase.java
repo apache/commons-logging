@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/DefaultConfigTestCase.java,v 1.4 2003/07/18 14:11:45 rsitze Exp $
- * $Revision: 1.4 $
- * $Date: 2003/07/18 14:11:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/DefaultConfigTestCase.java,v 1.5 2003/08/16 21:58:59 craigmcc Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/08/16 21:58:59 $
  *
  * ====================================================================
  *
@@ -62,6 +62,11 @@
 package org.apache.commons.logging.jdk14;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -76,7 +81,7 @@ import org.apache.commons.logging.LogFactory;
  * should be automatically configured.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.4 $ $Date: 2003/07/18 14:11:45 $
+ * @version $Revision: 1.5 $ $Date: 2003/08/16 21:58:59 $
  */
 
 public class DefaultConfigTestCase extends TestCase {
@@ -145,18 +150,7 @@ public class DefaultConfigTestCase extends TestCase {
     // Test pristine Log instance
     public void testPristineLog() {
 
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.impl.Jdk14Logger",
-                     log.getClass().getName());
-
-        // Can we call level checkers with no exceptions?
-        log.isDebugEnabled();
-        log.isErrorEnabled();
-        log.isFatalEnabled();
-        log.isInfoEnabled();
-        log.isTraceEnabled();
-        log.isWarnEnabled();
+        checkLog();
 
     }
 
@@ -176,8 +170,47 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
 
+    // Test Serializability of Log instance
+    public void testSerializable() throws Exception {
+
+        // Serialize and deserialize the instance
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(log);
+        oos.close();
+        ByteArrayInputStream bais =
+            new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        log = (Log) ois.readObject();
+        ois.close();
+
+        // Check the characteristics of the resulting object
+        checkLog();
+
+    }
+
+
     // -------------------------------------------------------- Support Methods
 
+
+
+    // Check the log instance
+    protected void checkLog() {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.Jdk14Logger",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        log.isDebugEnabled();
+        log.isErrorEnabled();
+        log.isFatalEnabled();
+        log.isInfoEnabled();
+        log.isTraceEnabled();
+        log.isWarnEnabled();
+
+    }
 
 
     // Set up factory instance

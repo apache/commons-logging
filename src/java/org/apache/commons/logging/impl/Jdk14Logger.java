@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.6 2003/03/31 00:27:08 craigmcc Exp $
- * $Revision: 1.6 $
- * $Date: 2003/03/31 00:27:08 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/Jdk14Logger.java,v 1.7 2003/08/16 21:58:59 craigmcc Exp $
+ * $Revision: 1.7 $
+ * $Date: 2003/08/16 21:58:59 $
  *
  * ====================================================================
  *
@@ -63,6 +63,7 @@
 package org.apache.commons.logging.impl;
 
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -77,10 +78,10 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision: 1.6 $ $Date: 2003/03/31 00:27:08 $
+ * @version $Revision: 1.7 $ $Date: 2003/08/16 21:58:59 $
  */
 
-public final class Jdk14Logger implements Log {
+public final class Jdk14Logger implements Log, Serializable {
 
 
     // ----------------------------------------------------------- Constructors
@@ -93,7 +94,8 @@ public final class Jdk14Logger implements Log {
      */
     public Jdk14Logger(String name) {
 
-        logger = Logger.getLogger(name);
+        this.name = name;
+        logger = getLogger();
 
     }
 
@@ -104,12 +106,20 @@ public final class Jdk14Logger implements Log {
     /**
      * The underlying Logger implementation we are using.
      */
-    protected Logger logger = null;
+    protected transient Logger logger = null;
+
+
+    /**
+     * The name of the logger we are wrapping.
+     */
+    protected String name = null;
 
 
     // --------------------------------------------------------- Public Methods
 
     private void log( Level level, String msg, Throwable ex ) {
+
+        Logger logger = getLogger();
         if (logger.isLoggable(level)) {
             // Hack (?) to get the stack trace.
             Throwable dummyException=new Throwable();
@@ -128,6 +138,7 @@ public final class Jdk14Logger implements Log {
                 logger.logp( level, cname, method, msg, ex );
             }
         }
+
     }
 
     /**
@@ -182,7 +193,10 @@ public final class Jdk14Logger implements Log {
      * Return the native Logger instance we are using.
      */
     public Logger getLogger() {
-        return (this.logger);
+        if (logger == null) {
+            logger = Logger.getLogger(name);
+        }
+        return (logger);
     }
 
 
@@ -206,7 +220,7 @@ public final class Jdk14Logger implements Log {
      * Is debug logging currently enabled?
      */
     public boolean isDebugEnabled() {
-        return (logger.isLoggable(Level.FINE));
+        return (getLogger().isLoggable(Level.FINE));
     }
 
 
@@ -214,7 +228,7 @@ public final class Jdk14Logger implements Log {
      * Is error logging currently enabled?
      */
     public boolean isErrorEnabled() {
-        return (logger.isLoggable(Level.SEVERE));
+        return (getLogger().isLoggable(Level.SEVERE));
     }
 
 
@@ -222,7 +236,7 @@ public final class Jdk14Logger implements Log {
      * Is fatal logging currently enabled?
      */
     public boolean isFatalEnabled() {
-        return (logger.isLoggable(Level.SEVERE));
+        return (getLogger().isLoggable(Level.SEVERE));
     }
 
 
@@ -230,7 +244,7 @@ public final class Jdk14Logger implements Log {
      * Is info logging currently enabled?
      */
     public boolean isInfoEnabled() {
-        return (logger.isLoggable(Level.INFO));
+        return (getLogger().isLoggable(Level.INFO));
     }
 
 
@@ -238,7 +252,7 @@ public final class Jdk14Logger implements Log {
      * Is tace logging currently enabled?
      */
     public boolean isTraceEnabled() {
-        return (logger.isLoggable(Level.FINEST));
+        return (getLogger().isLoggable(Level.FINEST));
     }
 
 
@@ -246,7 +260,7 @@ public final class Jdk14Logger implements Log {
      * Is warning logging currently enabled?
      */
     public boolean isWarnEnabled() {
-        return (logger.isLoggable(Level.WARNING));
+        return (getLogger().isLoggable(Level.WARNING));
     }
 
 

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.3 2003/03/30 23:42:36 craigmcc Exp $
- * $Revision: 1.3 $
- * $Date: 2003/03/30 23:42:36 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogKitLogger.java,v 1.4 2003/08/16 21:58:59 craigmcc Exp $
+ * $Revision: 1.4 $
+ * $Date: 2003/08/16 21:58:59 $
  *
  * ====================================================================
  *
@@ -62,6 +62,7 @@
 
 package org.apache.commons.logging.impl;
 
+import java.io.Serializable;
 import org.apache.log.Logger;
 import org.apache.log.Hierarchy;
 import org.apache.commons.logging.Log;
@@ -78,17 +79,20 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Robert Burrell Donkin                                 *
- * @version $Id: LogKitLogger.java,v 1.3 2003/03/30 23:42:36 craigmcc Exp $
+ * @version $Id: LogKitLogger.java,v 1.4 2003/08/16 21:58:59 craigmcc Exp $
  */
 
-public final class LogKitLogger implements Log {
+public final class LogKitLogger implements Log, Serializable {
 
 
     // ------------------------------------------------------------- Attributes
 
 
     /** Logging goes to this <code>LogKit</code> logger */
-    protected Logger logger = null;
+    protected transient Logger logger = null;
+
+    /** Name of this logger */
+    protected String name = null;
 
 
     // ------------------------------------------------------------ Constructor
@@ -101,7 +105,24 @@ public final class LogKitLogger implements Log {
      * @param name log name
      */
     public LogKitLogger(String name) {
-        logger = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
+        this.name = name;
+        this.logger = getLogger();
+    }
+
+
+    // --------------------------------------------------------- Public Methods
+
+
+    /**
+     * <p>Return the underlying Logger we are using.</p>
+     */
+    public Logger getLogger() {
+
+        if (logger == null) {
+            logger = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
+        }
+        return (logger);
+
     }
 
 
@@ -129,7 +150,7 @@ public final class LogKitLogger implements Log {
      */
     public void debug(Object message) {
         if (message != null) {
-            logger.debug(String.valueOf(message));
+            getLogger().debug(String.valueOf(message));
         }
     }
 
@@ -139,7 +160,7 @@ public final class LogKitLogger implements Log {
      */
     public void debug(Object message, Throwable t) {
         if (message != null) {
-            logger.debug(String.valueOf(message), t);
+            getLogger().debug(String.valueOf(message), t);
         }
     }
 
@@ -149,7 +170,7 @@ public final class LogKitLogger implements Log {
      */
     public void info(Object message) {
         if (message != null) {
-            logger.info(String.valueOf(message));
+            getLogger().info(String.valueOf(message));
         }
     }
 
@@ -159,7 +180,7 @@ public final class LogKitLogger implements Log {
      */
     public void info(Object message, Throwable t) {
         if (message != null) {
-            logger.info(String.valueOf(message), t);
+            getLogger().info(String.valueOf(message), t);
         }
     }
 
@@ -169,7 +190,7 @@ public final class LogKitLogger implements Log {
      */
     public void warn(Object message) {
         if (message != null) {
-            logger.warn(String.valueOf(message));
+            getLogger().warn(String.valueOf(message));
         }
     }
 
@@ -179,7 +200,7 @@ public final class LogKitLogger implements Log {
      */
     public void warn(Object message, Throwable t) {
         if (message != null) {
-            logger.warn(String.valueOf(message), t);
+            getLogger().warn(String.valueOf(message), t);
         }
     }
 
@@ -189,7 +210,7 @@ public final class LogKitLogger implements Log {
      */
     public void error(Object message) {
         if (message != null) {
-            logger.error(String.valueOf(message));
+            getLogger().error(String.valueOf(message));
         }
     }
 
@@ -199,7 +220,7 @@ public final class LogKitLogger implements Log {
      */
     public void error(Object message, Throwable t) {
         if (message != null) {
-            logger.error(String.valueOf(message), t);
+            getLogger().error(String.valueOf(message), t);
         }
     }
 
@@ -209,7 +230,7 @@ public final class LogKitLogger implements Log {
      */
     public void fatal(Object message) {
         if (message != null) {
-            logger.fatalError(String.valueOf(message));
+            getLogger().fatalError(String.valueOf(message));
         }
     }
 
@@ -219,7 +240,7 @@ public final class LogKitLogger implements Log {
      */
     public void fatal(Object message, Throwable t) {
         if (message != null) {
-            logger.fatalError(String.valueOf(message), t);
+            getLogger().fatalError(String.valueOf(message), t);
         }
     }
 
@@ -228,7 +249,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
     public boolean isDebugEnabled() {
-        return logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
 
@@ -236,7 +257,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
      */
     public boolean isErrorEnabled() {
-        return logger.isErrorEnabled();
+        return getLogger().isErrorEnabled();
     }
 
 
@@ -244,7 +265,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
      */
     public boolean isFatalEnabled() {
-        return logger.isFatalErrorEnabled();
+        return getLogger().isFatalErrorEnabled();
     }
 
 
@@ -252,7 +273,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
      */
     public boolean isInfoEnabled() {
-        return logger.isInfoEnabled();
+        return getLogger().isInfoEnabled();
     }
 
 
@@ -260,7 +281,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
     public boolean isTraceEnabled() {
-        return logger.isDebugEnabled();
+        return getLogger().isDebugEnabled();
     }
 
 
@@ -268,7 +289,7 @@ public final class LogKitLogger implements Log {
      * Check whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
      */
     public boolean isWarnEnabled() {
-        return logger.isWarnEnabled();
+        return getLogger().isWarnEnabled();
     }
 
 

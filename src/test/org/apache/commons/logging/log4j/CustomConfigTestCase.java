@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/CustomConfigTestCase.java,v 1.4 2003/07/18 14:11:45 rsitze Exp $
- * $Revision: 1.4 $
- * $Date: 2003/07/18 14:11:45 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/log4j/CustomConfigTestCase.java,v 1.5 2003/08/16 21:58:59 craigmcc Exp $
+ * $Revision: 1.5 $
+ * $Date: 2003/08/16 21:58:59 $
  *
  * ====================================================================
  *
@@ -82,7 +82,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * logger configured per the configuration properties.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.4 $ $Date: 2003/07/18 14:11:45 $
+ * @version $Revision: 1.5 $ $Date: 2003/08/16 21:58:59 $
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
@@ -197,13 +197,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
         super.testPristineLog();
 
-        // Assert which logging levels have been enabled
-        assertTrue(log.isErrorEnabled());
-        assertTrue(log.isWarnEnabled());
-        assertTrue(log.isInfoEnabled());
-        assertTrue(!log.isDebugEnabled());
-        assertTrue(!log.isTraceEnabled());
-
     }
 
 
@@ -217,7 +210,34 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     }
 
 
+    // Test Serializability of Log instance
+    public void testSerializable() throws Exception {
+
+        super.testSerializable();
+        testExceptionMessages();
+
+    }
+
+
     // -------------------------------------------------------- Support Methods
+
+
+    // Check the log instance
+    protected void checkLog() {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.Log4JLogger",
+                     log.getClass().getName());
+
+        // Assert which logging levels have been enabled
+        assertTrue(log.isErrorEnabled());
+        assertTrue(log.isWarnEnabled());
+        assertTrue(log.isInfoEnabled());
+        assertTrue(!log.isDebugEnabled());
+        assertTrue(!log.isTraceEnabled());
+
+    }
 
 
     // Check the recorded messages
