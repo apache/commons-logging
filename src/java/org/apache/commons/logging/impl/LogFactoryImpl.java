@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.16 2002/09/27 02:16:44 rsitze Exp $
- * $Revision: 1.16 $
- * $Date: 2002/09/27 02:16:44 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.17 2002/10/19 17:25:04 rsitze Exp $
+ * $Revision: 1.17 $
+ * $Date: 2002/10/19 17:25:04 $
  *
  * ====================================================================
  *
@@ -106,7 +106,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.16 $ $Date: 2002/09/27 02:16:44 $
+ * @version $Revision: 1.17 $ $Date: 2002/10/19 17:25:04 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -152,6 +152,9 @@ public class LogFactoryImpl extends LogFactory {
         "org.apache.commons.logging.log";
 
 
+    private static final String LOG4JLOGIMPL =
+        "org.apache.commons.logging.impl.Log4JCategoryLog".intern();
+
     // ----------------------------------------------------- Instance Variables
 
 
@@ -167,6 +170,11 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Hashtable instances = new Hashtable();
 
+
+    /**
+     * Name of the class implementing the Log interface.
+     */
+    private String logClassName;
 
     /**
      * The one-argument constructor of the
@@ -213,8 +221,8 @@ public class LogFactoryImpl extends LogFactory {
     public Object getAttribute(String name) {
         if( proxyFactory != null )
             return proxyFactory.getAttribute( name );
-        return (attributes.get(name));
 
+        return attributes.get(name);
     }
 
 
@@ -236,8 +244,7 @@ public class LogFactoryImpl extends LogFactory {
         for (int i = 0; i < results.length; i++) {
             results[i] = (String) names.elementAt(i);
         }
-        return (results);
-
+        return results;
     }
 
 
@@ -250,14 +257,11 @@ public class LogFactoryImpl extends LogFactory {
      * @exception LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
-    public Log getInstance(Class clazz)
-        throws LogConfigurationException
-    {
+    public Log getInstance(Class clazz) throws LogConfigurationException {
         if( proxyFactory != null )
             return proxyFactory.getInstance(clazz);
 
-        return (getInstance(clazz.getName()));
-
+        return getInstance(clazz.getName());
     }
 
 
@@ -278,9 +282,7 @@ public class LogFactoryImpl extends LogFactory {
      * @exception LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
-    public Log getInstance(String name)
-        throws LogConfigurationException
-    {
+    public Log getInstance(String name) throws LogConfigurationException {
         if( proxyFactory != null )
             return proxyFactory.getInstance(name);
 
@@ -289,8 +291,7 @@ public class LogFactoryImpl extends LogFactory {
             instance = newInstance(name);
             instances.put(name, instance);
         }
-        return (instance);
-
+        return instance;
     }
 
 
@@ -307,7 +308,6 @@ public class LogFactoryImpl extends LogFactory {
             proxyFactory.release();
 
         instances.clear();
-
     }
 
 
@@ -320,7 +320,6 @@ public class LogFactoryImpl extends LogFactory {
     public void removeAttribute(String name) {
         if( proxyFactory != null )
             proxyFactory.removeAttribute(name);
-
         attributes.remove(name);
     }
 
@@ -336,7 +335,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     public void setAttribute(String name, Object value) {
         if( proxyFactory != null )
-            proxyFactory.setAttribute(name,value);
+            proxyFactory.setAttribute(name, value);
 
         if (value == null) {
             attributes.remove(name);
@@ -348,6 +347,52 @@ public class LogFactoryImpl extends LogFactory {
 
 
     // ------------------------------------------------------ Protected Methods
+
+
+
+    protected String getLogClassName() {
+        // Identify the Log implementation class we will be using
+        if (logClassName != null) {
+            return logClassName;
+        }
+
+        logClassName = (String) getAttribute(LOG_PROPERTY);
+
+        if (logClassName == null) { // @deprecated
+            logClassName = (String) getAttribute(LOG_PROPERTY_OLD);
+        }
+
+        if (logClassName == null) {
+            try {
+                logClassName = System.getProperty(LOG_PROPERTY);
+            } catch (SecurityException e) {
+                ;
+            }
+        }
+
+        if (logClassName == null) { // @deprecated
+            try {
+                logClassName = System.getProperty(LOG_PROPERTY_OLD);
+            } catch (SecurityException e) {
+                ;
+            }
+        }
+
+        if ((logClassName == null) && isLog4JAvailable()) {
+            logClassName = LOG4JLOGIMPL;
+        }
+
+        if ((logClassName == null) && isJdk14Available()) {
+            logClassName =
+                "org.apache.commons.logging.impl.Jdk14Logger";
+        }
+
+        if (logClassName == null) {
+            logClassName = LOG_DEFAULT;
+        }
+
+        return logClassName;
+    }
 
 
     /**
@@ -367,42 +412,10 @@ public class LogFactoryImpl extends LogFactory {
 
         // Return the previously identified Constructor (if any)
         if (logConstructor != null) {
-            return (logConstructor);
+            return logConstructor;
         }
 
-        // Identify the Log implementation class we will be using
-        String logClassName = null;
-        if (logClassName == null) {
-            logClassName = (String) getAttribute(LOG_PROPERTY);
-        }
-        if (logClassName == null) { // @deprecated
-            logClassName = (String) getAttribute(LOG_PROPERTY_OLD);
-        }
-        if (logClassName == null) {
-            try {
-                logClassName = System.getProperty(LOG_PROPERTY);
-            } catch (SecurityException e) {
-                ;
-            }
-        }
-        if (logClassName == null) { // @deprecated
-            try {
-                logClassName = System.getProperty(LOG_PROPERTY_OLD);
-            } catch (SecurityException e) {
-                ;
-            }
-        }
-        if ((logClassName == null) && isLog4JAvailable()) {
-            logClassName =
-                "org.apache.commons.logging.impl.Log4JCategoryLog";
-        }
-        if ((logClassName == null) && isJdk14Available()) {
-            logClassName =
-                "org.apache.commons.logging.impl.Jdk14Logger";
-        }
-        if (logClassName == null) {
-            logClassName = LOG_DEFAULT;
-        }
+        String logClassName = getLogClassName();
 
         // Attempt to load the Log implementation class
         Class logClass = null;
@@ -437,13 +450,15 @@ public class LogFactoryImpl extends LogFactory {
                 ("No suitable Log constructor " +
                  logConstructorSignature+ " for " + logClassName, t);
         }
-
     }
+
 
     /**
      * MUST KEEP THIS METHOD PRIVATE
      * 
-     * <p>Exposing this method establishes a security violation.
+     * <p>Exposing this method outside of
+     * <code>org.apache.commons.logging.LogFactoryImpl</code>
+     * will create a security violation:
      * This method uses <code>AccessController.doPrivileged()</code>.
      * </p>
      * 
@@ -478,12 +493,13 @@ public class LogFactoryImpl extends LogFactory {
         throw (ClassNotFoundException)result;
     }
 
+
     protected void guessConfig() {
-        if( isLog4JAvailable() ) {
+        if (getLogClassName() == LOG4JLOGIMPL) {
             proxyFactory = null;
             try {
                 Class proxyClass=
-                    loadClass( "org.apache.commons.logging.impl.Log4jFactory" );
+                    loadClass("org.apache.commons.logging.impl.Log4jFactory");
                 if (proxyClass != null) {
                     proxyFactory = (LogFactory)proxyClass.newInstance();
                 }
@@ -494,7 +510,7 @@ public class LogFactoryImpl extends LogFactory {
         // other logger specific initialization
         // ...
     }
-    
+
 
     /**
      * Is <em>JDK 1.4 or later</em> logging available?
@@ -508,7 +524,6 @@ public class LogFactoryImpl extends LogFactory {
         } catch (Throwable t) {
             return (false);
         }
-
     }
 
 
@@ -524,7 +539,6 @@ public class LogFactoryImpl extends LogFactory {
         } catch (Throwable t) {
             return (false);
         }
-
     }
 
 
@@ -537,9 +551,7 @@ public class LogFactoryImpl extends LogFactory {
      * @exception LogConfigurationException if a new instance cannot
      *  be created
      */
-    protected Log newInstance(String name)
-        throws LogConfigurationException {
-
+    protected Log newInstance(String name) throws LogConfigurationException {
         Log instance = null;
 
         try {
@@ -554,6 +566,5 @@ public class LogFactoryImpl extends LogFactory {
         } catch (Throwable t) {
             throw new LogConfigurationException(t);
         }
-
     }
 }

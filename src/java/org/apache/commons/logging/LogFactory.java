@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.13 2002/10/17 23:00:04 rsitze Exp $
- * $Revision: 1.13 $
- * $Date: 2002/10/17 23:00:04 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/LogFactory.java,v 1.14 2002/10/19 17:25:18 rsitze Exp $
+ * $Revision: 1.14 $
+ * $Date: 2002/10/19 17:25:18 $
  *
  * ====================================================================
  *
@@ -79,14 +79,15 @@ import java.util.Properties;
  * <p>Factory for creating {@link Log} instances, with discovery and
  * configuration features similar to that employed by standard Java APIs
  * such as JAXP.</p>
- *
+ * 
  * <p><strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.</p>
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
- * @version $Revision: 1.13 $ $Date: 2002/10/17 23:00:04 $
+ * @author Richard A. Sitze
+ * @version $Revision: 1.14 $ $Date: 2002/10/19 17:25:18 $
  */
 
 public abstract class LogFactory {
@@ -102,14 +103,12 @@ public abstract class LogFactory {
     public static final String FACTORY_PROPERTY =
         "org.apache.commons.logging.LogFactory";
 
-
     /**
      * The fully qualified class name of the fallback <code>LogFactory</code>
      * implementation class to use, if no other can be found.
      */
     public static final String FACTORY_DEFAULT =
         "org.apache.commons.logging.impl.LogFactoryImpl";
-
 
     /**
      * The name of the properties file to search for.
@@ -239,9 +238,10 @@ public abstract class LogFactory {
      * <ul>
      * <li>The <code>org.apache.commons.logging.LogFactory</code> system
      *     property.</li>
+     * <li>The JDK 1.3 Service Discovery mechanism</li>
      * <li>Use the properties file <code>commons-logging.properties</code>
      *     file, if found in the class path of this class.  The configuration
-     *     file is in standard <code>java.util.Propertis</code> format and
+     *     file is in standard <code>java.util.Properties</code> format and
      *     contains the fully qualified name of the implementation class
      *     with the key being the system property defined above.</li>
      * <li>Fall back to a default implementation class
@@ -272,6 +272,25 @@ public abstract class LogFactory {
         if (factory != null)
             return factory;
 
+
+        // Load properties file..
+        // will be used one way or another in the end.
+
+        Properties props=null;
+        try {
+            InputStream stream = (contextClassLoader == null
+                                 ? ClassLoader.getSystemResourceAsStream( FACTORY_PROPERTIES )
+                                 : contextClassLoader.getResourceAsStream( FACTORY_PROPERTIES ));
+            if (stream != null) {
+                props = new Properties();
+                props.load(stream);
+                stream.close();
+            }
+        } catch (IOException e) {
+        } catch (SecurityException e) {
+        }
+
+        
         // First, try the system property
         try {
             String factoryClass = System.getProperty(FACTORY_PROPERTY);
@@ -281,6 +300,7 @@ public abstract class LogFactory {
         } catch (SecurityException e) {
             ;  // ignore
         }
+
 
         // Second, try to find a service by using the JDK1.3 jar
         // discovery mechanism. This will allow users to plug a logger
@@ -319,8 +339,6 @@ public abstract class LogFactory {
         }
 
 
-        Properties props=null;
-        
         // Third try a properties file. 
         // If the properties file exists, it'll be read and the properties
         // used. IMHO ( costin ) System property and JDK1.3 jar service
@@ -329,28 +347,16 @@ public abstract class LogFactory {
         // the webapp, even if a default logger is set at JVM level by a
         // system property )
 
-        try {
-            InputStream stream = (contextClassLoader == null
-                                 ? ClassLoader.getSystemResourceAsStream( FACTORY_PROPERTIES )
-                                 : contextClassLoader.getResourceAsStream( FACTORY_PROPERTIES ));
-            if (stream != null) {
-                props = new Properties();
-                props.load(stream);
-                stream.close();
-                String factoryClass = props.getProperty(FACTORY_PROPERTY);
-                if( factory==null ) {
-                    if (factoryClass == null) {
-                        factoryClass = FACTORY_DEFAULT;
-                    }
-                    factory = newFactory(factoryClass, contextClassLoader);
-                }
+        if (factory == null  &&  props != null) {
+            String factoryClass = props.getProperty(FACTORY_PROPERTY);
+            if (factoryClass != null) {
+                factory = newFactory(factoryClass, contextClassLoader);
             }
-            // the properties will be set at the end.
-        } catch (IOException e) {
-        } catch (SecurityException e) {
         }
 
+
         // Fourth, try the fallback implementation class
+
         if (factory == null) {
             factory = newFactory(FACTORY_DEFAULT, LogFactory.class.getClassLoader());
         }
@@ -360,14 +366,14 @@ public abstract class LogFactory {
              * Always cache using context class loader..
              */
             cacheFactory(contextClassLoader, factory);
-        }
 
-        if( props!=null ) {
-            Enumeration names = props.propertyNames();
-            while (names.hasMoreElements()) {
-                String name = (String) names.nextElement();
-                String value = props.getProperty(name);
-                factory.setAttribute(name, value);
+            if( props!=null ) {
+                Enumeration names = props.propertyNames();
+                while (names.hasMoreElements()) {
+                    String name = (String) names.nextElement();
+                    String value = props.getProperty(name);
+                    factory.setAttribute(name, value);
+                }
             }
         }
         
@@ -534,12 +540,17 @@ public abstract class LogFactory {
     {
         
         try {
-            Class clazz = null;
             if (classLoader != null) {
                 try {
                     // first the given class loader param (thread class loader)
                     return (LogFactory)classLoader.loadClass(factoryClass).newInstance();
                 } catch (ClassNotFoundException ex) {
+                    if (classLoader == LogFactory.class.getClassLoader()) {
+                        // Nothing more to try, onwards.
+                        throw ex;
+                    }
+                    // ignore exception, continue
+                } catch (NoClassDefFoundError e) {
                     if (classLoader == LogFactory.class.getClassLoader()) {
                         // Nothing more to try, onwards.
                         throw ex;
