@@ -63,7 +63,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.33 $ $Date: 2004/03/06 21:52:59 $
+ * @version $Revision: 1.34 $ $Date: 2004/10/17 09:02:48 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -502,8 +502,8 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isLog4JAvailable() {
 
         try {
-            loadClass("org.apache.log4j.Logger");
-            loadClass("org.apache.commons.logging.impl.Log4JLogger");
+            loadClass("org.apache.commons.logging.impl.Log4JLogger").getClassLoader()
+                .loadClass("org.apache.log4j.Logger" );
             return (true);
         } catch (Throwable t) {
             return (false);
