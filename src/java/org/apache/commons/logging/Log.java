@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.12 2002/01/31 00:14:31 sanders Exp $
- * $Revision: 1.12 $
- * $Date: 2002/01/31 00:14:31 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Log.java,v 1.13 2002/06/15 18:13:01 craigmcc Exp $
+ * $Revision: 1.13 $
+ * $Date: 2002/06/15 18:13:01 $
  *
  * ====================================================================
  *
@@ -102,7 +102,7 @@ package org.apache.commons.logging;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.12 2002/01/31 00:14:31 sanders Exp $
+ * @version $Id: Log.java,v 1.13 2002/06/15 18:13:01 craigmcc Exp $
  */
 public interface Log {
 
@@ -174,7 +174,7 @@ public interface Log {
 
 
     /**
-     * <p> Log a message with trace log level </p>
+     * <p> Log a message with trace log level. </p>
      *
      * @param message log this message
      */
@@ -182,7 +182,7 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with trace log level </p>
+     * <p> Log an error with trace log level. </p>
      *
      * @param message log this message
      * @param t log this cause
@@ -191,7 +191,7 @@ public interface Log {
 
 
     /**
-     * <p> Log a message with debug log level </p>
+     * <p> Log a message with debug log level. </p>
      *
      * @param message log this message
      */
@@ -199,7 +199,7 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with debug log level </p>
+     * <p> Log an error with debug log level. </p>
      *
      * @param message log this message
      * @param t log this cause
@@ -208,7 +208,7 @@ public interface Log {
 
 
     /**
-     * <p> Log a message with info log level </p>
+     * <p> Log a message with info log level. </p>
      *
      * @param message log this message
      */
@@ -216,7 +216,7 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with info log level </p>
+     * <p> Log an error with info log level. </p>
      *
      * @param message log this message
      * @param t log this cause
@@ -225,7 +225,7 @@ public interface Log {
 
 
     /**
-     * <p> Log a message with warn log level </p>
+     * <p> Log a message with warn log level. </p>
      *
      * @param message log this message
      */
@@ -233,7 +233,7 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with warn log level </p>
+     * <p> Log an error with warn log level. </p>
      *
      * @param message log this message
      * @param t log this cause
@@ -242,7 +242,7 @@ public interface Log {
 
 
     /**
-     * <p> Log a message with error log level </p>
+     * <p> Log a message with error log level. </p>
      *
      * @param message log this message
      */
@@ -250,7 +250,7 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with error log level </p>
+     * <p> Log an error with error log level. </p>
      *
      * @param message log this message
      * @param t log this cause
@@ -259,7 +259,7 @@ public interface Log {
 
 
     /**
-     * <p> Log a message with fatal log level </p>
+     * <p> Log a message with fatal log level. </p>
      *
      * @param message log this message
      */
@@ -267,7 +267,7 @@ public interface Log {
 
 
     /**
-     * <p> Log an error with fatal log level </p>
+     * <p> Log an error with fatal log level. </p>
      *
      * @param message log this message
      * @param t log this cause
