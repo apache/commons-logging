@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.10 2002/01/21 21:19:38 craigmcc Exp $
- * $Revision: 1.10 $
- * $Date: 2002/01/21 21:19:38 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/Attic/SimpleLog.java,v 1.11 2002/01/25 18:41:48 sanders Exp $
+ * $Revision: 1.11 $
+ * $Date: 2002/01/25 18:41:48 $
  *
  * ====================================================================
  *
@@ -98,7 +98,7 @@ import java.util.Date;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.10 2002/01/21 21:19:38 craigmcc Exp $
+ * @version $Id: SimpleLog.java,v 1.11 2002/01/25 18:41:48 sanders Exp $
  */
 public class SimpleLog implements Log {
 
@@ -161,11 +161,6 @@ public class SimpleLog implements Log {
             } catch(java.io.IOException e) {
                 // ignored
             }
-        }
-        
-        try {
-        } catch(Throwable t) {
-            // ignored
         }
         
         showLogName = "true".equalsIgnoreCase(
