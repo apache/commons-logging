@@ -21,7 +21,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.48 2004/11/10 22:59:04 rdonkin Exp $
+        $Id$
 -->
 
 
@@ -432,15 +432,6 @@ limitations under the License.--&gt;'>
   <target name="dist" depends="compile,javadoc"
    description="Create binary distribution">
     <mkdir      dir="${dist.home}"/>
-    <ant antfile='build.xml' target='dist' dir='${optional.home}'/>
-    <copy       todir="${dist.home}">
-        <fileset dir='${optional.dist.home}'>
-            <include name='*.jar'/>
-        </fileset>
-    </copy>
-    <copy       todir="${dist.home}/docs-optional">
-        <fileset dir='${optional.dist.home}/docs'/>
-    </copy>
     <copy      file="LICENSE.txt"
               todir="${dist.home}"/>
     <copy      file="NOTICE.txt"
@@ -451,6 +442,15 @@ limitations under the License.--&gt;'>
           tofile="${dist.home}/commons-${component.name}.jar" />
     <copy file="${build.home}/commons-${component.name}-api.jar"
           tofile="${dist.home}/commons-${component.name}-api.jar" />
+    <ant antfile='build.xml' target='dist' dir='${optional.home}' inheritAll="false" />
+    <copy       todir="${dist.home}">
+        <fileset dir='${optional.dist.home}'>
+            <include name='*.jar'/>
+        </fileset>
+    </copy>
+    <copy       todir="${dist.home}/docs-optional">
+        <fileset dir='${optional.dist.home}/docs'/>
+    </copy>
     <mkdir      dir="${dist.home}/src"/>
     <copy     todir="${dist.home}/src" filtering="on">
       <fileset  dir="${source.home}"/>
