@@ -10,12 +10,10 @@ prebuilt support for the following:</p>
 <li><a href="http://jakarta.apache.org/log4j/">Log4J</a> from Apache's
     Jakarta project.  Each named <a href="Log.html">Log</a> instance is
     connected to a corresponding Log4J Category.</li>
-<!--
 <li><a href="http://java.sun.com/j2se/1.4/docs/guide/util/logging/index.html">
     JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
     <a href="Log.html">Log</a> instance is connected to a corresponding
     <code>java.util.logging.Logger</code> instance.</li>
--->
 <li><a href="NoOpLog.html">NoOpLog</a> implementation that simply swallows
     all log output, for all named <a href="Log.html">Log</a> isntances.</li>
 <li><a href="SimpleLog.html">SimpleLog</a> implementation that writes all
@@ -41,11 +39,9 @@ following algorithm is applied:</p>
 <li>If Log4J is available, return an instance of
     <a href="Log4JCategoryLog.html">Log4JCategoryLog</a> that wraps a
     Log4J Category instance of the specified name.</li>
-<!--
 <li>If the JDK 1.4 logging APIs are available, return an instance
-    of <a href="JdkLogger.html">JdkLogger</a> that wraps an instance of
+    of <a href="Jdk14Logger.html">Jdk14Logger</a> that wraps an instance of
     <code>java.util.logging.Logger</code> for the specified name.</li>
--->
 <li>Return an instance of <a href="NoOpLog.html">NoOpLog</a> that
     throws away all logged output.</li>
 </ul>
@@ -68,8 +64,8 @@ component, consists of the following steps:</p>
 <li>Acquire a reference to an instance of
     <a href="Log.html">org.apache.commons.logging.Log</a>, by calling the
     factory method
-    <a href="LogSource.html#makeNewLogInstance(java.lang.String)">
-    LogSource.makeNewLogInstance()</a>.  Your application can contain
+    <a href="LogSource.html#getInstance(java.lang.String)">
+    LogSource.getInstance(String name)</a>.  Your application can contain
     references to multiple loggers that are used for different
     purposes.  A typical scenario for a server application is to have each
     major component of the server use its own Log instance.</li>
@@ -91,7 +87,7 @@ import org.apache.commons.logging.LogSource;
 
 public class MyComponent {
 
-  protected Log log = LogSource.makeNewInstance("mycomponent");
+  protected Log log = LogSource.getInstance("my.component");
 
   // Called once at startup time
   public void start() {
