@@ -16,7 +16,7 @@
 
 -->
 
-$Id: RELEASE-NOTES.txt,v 1.6 2004/03/06 22:20:54 craigmcc Exp $
+$Id: RELEASE-NOTES.txt,v 1.7 2004/06/01 20:39:50 rdonkin Exp $
 
                            Commons Logging Package
                                 Version 1.0.4
@@ -27,11 +27,14 @@ INTRODUCTION:
 ============
 
 This document contains the release notes for this version of the Commons
-Logging package.  It is primarily a maintenance and code cleanup release,
-with some new features.
+Logging package.  It is primarily a service release for downstream users.
+The main emphasis maintenance and code cleanup release,
+with some new features including support for both the old 1.2.x series
+of Log4J releases and the new 1.3.x series of releases.
 
 The following paragraphs document changes since the previous release
-(version 1.0.3).
+(version 1.0.3). The documentation (userguide and javadoc) 
+has also been improved.
 
 
 NEW FEATURES:
@@ -70,6 +73,11 @@ NEW FEATURES:
                    potentially misleading claim that an implementation class
                    does not implement Log.
 
+[Log4JLogger]      Changes to allow this logger to support both the existing 1.2.x 
+                   series of releases and also the upcoming 1.3.x series of Log4J
+                   releases.
+
+[SimpleLog]        Added support for setting date-time format.
 
 BUG FIXES:
 =========
