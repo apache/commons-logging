@@ -21,7 +21,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.42 2004/03/02 21:02:51 rdonkin Exp $
+        $Id: build.xml,v 1.43 2004/03/03 19:13:48 dirkv Exp $
 -->
 
 
@@ -417,8 +417,6 @@ limitations under the License.--&gt;'>
     <copy      file="NOTICE.txt"
               todir="${dist.home}"/>
     <copy      file="RELEASE-NOTES.txt"
-              todir="${dist.home}"/>
-    <copy      file="usersguide.html"
               todir="${dist.home}"/>
     <copy file="${build.home}/commons-${component.name}.jar"
           tofile="${dist.home}/commons-${component.name}.jar" />
