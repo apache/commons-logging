@@ -86,29 +86,29 @@ public abstract class AbstractLogTest extends TestCase {
 		
 		assertNotNull(log);
 		
-		log.debug(null);
+		log.debug("debug statement");
 		
-		log.debug(null, null);
+		log.debug("debug statement w/ null exception", new RuntimeException());
 		
-		log.error(null);
+		log.error("error statement");
 		
-		log.error(null, null);
+		log.error("error statement w/ null exception", new RuntimeException());
 		
-		log.fatal(null);
+		log.fatal("fatal statement");
 		
-		log.fatal(null, null);
+		log.fatal("fatal statement w/ null exception", new RuntimeException());
 		
-		log.info(null);
+		log.info("info statement");
 		
-		log.info(null, null);
+		log.info("info statement w/ null exception", new RuntimeException());
 		
-		log.trace(null);
+		log.trace("trace statement");
 		
-		log.trace(null, null);
+		log.trace("trace statement w/ null exception", new RuntimeException());
 		
-		log.warn(null);
+		log.warn("warn statement");
 		
-		log.warn(null, null);
+		log.warn("warn statement w/ null exception", new RuntimeException());
 		
 	}    
 }
