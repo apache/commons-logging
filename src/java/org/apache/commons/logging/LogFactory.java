@@ -42,7 +42,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.28 $ $Date: 2004/11/10 22:59:04 $
+ * @version $Revision: 1.28 $ $Date$
  */
 
 public abstract class LogFactory {
@@ -115,7 +115,9 @@ public abstract class LogFactory {
      */
     public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
         "org.apache.commons.logging.LogFactory.HashtableImpl";
-
+    /** Name used to load the weak hashtable implementation by names */
+    private static final String WEAK_HASHTABLE_CLASSNAME = "org.apache.commons.logging.impl.WeakHashtable";
+    
     // ----------------------------------------------------------- Constructors
 
 
@@ -224,7 +226,7 @@ public abstract class LogFactory {
         String storeImplementationClass 
             = System.getProperty(HASHTABLE_IMPLEMENTATION_PROPERTY);
         if (storeImplementationClass == null) {
-            storeImplementationClass = "org.apache.commons.logging.impl.WeakHashtable";
+            storeImplementationClass = WEAK_HASHTABLE_CLASSNAME;
         }
         try {
             Class implementationClass = Class.forName(storeImplementationClass);
@@ -232,7 +234,10 @@ public abstract class LogFactory {
             
         } catch (Exception e) {
             // ignore
-            System.err.println("[ERROR] LogFactory: Load of custom hashtable failed");
+        	if (!WEAK_HASHTABLE_CLASSNAME.equals(storeImplementationClass)) {
+        		// if the user's trying to set up a custom implementation, give a clue
+        		System.err.println("[ERROR] LogFactory: Load of custom hashtable failed");
+        	}
         }
         if (result == null) {
             result = new Hashtable();
