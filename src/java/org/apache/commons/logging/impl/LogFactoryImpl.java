@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.4 2002/02/15 05:42:35 costin Exp $
- * $Revision: 1.4 $
- * $Date: 2002/02/15 05:42:35 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.5 2002/02/26 19:00:27 costin Exp $
+ * $Revision: 1.5 $
+ * $Date: 2002/02/26 19:00:27 $
  *
  * ====================================================================
  *
@@ -104,7 +104,7 @@ import org.apache.commons.logging.LogSource;
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
- * @version $Revision: 1.4 $ $Date: 2002/02/15 05:42:35 $
+ * @version $Revision: 1.5 $ $Date: 2002/02/26 19:00:27 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -395,7 +395,7 @@ public class LogFactoryImpl extends LogFactory {
         // Attempt to load the Log implementation class
         Class logClass = null;
         try {
-            logClass = findClassLoader().loadClass(logClassName);
+            logClass = loadClass(logClassName);
             if (!Log.class.isAssignableFrom(logClass)) {
                 throw new LogConfigurationException
                     ("Class " + logClassName + " does not implement Log");
@@ -423,10 +423,24 @@ public class LogFactoryImpl extends LogFactory {
 
     }
 
+    /** Load a class, try first the thread class loader, and
+        if it fails use the loader that loaded this class
+    */
+    static Class loadClass( String name )
+        throws ClassNotFoundException
+    {
+        ClassLoader threadCL=findClassLoader();
+        try {
+            return threadCL.loadClass(name);
+        } catch( ClassNotFoundException ex ) {
+            return Class.forName( name );
+        }
+    }
+
     protected void guessConfig() {
         if( isLog4JAvailable() ) {
             try {
-                Class proxyClass=findClassLoader().
+                Class proxyClass=
                     loadClass( "org.apache.commons.logging.Log4jFactory" );
                 proxyFactory=(LogFactory)proxyClass.newInstance();
             } catch( Throwable t ) {
@@ -444,7 +458,7 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isJdk14Available() {
 
         try {
-            findClassLoader().loadClass("java.util.logging.Logger");
+            loadClass("java.util.logging.Logger");
             return (true);
         } catch (Throwable t) {
             return (false);
@@ -459,7 +473,7 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isLog4JAvailable() {
 
         try {
-            findClassLoader().loadClass("org.apache.log4j.Category");
+            loadClass("org.apache.log4j.Category");
             return (true);
         } catch (Throwable t) {
             return (false);
