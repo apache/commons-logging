@@ -16,6 +16,8 @@
 
 package org.apache.commons.logging.impl;
 
+import java.io.Serializable;
+
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 
@@ -38,11 +40,15 @@ import org.apache.commons.logging.Log;
  * to child loggers of this <code>Logger</code>.
  * </li>
  * </ul>
- *
+ * <p>
+ * <strong>Note:</strong> <code>AvalonLogger</code> implements
+ * <code>Serializable</code> for reasons of consistency and backwards compatibility. 
+ * However, serializable is not recommended.
+ * </p>
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision: 1.10 $ $Date: 2004/09/27 16:21:40 $
+ * @version $Revision: 1.10 $ $Date$
  */
-public class AvalonLogger implements Log {
+public class AvalonLogger implements Log, Serializable {
 
     /** Ancesteral avalon logger  */ 
     private static Logger defaultLogger = null;
@@ -71,9 +77,9 @@ public class AvalonLogger implements Log {
 
     /**
      * Gets the Avalon logger implementation used to perform logging.
-     * @return avalon logger implementation
+     * @return avalon logger implementation, possibly null
      */
-    private final Logger getLogger() {
+    public Logger getLogger() {
         return logger;
     }
 
