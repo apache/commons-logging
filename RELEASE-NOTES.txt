@@ -16,7 +16,7 @@
 
 -->
 
-$Id: RELEASE-NOTES.txt,v 1.4 2004/02/28 23:20:57 craigmcc Exp $
+$Id: RELEASE-NOTES.txt,v 1.5 2004/03/06 21:25:36 craigmcc Exp $
 
                            Commons Logging Package
                                 Version 1.0.4
@@ -68,6 +68,12 @@ BUG FIXES:
 
 [LogFactory]       Improve usability of error messages reporting
                    configuration problems.
+
+[LogFactoryImpl]   If an InvocationTargetException is returned during the
+                   creation of a new Log instance, unwrap the underlying
+                   cause and pass it in to the LogConfigurationException
+                   constructor.  This will make the actual cause of the
+                   problem easier to diagnose.
 
 [JDK14Logger]      Implement Serializable, remove "final" declaration for
                    easy subclassing.
