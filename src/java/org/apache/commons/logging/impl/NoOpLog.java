@@ -18,6 +18,7 @@
 package org.apache.commons.logging.impl;
 
 
+import java.io.Serializable;
 import org.apache.commons.logging.Log;
 
 
@@ -27,9 +28,9 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.6 2004/02/28 21:46:45 craigmcc Exp $
+ * @version $Id: NoOpLog.java,v 1.7 2004/02/28 23:05:01 craigmcc Exp $
  */
-public class NoOpLog implements Log {
+public class NoOpLog implements Log, Serializable {
 
     /** Convenience constructor */
     public NoOpLog() { }
