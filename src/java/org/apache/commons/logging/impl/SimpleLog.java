@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.5 2002/10/19 17:19:05 rsitze Exp $
- * $Revision: 1.5 $
- * $Date: 2002/10/19 17:19:05 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/SimpleLog.java,v 1.6 2002/12/12 19:23:34 rsitze Exp $
+ * $Revision: 1.6 $
+ * $Date: 2002/12/12 19:23:34 $
  *
  * ====================================================================
  *
@@ -65,6 +65,8 @@ package org.apache.commons.logging.impl;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.security.AccessControlException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -106,7 +108,7 @@ import org.apache.commons.logging.Log;
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  *
- * @version $Id: SimpleLog.java,v 1.5 2002/10/19 17:19:05 rsitze Exp $
+ * @version $Id: SimpleLog.java,v 1.6 2002/12/12 19:23:34 rsitze Exp $
  */
 public class SimpleLog implements Log {
 
@@ -160,71 +162,76 @@ public class SimpleLog implements Log {
         
         try {
             // add all system props that start with the specified prefix
-            Enumeration enum = System.getProperties().propertyNames();
+            Enumeration enum = (Enumeration)AccessController.doPrivileged(
+                new PrivilegedAction() {
+                    public Object run() {
+                        return System.getProperties().propertyNames();
+                    }
+                });
             while(enum.hasMoreElements()) {
                 String name = (String)(enum.nextElement());
                 if(null != name && name.startsWith(systemPrefix)) {
                     simpleLogProps.setProperty(name,System.getProperty(name));
                 }
             }
-
-            // identify the class loader to attempt resource loading with
-            ClassLoader classLoader = null;
-            try {
-                Method method =
-                    Thread.class.getMethod("getContextClassLoader", null);
-                classLoader = (ClassLoader)
-                    method.invoke(Thread.currentThread(), null);
-            } catch (Exception e) {
-                ; // Ignored (security exception or JDK 1.1)
-            }
-            if (classLoader == null) {
-                classLoader = SimpleLog.class.getClassLoader();
-            }
-
-            // add props from the resource simplelog.properties
-            InputStream in =
-                classLoader.getResourceAsStream("simplelog.properties");
-            if(null != in) {
-                try {
-                    simpleLogProps.load(in);
-                    in.close();
-                } catch(java.io.IOException e) {
-                    // ignored
-                }
-            }
-
-            /* That's a strange way to set properties. If the property
-               is not set, we'll override the default
-
-                showLogName = "true".equalsIgnoreCase(
-                        simpleLogProps.getProperty(
-                        systemPrefix + "showlogname","true"));
-            */
-
-            String prop=simpleLogProps.getProperty( systemPrefix + "showlogname");
-
-            if( prop!= null )
-                showLogName = "true".equalsIgnoreCase(prop);
-
-            prop=simpleLogProps.getProperty( systemPrefix + "showShortLogname");
-            if( prop!=null ) {
-                showShortName = "true".equalsIgnoreCase(prop);
-            }
-
-            prop=simpleLogProps.getProperty( systemPrefix + "showdatetime");
-            if( prop!=null ) {
-                showDateTime = "true".equalsIgnoreCase(prop);
-            }
-
-            if(showDateTime) {
-                dateFormatter = new SimpleDateFormat(
-                    simpleLogProps.getProperty(
-                        systemPrefix + "dateformat","yyyy/MM/dd HH:mm:ss:SSS zzz"));
-            }
         }
         catch (AccessControlException e) {
             // ignore access control exceptions when trying to check system properties
+        }
+
+        // identify the class loader to attempt resource loading with
+        ClassLoader classLoader = null;
+        try {
+            Method method =
+                Thread.class.getMethod("getContextClassLoader", null);
+            classLoader = (ClassLoader)
+                method.invoke(Thread.currentThread(), null);
+        } catch (Exception e) {
+            ; // Ignored (security exception or JDK 1.1)
+        }
+        if (classLoader == null) {
+            classLoader = SimpleLog.class.getClassLoader();
+        }
+
+        // add props from the resource simplelog.properties
+        InputStream in =
+            classLoader.getResourceAsStream("simplelog.properties");
+        if(null != in) {
+            try {
+                simpleLogProps.load(in);
+                in.close();
+            } catch(java.io.IOException e) {
+                // ignored
+            }
+        }
+
+        /* That's a strange way to set properties. If the property
+           is not set, we'll override the default
+
+            showLogName = "true".equalsIgnoreCase(
+                    simpleLogProps.getProperty(
+                    systemPrefix + "showlogname","true"));
+        */
+
+        String prop=simpleLogProps.getProperty( systemPrefix + "showlogname");
+
+        if( prop!= null )
+            showLogName = "true".equalsIgnoreCase(prop);
+
+        prop=simpleLogProps.getProperty( systemPrefix + "showShortLogname");
+        if( prop!=null ) {
+            showShortName = "true".equalsIgnoreCase(prop);
+        }
+
+        prop=simpleLogProps.getProperty( systemPrefix + "showdatetime");
+        if( prop!=null ) {
+            showDateTime = "true".equalsIgnoreCase(prop);
+        }
+
+        if(showDateTime) {
+            dateFormatter = new SimpleDateFormat(
+                simpleLogProps.getProperty(
+                    systemPrefix + "dateformat","yyyy/MM/dd HH:mm:ss:SSS zzz"));
         }
     }
 
