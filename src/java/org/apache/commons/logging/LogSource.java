@@ -6,14 +6,14 @@
  * the LICENSE file.
  */
 
-package org.apache.commons.httpclient.log;
+package org.apache.commons.logging;
 
 import java.util.HashMap;
 import java.lang.reflect.Constructor;
 
 /**
  * @author Rod Waldhoff
- * @version $Id: LogSource.java,v 1.1 2001/08/02 16:27:06 rwaldhoff Exp $
+ * @version $Id: LogSource.java,v 1.2 2001/08/08 20:35:22 morgand Exp $
  */
 public class LogSource {
     static protected HashMap _logs = new HashMap();
