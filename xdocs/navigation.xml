@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+<!ENTITY commons-nav SYSTEM "../../incl_nav.xml">
+]>
+
+<project name="Logging">
+
+  <title>Logging</title>
+  <organizationLogo href="/images/jakarta-logo.gif">
+   Jakarta
+  </organizationLogo>
+
+  <body>
+    <links>
+      <item name="Jakarta Commons"                   
+            href="http://jakarta.apache.org/commons/"/>
+    </links>
+
+    <menu name="Commons Logging">
+      <item name="Overview"
+            href="/index.html"/>
+      <item name="User Guide"
+            href="/guide.html"/>
+    </menu>
+    
+    &commons-nav;
+
+  </body>
+</project>
+
