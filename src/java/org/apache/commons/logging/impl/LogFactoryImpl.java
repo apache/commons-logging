@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.21 2003/02/01 04:11:03 craigmcc Exp $
- * $Revision: 1.21 $
- * $Date: 2003/02/01 04:11:03 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/java/org/apache/commons/logging/impl/LogFactoryImpl.java,v 1.22 2003/03/01 09:55:07 baliuka Exp $
+ * $Revision: 1.22 $
+ * $Date: 2003/03/01 09:55:07 $
  *
  * ====================================================================
  *
@@ -107,7 +107,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
- * @version $Revision: 1.21 $ $Date: 2003/02/01 04:11:03 $
+ * @version $Revision: 1.22 $ $Date: 2003/03/01 09:55:07 $
  */
 
 public class LogFactoryImpl extends LogFactory {
@@ -519,7 +519,7 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isJdk14Available() {
 
         try {
-            loadClass("java.sql.Savepoint");
+            loadClass("java.util.logging.Logger");
             loadClass("org.apache.commons.logging.impl.Jdk14Logger");
             return (true);
         } catch (Throwable t) {
