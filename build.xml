@@ -3,7 +3,7 @@
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml,v 1.26 2003/03/29 22:04:54 craigmcc Exp $
+        $Id: build.xml,v 1.27 2003/03/30 02:30:36 craigmcc Exp $
 -->
 
 
@@ -48,7 +48,7 @@
   <property name="component.version"       value="1.0.2"/>
 
   <!-- The base directory for compilation targets -->
-  <property name="build.home"              value="target"/>
+  <property name="build.home"              value="${basedir}/target"/>
 
   <!-- The base directory for component configuration files -->
   <property name="conf.home"               value="src/conf"/>
@@ -103,12 +103,18 @@
     <pathelement location="${junit.jar}"/>
   </path>
 
+  <!-- Construct unit test classpath (Minimal Wrapper) -->
+  <path id="test.classpath.wrap">
+    <pathelement location="${build.home}/commons-logging-wrapper.jar"/>
+  </path>
+
   <!-- Should all tests fail if one does? -->
   <property name="test.failonerror"        value="true"/>
 
   <!-- The test runner to execute -->
   <property name="test.runner"             value="junit.textui.TestRunner"/>
   <property name="test.entry" value="org.apache.commons.logging.TestAll"/>
+  <property name="test.wrapper"    value="org.apache.commons.logging.Wrapper"/>
 
 <!-- ========== Executable Targets ======================================== -->
 
@@ -216,6 +222,19 @@
     <copy    todir="${build.home}/tests" filtering="on">
       <fileset dir="${test.home}" excludes="**/*.java"/>
     </copy>
+    <jar jarfile="${build.home}/commons-${component.name}-tests.jar"
+         basedir="${build.home}/tests"
+         manifest="${conf.home}/MANIFEST.MF">
+      <exclude name="org/apache/commons/logging/Wrapper.class"/>
+    </jar>
+    <jar jarfile="${build.home}/commons-${component.name}-wrapper.jar"
+         basedir="${build.home}/tests"
+         manifest="${conf.home}/MANIFEST.MF">
+      <include name="org/apache/commons/logging/Wrapper.class"/>
+      <include name="org/apache/commons/logging/jdk14/TestHandler.class"
+                 if="jdk.1.4.present"/>
+    </jar>
+
   </target>
 
 
@@ -272,7 +291,7 @@
 <!-- ========== Unit Test Targets ========================================= -->
 
 
-  <target name="test"  depends="compile.tests" if="test.entry"
+  <target name="test"  depends="compile.tests,test.jdk14" if="test.entry"
    description="Run all unit test cases">
       <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
         <arg value="${test.entry}"/>
@@ -325,6 +344,74 @@
                  value="org.apache.commons.logging.impl.Jdk14Logger"/>
       <arg value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
       <classpath refid="test.classpath.jdk14"/>
+    </java>
+
+    <echo message="Hierarchy Configuration API (JDK 1.4 Auto-Recognized)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="API"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration API (JDK 1.4 LogFactoryImpl Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="API"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.LogFactory"
+                 value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration API (JDK 1.4 Jdk14Logger Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="API"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.Log"
+                 value="org.apache.commons.logging.impl.Jdk14Logger"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration FULL (JDK 1.4 Auto-Recognized)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="FULL"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration FULL (JDK 1.4 LogFactoryImpl Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="FULL"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.LogFactory"
+                 value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <classpath refid="test.classpath.wrap"/>
+    </java>
+
+    <echo message="Hierarchy Configuration FULL (JDK 1.4 Jdk14Logger Selected)"/>
+    <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
+      <sysproperty key="wrapper.hierarchy" value="FULL"/>
+      <sysproperty key="wrapper.junit" value="${junit.jar}"/>
+      <sysproperty key="wrapper.target" value="${build.home}"/>
+      <sysproperty key="wrapper.testcase"
+                 value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <sysproperty key="org.apache.commons.logging.Log"
+                 value="org.apache.commons.logging.impl.Jdk14Logger"/>
+      <classpath refid="test.classpath.wrap"/>
     </java>
 
   </target>

@@ -1,7 +1,7 @@
 /*
- * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/DefaultConfigTestCase.java,v 1.1 2003/03/29 22:04:54 craigmcc Exp $
- * $Revision: 1.1 $
- * $Date: 2003/03/29 22:04:54 $
+ * $Header: /home/jerenkrantz/tmp/commons/commons-convert/cvs/home/cvs/jakarta-commons//logging/src/test/org/apache/commons/logging/jdk14/DefaultConfigTestCase.java,v 1.2 2003/03/30 02:30:37 craigmcc Exp $
+ * $Revision: 1.2 $
+ * $Date: 2003/03/30 02:30:37 $
  *
  * ====================================================================
  *
@@ -76,13 +76,21 @@ import org.apache.commons.logging.LogFactory;
  * should be automatically configured.</p>
  *
  * @author Craig R. McClanahan
- * @version $Revision: 1.1 $ $Date: 2003/03/29 22:04:54 $
+ * @version $Revision: 1.2 $ $Date: 2003/03/30 02:30:37 $
  */
 
 public class DefaultConfigTestCase extends TestCase {
 
 
     // ----------------------------------------------------------- Constructors
+
+
+    /**
+     * <p>Construct a new instance of this test case.</p>
+     */
+    public DefaultConfigTestCase() {
+        super();
+    }
 
 
     /**
