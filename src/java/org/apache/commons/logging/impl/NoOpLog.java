@@ -28,7 +28,7 @@ import org.apache.commons.logging.Log;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: NoOpLog.java,v 1.7 2004/02/28 23:05:01 craigmcc Exp $
+ * @version $Id: NoOpLog.java,v 1.8 2004/06/06 21:13:12 rdonkin Exp $
  */
 public class NoOpLog implements Log, Serializable {
 
@@ -97,7 +97,7 @@ public class NoOpLog implements Log, Serializable {
     public final boolean isTraceEnabled() { return false; }
 
     /**
-     * Warning is never enabled.
+     * Warn is never enabled.
      *
      * @return false
      */

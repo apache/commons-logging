@@ -42,7 +42,7 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision: 1.26 $ $Date: 2004/02/28 21:46:45 $
+ * @version $Revision: 1.27 $ $Date: 2004/06/06 21:15:12 $
  */
 
 public abstract class LogFactory {
@@ -72,8 +72,9 @@ public abstract class LogFactory {
         "commons-logging.properties";
 
     /**
-     * JDK1.3+ 'Service Provider' specification
-     * ( http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html )
+     * JDK1.3+ <a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
+     * 'Service Provider' specification</a>.
+     * 
      */
     protected static final String SERVICE_ID =
         "META-INF/services/org.apache.commons.logging.LogFactory";

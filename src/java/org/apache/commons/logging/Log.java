@@ -57,7 +57,7 @@ package org.apache.commons.logging;
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
- * @version $Id: Log.java,v 1.18 2004/02/28 21:46:45 craigmcc Exp $
+ * @version $Id: Log.java,v 1.19 2004/06/06 21:16:04 rdonkin Exp $
  */
 public interface Log {
 
@@ -116,7 +116,7 @@ public interface Log {
 
 
     /**
-     * <p> Is warning logging currently enabled? </p>
+     * <p> Is warn logging currently enabled? </p>
      *
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatenation)
