@@ -118,13 +118,13 @@
 							</a>
 						</li>
 				 		<li>
-							<a href='#Issues with Context ClassLoaders'>
-					Issues with Context ClassLoaders
+							<a href='#The Context Classloader in Container Applications'>
+					The Context Classloader in Container Applications
 							</a>
 						</li>
 				 		<li>
-							<a href='#J2EE Context Classloaders'>
-					J2EE Context Classloaders
+							<a href='#Issues with Context ClassLoaders'>
+					Issues with Context ClassLoaders
 							</a>
 						</li>
 				 		<li>
@@ -369,9 +369,10 @@
 	This delegation model therefore naturally forms a tree structure rooted in the bootstrap classloader.
 			</p>
 			<p>
-	Containers often use complex trees to allow isolation of different applications
-	running within the container.
-	This is particularly true of J2EE containers 
+	Containers (i.e. applications such as servlet engines or application servers
+	that manage and provide support services for a number of "contained" applications
+	that run inside of them) often use complex trees to allow isolation of different applications 
+	running within the container. This is particularly true of J2EE containers. 
 			</p>
 		</subsection>
 
@@ -384,6 +385,29 @@
 	and the second child-first. 
 			</p>
 			<p>
+	Parent-first loading has been the standard mechanism in the JDK
+	class loader, at least since Java 1.2 introduced hierarchical classloaders.  
+	The primary reason for this is safety -- parent-first
+	makes it impossible for malicious code to trick the JVM into
+	replacing a core class (say, <code>java.security.SecurityManager</code>) with a
+	class of the same name loaded from a child classloader.
+			</p>
+			<p>
+	Child-first classloading has the advantage of helping to improve isolation 
+	between containers and the applications inside them.  If an application 
+	uses a library jar that is also used by the container, but the version of
+	the jar used by the two is different, child-first classloading allows the
+	contained application to load its version of the jar without affecting the
+	container.
+			</p>
+			<p>
+	The ability for a servlet container to offer child-first classloading 
+	is made	available, as an option, by language in the servlet spec (Section
+	9.7.2) that allows a container to offer child-first loading with
+	certain restrictions, such as not allowing replacement of java.* or
+	javax.* classes, or the container's implementation classes.
+			</p>
+			<p>
 	Though child-first and parent-first are not the only strategies possible, 
 	they are by far the most common.
 	All other strategies are rare.
@@ -394,7 +418,7 @@
 
 		<subsection name='Class ClassLoader'>
 			<p>
-	The class loader used to define the class is available programmatically by calling 
+	The class loader used to define a class is available programmatically by calling 
 	the <code>getClassLoader</code> method
 	on the class in question. This is often known as the class classloader.
 			</p>
@@ -403,15 +427,67 @@
 		<subsection name='Context ClassLoader'>
 			<p>
 	Java 1.2 introduces a mechanism which allows code to access classloaders
-	which are not parents of the class classloader.
-	A thread may have a class loader associated to it by it's creator for use
-	by code running in this thread when loading resources and classes. 
-	This is accessed by the <code>getContextClassLoader</code> method on <code>Thread</code>.
-	This is therefore often known as the context classloader.
+	which are not the class classloader or one of its parents.
+	A thread may have a class loader associated with it by it's creator for use
+	by code running in the thread when loading resources and classes. 
+	This classloader is accessed by the <code>getContextClassLoader</code> 
+	method on <code>Thread</code>. It is therefore often known as the context classloader.
 			</p>
 			<p>
 	Note that the quality and appropriateness of the context classloader depends on the
-	care with which the thread is created.
+	care with which the thread's owner manages it.
+			</p>
+		</subsection>
+		
+		<subsection name='The Context Classloader in Container Applications'>
+			<p>
+	The Javadoc for 
+	<a href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Thread.html#setContextClassLoader(java.lang.ClassLoader)">
+	<code>Thread.setContextClassLoader</code></a> emphasizes the setting of the 
+	context classloader as an aspect of thread creation.  However, in many 
+	applications the context classloader is not fixed at thread creation but 
+	rather is changed throughout the life of thread as thread execution moves 
+	from one context to another.  This usage of the context classloader is 
+	particularly important in container applications.	
+			</p>
+			<p>
+	For example, in a hypothetical servlet container, a pool of threads 
+	is created to handle HTTP requests.  When created these threads have their 
+	context classloader set to	a classloader that loads container classes.  
+	After the thread is assigned to handle a request, container code parses 
+	the request and then determines which of the deployed web applications 
+	should handle it. Only when the container is about to call code associated 
+	with a particular web application (i.e. is about to cross an "application 
+	boundary") is the context classloader set to the classloader used to load 
+	the web app's classes.  When the web application finishes handling the 
+	request and the call returns, the context classloader is set back to the 
+	container classloader.
+			</p>
+			<p>
+	In a properly managed container, changes in the context classloader are 
+	made when code execution crosses an application boundary.  When contained 
+	application <code>A</code> is handling a request, the context classloader 
+	should be the one used to load <code>A</code>'s resources. When application 
+	<code>B</code> is handling a request, the context classloader should be 
+	<code>B</code>'s.
+	      </p>
+			<p>
+	While a contained application is handling a request, it is not 
+	unusual for it to call system or library code loaded by the container.  
+	For example, a contained application may wish to call a utility function 
+	provided by a shared library.  This kind of call is considered to be 
+	within the "application boundary", so the context classloader remains 
+	the contained application's classloader.  If the system or library code 
+	needs to load classes or other resources only visible to the contained 
+	application's classloader, it can use the context classloader to access 
+	these resources.
+			</p>
+			<p>
+	If the context classloader is properly managed, system and library code 
+	that can be accessed by multiple applications can not only use it to load 
+	application-specific resources, but also can use it to detect which 
+	application is making a call and thereby provided services tailored to the 
+	caller.
 			</p>
 		</subsection>
 
@@ -419,20 +495,17 @@
 			<p>
 	In practice, context classloaders vary in quality and issues sometimes arise 
 	when using them.
-	The creator of the thread is responsible for setting the classloader.
-	If the context clasloader is not set then it will default to the system
+	The owner of the thread is responsible for setting the classloader.
+	If the context classloader is not set then it will default to the system
 	classloader. 
 	Any container doing so will cause difficulties for any code using the context classloader.
 			</p>
 			<p>
-	The creator is also at liberty to set the classloader as they wish.
-	Containers may set the context classloader so that it is nether a child nor a parent 
+	The owner is also at liberty to set the classloader as they wish.
+	Containers may set the context classloader so that it is neither a child nor a parent 
 	of the classloader that defines the class using that loader. 
 	Again, this will cause difficulties.
 			</p>
-		</subsection>
-
-		<subsection name='J2EE Context Classloaders'>
 			<p>
 	Introduced in <a href='http://java.sun.com/j2ee/j2ee-1_3-fr-spec.pdf'>Java J2EE 1.3</a> 
 	is a requirement for vendors to appropriately set the context classloader.
@@ -469,7 +542,7 @@ above.
 
 		<subsection name='Reflection And The Context ClassLoader'>
 			<p>
-	Reflection cannot bypass restrictions imposed by the java langauge security model but by avoiding symbolic
+	Reflection cannot bypass restrictions imposed by the java language security model, but, by avoiding symbolic
 	references, reflection can be used to load classes which could not otherwise be loaded. Another <code>ClassLoader</code>
 	can be used to load a class and then reflection used to create an instance. 
 			</p>
