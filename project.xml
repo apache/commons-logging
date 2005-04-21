@@ -200,13 +200,9 @@ the unit tests run by custom ant target which perform configuration
 before the tests are run.
 There is no easy way to run these under maven at the moment.
         -->
-        <directory>${pom.build.unitTestSourceDirectory}</directory>
         <includes>
             <include>**/AvalonLoggerTest.java</include>
         </includes>
-        <resources>
-            <resource>**/*.properties</resource>
-        </resources>
     </unitTest>
   </build>
 
