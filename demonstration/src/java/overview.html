@@ -492,9 +492,9 @@ classloader is set to the child.
 	</tr>
 	<tr>
 		<th>Expected Result</th>
-		<td>JCL-&gt;log4j<br/>
+		<td>JCL-&gt;java.util<br/>
                     static OK</td>
-		<td>JCL-&gt;log4j<br/>
+		<td>JCL-&gt;java.util<br/>
                     static OK
 		</td>
 		<td>JCL-&gt;log4j<br/>
@@ -507,7 +507,9 @@ classloader is set to the child.
 </table>
 <p>Trivial variations on the second series. Now API and JCL are
 definable only by parent and child respectively (as in the last
-series). 
+series). When the context classloader is set to system, 
+Log4JLogger cannot be loaded and so java.util.logging is the only viable
+logger.
 </p>
 <h4>Child First ClassLoader Cases</h4>
 <p>The same classloader configuration can be repeated with (this
