@@ -385,6 +385,12 @@
 	and the second child-first. 
 			</p>
 			<p>
+   <strong>Note:</strong> the term child-first (though commonly used) is misleading.	
+   A better term (and one which may be encountered on the mailing list) is parent-last.
+   This more accurately describes the actual process of classloader performed
+   by such a classloader.		
+			</p>
+			<p>
 	Parent-first loading has been the standard mechanism in the JDK
 	class loader, at least since Java 1.2 introduced hierarchical classloaders.  
 	The primary reason for this is safety -- parent-first
