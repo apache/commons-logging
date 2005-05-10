@@ -117,7 +117,7 @@ public abstract class LogFactory {
         "org.apache.commons.logging.LogFactory.HashtableImpl";
     /** Name used to load the weak hashtable implementation by names */
     private static final String WEAK_HASHTABLE_CLASSNAME = "org.apache.commons.logging.impl.WeakHashtable";
-    
+
     // ----------------------------------------------------------- Constructors
 
 
@@ -221,6 +221,22 @@ public abstract class LogFactory {
      */
     protected static Hashtable factories = createFactoryStore();
     
+    /**
+     * Prevously constructed <code>LogFactory</code> instance as in the
+     * <code>factories</code> map. but for the case where
+     * <code>getClassLoader</code> returns <code>null</code>.
+     * This can happen when:
+     * <ul>
+     * <li>using JDK1.1 and the calling code is loaded via the system
+     *  classloader (very common)</li>
+     * <li>using JDK1.2+ and the calling code is loaded via the boot
+     *  classloader (only likely for embedded systems work).</li>
+     * </ul>
+     * Note that <code>factories</code> is a <i>Hashtable</i> (not a HashMap),
+     * and hashtables don't allow null as a key.
+     */
+    protected static LogFactory nullClassLoaderFactory = null;
+
     private static final Hashtable createFactoryStore() {
         Hashtable result = null;
         String storeImplementationClass 
@@ -289,7 +305,6 @@ public abstract class LogFactory {
         LogFactory factory = getCachedFactory(contextClassLoader);
         if (factory != null)
             return factory;
-
 
         // Load properties file.
         // Will be used one way or another in the end.
@@ -445,10 +460,17 @@ public abstract class LogFactory {
     public static void release(ClassLoader classLoader) {
 
         synchronized (factories) {
-            LogFactory factory = (LogFactory) factories.get(classLoader);
-            if (factory != null) {
-                factory.release();
-                factories.remove(classLoader);
+            if (classLoader == null) {
+                if (nullClassLoaderFactory != null) {
+                    nullClassLoaderFactory.release();
+                    nullClassLoaderFactory = null;
+                }
+            } else {
+                LogFactory factory = (LogFactory) factories.get(classLoader);
+                if (factory != null) {
+                    factory.release();
+                    factories.remove(classLoader);
+                }
             }
         }
 
@@ -472,6 +494,11 @@ public abstract class LogFactory {
                 element.release();
             }
             factories.clear();
+
+            if (nullClassLoaderFactory != null) {
+                nullClassLoaderFactory.release();
+                nullClassLoaderFactory = null;
+            }
         }
 
     }
@@ -542,21 +569,47 @@ public abstract class LogFactory {
 
     /**
      * Check cached factories (keyed by contextClassLoader)
+     *
+     * @return the factory associated with the specified classloader if
+     * one has previously been created, or null if this is the first time
+     * we have seen this particular classloader.
      */
     private static LogFactory getCachedFactory(ClassLoader contextClassLoader)
     {
         LogFactory factory = null;
 
-        if (contextClassLoader != null)
+        if (contextClassLoader == null) {
+            // nb: nullClassLoaderFactory might be null. That's ok.
+            factory = nullClassLoaderFactory;
+        } else {
             factory = (LogFactory) factories.get(contextClassLoader);
+        }
 
         return factory;
     }
 
+    /**
+     * Remember this factory, so later calls to LogFactory.getCachedFactory
+     * can return the previously created object (together with all its
+     * cached Log objects).
+     *
+     * @param classLoader should be the current context classloader. Note that
+     * this can be null under some circumstances; this is ok.
+     *
+     * @param factory should be the factory to cache. This should never be null.
+     */
     private static void cacheFactory(ClassLoader classLoader, LogFactory factory)
     {
-        if (classLoader != null && factory != null)
-            factories.put(classLoader, factory);
+        // Ideally we would assert(factory != null) here. However reporting
+        // errors from within a logging implementation is a little tricky!
+
+        if (factory != null) {
+            if (classLoader == null) {
+                nullClassLoaderFactory = factory;
+            } else {
+                factories.put(classLoader, factory);
+            }
+        }
     }
 
     /**
