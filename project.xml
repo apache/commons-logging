@@ -156,6 +156,12 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Simon Kitching</name>
+      <id>skitching</id>
+      <email>skitching@apache.org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
   </developers>
   
   <dependencies>
