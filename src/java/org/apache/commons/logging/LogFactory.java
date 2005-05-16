@@ -632,67 +632,7 @@ public abstract class LogFactory {
         Object result = AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
-                    // This will be used to diagnose bad configurations
-                    // and allow a useful message to be sent to the user
-                    Class logFactoryClass = null;
-                    try {
-                        if (classLoader != null) {
-                            try {
-                                // First the given class loader param (thread class loader)
-
-                                // Warning: must typecast here & allow exception
-                                // to be generated/caught & recast properly.
-                                logFactoryClass = classLoader.loadClass(factoryClass);
-                                return (LogFactory) logFactoryClass.newInstance();
-
-                            } catch (ClassNotFoundException ex) {
-                                if (classLoader == LogFactory.class.getClassLoader()) {
-                                    // Nothing more to try, onwards.
-                                    throw ex;
-                                }
-                                // ignore exception, continue
-                            } catch (NoClassDefFoundError e) {
-                                if (classLoader == LogFactory.class.getClassLoader()) {
-                                    // Nothing more to try, onwards.
-                                    throw e;
-                                }
-
-                            } catch(ClassCastException e){
-
-                              if (classLoader == LogFactory.class.getClassLoader()) {
-                                    // Nothing more to try, onwards (bug in loader implementation).
-                                    throw e;
-                               }
-                            }
-                            // Ignore exception, continue
-                        }
-
-                        /* At this point, either classLoader == null, OR
-                         * classLoader was unable to load factoryClass.
-                         * Try the class loader that loaded this class:
-                         * LogFactory.getClassLoader().
-                         *
-                         * Notes:
-                         * a) LogFactory.class.getClassLoader() may return 'null'
-                         *    if LogFactory is loaded by the bootstrap classloader.
-                         * b) The Java endorsed library mechanism is instead
-                         *    Class.forName(factoryClass);
-                         */
-                        // Warning: must typecast here & allow exception
-                        // to be generated/caught & recast properly.
-                        logFactoryClass = Class.forName(factoryClass);
-                        return (LogFactory) logFactoryClass.newInstance();
-                    } catch (Exception e) {
-                        // Check to see if we've got a bad configuration
-                        if (logFactoryClass != null
-                            && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
-                            return new LogConfigurationException(
-                                "The chosen LogFactory implementation does not extend LogFactory."
-                                + " Please check your configuration.",
-                                e);
-                        }
-                        return new LogConfigurationException(e);
-                    }
+                    return createFactory(factoryClass, classLoader);
                 }
             });
 
@@ -700,6 +640,79 @@ public abstract class LogFactory {
             throw (LogConfigurationException)result;
 
         return (LogFactory)result;
+    }
+
+    /**
+     * Implements the operations described in the javadoc for newFactory.
+     * 
+     * @param factoryClass
+     * @param classLoader
+     * 
+     * @returns either a LogFactory object or a LogConfigurationException object.
+     */
+    protected static Object createFactory(String factoryClass, ClassLoader classLoader) {
+
+        // This will be used to diagnose bad configurations
+        // and allow a useful message to be sent to the user
+        Class logFactoryClass = null;
+        try {
+            if (classLoader != null) {
+                try {
+                    // First the given class loader param (thread class loader)
+
+                    // Warning: must typecast here & allow exception
+                    // to be generated/caught & recast properly.
+                    logFactoryClass = classLoader.loadClass(factoryClass);
+                    return (LogFactory) logFactoryClass.newInstance();
+
+                } catch (ClassNotFoundException ex) {
+                    if (classLoader == LogFactory.class.getClassLoader()) {
+                        // Nothing more to try, onwards.
+                        throw ex;
+                    }
+                    // ignore exception, continue
+                } catch (NoClassDefFoundError e) {
+                    if (classLoader == LogFactory.class.getClassLoader()) {
+                        // Nothing more to try, onwards.
+                        throw e;
+                    }
+
+                } catch(ClassCastException e){
+
+                  if (classLoader == LogFactory.class.getClassLoader()) {
+                        // Nothing more to try, onwards (bug in loader implementation).
+                        throw e;
+                   }
+                }
+                // Ignore exception, continue
+            }
+
+            /* At this point, either classLoader == null, OR
+             * classLoader was unable to load factoryClass.
+             * Try the class loader that loaded this class:
+             * LogFactory.getClassLoader().
+             *
+             * Notes:
+             * a) LogFactory.class.getClassLoader() may return 'null'
+             *    if LogFactory is loaded by the bootstrap classloader.
+             * b) The Java endorsed library mechanism is instead
+             *    Class.forName(factoryClass);
+             */
+            // Warning: must typecast here & allow exception
+            // to be generated/caught & recast properly.
+            logFactoryClass = Class.forName(factoryClass);
+            return (LogFactory) logFactoryClass.newInstance();
+        } catch (Exception e) {
+            // Check to see if we've got a bad configuration
+            if (logFactoryClass != null
+                && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
+                return new LogConfigurationException(
+                    "The chosen LogFactory implementation does not extend LogFactory."
+                    + " Please check your configuration.",
+                    e);
+            }
+            return new LogConfigurationException(e);
+        }
     }
 
     private static InputStream getResourceAsStream(final ClassLoader loader,
