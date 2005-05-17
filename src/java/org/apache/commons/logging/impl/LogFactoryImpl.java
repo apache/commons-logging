@@ -382,19 +382,8 @@ public class LogFactoryImpl extends LogFactory {
                     ("No suitable Log implementation for " + logClassName);
             }
             if (!logInterface.isAssignableFrom(logClass)) {
-                Class interfaces[] = logClass.getInterfaces();
-                for (int i = 0; i < interfaces.length; i++) {
-                    if (LOG_INTERFACE.equals(interfaces[i].getName())) {
-                        throw new LogConfigurationException
-                            ("Invalid class loader hierarchy.  " +
-                             "You have more than one version of '" +
-                             LOG_INTERFACE + "' visible, which is " +
-                             "not allowed.");
-                    }
-                }
-                throw new LogConfigurationException
-                    ("Class " + logClassName + " does not implement '" +
-                     LOG_INTERFACE + "'.");
+                LogConfigurationException ex = reportInvalidLogAdapter(logInterface, logClass);
+                throw ex;
             }
         } catch (Throwable t) {
             throw new LogConfigurationException(t);
@@ -419,6 +408,32 @@ public class LogFactoryImpl extends LogFactory {
         }
     }
 
+    /**
+     * Report a problem loading the log adapter, then <i>always</i> throw
+     * a LogConfigurationException.
+     *  
+     * @param logInterface
+     * @param logClass
+     */
+    private LogConfigurationException reportInvalidLogAdapter(
+            Class logInterface, Class logClass) { 
+
+        Class interfaces[] = logClass.getInterfaces();
+        for (int i = 0; i < interfaces.length; i++) {
+            if (LOG_INTERFACE.equals(interfaces[i].getName())) {
+                throw new LogConfigurationException
+                    ("Invalid class loader hierarchy.  " +
+                     "You have more than one version of '" +
+                     LOG_INTERFACE + "' visible, which is " +
+                     "not allowed.");
+            }
+        }
+            
+        return new LogConfigurationException
+            ("Class " + logClassName + " does not implement '" +
+                    LOG_INTERFACE + "'.");
+    }
+    
     /**
      * Gets the context classloader.
      * This method is a workaround for a java 1.2 compiler bug.
