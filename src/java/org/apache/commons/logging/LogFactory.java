@@ -118,13 +118,23 @@ public abstract class LogFactory {
     /** Name used to load the weak hashtable implementation by names */
     private static final String WEAK_HASHTABLE_CLASSNAME = "org.apache.commons.logging.impl.WeakHashtable";
 
+    /**
+     * A reference to the classloader that loaded this class. This is the
+     * same as LogFactory.class.getClassLoader(). However computing this
+     * value isn't quite as simple as that, as we potentially need to use
+     * AccessControllers etc. It's more efficient to compute it once and
+     * cache it here.
+     */
+    private static ClassLoader thisClassLoader;
+    
     // ----------------------------------------------------------- Constructors
 
 
     /**
      * Protected constructor that is not available for public use.
      */
-    protected LogFactory() { }
+    protected LogFactory() { 
+    }
 
 
     // --------------------------------------------------------- Public Methods
@@ -219,7 +229,7 @@ public abstract class LogFactory {
      * The previously constructed <code>LogFactory</code> instances, keyed by
      * the <code>ClassLoader</code> with which it was created.
      */
-    protected static Hashtable factories = createFactoryStore();
+    protected static Hashtable factories = null;
     
     /**
      * Prevously constructed <code>LogFactory</code> instance as in the
@@ -293,13 +303,7 @@ public abstract class LogFactory {
     public static LogFactory getFactory() throws LogConfigurationException {
 
         // Identify the class loader we will be using
-        ClassLoader contextClassLoader =
-            (ClassLoader)AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    public Object run() {
-                        return getContextClassLoader();
-                    }
-                });
+        ClassLoader contextClassLoader = getContextClassLoader();
 
         // Return any previously registered factory for this class loader
         LogFactory factory = getCachedFactory(contextClassLoader);
@@ -390,7 +394,8 @@ public abstract class LogFactory {
         // Fourth, try the fallback implementation class
 
         if (factory == null) {
-            factory = newFactory(FACTORY_DEFAULT, LogFactory.class.getClassLoader());
+            ClassLoader logFactoryClassLoader = getClassLoader(LogFactory.class);
+            factory = newFactory(FACTORY_DEFAULT, logFactoryClassLoader);
         }
 
         if (factory != null) {
@@ -508,16 +513,87 @@ public abstract class LogFactory {
 
 
     /**
-     * Return the thread context class loader if available.
-     * Otherwise return null.
-     *
-     * The thread context class loader is available for JDK 1.2
-     * or later, if certain security conditions are met.
-     *
-     * @exception LogConfigurationException if a suitable class loader
-     * cannot be identified.
+     * Safely get access to the classloader for the specified class.
+     * <p>
+     * Theoretically, calling Class.getClassLoader can throw a security 
+     * exception, and so should be done under an AccessController in order
+     * to provide maximum flexibility. 
+     * <p>
+     * However in practice people don't appear to use security policies that 
+     * forbid getClassLoader calls, so for the moment this method doesn't
+     * bother to actually do that. As all code is written to call this 
+     * method rather than Class.getClassLoader, AccessController stuff could
+     * be put in this method without any disruption later if needed.
+     * <p>
+     * Even when using an AccessController, however, this method can still
+     * throw SecurityException. Commons-logging basically relies on the
+     * ability to access classloaders, ie a policy that forbids all
+     * classloader access will also prevent commons-logging from working: 
+     * currently this method will throw an exception preventing the entire app
+     * from starting up. Maybe it would be good to detect this situation and
+     * just disable all commons-logging? Not high priority though - as stated
+     * above, security policies that prevent classloader access aren't common.
+     * 
+     */
+    protected static ClassLoader getClassLoader(Class clazz) {
+        try {
+            return clazz.getClassLoader();
+        } catch(SecurityException ex) {
+            throw ex;
+        }
+    }
+    
+    /**
+     * Calls LogFactory.directGetContextClassLoader under the control of an
+     * AccessController class. This means that java code running under a
+     * security manager that forbids access to ClassLoaders will still work
+     * if this class is given appropriate privileges, even when the caller
+     * doesn't have such privileges. Without using an AccessController, the
+     * the entire call stack must have the privilege before the call is
+     * allowed.
+     *  
+     * @return the context classloader associated with the current thread,
+     * or null if security doesn't allow it.
+     * 
+     * @throws LogConfigurationException if there was some weird error while
+     * attempting to get the context classloader.
+     * 
+     * @throws SecurityException if the current java security policy doesn't
+     * allow this class to access the context classloader.
      */
     protected static ClassLoader getContextClassLoader()
+        throws LogConfigurationException {
+
+        return (ClassLoader)AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                    return directGetContextClassLoader();
+                }
+            });
+    }
+
+    /**
+     * Return the thread context class loader if available; otherwise return 
+     * null. 
+     * <p>
+     * Most/all code should call getContextClassLoader rather than calling
+     * this method directly.
+     * <p>
+     * The thread context class loader is available for JDK 1.2
+     * or later, if certain security conditions are met.
+     * <p>
+     * Note that no internal logging is done within this method because
+     * this method is called every time LogFactory.getLogger() is called,
+     * and we don't want too much output generated here.
+     * 
+     * @exception LogConfigurationException if a suitable class loader
+     * cannot be identified.
+     * 
+     * @exception SecurityException if the java security policy forbids
+     * access to the context classloader from one of the classes in the
+     * current call stack. 
+     */
+    protected static ClassLoader directGetContextClassLoader()
         throws LogConfigurationException
     {
         ClassLoader classLoader = null;
@@ -560,7 +636,7 @@ public abstract class LogFactory {
             }
         } catch (NoSuchMethodException e) {
             // Assume we are running on JDK 1.1
-            classLoader = LogFactory.class.getClassLoader();
+            classLoader = getClassLoader(LogFactory.class);
         }
 
         // Return the selected class loader
@@ -666,20 +742,20 @@ public abstract class LogFactory {
                     return (LogFactory) logFactoryClass.newInstance();
 
                 } catch (ClassNotFoundException ex) {
-                    if (classLoader == LogFactory.class.getClassLoader()) {
+                    if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
                         throw ex;
                     }
                     // ignore exception, continue
                 } catch (NoClassDefFoundError e) {
-                    if (classLoader == LogFactory.class.getClassLoader()) {
+                    if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
                         throw e;
                     }
 
                 } catch(ClassCastException e){
 
-                  if (classLoader == LogFactory.class.getClassLoader()) {
+                  if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards (bug in loader implementation).
                         throw e;
                    }
@@ -729,4 +805,28 @@ public abstract class LogFactory {
                 }
             });
     }
+    // ----------------------------------------------------------------------
+    // Static initialiser block to perform initialisation at class load time.
+    //
+    // We can't do this in the class constructor, as there are many 
+    // static methods on this class that can be called before any
+    // LogFactory instances are created, and they depend upon this
+    // stuff having been set up.
+    //
+    // Note that this block must come after any variable declarations used
+    // by any methods called from this block, as we want any static initialiser
+    // associated with the variable to run first. If static initialisers for
+    // variables run after this code, then (a) their value might be needed
+    // by methods called from here, and (b) they might *override* any value
+    // computed here!
+    //
+    // So the wisest thing to do is just to place this code at the very end
+    // of the class file.
+    // ----------------------------------------------------------------------
+
+    static {
+        thisClassLoader = getClassLoader(LogFactory.class);
+        factories = createFactoryStore();
+    }
+
 }
