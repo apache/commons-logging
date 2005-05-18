@@ -47,12 +47,16 @@
 	  </path>
 
 	
-	<target name='clean'>
+	<target name='init'>
 		<delete dir='${build.home}'/>
 		<mkdir dir='${build.home}'/>
 		<mkdir dir='${bin.tests}'/>
 		<mkdir dir='${bin.caller}'/>
 		<mkdir dir='${bin.static}'/>
+	</target>
+	
+	<target name='clean'>
+	    <delete dir='${build.home}'/>
 	</target>
 	
 	<target name='build-static'>
@@ -109,9 +113,7 @@
 	    </javadoc>
 	  </target>
 	
-	<target name='build' depends='build-static, build-caller, build-tests, javadoc'>
-	
-	
+	<target name='build' depends='init, build-static, build-caller, build-tests, javadoc'>
 	</target>
 	
 	<target name='run'>
