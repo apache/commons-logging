@@ -150,6 +150,9 @@ public class ClassLoaderRunner {
         
         if (setContextClassloader) {
             Thread.currentThread().setContextClassLoader(child);
+        } else  {
+            ClassLoader system = ClassLoader.getSystemClassLoader();
+            Thread.currentThread().setContextClassLoader(system);
         }
         
         logDefiningLoaders(child, parent);
