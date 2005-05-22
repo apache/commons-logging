@@ -76,6 +76,8 @@ public class LogFactoryImpl extends LogFactory {
      */
     public LogFactoryImpl() {
         super();
+        initDiagnostics();  // method on this object
+        logDiagnostic("Instance created.");
     }
 
 
@@ -107,6 +109,11 @@ public class LogFactoryImpl extends LogFactory {
 
     // ----------------------------------------------------- Instance Variables
 
+
+    /**
+     * The string prefixed to every message output by the logDiagnostic method.
+     */
+    private String diagnosticPrefix;
 
     /**
      * Configuration attributes.
@@ -159,7 +166,6 @@ public class LogFactoryImpl extends LogFactory {
 
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return the configuration attribute with the specified name (if any),
@@ -250,6 +256,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     public void release() {
 
+        logDiagnostic("Releasing all known loggers");
         instances.clear();
     }
 
@@ -287,13 +294,90 @@ public class LogFactoryImpl extends LogFactory {
     }
 
 
+    // ------------------------------------------------------ 
+    // Static Methods
+    //
+    // These methods only defined as workarounds for a java 1.2 bug;
+    // theoretically none of these are needed.
+    // ------------------------------------------------------ 
+    
+    /**
+     * Gets the context classloader.
+     * This method is a workaround for a java 1.2 compiler bug.
+     */
+    protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
+        return LogFactory.getContextClassLoader();
+    }
+
+    /**
+     * Workaround for bug in Java1.2; in theory this method is not needed.
+     * See LogFactory.isInternalLoggingEnabled.
+     */
+    protected static boolean isDiagnosticsEnabled() {
+        return LogFactory.isDiagnosticsEnabled();
+    }
+
+    /**
+     * Workaround for bug in Java1.2; in theory this method is not needed.
+     * See LogFactory.getClassLoader.
+     */
+    protected static ClassLoader getClassLoader(Class clazz) {
+        return LogFactory.getClassLoader(clazz);
+    }
+
     // ------------------------------------------------------ Protected Methods
 
+    /**
+     * Calculate and cache a string that uniquely identifies this instance,
+     * including which classloader the object was loaded from.
+     * <p>
+     * This string will later be prefixed to each "internal logging" message
+     * emitted, so that users can clearly see any unexpected behaviour.
+     * <p>
+     * Note that this method does not detect whether internal logging is 
+     * enabled or not, nor where to output stuff if it is; that is all
+     * handled by the parent LogFactory class. This method just computes
+     * its own unique prefix for log messages.
+     */
+    private void initDiagnostics() {
+        // It would be nice to include an identifier of the context classloader
+        // that this LogFactoryImpl object is responsible for. However that
+        // isn't possible as that information isn't available. It is possible
+        // to figure this out by looking at the logging from LogFactory to
+        // see the context & impl ids from when this object was instantiated,
+        // in order to link the impl id output as this object's prefix back to
+        // the context it is intended to manage.
+        Class clazz = this.getClass();
+        ClassLoader classLoader = getClassLoader(clazz);
+        diagnosticPrefix = clazz.getName() + "@" + classLoader.toString() + ":";
+    }
 
+    /**
+     * Output a diagnostic message to a user-specified destination (if the
+     * user has enabled diagnostic logging).
+     * 
+     * @param msg
+     */
+    protected void logDiagnostic(String msg) {
+        if (isDiagnosticsEnabled()) {
+            logRawDiagnostic(diagnosticPrefix + msg);
+        }
+    }
 
     /**
      * Return the fully qualified Java classname of the {@link Log}
      * implementation we will be using.
+     * <p>
+     * This method looks in the following places:
+     * <ul>
+     * <li>Looks for an attribute LOG_PROPERTY or LOG_PROPERTY_OLD in the 
+     * "attributes" associated with this class, as set earlier by method 
+     * setAttribute.
+     * <li>Looks for a property LOG_PROPERTY or LOG_PROPERTY_OLD in the
+     * system properties.
+     * <li>Looks for log4j, jdk logging and jdk13lumberjack classes in
+     * the classpath.
+     * </ul>
      */
     protected String getLogClassName() {
 
@@ -302,14 +386,19 @@ public class LogFactoryImpl extends LogFactory {
             return logClassName;
         }
 
+        logDiagnostic("Determining the name for the Log implementation.");
+
+        logDiagnostic("Trying to get log class from attribute " + LOG_PROPERTY);
         logClassName = (String) getAttribute(LOG_PROPERTY);
 
         if (logClassName == null) { // @deprecated
+            logDiagnostic("Trying to get log class from attribute " + LOG_PROPERTY_OLD);
             logClassName = (String) getAttribute(LOG_PROPERTY_OLD);
         }
 
         if (logClassName == null) {
             try {
+                logDiagnostic("Trying to get log class from system property " + LOG_PROPERTY);
                 logClassName = System.getProperty(LOG_PROPERTY);
             } catch (SecurityException e) {
                 ;
@@ -318,12 +407,15 @@ public class LogFactoryImpl extends LogFactory {
 
         if (logClassName == null) { // @deprecated
             try {
+                logDiagnostic("Trying to get log class from system property " + LOG_PROPERTY_OLD);
                 logClassName = System.getProperty(LOG_PROPERTY_OLD);
             } catch (SecurityException e) {
                 ;
             }
         }
 
+        // no need for internalLog calls below; they are done inside the
+        // various isXXXAvailable methods.
         if ((logClassName == null) && isLog4JAvailable()) {
             logClassName = "org.apache.commons.logging.impl.Log4JLogger";
         }
@@ -340,6 +432,7 @@ public class LogFactoryImpl extends LogFactory {
             logClassName = "org.apache.commons.logging.impl.SimpleLog";
         }
 
+        logDiagnostic("Using log class " + logClassName);
         return (logClassName);
 
     }
@@ -368,24 +461,48 @@ public class LogFactoryImpl extends LogFactory {
         String logClassName = getLogClassName();
 
         // Attempt to load the Log implementation class
+        //
+        // Question: why is the loginterface being loaded dynamically?
+        // Isn't the code below exactly the same as this?
+        //    Class logInterface = Log.class;
+        
         Class logClass = null;
         Class logInterface = null;
         try {
-            ClassLoader cl = this.getClass().getClassLoader();
-            // handle the case if getClassLoader() returns null
-            // It may mean this class was loaded from the bootstrap classloader
-            logInterface = (cl == null) ? loadClass(LOG_INTERFACE) : 
-                                          cl.loadClass(LOG_INTERFACE);
+            ClassLoader cl = getClassLoader(this.getClass());
+            if (cl == null) {
+                // we are probably in Java 1.1, but may also be running in
+                // some sort of embedded system..
+                logInterface = loadClass(LOG_INTERFACE);
+            } else {
+                // normal situation
+                logInterface = cl.loadClass(LOG_INTERFACE);
+            }
+
             logClass = loadClass(logClassName);
             if (logClass == null) {
+                logDiagnostic(
+                    "Unable to find any class named [" + logClassName + "]"
+                    + " in either the context classloader"
+                    + " or the classloader that loaded this class.");
+
                 throw new LogConfigurationException
                     ("No suitable Log implementation for " + logClassName);
             }
+            
             if (!logInterface.isAssignableFrom(logClass)) {
-                LogConfigurationException ex = reportInvalidLogAdapter(logInterface, logClass);
+                // oops, we need to cast this logClass we have loaded into
+                // a Log object in order to return it. But we won't be
+                // able to. See method reportInvalidLogAdapter for more
+                // information.
+                LogConfigurationException ex = 
+                    reportInvalidLogAdapter(logInterface, logClass);
                 throw ex;
             }
         } catch (Throwable t) {
+            logDiagnostic(
+                "An unexpected problem occurred while loading the"
+                + " log adapter class: " + t.getMessage());
             throw new LogConfigurationException(t);
         }
 
@@ -411,9 +528,23 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * Report a problem loading the log adapter, then <i>always</i> throw
      * a LogConfigurationException.
-     *  
-     * @param logInterface
-     * @param logClass
+     *  <p>
+     * There are two possible reasons why we successfully loaded the 
+     * specified log adapter class then failed to cast it to a Log object:
+     * <ol>
+     * <li>the specific class just doesn't implement the Log interface 
+     *     (user screwed up), or
+     * <li> the specified class has bound to a Log class loaded by some other
+     *      classloader; Log@classloaderX cannot be cast to Log@classloaderY.
+     * </ol>
+     * <p>
+     * Here we try to figure out which case has occurred so we can give the
+     *  user some reasonable feedback.
+     * 
+     * @param logInterface is the class that this LogFactoryImpl class needs
+     * to return the adapter as.
+     * @param logClass is the adapter class we successfully loaded (but which
+     * could not be cast to type logInterface).
      */
     private LogConfigurationException reportInvalidLogAdapter(
             Class logInterface, Class logClass) { 
@@ -421,6 +552,21 @@ public class LogFactoryImpl extends LogFactory {
         Class interfaces[] = logClass.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
             if (LOG_INTERFACE.equals(interfaces[i].getName())) {
+
+                if (isDiagnosticsEnabled()) {
+                    ClassLoader logInterfaceClassLoader = getClassLoader(logInterface);
+                    ClassLoader logAdapterClassLoader = getClassLoader(logClass);
+                    Class logAdapterInterface = interfaces[i];
+                    ClassLoader logAdapterInterfaceClassLoader = getClassLoader(logAdapterInterface);
+                    logDiagnostic(
+                        "Class " + logClassName + " was found in classloader " 
+                        + objectId(logAdapterClassLoader)
+                        + " but it implements the Log interface as loaded"
+                        + " from classloader " + objectId(logAdapterInterfaceClassLoader)
+                        + " not the one loaded by this class's classloader "
+                        + objectId(logInterfaceClassLoader));
+                }
+                
                 throw new LogConfigurationException
                     ("Invalid class loader hierarchy.  " +
                      "You have more than one version of '" +
@@ -433,16 +579,7 @@ public class LogFactoryImpl extends LogFactory {
             ("Class " + logClassName + " does not implement '" +
                     LOG_INTERFACE + "'.");
     }
-    
-    /**
-     * Gets the context classloader.
-     * This method is a workaround for a java 1.2 compiler bug.
-     */
-    protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
-        return LogFactory.getContextClassLoader();
-    }
-
-
+        
     /**
      * MUST KEEP THIS METHOD PRIVATE.
      *
@@ -453,7 +590,10 @@ public class LogFactoryImpl extends LogFactory {
      * </p>
      *
      * Load a class, try first the thread class loader, and
-     * if it fails use the loader that loaded this class.
+     * if it fails use the loader that loaded this class. Actually, as
+     * the thread (context) classloader should always be the same as or a 
+     * child of the classloader that loaded this class, the fallback should
+     * never be used. 
      */
     private static Class loadClass( final String name )
         throws ClassNotFoundException
@@ -489,12 +629,17 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected boolean isJdk13LumberjackAvailable() {
 
+        // note: the algorithm here is different from isLog4JAvailable.
+        // I think isLog4JAvailable is correct....see bugzilla#31597
+        logDiagnostic("Checking for Jdk13Lumberjack.");
         try {
             loadClass("java.util.logging.Logger");
             loadClass("org.apache.commons.logging.impl.Jdk13LumberjackLogger");
-            return (true);
+            logDiagnostic("Found Jdk13Lumberjack.");
+            return true;
         } catch (Throwable t) {
-            return (false);
+            logDiagnostic("Did not find Jdk13Lumberjack.");
+            return false;
         }
 
     }
@@ -508,6 +653,9 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected boolean isJdk14Available() {
 
+        // note: the algorithm here is different from isLog4JAvailable.
+        // I think isLog4JAvailable is correct....
+        logDiagnostic("Checking for Jdk14.");
         try {
             loadClass("java.util.logging.Logger");
             loadClass("org.apache.commons.logging.impl.Jdk14Logger");
@@ -515,9 +663,11 @@ public class LogFactoryImpl extends LogFactory {
             if (throwable.getDeclaredMethod("getStackTrace", null) == null) {
                 return (false);
             }
-            return (true);
+            logDiagnostic("Found Jdk14.");
+            return true;
         } catch (Throwable t) {
-            return (false);
+            logDiagnostic("Did not find Jdk14.");
+            return false;
         }
     }
 
@@ -527,12 +677,16 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected boolean isLog4JAvailable() {
 
+        logDiagnostic("Checking for Log4J");
         try {
-            loadClass("org.apache.commons.logging.impl.Log4JLogger").getClassLoader()
-                .loadClass("org.apache.log4j.Logger" );
-            return (true);
+            Class adapterClass = loadClass("org.apache.commons.logging.impl.Log4JLogger");
+            ClassLoader cl = getClassLoader(adapterClass);
+            Class loggerClass = cl.loadClass("org.apache.log4j.Logger" );
+            logDiagnostic("Found Log4J");
+            return true;
         } catch (Throwable t) {
-            return (false);
+            logDiagnostic("Did not find Log4J");
+            return false;
         }
     }
 
