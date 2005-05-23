@@ -1,0 +1,103 @@
+/*
+ * Copyright 2001-2005 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ 
+
+package org.apache.commons.logging;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.Factory;
+import org.apache.commons.logging.ContextFactory;
+
+
+/**
+ * This is the class that users of JCL interact with, in order to retrieve
+ * Log objects.
+ * <p>
+ * This class has only static methods, and simply delegates to a specific
+ * concrete Factory class which is set at compile-time. In order to bind to 
+ * a particular logging library, the user will deploy the variant of this
+ * class which binds to the Factory class for that logging library.
+ * </p>
+ */
+
+public final class LogFactory {
+    private static Factory factory;
+
+    static {
+        /**
+         * The actual class used here is modified during compilation.
+         */
+        factory = new org.apache.commons.logging.impl.@IMPL@Factory();
+        
+        String context = System.getProperty("org.apache.commons.logging.context");
+        if (Boolean.parseBoolean(context)) {
+            // presumably this class is being used within a container, and
+            // has been deployed via a shared classloader
+            factory = new ContextFactory(factory);
+        }
+    }
+
+    // --------------------------------------------------------- Static Methods
+
+    public static Factory getInstance() {
+        return factory;
+    }
+
+    /**
+     * Convenience method to return a named logger, without the application
+     * having to care about factories.
+     *
+     * @param clazz Class from which a log name will be derived
+     */
+    public static Log getLog(Class clazz) {
+        return factory.getLog(clazz.getName());
+    }
+
+
+    /**
+     * Convenience method to return a named logger, without the application
+     * having to care about factories.
+     *
+     * @param name Logical name of the <code>Log</code> instance to be
+     *  returned (the meaning of this name is only known to the underlying
+     *  logging implementation that is being wrapped)
+     */
+    public static Log getLog(String name) {
+        return factory.getLog(name);
+    }
+
+
+    /**
+     * Release any internal references to previously created {@link LogFactory}
+     * instances that have been associated with the specified class loader.
+     *
+     * @param classLoader ClassLoader for which to release the LogFactory
+     */
+    public static void release(ClassLoader classLoader) {
+        factory.release(classLoader);
+    }
+
+
+    /**
+     * Release any internal references to previously created {@link LogFactory}
+     * instances. This is useful in environments like servlet containers,
+     * which implement application reloading by throwing away a ClassLoader.
+     * Dangling references to objects in that class loader would prevent
+     * garbage collection.
+     */
+    public static void releaseAll() {
+        factory.releaseAll();
+    }
+}

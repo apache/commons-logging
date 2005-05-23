@@ -1,0 +1,429 @@
+<!--
+
+ Copyright 2001-2004 The Apache Software Foundation.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+-->
+
+<project name="Logging" default="compile-simple" basedir=".">
+
+
+<!--
+        "Logging" component of the Jakarta Commons Subproject
+        $Id: build.xml 155426 2005-02-26 13:10:49Z dirkv $
+-->
+
+
+<!-- ========== Initialize Properties ===================================== -->
+
+
+  <property file="build.properties"/>                <!-- Component local   -->
+  <property file="../build.properties"/>             <!-- Commons local     -->
+  <property file="${user.home}/build.properties"/>   <!-- User local        -->
+
+
+<!-- ========== External Dependencies ===================================== -->
+
+
+  <!-- The directories corresponding to your necessary dependencies -->
+  <property name="junit.home"              value="/usr/local/junit3.5"/>
+  <property name="jakarta.home"            value="../.."/>
+
+
+<!-- ========== Derived Values ============================================ -->
+
+
+  <!-- The locations of necessary jar files -->
+  <property name="junit.jar"               value="${junit.home}/junit.jar"/>
+  <property name="log4j.jar"               value="${jakarta.home}/jakarta-log4j/dist/lib/log4j.jar"/>
+
+
+<!-- ========== Component Declarations ==================================== -->
+
+
+  <!-- The name of this component -->
+  <property name="component.name"          value="logging"/>
+
+  <!-- The primary package name of this component -->
+  <property name="component.package"       value="org.apache.commons.logging"/>
+
+  <!-- The title of this component -->
+  <property name="component.title"         value="Logging Wrapper Library"/>
+
+  <!-- The current version number of this component -->
+  <property name="component.version"       value="1.2-dev"/>
+
+  <!-- The base directory for compilation targets -->
+  <property name="build.home"              value="${basedir}/target"/>
+
+  <!-- The base directory for component configuration files -->
+  <property name="conf.home"               value="src/conf"/>
+
+  <!-- The base directory for distribution targets -->
+  <property name="dist.home"               value="dist"/>
+
+  <!-- The base directory for component sources -->
+  <property name="source.home"             value="src/java"/>
+
+  <!-- The base directory for unit test sources -->
+  <property name="test.home"               value="src/test"/>
+
+
+  <!-- Optional build -->
+  <property name="optional.home"               value="optional"/>
+  <property name="optional.dist.home"           value="${optional.home}/dist"/>
+
+  
+<!-- ========== Compiler Defaults ========================================= -->
+
+
+  <!-- Should Java compilations set the 'debug' compiler option? -->
+  <property name="compile.debug"           value="true"/>
+
+  <!-- Should Java compilations set the 'deprecation' compiler option? -->
+  <property name="compile.deprecation"     value="false"/>
+
+  <!-- Should Java compilations set the 'optimize' compiler option? -->
+  <property name="compile.optimize"        value="false"/>
+
+  <!-- Construct compile classpath -->
+  <path id="compile.classpath">
+    <pathelement location="${build.home}/classes"/>
+    <pathelement location="${junit.jar}"/>
+    <pathelement location="${log4j.jar}"/>
+  </path>
+
+
+<!-- ========== Test Execution Defaults =================================== -->
+
+
+  <!-- Construct unit test classpath (generic tests) -->
+  <path id="test.classpath">
+    <pathelement location="${build.home}/classes"/>
+    <pathelement location="${build.home}/tests"/>
+    <pathelement location="${junit.jar}"/>
+    <pathelement location="${log4j.jar}"/>
+    <pathelement location="${conf.home}"/>
+  </path>
+
+  <!-- Construct unit test classpath (JDK 1.4 tests) -->
+  <path id="test.classpath.jdk14">
+    <pathelement location="${build.home}/classes"/>
+    <pathelement location="${build.home}/tests"/>
+    <pathelement location="${junit.jar}"/>
+  </path>
+
+  <!-- Construct unit test classpath (Log4J tests) -->
+  <path id="test.classpath.log4j">
+    <pathelement location="${build.home}/classes"/>
+    <pathelement location="${build.home}/tests"/>
+    <pathelement location="${junit.jar}"/>
+    <pathelement location="${log4j.jar}"/>
+  </path>
+
+  <!-- Construct unit test classpath (Log4J tests) -->
+  <path id="test.classpath.log4j12">
+    <pathelement location="${build.home}/classes"/>
+    <pathelement location="${build.home}/tests"/>
+    <pathelement location="${junit.jar}"/>
+    <pathelement location="${log4j12.jar}"/>
+  </path>
+
+  <!-- Construct unit test classpath (Minimal Wrapper) -->
+  <path id="test.classpath.wrap">
+    <pathelement location="${build.home}/commons-logging-wrapper.jar"/>
+  </path>
+
+  <!-- Should all tests fail if one does? -->
+  <property name="test.failonerror"        value="true"/>
+
+  <!-- The test runner to execute -->
+  <property name="test.runner"             value="junit.textui.TestRunner"/>
+  <property name="test.entry" value="org.apache.commons.logging.TestAll"/>
+  <property name="test.wrapper"    value="org.apache.commons.logging.Wrapper"/>
+
+<!-- ========== Executable Targets ======================================== -->
+
+
+  <target name="init"
+   description="Initialize and evaluate conditionals">
+    <echo message="-------- ${component.title} ${component.version} --------"/>
+    <filter  token="name"                  value="${component.name}"/>
+    <filter  token="package"               value="${component.package}"/>
+    <filter  token="version"               value="${component.version}"/>
+  </target>  
+  
+  <target name="prepare" depends="init"
+   description="Prepare build directory">
+
+    <echo>
+    Log4j: ${log4j.jar}
+    </echo>
+
+    <mkdir dir="${build.home}"/>
+    <mkdir dir="${build.home}/classes"/>
+    <mkdir dir="${build.home}/conf"/>
+    <mkdir dir="${build.home}/docs"/>
+    <mkdir dir="${build.home}/docs/api"/>
+    <mkdir dir="${build.home}/tests"/>
+  </target>
+
+
+  <target name="static" depends="prepare"
+   description="Copy static files to build directory">
+    <tstamp/>
+    <copy  todir="${build.home}/conf" filtering="on">
+      <fileset dir="${conf.home}" includes="*.MF"/>
+      <fileset dir="${conf.home}" includes="*.properties"/>
+    </copy>
+  </target>
+
+  <target name="compile" depends="static,compile-only"
+          description="Compile shareable components"/>
+
+  <target name='discovery' depends='init'>
+    <available property="jdk.1.4.present"
+               classname="java.util.logging.Logger"/>
+    <available classname="org.apache.log4j.Logger"
+               classpathref="compile.classpath"
+               property="log4j.present"/>
+  </target>
+
+  <target name="log4j-warning" unless='log4j.present' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    Log4j not found: Cannot Build Log4jLogger
+    </echo>
+  </target>
+  
+  <target name="jdk1.4-warning" unless='jdk.1.4.present' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    JDK 1.4 not present: Cannot Build Jdk14Logger
+    </echo>
+  </target>
+  
+  <target name="log4j12-warning" unless='log4j12.jar' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    Log4J 1.2.x Jar not found: Cannot execute 1.2.x tests
+    </echo>
+  </target>
+    
+  <target name='warning' depends='log4j-warning,jdk1.4-warning'/>
+
+
+  <target name="compile-only" depends="init,discovery,warning" >
+
+    <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
+    <echo  message="log4j.present=${log4j.present}"/>
+
+    <javac srcdir="${source.home}"
+           destdir="${build.home}/classes"
+           debug="${compile.debug}"
+           deprecation="${compile.deprecation}"
+           optimize="${compile.optimize}">
+      <classpath refid="compile.classpath"/>
+      <exclude name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
+               unless="jdk.1.4.present"/>
+      <exclude name="org/apache/commons/logging/impl/Jdk14Logger.java"
+               unless="jdk.1.4.present"/>
+      <exclude name="org/apache/commons/logging/impl/Log4J*.java"
+               unless="log4j.present"/>
+      <exclude name="org/apache/commons/logging/impl/Log4j*.java"
+               unless="log4j.present"/>
+    </javac>
+    <copy  todir="${build.home}/classes" filtering="on">
+      <fileset dir="${source.home}" excludes="**/*.java"/>
+    </copy>
+    <mkdir      dir="${build.home}/classes/META-INF"/>
+    <copy      file="LICENSE.txt"
+              todir="${build.home}/classes/META-INF"/>
+    <copy      file="NOTICE.txt"
+              todir="${build.home}/classes/META-INF"/>
+
+    <jar jarfile="${build.home}/commons-${component.name}.jar"
+         basedir="${build.home}/classes"
+         manifest="${build.home}/conf/MANIFEST.MF">
+      <include name="org/apache/commons/logging/**" />
+      <include name="META-INF/LICENSE.txt"/>
+      <include name="META-INF/NOTICE.txt"/>
+    </jar>
+
+    <jar jarfile="${build.home}/commons-${component.name}-api.jar"
+         basedir="${build.home}/classes"
+         manifest="${build.home}/conf/MANIFEST.MF">
+      <include name="org/apache/commons/logging/*.class" />
+      <include name="org/apache/commons/logging/impl/LogFactoryImpl*.class" />
+      <include name="org/apache/commons/logging/impl/Jdk14*.class" />
+      <include name="org/apache/commons/logging/impl/SimpleLog*.class" />
+      <include name="org/apache/commons/logging/impl/NoOpLog*.class" />
+      <include name="META-INF/LICENSE.txt"/>
+      <include name="META-INF/NOTICE.txt"/>
+    </jar>
+  </target>
+
+  <target name="clean"
+   description="Clean build and distribution directories">
+    <delete    dir="${build.home}"/>
+    <delete    dir="${dist.home}"/>
+  </target>
+
+
+  <target name="all" depends="clean,compile"
+   description="Clean and compile all components"/>
+
+
+  <target name="javadoc" depends="compile"
+   description="Create component Javadoc documentation">
+    <mkdir      dir="${dist.home}"/>
+    <mkdir      dir="${dist.home}/docs"/>
+    <mkdir      dir="${dist.home}/docs/api"/>
+    <javadoc sourcepath="${source.home}"
+                destdir="${dist.home}/docs/api"
+               overview="${source.home}/overview.html"
+           packagenames="org.apache.commons.*"
+                 author="true"
+                private="true"
+                version="true"
+               doctitle="&lt;h1&gt;${component.title} (Version ${component.version})&lt;/h1&gt;"
+            windowtitle="${component.title} (Version ${component.version})"
+                 bottom='Copyright 2002-2004 The Apache Software Foundation.'>
+      <classpath refid="test.classpath"/>
+    </javadoc>
+  </target>
+
+
+  <target name="dist" depends="compile,javadoc"
+   description="Create binary distribution">
+    <mkdir      dir="${dist.home}"/>
+    <copy      file="LICENSE.txt"
+              todir="${dist.home}"/>
+    <copy      file="NOTICE.txt"
+              todir="${dist.home}"/>
+    <copy      file="RELEASE-NOTES.txt"
+              todir="${dist.home}"/>
+    <copy file="${build.home}/commons-${component.name}.jar"
+          tofile="${dist.home}/commons-${component.name}.jar" />
+    <copy file="${build.home}/commons-${component.name}-api.jar"
+          tofile="${dist.home}/commons-${component.name}-api.jar" />
+    <ant antfile='build.xml' target='dist' dir='${optional.home}' inheritAll="false" />
+    <copy       todir="${dist.home}">
+        <fileset dir='${optional.dist.home}'>
+            <include name='*.jar'/>
+        </fileset>
+    </copy>
+    <copy       todir="${dist.home}/docs-optional">
+        <fileset dir='${optional.dist.home}/docs'/>
+    </copy>
+    <mkdir      dir="${dist.home}/src"/>
+    <copy     todir="${dist.home}/src" filtering="on">
+      <fileset  dir="${source.home}"/>
+    </copy>
+  </target>
+
+	<!-- ============================================================ -->
+	
+	<target name="jcl-spi.jar">
+		<delete dir="tmp"/>
+		<mkdir dir="tmp/src"/>
+		<mkdir dir="tmp/bin"/>
+
+		<javac destdir="tmp/bin">
+		    <src path="src/java"/>
+		    <include name="org/apache/commons/logging/*.java"/>
+		</javac>
+
+		<jar destfile="${build.home}/jcl-spi.jar" basedir="tmp/bin"/>
+	</target>
+		
+  <!-- =================================================================== 
+    - Generic target that can build NOP, Simple and JDK14 implementations
+    -  as specified by the "jar-name" and "impl" parameters.
+    -
+    - A tmp directory is created, and the impl.@IMPL@Logger.java and 
+    - impl.@IMPL@Factory.java files are copied over. The 
+    - LogFactory.java.template file is also copied over, with necessary
+    - substitutions. Everything is then ready for the compilation.
+	- =================================================================== -->
+	<target name="jcl-IMPL.jar" depends="init">
+		<delete dir="tmp"/>
+		<mkdir dir="tmp/src"/>
+		<mkdir dir="tmp/bin"/>
+	    
+	    <!-- copy the IMPL-specific files tmp/src -->
+	    <copy todir="tmp/src">
+	      <fileset dir="src/java">
+	        <include name="org/apache/commons/logging/impl/${IMPL}Logger.java"/>
+	        <include name="org/apache/commons/logging/impl/${IMPL}Factory.java"/>
+	      </fileset>
+	    </copy>
+	    
+	    <!-- copy a filtered version of LogFactory.java to tmp/src -->
+	    <copy todir="tmp/src">
+	      <fileset dir="src/java">
+	        <include name="org/apache/commons/logging/LogFactory.java.template"/>
+	      </fileset>
+	      <filterset><filter token="IMPL" value="${IMPL}"/></filterset>
+	    </copy>
+		<move 
+			file="tmp/src/org/apache/commons/logging/LogFactory.java.template"
+			tofile="tmp/src/org/apache/commons/logging/LogFactory.java"/>
+			
+
+		<!-- now compile stuff -->
+	    <javac srcdir="tmp/src"
+	           destdir="tmp/bin"
+	           deprecation="on">
+			<classpath>
+		      <pathelement location="target/jcl-spi.jar"/>
+		      <pathelement location="${log4j.jar}"/>
+		    </classpath>
+	    </javac>
+	 
+	    <jar jarfile="${build.home}/jcl-${IMPL}.jar" basedir="tmp/bin"
+	        includes="**/*.class">
+	    </jar>
+	   
+	  </target>
+
+	  <target name="jcl-nop.jar" depends="jcl-spi.jar">
+	    <antcall target="jcl-IMPL.jar">
+	      <param name="IMPL" value="NoOp"/>
+	    </antcall>
+	  </target>
+
+
+	  <target name="jcl-simple.jar" depends="jcl-spi.jar">
+	    <antcall target="jcl-IMPL.jar">
+	      <param name="IMPL" value="Simple"/>
+	    </antcall>
+	  </target>
+			
+	  <target name="jcl-jdk14.jar" depends="jcl-spi.jar">
+	    <antcall target="jcl-IMPL.jar">
+	      <param name="IMPL" value="Jdk14"/>
+	    </antcall>
+	  </target>
+			
+	  <target name="jcl-log4j12.jar" depends="jcl-spi.jar">
+	    <antcall target="jcl-IMPL.jar">
+	      <param name="IMPL" value="Log4J12"/>
+	    </antcall>
+	  </target>
+			
+			
+	  <target name="jcl-all" 
+	  	depends="jcl-spi.jar, jcl-nop.jar, jcl-simple.jar, jcl-jdk14.jar, jcl-log4j12.jar"/>
+</project>
