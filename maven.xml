@@ -16,7 +16,7 @@
 
 -->
 
-<project default="java:jar"
+<project default="jar:jar"
   xmlns:j="jelly:core">
 
   <!-- ================================================================== -->
@@ -28,7 +28,6 @@
     <copy todir="${basedir}/target/docs/style/" failonerror="false">
       <fileset dir="${basedir}/../commons-build/xdocs/style">
       	<include name='**/*'/>
-      	<exclude name='**/CVS/**'/>
       </fileset>
     </copy>
   </postGoal>
