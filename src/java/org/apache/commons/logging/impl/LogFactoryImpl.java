@@ -660,7 +660,7 @@ public class LogFactoryImpl extends LogFactory {
             loadClass("java.util.logging.Logger");
             loadClass("org.apache.commons.logging.impl.Jdk14Logger");
             Class throwable = loadClass("java.lang.Throwable");
-            if (throwable.getDeclaredMethod("getStackTrace", null) == null) {
+            if (throwable.getDeclaredMethod("getStackTrace", (Class[]) null) == null) {
                 return (false);
             }
             logDiagnostic("Found Jdk14.");

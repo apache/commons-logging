@@ -729,11 +729,13 @@ public abstract class LogFactory {
 
         try {
             // Are we running on a JDK 1.2 or later system?
-            Method method = Thread.class.getMethod("getContextClassLoader", null);
+            Method method = Thread.class.getMethod("getContextClassLoader", 
+                    (Class[]) null);
 
             // Get the thread context class loader (if there is one)
             try {
-                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), null);
+                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), 
+                        (Object[]) null);
             } catch (IllegalAccessException e) {
                 throw new LogConfigurationException
                     ("Unexpected IllegalAccessException", e);
@@ -915,7 +917,7 @@ public abstract class LogFactory {
      * @param factoryClass
      * @param classLoader
      * 
-     * @returns either a LogFactory object or a LogConfigurationException object.
+     * @return either a LogFactory object or a LogConfigurationException object.
      */
     protected static Object createFactory(String factoryClass, ClassLoader classLoader) {
 
@@ -1215,7 +1217,7 @@ public abstract class LogFactory {
      * the specified object's class has overidden the toString method.
      * 
      * @param o may be null.
-     * @return
+     * @return a string of form classname@hashcode, or "null" if param o is null.
      */
     public static String objectId(Object o) {
         if (o == null) {
