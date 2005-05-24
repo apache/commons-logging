@@ -16,12 +16,11 @@
 
 -->
 
-<project name="Logging" default="compile-simple" basedir=".">
+<project name="Logging" default="jcl-all" basedir=".">
 
 
 <!--
         "Logging" component of the Jakarta Commons Subproject
-        $Id: build.xml 155426 2005-02-26 13:10:49Z dirkv $
 -->
 
 
@@ -335,19 +334,6 @@
 
 	<!-- ============================================================ -->
 	
-	<target name="jcl-spi.jar">
-		<delete dir="tmp"/>
-		<mkdir dir="tmp/src"/>
-		<mkdir dir="tmp/bin"/>
-
-		<javac destdir="tmp/bin">
-		    <src path="src/java"/>
-		    <include name="org/apache/commons/logging/*.java"/>
-		</javac>
-
-		<jar destfile="${build.home}/jcl-spi.jar" basedir="tmp/bin"/>
-	</target>
-		
   <!-- =================================================================== 
     - Generic target that can build NOP, Simple and JDK14 implementations
     -  as specified by the "jar-name" and "impl" parameters.
@@ -356,8 +342,11 @@
     - impl.@IMPL@Factory.java files are copied over. The 
     - LogFactory.java.template file is also copied over, with necessary
     - substitutions. Everything is then ready for the compilation.
+    -
+    - This task is expected to be called via <antcall> with parameters
+    - IMPL and JAR.
 	- =================================================================== -->
-	<target name="jcl-IMPL.jar" depends="init">
+	<target name="jcl-impl" depends="init">
 		<delete dir="tmp"/>
 		<mkdir dir="tmp/src"/>
 		<mkdir dir="tmp/bin"/>
@@ -387,43 +376,96 @@
 	           destdir="tmp/bin"
 	           deprecation="on">
 			<classpath>
-		      <pathelement location="target/jcl-spi.jar"/>
+		      <pathelement location="target/commons-logging-core.jar"/>
 		      <pathelement location="${log4j.jar}"/>
 		    </classpath>
 	    </javac>
 	 
-	    <jar jarfile="${build.home}/jcl-${IMPL}.jar" basedir="tmp/bin"
+	    <jar jarfile="${build.home}/${JAR}" basedir="tmp/bin"
 	        includes="**/*.class">
 	    </jar>
 	   
 	  </target>
 
-	  <target name="jcl-nop.jar" depends="jcl-spi.jar">
-	    <antcall target="jcl-IMPL.jar">
+	<target name="jcl-core">
+		<delete dir="tmp"/>
+		<mkdir dir="tmp/src"/>
+		<mkdir dir="tmp/bin"/>
+
+		<javac destdir="tmp/bin">
+		    <src path="src/java"/>
+		    <include name="org/apache/commons/logging/*.java"/>
+		</javac>
+
+		<jar destfile="${build.home}/commons-logging-core.jar" basedir="tmp/bin"/>
+	</target>
+		
+	  <target name="jcl-test" depends="jcl-core">
+	    <antcall target="jcl-impl">
+	      <param name="IMPL" value="Test"/>
+	      <param name="JAR" value="commons-logging-test.jar"/>
+	    </antcall>
+	  </target>
+
+	  <target name="jcl-nop" depends="jcl-core">
+	    <antcall target="jcl-impl">
 	      <param name="IMPL" value="NoOp"/>
+	      <param name="JAR" value="commons-logging-nop.jar"/>
 	    </antcall>
 	  </target>
 
-
-	  <target name="jcl-simple.jar" depends="jcl-spi.jar">
-	    <antcall target="jcl-IMPL.jar">
+	  <target name="jcl-simple" depends="jcl-core">
+	    <antcall target="jcl-impl">
 	      <param name="IMPL" value="Simple"/>
+	      <param name="JAR" value="commons-logging-simple.jar"/>
 	    </antcall>
 	  </target>
 			
-	  <target name="jcl-jdk14.jar" depends="jcl-spi.jar">
-	    <antcall target="jcl-IMPL.jar">
+	  <target name="jcl-jdk14" depends="jcl-core">
+	    <antcall target="jcl-impl">
 	      <param name="IMPL" value="Jdk14"/>
+	      <param name="JAR" value="commons-logging-jdk14.jar"/>
 	    </antcall>
 	  </target>
 			
-	  <target name="jcl-log4j12.jar" depends="jcl-spi.jar">
-	    <antcall target="jcl-IMPL.jar">
+	  <target name="jcl-log4j12" depends="jcl-core">
+	    <antcall target="jcl-impl">
 	      <param name="IMPL" value="Log4J12"/>
+	      <param name="JAR" value="commons-logging-log4j12.jar"/>
 	    </antcall>
 	  </target>
 			
 			
 	  <target name="jcl-all" 
-	  	depends="jcl-spi.jar, jcl-nop.jar, jcl-simple.jar, jcl-jdk14.jar, jcl-log4j12.jar"/>
+	  	depends="jcl-core, jcl-test, jcl-nop, jcl-simple, jcl-jdk14, jcl-log4j12"/>
+	
+	<path id="test.classpath">
+		<pathelement location="target/commons-logging-core.jar"/>
+		<pathelement location="target/commons-logging-test.jar"/>
+		<pathelement location="${junit.jar}"/>
+	</path>
+		
+	<target name="compile.tests" depends="jcl-all">
+		<delete dir="${build.home}/tests"/>
+		<mkdir dir="${build.home}/tests"/>
+	    <javac srcdir="src/test"
+	           destdir="${build.home}/tests"
+	           debug="${compile.debug}"
+	           deprecation="${compile.deprecation}"
+	           optimize="${compile.optimize}">
+	    	<classpath refid="test.classpath"/>
+	   </javac>
+	</target>
+			
+	<target name="test" depends="compile.tests">
+	    <echo message="Running tests ..."/>
+	    <java classname="${test.runner}" fork="yes"
+	        failonerror="${test.failonerror}">
+	      <arg value="org.apache.commons.logging.BasicTestCase"/>
+			<classpath>
+				<path refid="test.classpath"/>
+				<pathelement path="${build.home}/tests"/>
+			</classpath>
+	    </java>
+	</target>
 </project>
