@@ -51,7 +51,7 @@ public final class LogFactory {
 
     // --------------------------------------------------------- Static Methods
 
-    public static Factory getInstance() {
+    public static Factory getFactory() {
         return factory;
     }
 

@@ -112,8 +112,7 @@ public class ContextFactory extends Factory {
         try {
             Class c = cl.loadClass("org.apache.commons.logging.LogFactory");
             
-            // dynamically invoke the "getFactory" method on it
-            Method method = c.getMethod("getInstance", (Class[]) null);
+            Method method = c.getMethod("getFactory", (Class[]) null);
             Object o = method.invoke(null, (Object[]) null);
             
             if (!Factory.class.isAssignableFrom(o.getClass())) {
