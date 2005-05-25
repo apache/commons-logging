@@ -18,13 +18,16 @@
 package org.apache.commons.logging;
 
 import java.net.URL;
+import java.net.URLClassLoader;
 
 /**
- * Trivial class simply to make it clear when the classloader being created
- * truly is parent-first.
+ * Trivial class to make addURL method of URLClassLoader public.
  */
-public class ParentFirstClassLoader extends ModifiableClassLoader {
-    public ParentFirstClassLoader(ClassLoader parent) {
-        super(parent);
+public class ModifiableClassLoader extends URLClassLoader {
+    public ModifiableClassLoader(ClassLoader parent) {
+        super(new URL[0], parent);
+    }
+    public void addURL(URL url) {
+        super.addURL(url);
     }
 }

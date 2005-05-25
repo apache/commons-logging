@@ -26,10 +26,10 @@ import java.net.URLClassLoader;
  * but a more complete and robust implementation should be
  * preferred for more general purposes.
  */
-public class ChildFirstClassLoader extends URLClassLoader {
+public class ChildFirstClassLoader extends ModifiableClassLoader {
 
-    public ChildFirstClassLoader(URL[] urls, ClassLoader parent) {
-        super(urls, parent);
+    public ChildFirstClassLoader(ClassLoader parent) {
+        super(parent);
     }
 
     protected synchronized Class loadClass(String name, boolean resolve)
