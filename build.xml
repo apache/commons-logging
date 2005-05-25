@@ -435,9 +435,16 @@
 	    </antcall>
 	  </target>
 			
+	  <target name="jcl-context" depends="jcl-core">
+	    <antcall target="jcl-impl">
+	      <param name="IMPL" value="Context"/>
+	      <param name="JAR" value="commons-logging-context.jar"/>
+	    </antcall>
+	  </target>
+			
 			
 	  <target name="jcl-all" 
-	  	depends="jcl-core, jcl-test, jcl-nop, jcl-simple, jcl-jdk14, jcl-log4j12"/>
+	  	depends="jcl-core, jcl-test, jcl-nop, jcl-simple, jcl-jdk14, jcl-log4j12, jcl-context"/>
 	
 	<path id="test.classpath">
 		<pathelement location="target/commons-logging-core.jar"/>
