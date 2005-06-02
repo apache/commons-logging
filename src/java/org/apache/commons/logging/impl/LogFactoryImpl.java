@@ -57,7 +57,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * <p>This factory will remember previously created <code>Log</code> instances
  * for the same name, and will return them on repeated requests to the
- * <code>getInstance()</code> method.
+ * <code>getInstance()</code> method.</p>
  *
  * @author Rod Waldhoff
  * @author Craig R. McClanahan
@@ -584,8 +584,7 @@ public class LogFactoryImpl extends LogFactory {
      * @param logCategory the name of the log category
      * 
      * @throws LogConfigurationException if an error in discovery occurs, 
-     *                                   or if no adapter at all can be 
-     *                                   instantiated
+     * or if no adapter at all can be instantiated
      */
     private Log discoverLogImplementation(String logCategory)
     throws LogConfigurationException
@@ -692,12 +691,13 @@ public class LogFactoryImpl extends LogFactory {
      * Attempts to load the given class, find a suitable constructor,
      * and instantiate an instance of Log.
      * 
-     * @param   logAdapterClass classname of the Log implementation
-     * @param   logCategory  argument to pass to the Log implementation's
-     *                       constructor
-     * @param   affectState  <code>true</code> if this object's state should
-     *                       be affected by this method call, <code>false</code>
-     *                       otherwise.
+     * @param logAdapterClassName classname of the Log implementation
+     * 
+     * @param logCategory  argument to pass to the Log implementation's
+     * constructor
+     * 
+     * @param affectState  <code>true</code> if this object's state should
+     * be affected by this method call, <code>false</code> otherwise.
      * 
      * @return  an instance of the given class, or null if the logging
      * library associated with the specified adapter is not available.
@@ -706,21 +706,21 @@ public class LogFactoryImpl extends LogFactory {
      * configuration and the handleFlawedDiscovery method decided this
      * problem was fatal.
      */                                  
-    private Log createLogFromClass(String logAdapterClass,
+    private Log createLogFromClass(String logAdapterClassName,
                                    String logCategory,
                                    boolean affectState) 
             throws LogConfigurationException {       
 
-        logDiagnostic("Attempting to instantiate " + logAdapterClass);
+        logDiagnostic("Attempting to instantiate " + logAdapterClassName);
         
-        Class logClass = null;
+        Class logAdapterClass = null;
         
         Object[] params = { logCategory };
         Log logAdapter = null;
         Constructor constructor = null;
         try {
-            logClass = loadClass(logAdapterClass);
-            constructor = logClass.getConstructor(logConstructorSignature);
+            logAdapterClass = loadClass(logAdapterClassName);
+            constructor = logAdapterClass.getConstructor(logConstructorSignature);
             logAdapter = (Log) constructor.newInstance(params);
         } catch (NoClassDefFoundError e) {
             // We were able to load the adapter but it had references to
@@ -729,7 +729,7 @@ public class LogFactoryImpl extends LogFactory {
             String msg = "" + e.getMessage();
             logDiagnostic(
                     "The logging library used by "
-                    + logAdapterClass
+                    + logAdapterClassName
                     + " is not available: " 
                     + msg.trim());
             return null;
@@ -743,7 +743,7 @@ public class LogFactoryImpl extends LogFactory {
             String msg = "" + e.getMessage();
             logDiagnostic(
                     "The logging library used by "
-                    + logAdapterClass
+                    + logAdapterClassName
                     + " is not available: "
                     + msg.trim());
             return null;
@@ -751,24 +751,24 @@ public class LogFactoryImpl extends LogFactory {
             // handleFlawedDiscovery will determine whether this is a fatal
             // problem or not. If it is fatal, then a LogConfigurationException
             // will be thrown.
-            handleFlawedDiscovery(logAdapterClass, logClass, t);
+            handleFlawedDiscovery(logAdapterClassName, logAdapterClass, t);
             return null;
         }
         
         if (affectState) {
             // We've succeeded, so set instance fields
-            this.logClassName   = logClass.getName();
+            this.logClassName   = logAdapterClassName;
             this.logConstructor = constructor;
             
             // Identify the <code>setLogFactory</code> method (if there is one)
             try {
-                this.logMethod = logClass.getMethod("setLogFactory",
+                this.logMethod = logAdapterClass.getMethod("setLogFactory",
                                                logMethodSignature);
                 logDiagnostic("Found method setLogFactory(LogFactory) in " 
-                              + logClassName);
+                              + logAdapterClassName);
             } catch (Throwable t) {
                 this.logMethod = null;
-                logDiagnostic(logAdapterClass + " does not declare method "
+                logDiagnostic(logAdapterClassName + " does not declare method "
                               + "setLogFactory(LogFactory)");
             }
         }
@@ -782,35 +782,36 @@ public class LogFactoryImpl extends LogFactory {
      * then throws a <code>LogConfigurationException</code> that wraps 
      * the passed <code>Throwable</code>.
      * 
-     * @param logClassName  the class name of the Log implementation
-     *                      that could not be instantiated. Cannot be
-     *                      <code>null</code>.
-     * @param adapterClass  <code>Code</code> whose name is
-     *                      <code>logClassName</code>, or <code>null</code> if
-     *                      discovery was unable to load the class.
+     * @param logAdapterClassName  the class name of the Log implementation
+     * that could not be instantiated. Cannot be <code>null</code>.
+     * 
+     * @param logAdapterClass  <code>Code</code> whose name is
+     * <code>logClassName</code>, or <code>null</code> if discovery was unable
+     * to load the class.
+     * 
      * @param discoveryFlaw Throwable thrown during discovery.
      * 
      * @throws LogConfigurationException    ALWAYS
      */
-    private void handleFlawedDiscovery(String logClassName,
-                                       Class adapterClass,
+    private void handleFlawedDiscovery(String logAdapterClassName,
+                                       Class logAdapterClass,
                                        Throwable discoveryFlaw) {
         
         // Output diagnostics
         
         // For ClassCastException use the more complex diagnostic
         // that analyzes the classloader hierarchy
-        if (   discoveryFlaw instanceof ClassCastException
-            && adapterClass != null) {
+        if (discoveryFlaw instanceof ClassCastException
+            && logAdapterClass != null) {
             // reportInvalidAdapter returns a LogConfigurationException
             // that wraps the ClassCastException; replace variable 
             // 'discoveryFlaw' with that so we can rethrow the LCE
-            discoveryFlaw = reportInvalidLogAdapter(adapterClass, 
+            discoveryFlaw = reportInvalidLogAdapter(logAdapterClass, 
                                                     discoveryFlaw);
         }
         else {
             logDiagnostic("Could not instantiate Log "
-                          + logClassName + " -- "
+                          + logAdapterClassName + " -- "
                           + discoveryFlaw.getLocalizedMessage());        
         }
     
@@ -841,18 +842,19 @@ public class LogFactoryImpl extends LogFactory {
      * Here we try to figure out which case has occurred so we can give the
      *  user some reasonable feedback.
      * 
-     * @param logClass is the adapter class we successfully loaded (but which
+     * @param logAdapterClass is the adapter class we successfully loaded (but which
      * could not be cast to type logInterface). Cannot be <code>null</code>.
+     * 
      * @param cause is the <code>Throwable</code> to wrap.
      * 
      * @return  <code>LogConfigurationException</code> that wraps 
      *          <code>cause</code> and includes a diagnostic message.
      */
-    private LogConfigurationException reportInvalidLogAdapter(Class logClass,
-                                                              Throwable cause) {
+    private LogConfigurationException reportInvalidLogAdapter(
+            Class logAdapterClass, Throwable cause) {
         
         String logInterfaceName = Log.class.getName();
-        Class interfaces[] = logClass.getInterfaces();
+        Class interfaces[] = logAdapterClass.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
             if (logInterfaceName.equals(interfaces[i].getName())) {
 
@@ -862,11 +864,11 @@ public class LogFactoryImpl extends LogFactory {
                         // Need to load the log interface so we know its
                         // classloader for diagnostics
                         ClassLoader logInterfaceClassLoader = getClassLoader(Log.class);
-                        ClassLoader logAdapterClassLoader = getClassLoader(logClass);
+                        ClassLoader logAdapterClassLoader = getClassLoader(logAdapterClass);
                         Class logAdapterInterface = interfaces[i];
                         ClassLoader logAdapterInterfaceClassLoader = getClassLoader(logAdapterInterface);
                         logDiagnostic(
-                            "Class " + logClass.getName()
+                            "Class " + logAdapterClass.getName()
                             + " was found in classloader " 
                             + objectId(logAdapterClassLoader)
                             + " but it implements the Log interface as loaded"
@@ -888,7 +890,7 @@ public class LogFactoryImpl extends LogFactory {
         }
             
         return new LogConfigurationException
-            ("Class " + logClass.getName() + " does not implement '" +
+            ("Class " + logAdapterClass.getName() + " does not implement '" +
                     logInterfaceName + "'.", cause);
     }
 
