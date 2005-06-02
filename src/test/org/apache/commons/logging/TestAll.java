@@ -45,6 +45,7 @@ public class TestAll extends TestCase {
         suite.addTest(NoOpLogTest.suite());
         suite.addTest(LogTest.suite());
         suite.addTest(NullClassLoaderTest.suite());
+        suite.addTest(LoadTest.suite());
         
         return suite;
     }

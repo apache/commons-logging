@@ -29,6 +29,15 @@ public class LoadTest extends TestCase{
     static private String LOG_PCKG[] = {"org.apache.commons.logging",
                                         "org.apache.commons.logging.impl"};
     
+    /**
+     * A custom classloader which "duplicates" logging classes available
+     * in the parent classloader into itself.
+     * <p>
+     * When asked to load a class that is in one of the LOG_PCKG packages,
+     * it loads the class itself (child-first). This class doesn't need
+     * to be set up with a classpath, as it simply uses the same classpath
+     * as the classloader that loaded it.
+     */
     static class AppClassLoader extends ClassLoader{
         
         java.util.Map classes = new java.util.HashMap();
@@ -46,8 +55,9 @@ public class LoadTest extends TestCase{
             
             try{
                 
-                java.io.InputStream is = this.getClass().getClassLoader().
-                getResourceAsStream( name.replace('.','\\') + ".class" );
+                ClassLoader cl = this.getClass().getClassLoader();
+                String classFileName = name.replace('.','/') + ".class";
+                java.io.InputStream is = cl.getResourceAsStream(classFileName);
                 java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
                 
                 while(is.available() > 0){
@@ -88,7 +98,14 @@ public class LoadTest extends TestCase{
     }
     
     
-    
+
+    /**
+     * Test what happens when we play various classloader tricks like those
+     * that happen in web and j2ee containers.
+     * <p>
+     * Note that this test assumes that commons-logging.jar and log4j.jar
+     * are available via the system classpath.
+     */
     public void testInContainer()throws Exception{
         
         //problem can be in this step (broken app container or missconfiguration)
@@ -98,44 +115,48 @@ public class LoadTest extends TestCase{
         // 1. Thread.currentThread().setContextClassLoader(appLoader);
         // 2. Thread.currentThread().setContextClassLoader(null);
         
+        // Context classloader is same as class calling into log
         Class cls = reload();
         Thread.currentThread().setContextClassLoader(cls.getClassLoader());
         execute(cls);
         
+        // Context classloader is the "bootclassloader"
         cls = reload();
         Thread.currentThread().setContextClassLoader(null);
         execute(cls);
         
-        
+        // Context classloader is the system classloader.
+        //
+        // This is expected to cause problems, as LogFactoryImpl will attempt
+        // to use the system classloader to load the Log4JLogger class, which
+        // will then be unable to cast that object to the Log interface loaded
+        // via the child classloader. JCL 1.0.4 and earlier will fail with
+        // this setup. Later versions of JCL should fail to load Log4J, but
+        // then fall back to jdk14 logging.
         cls = reload();
         Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
-        try{
-            execute(cls);
-            fail("SystemClassLoader");
-        }catch( LogConfigurationException ok ){
-            
-        }
+        execute(cls);
         
-        
+        // Context classloader is the classloader of this class, ie the
+        // parent classloader of the UserClass that will make the logging call.
+        //
+        // Actually, as the system classloader is expected to load this class,
+        // this test is identical to the preceding one.
         cls = reload();
         Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-        try{
-            execute(cls);
-            fail("ContainerClassLoader");
-        }catch( LogConfigurationException ok ){
-            
-        }
-        
+        execute(cls);
     }
-    
+
+    /**
+     * Load class UserClass via a temporary classloader which is a child of
+     * the classloader used to load this test class.
+     */
     private Class reload()throws Exception{
         
         Class testObjCls = null;
         
-        AppClassLoader appLoader = new AppClassLoader( this.getClass().
-        getClassLoader()
-        
-        );
+        AppClassLoader appLoader = new AppClassLoader( 
+                this.getClass().getClassLoader());
         try{
             
             testObjCls = appLoader.loadClass(UserClass.class.getName());
