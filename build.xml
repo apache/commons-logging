@@ -89,6 +89,11 @@
   
 <!-- ========== Compiler Defaults ========================================= -->
 
+  <!-- Version of java class files to generate. -->
+  <property name="target.version" value="1.1"/>
+
+  <!-- Version of java source to accept -->
+  <property name="source.version" value="1.2"/>
 
   <!-- Should Java compilations set the 'debug' compiler option? -->
   <property name="compile.debug"           value="true"/>
@@ -263,7 +268,10 @@
            destdir="${build.home}/classes"
            debug="${compile.debug}"
            deprecation="${compile.deprecation}"
-           optimize="${compile.optimize}">
+           optimize="${compile.optimize}"
+           source="${source.version}"
+           target="${target.version}">
+
       <classpath refid="compile.classpath"/>
       <exclude name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
                unless="jdk.1.4.present"/>
