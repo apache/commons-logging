@@ -100,13 +100,6 @@ public class LogFactoryImpl extends LogFactory {
         "org.apache.commons.logging.log";
 
 
-    /**
-     * <p>The name of the {@link Log} interface class.</p>
-     */
-    private static final String LOG_INTERFACE =
-        "org.apache.commons.logging.Log";
-
-
     // ----------------------------------------------------- Instance Variables
 
 
@@ -858,27 +851,17 @@ public class LogFactoryImpl extends LogFactory {
     private LogConfigurationException reportInvalidLogAdapter(Class logClass,
                                                               Throwable cause) {
         
+        String logInterfaceName = Log.class.getName();
         Class interfaces[] = logClass.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
-            if (LOG_INTERFACE.equals(interfaces[i].getName())) {
+            if (logInterfaceName.equals(interfaces[i].getName())) {
 
                 if (isDiagnosticsEnabled()) {                    
                     
                     try {
                         // Need to load the log interface so we know its
                         // classloader for diagnostics
-                        Class logInterface = null;
-                        ClassLoader cl = getClassLoader(this.getClass());
-                        if (cl == null) {
-                            // we are probably in Java 1.1, but may also be 
-                            // running in some sort of embedded system..
-                            logInterface = loadClass(LOG_INTERFACE);
-                        } else {
-                            // normal situation
-                            logInterface = cl.loadClass(LOG_INTERFACE);
-                        }
-
-                        ClassLoader logInterfaceClassLoader = getClassLoader(logInterface);
+                        ClassLoader logInterfaceClassLoader = getClassLoader(Log.class);
                         ClassLoader logAdapterClassLoader = getClassLoader(logClass);
                         Class logAdapterInterface = interfaces[i];
                         ClassLoader logAdapterInterfaceClassLoader = getClassLoader(logAdapterInterface);
@@ -899,14 +882,14 @@ public class LogFactoryImpl extends LogFactory {
                 return new LogConfigurationException
                     ("Invalid class loader hierarchy.  " +
                      "You have more than one version of '" +
-                     LOG_INTERFACE + "' visible, which is " +
+                     logInterfaceName + "' visible, which is " +
                      "not allowed.", cause);
             }
         }
             
         return new LogConfigurationException
-            ("Class " + logClassName + " does not implement '" +
-                    LOG_INTERFACE + "'.", cause);
+            ("Class " + logClass.getName() + " does not implement '" +
+                    logInterfaceName + "'.", cause);
     }
 
 }
