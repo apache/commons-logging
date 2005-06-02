@@ -468,20 +468,9 @@ public class LogFactoryImpl extends LogFactory {
      *              it will be.
      */
     protected boolean isJdk13LumberjackAvailable() {
-        
-        logDiagnostic("Checking for Jdk13Lumberjack.");
-        try {
-            createLogFromClass("org.apache.commons.logging.impl.Jdk13LumberjackLogger",
-                               getClass().getName(),
-                               false);
-            // No exception means success
-            logDiagnostic("Found Jdk13Lumberjack.");
-            return true;
-        } catch (Throwable t) {
-            logDiagnostic("Did not find Jdk13Lumberjack.");
-            return false;
-        }
-        
+        return isLogLibraryAvailable(
+                "Jdk13Lumberjack",
+                "org.apache.commons.logging.impl.Jdk13LumberjackLogger");
     }
 
 
@@ -495,19 +484,9 @@ public class LogFactoryImpl extends LogFactory {
      *              it will be.
      */
     protected boolean isJdk14Available() {
-
-        logDiagnostic("Checking for Jdk14.");
-        try {
-            createLogFromClass("org.apache.commons.logging.impl.Jdk14Logger",
-                               getClass().getName(),
-                               false);
-            // No exception means success
-            logDiagnostic("Found Jdk14.");
-            return true;
-        } catch (Throwable t) {
-            logDiagnostic("Did not find Jdk14.");
-            return false;
-        }
+        return isLogLibraryAvailable(
+                "Jdk14",
+                "org.apache.commons.logging.impl.Jdk14Logger");
     }
 
 
@@ -518,19 +497,9 @@ public class LogFactoryImpl extends LogFactory {
      *              it will be.
      */
     protected boolean isLog4JAvailable() {
-
-        logDiagnostic("Checking for Log4J");
-        try {
-            createLogFromClass("org.apache.commons.logging.impl.Log4JLogger",
-                               getClass().getName(),
-                               false);
-            // No exception means success
-            logDiagnostic("Found Log4J.");
-            return true;
-        } catch (Throwable t) {
-            logDiagnostic("Did not find Log4J");
-            return false;
-        }
+        return isLogLibraryAvailable(
+                "Log4J",
+                "org.apache.commons.logging.impl.Log4JLogger");
     }
 
 
@@ -589,6 +558,33 @@ public class LogFactoryImpl extends LogFactory {
     //  ------------------------------------------------------ Private Methods
     
     /**
+     * Utility method to check whether a particular logging library is
+     * present and available for use. Note that this does <i>not</i>
+     * affect the future behaviour of this class.
+     */
+    private boolean isLogLibraryAvailable(String name, String classname) {
+        logDiagnostic("Checking for " + name + ".");
+        try {
+            Log log = createLogFromClass(
+                        classname, 
+                        this.getClass().getName(), // dummy category
+                        false);
+
+            if (log == null) {
+                logDiagnostic("Did not find " + name + ".");
+                return false;
+            } else {
+                logDiagnostic("Found " + name + ".");
+                return true;
+            }
+        } catch(LogConfigurationException e) {
+            logDiagnostic("Logging system " + name + " is available but not useable.");
+            return false;
+        }
+    }
+  
+
+    /**
      * Attempts to create a Log instance for the given category name.
      * Follows the discovery process described in the class javadoc.
      * 
@@ -599,6 +595,7 @@ public class LogFactoryImpl extends LogFactory {
      *                                   instantiated
      */
     private Log discoverLogImplementation(String logCategory)
+    throws LogConfigurationException
     {
         logDiagnostic("Attempting to discover a Log implementation.");
         
@@ -608,101 +605,42 @@ public class LogFactoryImpl extends LogFactory {
         String specifiedLogClassName = findUserSpecifiedLogClassName();
 
         if (specifiedLogClassName != null) {
-            try {
-                // note: createLogFromClass never returns null..
-                result = createLogFromClass(specifiedLogClassName,
-                                            logCategory,
-                                            true);
-                return result;
-            } catch (LogConfigurationException ex) {
-                // this type of exception means we've already output
-                // diagnostics about this issue, etc.; just pass it on
-                throw ex;
-            } catch (Throwable t) {
-                // log problem, and throw a LogConfigurationException
-                // wrapping the Throwable
-                handleFlawedDiscovery(specifiedLogClassName, null, t);
-                
-                // handleFlawedDiscovery should have thrown an LCE, but
-                // in case it didn't we'll throw one.  Inability to
-                // instantiate a user specified class is a fatal error
-                throw new LogConfigurationException("Unable to instantiate "
-                                                    + specifiedLogClassName,
-                                                    t);
+            // note: createLogFromClass never returns null..
+            result = createLogFromClass(specifiedLogClassName,
+                                        logCategory,
+                                        true);
+            if (result == null) {
+                throw new LogConfigurationException(
+                        "User-specified log class " + specifiedLogClassName
+                        + " cannot be found or is not useable.");
             }
-
-            // this if-statement never exits!
+            
+            return result;
         }
         
         // No user specified log; try to discover what's on the classpath
         
         // Try Log4j
-        try {
-            result = createLogFromClass("org.apache.commons.logging.impl.Log4JLogger",
+        result = createLogFromClass("org.apache.commons.logging.impl.Log4JLogger",
+                                    logCategory,
+                                    true);
+
+        if (result == null) {
+            result = createLogFromClass("org.apache.commons.logging.impl.Jdk14Logger",
                                         logCategory,
                                         true);
-        } catch (LogConfigurationException lce) {
-            
-            // LCE means we had a flawed discovery and already
-            // output diagnostics; just pass it on 
-            throw (LogConfigurationException) lce;
-            
-        } catch (Throwable t) {
-            // Other throwables just mean couldn't load the adapter 
-            // or log4j; continue with discovery
-        }        
-
-        if (result == null) {
-            // Try JDK 1.4 Logging
-            try {
-                result = createLogFromClass("org.apache.commons.logging.impl.Jdk14Logger",
-                                            logCategory,
-                                            true);
-            } catch (LogConfigurationException lce) {
-                
-                // LCE means we had a flawed discovery and already
-                // output diagnostics; just pass it on 
-                throw (LogConfigurationException) lce;
-                
-            } catch (Throwable t) {
-                // Other throwables just mean couldn't load the adapter 
-                // or j.u.l; continue with discovery
-            }
         }
 
         if (result == null) {
-            // Try Lumberjack
-            try {
-                result = createLogFromClass("org.apache.commons.logging.impl.Jdk13LumberjackLogger",
-                                            logCategory,
-                                            true);
-            } catch (LogConfigurationException lce) {
-                
-                // LCE means we had a flawed discovery and already
-                // output diagnostics; just pass it on 
-                throw (LogConfigurationException) lce;
-                
-            } catch (Throwable t) {
-                // Other throwables just mean couldn't load the adapter 
-                // or j.u.l; continue with discovery
-            }
+            result = createLogFromClass("org.apache.commons.logging.impl.Jdk13LumberjackLogger",
+                                        logCategory,
+                                        true);
         }
 
         if (result == null) {
-            // Try SimpleLog
-            try {
-                result = createLogFromClass("org.apache.commons.logging.impl.SimpleLog",
-                                            logCategory,
-                                            true);
-            } catch (LogConfigurationException lce) {
-                
-                // LCE means we had a flawed discovery and already
-                // output diagnostics; just pass it up 
-                throw (LogConfigurationException) lce;
-                
-            } catch (Throwable t) {
-                // Other throwables just mean couldn't load the adapter 
-            }
+            result = createLogFromClass("org.apache.commons.logging.impl.SimpleLog",
+                                        logCategory,
+                                        true);
         }
         
         if (result == null) {
@@ -768,57 +706,61 @@ public class LogFactoryImpl extends LogFactory {
      *                       be affected by this method call, <code>false</code>
      *                       otherwise.
      * 
-     * @return  an instance of the given class.  Will not return 
-     *          <code>null</code>.
+     * @return  an instance of the given class, or null if the logging
+     * library associated with the specified adapter is not available.
      *                          
-     * @throws LinkageError if any linkage provoked by this method fails
-     * @throws ExceptionInInitializerError if any initialization provoked
-     *            by this method fails
-     * @throws ClassNotFoundException if the class cannot be located
-     * @throws NoClassDefFoundError if <code>logImplClass</code> could be
-     *                              loaded but the logging implementation it
-     *                              relies on could not be located
-     * @throws LogConfigurationException if the class was loaded but no suitable
-     *                                   logger could be created and this object
-     *                                   is configured to fail in such a
-     *                                   situation
+     * @throws LogConfigurationException if there was a serious error with
+     * configuration and the handleFlawedDiscovery method decided this
+     * problem was fatal.
      */                                  
     private Log createLogFromClass(String logAdapterClass,
                                    String logCategory,
                                    boolean affectState) 
-            throws Throwable {       
+            throws LogConfigurationException {       
 
         logDiagnostic("Attempting to instantiate " + logAdapterClass);
         
-        Class logClass = loadClass(logAdapterClass);
+        Class logClass = null;
         
         Object[] params = { logCategory };
-        Log result = null;
+        Log logAdapter = null;
         Constructor constructor = null;
         try {
+            logClass = loadClass(logAdapterClass);
             constructor = logClass.getConstructor(logConstructorSignature);
-            result = (Log) constructor.newInstance(params);
+            logAdapter = (Log) constructor.newInstance(params);
         } catch (NoClassDefFoundError e) {
-            // We were able to load the adapter but its underlying
-            // logger library could not be found.  This is normal and not
-            // a "flawed discovery", so just throw the error on
-            logDiagnostic("Unable to load logging library used by "
-                          + logAdapterClass);
-            throw e;
-        } catch (Throwable t) {
-            // ExceptionInInitializerError
-            // NoSuchMethodException
-            // InvocationTargetException
-            // ClassCastException
-            // All mean the adapter and underlying logger library were found
-            // but there was a problem creating an instance.
-            // This is a "flawed discovery"            
-            
+            // We were able to load the adapter but it had references to
+            // other classes that could not be found. This simply means that
+            // the underlying logger library could not be found.
+            String msg = "" + e.getMessage();
+            logDiagnostic(
+                    "The logging library used by "
+                    + logAdapterClass
+                    + " is not available: " 
+                    + msg.trim());
+            return null;
+        } catch (ExceptionInInitializerError e) {
+            // A static initializer block or the initializer code associated 
+            // with a static variable on the log adapter class has thrown
+            // an exception.
+            //
+            // We treat this as meaning the adapter's underlying logging
+            // library could not be found.
+            String msg = "" + e.getMessage();
+            logDiagnostic(
+                    "The logging library used by "
+                    + logAdapterClass
+                    + " is not available: "
+                    + msg.trim());
+            return null;
+        } catch(Throwable t) {
+            // handleFlawedDiscovery will determine whether this is a fatal
+            // problem or not. If it is fatal, then a LogConfigurationException
+            // will be thrown.
             handleFlawedDiscovery(logAdapterClass, logClass, t);
-            // handleFlawedDiscovery should have thrown an LCE, but
-            // in case it didn't we'll throw one
-            throw new LogConfigurationException(t);
-        }        
+            return null;
+        }
         
         if (affectState) {
             // We've succeeded, so set instance fields
@@ -838,8 +780,7 @@ public class LogFactoryImpl extends LogFactory {
             }
         }
         
-        return result;      
-        
+        return logAdapter;
     }
     
     
