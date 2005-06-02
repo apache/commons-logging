@@ -38,6 +38,13 @@ import org.apache.commons.logging.Log;
 
 public class Jdk14Logger implements Log, Serializable {
 
+    /**
+     * This member variable simply ensures that any attempt to initialise
+     * this class in a pre-1.4 JVM will result in an ExceptionInInitializerError.
+     * It must not be private, as an optimising compiler could detect that it
+     * is not used and optimise it away.
+     */
+    protected static final Level dummyLevel = Level.FINE;
 
     // ----------------------------------------------------------- Constructors
 
