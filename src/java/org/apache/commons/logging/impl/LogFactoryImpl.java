@@ -722,7 +722,16 @@ public class LogFactoryImpl extends LogFactory {
             logAdapterClass = loadClass(logAdapterClassName);
             constructor = logAdapterClass.getConstructor(logConstructorSignature);
             logAdapter = (Log) constructor.newInstance(params);
-        } catch (NoClassDefFoundError e) {
+        } catch (ClassNotFoundException e) {
+            // We were unable to find the log adapter
+            String msg = "" + e.getMessage();
+            logDiagnostic(
+                    "The log adapter "
+                    + logAdapterClassName
+                    + " is not available: " 
+                    + msg.trim());
+            return null;
+         } catch (NoClassDefFoundError e) {
             // We were able to load the adapter but it had references to
             // other classes that could not be found. This simply means that
             // the underlying logger library could not be found.
