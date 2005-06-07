@@ -89,6 +89,11 @@
   
 <!-- ========== Compiler Defaults ========================================= -->
 
+  <!-- Version of java class files to generate. -->
+  <property name="target.version" value="1.1"/>
+
+  <!-- Version of java source to accept -->
+  <property name="source.version" value="1.2"/>
 
   <!-- Should Java compilations set the 'debug' compiler option? -->
   <property name="compile.debug"           value="true"/>
@@ -263,7 +268,10 @@
            destdir="${build.home}/classes"
            debug="${compile.debug}"
            deprecation="${compile.deprecation}"
-           optimize="${compile.optimize}">
+           optimize="${compile.optimize}"
+           source="${source.version}"
+           target="${target.version}">
+
       <classpath refid="compile.classpath"/>
       <exclude name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
                unless="jdk.1.4.present"/>
@@ -293,6 +301,7 @@
       <include name="org/apache/commons/logging/**" />
       <include name="META-INF/LICENSE.txt"/>
       <include name="META-INF/NOTICE.txt"/>
+      <exclude name="**/package.html"/>
     </jar>
 
     <jar jarfile="${build.home}/commons-${component.name}-api.jar"
@@ -305,6 +314,7 @@
       <include name="org/apache/commons/logging/impl/NoOpLog*.class" />
       <include name="META-INF/LICENSE.txt"/>
       <include name="META-INF/NOTICE.txt"/>
+      <exclude name="**/package.html"/>
     </jar>
   </target>
 
@@ -795,6 +805,7 @@ limitations under the License.--&gt;'>
 
     <echo message="Default Configuration (Log4J Auto-Recognized)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
+   <jvmarg value="-Dorg.apache.commons.logging.diagnostics.dest=/tmp/diag.txt"/>
       <arg value="org.apache.commons.logging.log4j.DefaultConfigTestCase"/>
       <classpath refid="test.classpath.log4j12"/>
     </java>

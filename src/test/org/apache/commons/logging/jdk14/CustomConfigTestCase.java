@@ -276,10 +276,24 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             parent = parent.getParent();
         }
         handlers = parent.getHandlers();
-        if ((handlers != null) && (handlers.length == 1) &&
-            (handlers[0] instanceof TestHandler)) {
-            handler = (TestHandler) handlers[0];
-        }
+        
+        // The CustomConfig.properties file explicitly defines one handler class
+        // to be attached to the root logger, so if it isn't there then 
+        // something is badly wrong...
+        //
+        // Yes this testing is also done in testPristineHandlers but
+        // unfortunately:
+        //  * we need to set up the handlers variable here, 
+        //  * we don't want that to be set up incorrectly, as that can
+        //    produce weird error messages in other tests, and
+        //  * we can't rely on testPristineHandlers being the first
+        //    test to run.
+        // so we need to test things here too.
+        assertNotNull("No Handlers defined for JDK14 logging", handlers);
+        assertEquals("Unexpected number of handlers for JDK14 logging", 1, handlers.length);
+        assertNotNull("Handler is null", handlers[0]);
+        assertTrue("Handler not of expected type", handlers[0] instanceof TestHandler);
+        handler = (TestHandler) handlers[0];
     }
 
 
