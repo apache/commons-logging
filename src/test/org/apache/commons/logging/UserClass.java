@@ -16,10 +16,25 @@
  
 package org.apache.commons.logging;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.impl.LogFactoryImpl;
+
 public class UserClass {
     
-   
- 
+
+    /**
+     * Set the ALLOW_FLAWED_CONTEXT feature on the LogFactoryImpl object
+     * associated with this class' classloader.
+     * <p>
+     * Don't forget to set the context classloader to whatever it will be
+     * when an instance of this class is actually created <i>before</i> calling
+     * this method!
+     */
+    public static void setAllowFlawedContext(String state) {
+        LogFactory f = LogFactory.getFactory();
+        f.setAttribute(LogFactoryImpl.ALLOW_FLAWED_CONTEXT_PROPERTY, state); 
+    }
+
     public UserClass() {
         Log log = LogFactory.getLog(LoadTest.class);
       }
