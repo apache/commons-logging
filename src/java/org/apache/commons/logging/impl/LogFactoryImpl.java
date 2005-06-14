@@ -878,6 +878,10 @@ public class LogFactoryImpl extends LogFactory {
                     + ": "
                     + msg.trim());
                 break;
+            } catch(LogConfigurationException e) {
+                // call to handleFlawedHierarchy above must have thrown
+                // a LogConfigurationException, so just throw it on                
+                throw e;
             } catch(Throwable t) {
                 // handleFlawedDiscovery will determine whether this is a fatal
                 // problem or not. If it is fatal, then a LogConfigurationException
