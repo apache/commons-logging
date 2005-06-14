@@ -19,6 +19,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.commons.logging.impl.LogFactoryImpl;
+
 /**
  * testcase to emulate container and application isolated from container
  * @author  baliuka
@@ -97,7 +99,17 @@ public class LoadTest extends TestCase{
         
     }
     
-    
+
+    /**
+     * Call the static setAllowFlawedContext method on the specified class
+     * (expected to be a UserClass loaded via a custom classloader), passing
+     * it the specified state parameter.
+     */
+    private void setAllowFlawedContext(Class c, String state) throws Exception {
+        Class[] params = {String.class};
+        java.lang.reflect.Method m = c.getDeclaredMethod("setAllowFlawedContext", params);
+        m.invoke(null, new Object[] {state});
+    }
 
     /**
      * Test what happens when we play various classloader tricks like those
@@ -120,31 +132,50 @@ public class LoadTest extends TestCase{
         Thread.currentThread().setContextClassLoader(cls.getClassLoader());
         execute(cls);
         
-        // Context classloader is the "bootclassloader"
+        // Context classloader is the "bootclassloader". This is technically
+        // bad, but LogFactoryImpl.ALLOW_FLAWED_CONTEXT defaults to true so
+        // this test should pass.
         cls = reload();
         Thread.currentThread().setContextClassLoader(null);
         execute(cls);
+        
+        // Context classloader is the "bootclassloader". This is same as above
+        // except that ALLOW_FLAWED_CONTEXT is set to false; an error should
+        // now be reported.
+        cls = reload();
+        Thread.currentThread().setContextClassLoader(null);
+        try {
+            setAllowFlawedContext(cls, "false");
+            execute(cls);
+            fail("Logging config succeeded when context classloader was null!");
+        } catch(LogConfigurationException ex) {
+            // expected; the boot classloader doesn't *have* JCL available
+        }
         
         // Context classloader is the system classloader.
         //
         // This is expected to cause problems, as LogFactoryImpl will attempt
         // to use the system classloader to load the Log4JLogger class, which
         // will then be unable to cast that object to the Log interface loaded
-        // via the child classloader. JCL 1.0.4 and earlier will fail with
-        // this setup. Later versions of JCL should fail to load Log4J, but
-        // then fall back to jdk14 logging.
+        // via the child classloader. However as ALLOW_FLAWED_CONTEXT defaults
+        // to true this test should pass.
         cls = reload();
         Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
         execute(cls);
         
-        // Context classloader is the classloader of this class, ie the
-        // parent classloader of the UserClass that will make the logging call.
-        //
-        // Actually, as the system classloader is expected to load this class,
-        // this test is identical to the preceding one.
+        // Context classloader is the system classloader. This is the same
+        // as above except that ALLOW_FLAWED_CONTEXT is set to false; an error 
+        // should now be reported.
         cls = reload();
-        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-        execute(cls);
+        Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
+        try {
+            setAllowFlawedContext(cls, "false");
+            execute(cls);
+            fail("Error: somehow downcast a Logger loaded via system classloader"
+                    + " to the Log interface loaded via a custom classloader");
+        } catch(LogConfigurationException ex) {
+            // expected 
+        }
     }
 
     /**
@@ -206,4 +237,15 @@ public class LoadTest extends TestCase{
         return suite;
     }
     
+    public void setUp() {
+        // save state before test starts so we can restore it when test ends
+        origContextClassLoader = Thread.currentThread().getContextClassLoader();
+    }
+    
+    public void tearDown() {
+        // restore original state so a test can't stuff up later tests.
+        Thread.currentThread().setContextClassLoader(origContextClassLoader);
+    }
+    
+    private ClassLoader origContextClassLoader;
 }

@@ -60,22 +60,8 @@ public class NullClassLoaderTest extends TestCase{
      * log object when called multiple times with the same name.
      */
     public void testSameLogObject() throws Exception {
-        ClassLoader oldContextClassLoader = Thread.currentThread().getContextClassLoader();
-        try {
-            // emulate an app (not a webapp) running code loaded via the 
-            // "null" classloader (bootclassloader for JDK1.2+, or
-            // systemclassloader for jdk1.1).
-            Thread.currentThread().setContextClassLoader(null);
-            
-            Log log1 = LogFactory.getLog("foo");
-            Log log2 = LogFactory.getLog("foo");
-            
-            assertSame(
-                "Calling getLog twice with the same category " +
-                "resulted in different objects!", 
-                log1, log2);
-        } finally {
-            Thread.currentThread().setContextClassLoader(oldContextClassLoader);
-        }
+        // unfortunately, there just isn't any way to emulate JCL being
+        // accessable via the null classloader in "standard" systems, so
+        // we can't include this test in our standard unit tests.
     }
 }
