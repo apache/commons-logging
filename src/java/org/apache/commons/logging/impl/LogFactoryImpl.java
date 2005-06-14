@@ -626,7 +626,7 @@ public class LogFactoryImpl extends LogFactory {
         
         logDiagnostic("Looking for system property " + property);
         try {
-            String value = System.getProperty(LOG_PROPERTY);
+            String value = System.getProperty(property);
             logDiagnostic("Found value [" + value + "] for " + property);
             return value;
         } catch (SecurityException e) {
