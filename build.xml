@@ -49,6 +49,7 @@
   <property name="log4j.jar"               value="${jakarta.home}/jakarta-log4j/dist/lib/log4j.jar"/>
   <property name="logkit.jar"              value="${jakarta.home}/jakarta-avalon-logkit/build/log/logkit"/>
   <property name="avalon-framework.jar"    value="../../Avalon-4.1.4/avalon-framework-4.1.4.jar"/>
+  <property name="servletapi.jar"          value="servletapi-2.3.jar"/>
 
 
 <!-- ========== Component Declarations ==================================== -->
@@ -115,6 +116,7 @@
     <pathelement location="${log4j.jar}"/>
     <pathelement location="${logkit.jar}"/>
     <pathelement location="${avalon-framework.jar}"/>
+    <pathelement location="${servletapi.jar}"/>
   </path>
 
 
