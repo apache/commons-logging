@@ -132,6 +132,7 @@
     <pathelement location="${logkit.jar}"/>
     <pathelement location="${avalon-framework.jar}"/>
     <pathelement location="${conf.home}"/>
+    <pathelement location="${servletapi.jar}"/>
   </path>
 
   <!-- Construct unit test classpath (JDK 1.4 tests) -->
@@ -456,45 +457,45 @@ limitations under the License.--&gt;'>
   <target name="dist" depends="compile,javadoc"
    description="Create binary distribution">
   	
-  	<!--
-  	  - Create a dist directory to hold all the files that go into a distribution.
-  	  - Copy the needed files from the build directory to the dist directory.
-  	  -->
-    <mkdir      dir="${dist.home}"/>
-    <copy      file="LICENSE.txt"
-              todir="${dist.home}"/>
-    <copy      file="NOTICE.txt"
-              todir="${dist.home}"/>
-    <copy      file="RELEASE-NOTES.txt"
-              todir="${dist.home}"/>
-    <copy file="${build.home}/${core.jar.name}"
-          tofile="${dist.home}/${core.jar.name}" />
-    <copy file="${build.home}/${api.jar.name}"
-          tofile="${dist.home}/${api.jar.name}" />
-    <copy file="${build.home}/${adapters.jar.name}"
-          tofile="${dist.home}/${adapters.jar.name}" />
+    <!--
+      - Create a dist directory to hold all the files that go into a distribution.
+      - Copy the needed files from the build directory to the dist directory.
+      -->
+    <mkdir dir="${dist.home}"/>
+    <copy todir="${dist.home}">
+      <fileset dir=".">
+        <include name="LICENSE.txt"/>
+        <include name="NOTICE.txt"/>
+        <include name="RELEASE-NOTES.txt"/>
+      </fileset>
+      <fileset dir="${build.home}">
+        <include name="${core.jar.name}"/>
+        <include name="${api.jar.name}"/>
+        <include name="${adapters.jar.name}"/>
+      </fileset>
+    </copy>
 
-  	<!--
-  	  - Now build the optional jar in subdir "optional" and copy that into
-  	  - the dist directory too.
+    <!--
+      - Now build the optional jar in subdir "optional" and copy that into
+      - the dist directory too.
       -->
     <ant antfile='build.xml' target='dist' dir='${optional.home}' inheritAll="false" />
-    <copy       todir="${dist.home}">
+    <copy todir="${dist.home}">
         <fileset dir='${optional.dist.home}'>
             <include name='*.jar'/>
         </fileset>
     </copy>
-    <copy       todir="${dist.home}/docs-optional">
+    <copy todir="${dist.home}/docs-optional">
         <fileset dir='${optional.dist.home}/docs'/>
     </copy>
   	
-  	<!--
-  	  - And copy the source too; we don't have separate source and binary distributions
-  	  - for logging; the source is so small there's little point.
-  	  -->
-    <mkdir      dir="${dist.home}/src"/>
-    <copy     todir="${dist.home}/src" filtering="on">
-      <fileset  dir="${source.home}"/>
+    <!--
+      - And copy the source too; we don't have separate source and binary distributions
+      - for logging; the source is so small there's little point.
+      -->
+    <mkdir dir="${dist.home}/src"/>
+    <copy todir="${dist.home}/src" filtering="on">
+      <fileset dir="${source.home}"/>
     </copy>
   </target>
 
