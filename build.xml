@@ -316,6 +316,14 @@
       <include name="META-INF/NOTICE.txt"/>
       <exclude name="**/package.html"/>
     </jar>
+
+    <jar jarfile="${build.home}/commons-${component.name}-adapters.jar"
+         basedir="${build.home}/classes"
+         manifest="${build.home}/conf/MANIFEST.MF">
+      <include name="org/apache/commons/logging/impl/**.class" />
+      <include name="META-INF/LICENSE.txt"/>
+      <include name="META-INF/NOTICE.txt"/>
+    </jar>
   </target>
 
   <target name='compile.jdk1.4.tests' if='jdk.1.4.present'>
@@ -441,6 +449,11 @@ limitations under the License.--&gt;'>
 
   <target name="dist" depends="compile,javadoc"
    description="Create binary distribution">
+  	
+  	<!--
+  	  - Create a dist directory to hold all the files that go into a distribution.
+  	  - Copy the needed files from the build directory to the dist directory.
+  	  -->
     <mkdir      dir="${dist.home}"/>
     <copy      file="LICENSE.txt"
               todir="${dist.home}"/>
@@ -452,6 +465,13 @@ limitations under the License.--&gt;'>
           tofile="${dist.home}/commons-${component.name}.jar" />
     <copy file="${build.home}/commons-${component.name}-api.jar"
           tofile="${dist.home}/commons-${component.name}-api.jar" />
+    <copy file="${build.home}/commons-${component.name}-adapters.jar"
+          tofile="${dist.home}/commons-${component.name}-adapters.jar" />
+
+  	<!--
+  	  - Now build the optional jar in subdir "optional" and copy that into
+  	  - the dist directory too.
+      -->
     <ant antfile='build.xml' target='dist' dir='${optional.home}' inheritAll="false" />
     <copy       todir="${dist.home}">
         <fileset dir='${optional.dist.home}'>
@@ -461,6 +481,11 @@ limitations under the License.--&gt;'>
     <copy       todir="${dist.home}/docs-optional">
         <fileset dir='${optional.dist.home}/docs'/>
     </copy>
+  	
+  	<!--
+  	  - And copy the source too; we don't have separate source and binary distributions
+  	  - for logging; the source is so small there's little point.
+  	  -->
     <mkdir      dir="${dist.home}/src"/>
     <copy     todir="${dist.home}/src" filtering="on">
       <fileset  dir="${source.home}"/>
@@ -805,7 +830,6 @@ limitations under the License.--&gt;'>
 
     <echo message="Default Configuration (Log4J Auto-Recognized)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
-   <jvmarg value="-Dorg.apache.commons.logging.diagnostics.dest=/tmp/diag.txt"/>
       <arg value="org.apache.commons.logging.log4j.DefaultConfigTestCase"/>
       <classpath refid="test.classpath.log4j12"/>
     </java>
