@@ -68,6 +68,13 @@ commons-logging, for example to implement custom logging adapters.
   when undeploying webapps. This does require an entry in the webapp
   deployment descriptor to enable.
 
+== Incompatibilities ==
+
+The isXXXAvailable methods in org.apache.commons.logging.impl.LogFactoryImpl
+are no longer called during discovery by that class. Therefore classes which
+subclass LogFactoryImpl and override those methods will not have their 
+methods called. This is a pretty unusual thing to do, so it isn't expected that
+any apps will actually be affected by this.
 
 == Bugs Fixed ==
 
