@@ -86,6 +86,10 @@
   <property name="optional.home"               value="optional"/>
   <property name="optional.dist.home"           value="${optional.home}/dist"/>
 
+  <!-- jar names -->
+  <property name="core.jar.name" value="commons-${component.name}-${component.version}.jar"/>
+  <property name="api.jar.name" value="commons-${component.name}-api-${component.version}.jar"/>
+  <property name="adapters.jar.name" value="commons-${component.name}-adapters-${component.version}.jar"/>
   
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -295,7 +299,7 @@
     <copy      file="NOTICE.txt"
               todir="${build.home}/classes/META-INF"/>
 
-    <jar jarfile="${build.home}/commons-${component.name}.jar"
+    <jar jarfile="${build.home}/${core.jar.name}"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/**" />
@@ -304,7 +308,7 @@
       <exclude name="**/package.html"/>
     </jar>
 
-    <jar jarfile="${build.home}/commons-${component.name}-api.jar"
+    <jar jarfile="${build.home}/${api.jar.name}"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/*.class" />
@@ -317,7 +321,7 @@
       <exclude name="**/package.html"/>
     </jar>
 
-    <jar jarfile="${build.home}/commons-${component.name}-adapters.jar"
+    <jar jarfile="${build.home}/${adapters.jar.name}"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/impl/**.class" />
@@ -461,12 +465,12 @@ limitations under the License.--&gt;'>
               todir="${dist.home}"/>
     <copy      file="RELEASE-NOTES.txt"
               todir="${dist.home}"/>
-    <copy file="${build.home}/commons-${component.name}.jar"
-          tofile="${dist.home}/commons-${component.name}.jar" />
-    <copy file="${build.home}/commons-${component.name}-api.jar"
-          tofile="${dist.home}/commons-${component.name}-api.jar" />
-    <copy file="${build.home}/commons-${component.name}-adapters.jar"
-          tofile="${dist.home}/commons-${component.name}-adapters.jar" />
+    <copy file="${build.home}/${core.jar.name}"
+          tofile="${dist.home}/${core.jar.name}" />
+    <copy file="${build.home}/${api.jar.name}"
+          tofile="${dist.home}/${api.jar.name}" />
+    <copy file="${build.home}/${adapters.jar.name}"
+          tofile="${dist.home}/${adapters.jar.name}" />
 
   	<!--
   	  - Now build the optional jar in subdir "optional" and copy that into

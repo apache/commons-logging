@@ -38,13 +38,6 @@
   <property name="junit.home"              value="/usr/local/junit3.5"/>
   <property name="jakarta.home"            value="../../.."/>
 
-<!-- ========== Derived Values ============================================ -->
-
-
-  <!-- The locations of necessary jar files -->
-  <property name="junit.jar"               value="${junit.home}/junit.jar"/>
-  <property name="commons-logging-core.jar" value="../dist/commons-logging.jar"/>
-
 <!-- ========== Component Declarations ==================================== -->
 
 
@@ -75,6 +68,16 @@
   <!-- The base directory for unit test sources -->
   <property name="test.home"               value="src/test"/>
 
+  <!-- jar name -->
+  <property name="optional.jar.name"       value="commons-${component.name}-${component.version}.jar"/>
+
+
+<!-- ========== Derived Values ============================================ -->
+
+
+  <!-- The locations of necessary jar files -->
+  <property name="junit.jar"               value="${junit.home}/junit.jar"/>
+  <property name="commons-logging-core.jar" value="../dist/commons-logging-${component.version}.jar"/>
 
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -171,7 +174,7 @@
     <copy      file="../NOTICE.txt"
               todir="${build.home}/classes/META-INF"/>
 
-    <jar jarfile="${build.home}/commons-${component.name}.jar"
+    <jar jarfile="${build.home}/${optional.jar.name}"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/**" />
@@ -245,7 +248,7 @@ limitations under the License.--&gt;'>
   </target>
   
   <target name='dist' depends='compile, javadoc'>
-     <copy file='${build.home}/commons-${component.name}.jar' todir='${dist.home}'/>
+     <copy file='${build.home}/${optional.jar.name}' todir='${dist.home}'/>
   </target>
 
 <!-- ========== Unit Test Targets ========================================= -->
