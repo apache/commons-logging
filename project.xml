@@ -186,6 +186,11 @@
       <version>4.1.3</version>
     </dependency>
     
+    <dependency>
+      <id>servletapi</id>
+      <version>2.3</version>
+    </dependency>
+    
   </dependencies>
   <build>
      <nagEmailAddress>commons-dev@jakarta.apache.org</nagEmailAddress>

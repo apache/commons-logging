@@ -24,6 +24,9 @@ logkit.jar=/java/logkit/logkit.jar
 # Avalon framework - used for wrapper for avalon framework logger
 avalon-framework.jar=../../Avalon-4.1.4/avalon-framework-4.1.4.jar
 
+# ServletApi - used to build ServletContextCleaner class
+servletapi.jar=/java/servletapi/servletapi.jar
+
 #
 # if you want to run the test cases, junit needs to be in the classpath.
 # the build.xml uses a default value so you might not need to set this property.
