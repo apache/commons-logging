@@ -92,11 +92,7 @@
       index="${maven.jar.index}"
       compress="${maven.jar.compress}">
       <fileset dir="${logging.api.work.dir}">
-        <include name="**/AvalonLogger.class"/>
-        <include name="**/Jdk13LumberjackLogger.class"/>
-        <include name="**/Log4JFactory.class"/>
-        <include name="**/Log4JLogger.class"/>
-        <include name="**/LogKitLogger.class"/>
+        <include name="**/impl/**.class"/>
       </fileset>
     </zip>
   </postGoal>  
