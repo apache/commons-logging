@@ -140,6 +140,21 @@ public class LogFactoryImpl extends LogFactory {
         "org.apache.commons.logging.Log.allowFlawedHierarchy";
 
 
+    /**
+     * The names of classes that will be tried (in order) as logging
+     * adapters. Each class is expected to implement the Log interface,
+     * and to throw NoClassDefFound or ExceptionInInitializerError when
+     * loaded if the underlying logging library is not available. Any 
+     * other error indicates that the underlying logging library is available
+     * but broken/unusable for some reason.
+     */
+    private static final String[] classesToDiscover = {
+            "org.apache.commons.logging.impl.Log4JLogger",
+            "org.apache.commons.logging.impl.Jdk14Logger",
+            "org.apache.commons.logging.impl.Jdk13LumberjackLogger",
+            "org.apache.commons.logging.impl.SimpleLog"
+    };
+    
 
     // ----------------------------------------------------- Instance Variables
 
@@ -698,27 +713,8 @@ public class LogFactoryImpl extends LogFactory {
         
         // No user specified log; try to discover what's on the classpath
         
-        // Try Log4j
-        result = createLogFromClass("org.apache.commons.logging.impl.Log4JLogger",
-                                    logCategory,
-                                    true);
-
-        if (result == null) {
-            result = createLogFromClass("org.apache.commons.logging.impl.Jdk14Logger",
-                                        logCategory,
-                                        true);
-        }
-
-        if (result == null) {
-            result = createLogFromClass("org.apache.commons.logging.impl.Jdk13LumberjackLogger",
-                                        logCategory,
-                                        true);
-        }
-
-        if (result == null) {
-            result = createLogFromClass("org.apache.commons.logging.impl.SimpleLog",
-                                        logCategory,
-                                        true);
+        for(int i=0; (i<classesToDiscover.length) && (result == null); ++i) {
+            result = createLogFromClass(classesToDiscover[i], logCategory, true);
         }
         
         if (result == null) {
@@ -910,9 +906,17 @@ public class LogFactoryImpl extends LogFactory {
                               + logAdapterClassName);
             } catch (Throwable t) {
                 this.logMethod = null;
-                logDiagnostic(logAdapterClassName + " does not declare method "
-                              + "setLogFactory(LogFactory)");
+                logDiagnostic(
+                    "info:" + logAdapterClassName 
+                    + " from classloader " + objectId(currentCL)
+                    + " does not declare optional method "
+                    + "setLogFactory(LogFactory)");
             }
+            
+            logDiagnostic(
+                "Log adapter " + logAdapterClassName 
+                + " from classloader " + objectId(currentCL)
+                + " has been selected for use.");
         }
         
         return logAdapter;
