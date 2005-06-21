@@ -712,6 +712,32 @@ public class LogFactoryImpl extends LogFactory {
         }
         
         // No user specified log; try to discover what's on the classpath
+        //
+        // Note that we deliberately loop here over classesToDiscover and
+        // expect method createLogFromClass to loop over the possible source
+        // classloaders. The effect is:
+        //   for each discoverable log adapter
+        //      for each possible classloader
+        //          see if it works
+        //
+        // It appears reasonable at first glance to do the opposite: 
+        //   for each possible classloader
+        //     for each discoverable log adapter
+        //        see if it works
+        //
+        // The latter certainly has advantages for user-installable logging
+        // libraries such as log4j; in a webapp for example this code should
+        // first check whether the user has provided any of the possible
+        // logging libraries before looking in the parent classloader. 
+        // Unfortunately, however, Jdk14Logger will always work in jvm>=1.4,
+        // and SimpleLog will always work in any JVM. So the loop would never
+        // ever look for logging libraries in the parent classpath. Yet many
+        // users would expect that putting log4j there would cause it to be
+        // detected (and this is the historical JCL behaviour). So we go with
+        // the first approach. A user that has bundled a specific logging lib
+        // in a webapp should use a commons-logging.properties file or a
+        // service file in META-INF to force use of that logging lib anyway,
+        // rather than relying on discovery.
         
         for(int i=0; (i<classesToDiscover.length) && (result == null); ++i) {
             result = createLogFromClass(classesToDiscover[i], logCategory, true);
