@@ -578,6 +578,9 @@ limitations under the License.--&gt;'>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -590,6 +593,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -602,6 +608,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Jdk14Logger"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -612,6 +621,9 @@ limitations under the License.--&gt;'>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -624,6 +636,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -636,6 +651,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.jdk14.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Jdk14Logger"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -705,6 +723,9 @@ limitations under the License.--&gt;'>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -718,6 +739,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -731,6 +755,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Log4JLogger"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -742,6 +769,9 @@ limitations under the License.--&gt;'>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -755,6 +785,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -768,6 +801,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Log4JLogger"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -895,6 +931,9 @@ limitations under the License.--&gt;'>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -908,6 +947,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -921,6 +963,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Log4JLogger"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -932,6 +977,9 @@ limitations under the License.--&gt;'>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -945,6 +993,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
@@ -958,6 +1009,9 @@ limitations under the License.--&gt;'>
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Log4JLogger"/>
+      <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
+      <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
+      <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
       <classpath refid="test.classpath.wrap"/>
     </java>
 

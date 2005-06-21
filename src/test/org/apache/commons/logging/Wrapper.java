@@ -82,10 +82,22 @@ public class Wrapper {
 
             // Construct URLs for the various JAR files
             File target = new File(System.getProperty("wrapper.target"));
-            URL commonsLogging =
-                (new File(target, "commons-logging.jar")).toURL();
-            URL commonsLoggingApi =
-                (new File(target, "commons-logging-api.jar")).toURL();
+            
+            // the test invoker is required to set these system properties
+            // to point to the appropriate jar files
+            String jcljar = System.getProperty("commons.logging.jar");
+            String jclapijar = System.getProperty("commons.logging.api.jar");
+            String jclappjar = System.getProperty("commons.logging.appenders.jar");
+            if ((jcljar==null) || (jclapijar==null) || (jclappjar==null)) {
+                throw new Exception(
+                    "Required system property for test is missing. "
+                        + "One or more of the following is not defined: "
+                        + "commons.logging.jar, commons.logging.api.jar, "
+                        + "commons.logging.appenders.jar");
+            }
+            
+            URL commonsLogging = (new File(target, jcljar)).toURL();
+            URL commonsLoggingApi = (new File(target, jclapijar)).toURL();
             URL commonsLoggingTests =
                 (new File(target, "commons-logging-tests.jar")).toURL();
             URL junit =
@@ -96,9 +108,12 @@ public class Wrapper {
                 log4j =
                     (new File(System.getProperty("wrapper.log4j"))).toURL();
                 appender =
-                    (new File(target, "commons-logging-appender.jar")).toURL();
+                    (new File(target, jclappjar)).toURL();
             }
 
+            System.out.println("commonsLogging lib is at [" + commonsLogging + "]");
+            System.out.println("commonsLoggingApi lib is at [" + commonsLoggingApi + "]");
+            
             // Construct class loader repository lists for supported scenarios
             if ("API".equals(System.getProperty("wrapper.hierarchy"))) {
                 parentList.add(commonsLoggingApi);
