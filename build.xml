@@ -46,7 +46,8 @@
 
   <!-- The locations of necessary jar files -->
   <property name="junit.jar"               value="${junit.home}/junit.jar"/>
-  <property name="log4j.jar"               value="${jakarta.home}/jakarta-log4j/dist/lib/log4j.jar"/>
+  <property name="log4j12.jar"             value="log4j-1.2.9.jar"/>
+  <property name="log4j13.jar"             value="log4j-1.3.0.jar"/>
   <property name="logkit.jar"              value="${jakarta.home}/jakarta-avalon-logkit/build/log/logkit"/>
   <property name="avalon-framework.jar"    value="../../Avalon-4.1.4/avalon-framework-4.1.4.jar"/>
   <property name="servletapi.jar"          value="servletapi-2.3.jar"/>
@@ -113,7 +114,6 @@
   <path id="compile.classpath">
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${junit.jar}"/>
-    <pathelement location="${log4j.jar}"/>
     <pathelement location="${logkit.jar}"/>
     <pathelement location="${avalon-framework.jar}"/>
     <pathelement location="${servletapi.jar}"/>
@@ -128,7 +128,6 @@
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${build.home}/tests"/>
     <pathelement location="${junit.jar}"/>
-    <pathelement location="${log4j.jar}"/>
     <pathelement location="${logkit.jar}"/>
     <pathelement location="${avalon-framework.jar}"/>
     <pathelement location="${conf.home}"/>
@@ -143,11 +142,11 @@
   </path>
 
   <!-- Construct unit test classpath (Log4J tests) -->
-  <path id="test.classpath.log4j">
+  <path id="test.classpath.log4j13">
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${build.home}/tests"/>
     <pathelement location="${junit.jar}"/>
-    <pathelement location="${log4j.jar}"/>
+    <pathelement location="${log4j13.jar}"/>
   </path>
 
   <!-- Construct unit test classpath (Log4J tests) -->
@@ -186,7 +185,8 @@
    description="Prepare build directory">
 
     <echo>
-    Log4j: ${log4j.jar}
+    Log4j12: ${log4j12.jar}
+    Log4j13: ${log4j13.jar}
     LogKit: ${logkit.jar}
     Avalon-Framework: ${avalon-framework.jar}
     </echo>
@@ -215,21 +215,30 @@
   <target name='discovery' depends='init'>
     <available property="jdk.1.4.present"
                classname="java.util.logging.Logger"/>
-    <available classname="org.apache.log4j.Logger"
-               classpathref="compile.classpath"
-               property="log4j.present"/>
+
     <available property="logkit.present"
                classpathref="compile.classpath"
                classname="org.apache.log.Logger"/>
+
     <available property="avalon-framework.present"
                classpathref="compile.classpath"
                classname="org.apache.avalon.framework.logger.Logger"/>
+
+    <available file="${log4j12.jar}" property="log4j12.present"/>
+    <available file="${log4j13.jar}" property="log4j13.present"/>
   </target>
 
-  <target name="log4j-warning" unless='log4j.present' depends='init,discovery'>
+  <target name="log4j12-warning" unless='log4j12.present' depends='init,discovery'>
     <echo>
     *** WARNING ***
-    Log4j not found: Cannot Build Log4jLogger
+    Log4j12 not found: Cannot Build Log4J12Logger
+    </echo>
+  </target>
+  
+  <target name="log4j13-warning" unless='log4j13.present' depends='init,discovery'>
+    <echo>
+    *** WARNING ***
+    Log4j13 not found: Cannot Build Log4J13Logger
     </echo>
   </target>
   
@@ -254,23 +263,25 @@
     </echo>
   </target>
   
-  <target name="log4j12-warning" unless='log4j12.jar' depends='init,discovery'>
+  <target name="log4j12-test-warning" unless='log4j12.jar' depends='init,discovery'>
     <echo>
     *** WARNING ***
     Log4J 1.2.x Jar not found: Cannot execute 1.2.x tests
     </echo>
   </target>
     
-  <target name='warning' depends='log4j-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning'/>
+  <target name='warning' depends='log4j12-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning'/>
 
 
   <target name="compile-only" depends="init,discovery,warning" >
 
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
-    <echo  message="log4j.present=${log4j.present}"/>
+    <echo  message="log4j12.present=${log4j12.present}"/>
+    <echo  message="log4j13.present=${log4j13.present}"/>
     <echo  message="logkit.present=${logkit.present}"/>
     <echo  message="avalon-framework.present=${avalon-framework.present}"/>
 
+    <!-- compile everything except Log4J classes -->
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
            debug="${compile.debug}"
@@ -280,19 +291,60 @@
            target="${target.version}">
 
       <classpath refid="compile.classpath"/>
+    
+      <exclude name="org/apache/commons/logging/impl/Log4J*.java"/>
+
       <exclude name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
                unless="jdk.1.4.present"/>
       <exclude name="org/apache/commons/logging/impl/Jdk14Logger.java"
                unless="jdk.1.4.present"/>
-      <exclude name="org/apache/commons/logging/impl/Log4J*.java"
-               unless="log4j.present"/>
-      <exclude name="org/apache/commons/logging/impl/Log4j*.java"
-               unless="log4j.present"/>
       <exclude name="org/apache/commons/logging/impl/LogKitLogger.java"
                unless="logkit.present"/>
       <exclude name="org/apache/commons/logging/impl/AvalonLogger.java"
                unless="avalon-framework.present"/>
     </javac>
+
+    <!-- compile the log4j1.2 support classes -->
+    <javac srcdir="${source.home}"
+           destdir="${build.home}/classes"
+           debug="${compile.debug}"
+           deprecation="${compile.deprecation}"
+           optimize="${compile.optimize}"
+           source="${source.version}"
+           target="${target.version}">
+
+      <classpath refid="compile.classpath"/>
+      <classpath>
+	<!--
+        <pathelement refid="compile.classpath"/>
+        <classpath refid="compile.classpath"/>
+	-->
+        <pathelement location="${log4j12.jar}"/> 
+      </classpath>
+
+      <include name="org/apache/commons/logging/impl/Log4J12Logger.java"
+               if="log4j12.present"/>
+    </javac>
+
+    <!-- compile the log4j1.3 support classes -->
+    <javac srcdir="${source.home}"
+           destdir="${build.home}/classes"
+           debug="${compile.debug}"
+           deprecation="${compile.deprecation}"
+           optimize="${compile.optimize}"
+           source="${source.version}"
+           target="${target.version}">
+
+      <classpath refid="compile.classpath"/>
+      <classpath>
+        <pathelement location="${log4j13.jar}"/> 
+      </classpath>
+
+      <include name="org/apache/commons/logging/impl/Log4J13Logger.java"
+               if="log4j13.present"/>
+    </javac>
+
+
     <copy  todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>
     </copy>
@@ -344,13 +396,13 @@
     </javac>
   </target>
 
-  <target name='compile.log4j.tests' if='log4j.present'>
+  <target name='compile.log4j.tests' if='log4j12.present'>
     <javac  srcdir="${test.home}"
            destdir="${build.home}/tests"
              debug="${compile.debug}"
        deprecation="${compile.deprecation}"
           optimize="${compile.optimize}">
-      <classpath refid="test.classpath"/>
+      <classpath refid="test.classpath.log4j12"/>
         <include name='**/log4j/**'/>
     </javac>
   </target>
@@ -389,9 +441,9 @@
          basedir="${build.home}/tests"
         manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/log4j/CustomConfig.properties"
-                 if="log4j.present"/>
+                 if="log4j12.present"/>
       <include name="org/apache/commons/logging/log4j/TestAppender.class"
-                 if="log4j.present"/>
+                 if="log4j12.present"/>
     </jar>
     <jar jarfile="${build.home}/commons-${component.name}-tests.jar"
          basedir="${build.home}/tests"
@@ -504,7 +556,7 @@ limitations under the License.--&gt;'>
 
 
   <target name="test"
-       depends="test.alt-hashtable, log4j12-warning, compile.tests,test.jdk14,test.log4j,test.simple,test.avalon,test.log4j12"
+       depends="test.alt-hashtable, log4j12-test-warning, compile.tests,test.jdk14,test.log4j,test.simple,test.avalon,test.log4j12"
             if="test.entry"
    description="Run all unit test cases">
       <java    classname="${test.runner}" fork="yes"
@@ -567,7 +619,7 @@ limitations under the License.--&gt;'>
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Jdk14Logger"/>
       <arg value="org.apache.commons.logging.BasicOperationsTest"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
 
 
@@ -660,13 +712,13 @@ limitations under the License.--&gt;'>
   </target>
 
 
-  <target name="test.log4j" depends="compile.tests" if="log4j.present"
+  <target name="test.log4j" depends="compile.tests" if="log4j12.present"
    description="Run unit tests specific to Log4J logging">
 
     <echo message="Default Configuration (Log4J Auto-Recognized)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <arg value="org.apache.commons.logging.log4j.DefaultConfigTestCase"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
 
     <echo message="Default Configuration (Log4J LogFactoryImpl Selected)"/>
@@ -674,21 +726,21 @@ limitations under the License.--&gt;'>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
       <arg value="org.apache.commons.logging.log4j.DefaultConfigTestCase"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
 
-    <echo message="Default Configuration (Log4J Log4JLogger Selected)"/>
+    <echo message="Default Configuration (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <arg value="org.apache.commons.logging.log4j.DefaultConfigTestCase"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
 
     <echo message="Custom Configuration (Log4J Auto-Recognized)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <arg value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
 
     <echo message="Custom Configuration (Log4J LogFactoryImpl Selected)"/>
@@ -696,30 +748,30 @@ limitations under the License.--&gt;'>
       <sysproperty key="org.apache.commons.logging.LogFactory"
                  value="org.apache.commons.logging.impl.LogFactoryImpl"/>
       <arg value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
 
-    <echo message="Custom Configuration (Log4J Log4JLogger Selected)"/>
+    <echo message="Custom Configuration (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <arg value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
     
     <echo message="Basic Operations"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <arg value="org.apache.commons.logging.BasicOperationsTest"/>
-      <classpath refid="test.classpath.log4j"/>
+      <classpath refid="test.classpath.log4j12"/>
     </java>
 
     <echo message="Hierarchy Configuration API (Log4J Auto-Recognized)"/>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="API"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
@@ -733,7 +785,7 @@ limitations under the License.--&gt;'>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="API"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
@@ -745,16 +797,16 @@ limitations under the License.--&gt;'>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
-    <echo message="Hierarchy Configuration API (Log4J Log4JLogger Selected)"/>
+    <echo message="Hierarchy Configuration API (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="API"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
       <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
       <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
@@ -765,7 +817,7 @@ limitations under the License.--&gt;'>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="FULL"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
@@ -779,7 +831,7 @@ limitations under the License.--&gt;'>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="FULL"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
@@ -791,16 +843,16 @@ limitations under the License.--&gt;'>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
-    <echo message="Hierarchy Configuration FULL (Log4J Log4JLogger Selected)"/>
+    <echo message="Hierarchy Configuration FULL (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="FULL"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
       <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
       <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
@@ -885,10 +937,10 @@ limitations under the License.--&gt;'>
       <classpath refid="test.classpath.log4j12"/>
     </java>
 
-    <echo message="Default Configuration (Log4J Log4JLogger Selected)"/>
+    <echo message="Default Configuration (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <arg value="org.apache.commons.logging.log4j.DefaultConfigTestCase"/>
       <classpath refid="test.classpath.log4j12"/>
     </java>
@@ -907,10 +959,10 @@ limitations under the License.--&gt;'>
       <classpath refid="test.classpath.log4j12"/>
     </java>
 
-    <echo message="Custom Configuration (Log4J Log4JLogger Selected)"/>
+    <echo message="Custom Configuration (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <arg value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <classpath refid="test.classpath.log4j12"/>
     </java>
@@ -918,7 +970,7 @@ limitations under the License.--&gt;'>
     <echo message="Basic Operations"/>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <arg value="org.apache.commons.logging.BasicOperationsTest"/>
       <classpath refid="test.classpath.log4j12"/>
     </java>
@@ -927,7 +979,7 @@ limitations under the License.--&gt;'>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="API"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
@@ -941,7 +993,7 @@ limitations under the License.--&gt;'>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="API"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
@@ -953,16 +1005,16 @@ limitations under the License.--&gt;'>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
-    <echo message="Hierarchy Configuration API (Log4J Log4JLogger Selected)"/>
+    <echo message="Hierarchy Configuration API (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="API"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
-      <sysproperty key="wrapper.log4j" value="${log4j.jar}"/>
+      <sysproperty key="wrapper.log4j" value="${log4j12.jar}"/>
       <sysproperty key="wrapper.target" value="${build.home}"/>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
       <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
       <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>
@@ -999,7 +1051,7 @@ limitations under the License.--&gt;'>
       <classpath refid="test.classpath.wrap"/>
     </java>
 
-    <echo message="Hierarchy Configuration FULL (Log4J Log4JLogger Selected)"/>
+    <echo message="Hierarchy Configuration FULL (Log4J Log4J12Logger Selected)"/>
     <java classname="${test.wrapper}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="wrapper.hierarchy" value="FULL"/>
       <sysproperty key="wrapper.junit" value="${junit.jar}"/>
@@ -1008,7 +1060,7 @@ limitations under the License.--&gt;'>
       <sysproperty key="wrapper.testcase"
                  value="org.apache.commons.logging.log4j.CustomConfigTestCase"/>
       <sysproperty key="org.apache.commons.logging.Log"
-                 value="org.apache.commons.logging.impl.Log4JLogger"/>
+                 value="org.apache.commons.logging.impl.Log4J12Logger"/>
       <sysproperty key="commons.logging.jar" value="${core.jar.name}"/>
       <sysproperty key="commons.logging.api.jar" value="${api.jar.name}"/>
       <sysproperty key="commons.logging.appenders.jar" value="${appenders.jar.name}"/>

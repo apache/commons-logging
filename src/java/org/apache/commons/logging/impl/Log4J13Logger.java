@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,30 +20,51 @@ package org.apache.commons.logging.impl;
 import java.io.Serializable;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.apache.log4j.Level;
 
 /**
- * <p>Implementation of {@link Log} that maps directly to a Log4J
- * <strong>Logger</strong>.  Initial configuration of the corresponding
- * Logger instances should be done in the usual manner, as outlined in
- * the Log4J documentation.</p>
+ * Implementation of {@link Log} that maps directly to a
+ * <strong>Logger</strong> for log4J version 1.3 or later.
+ * <p>
+ * Initial configuration of the corresponding Logger instances should be done
+ * in the usual manner, as outlined in the Log4J documentation.
+ * <p>
+ * The reason this logger is distinct from the 1.2 logger is that in version 1.3
+ * of Log4J, classes Logger and Level should be used. However code that uses 
+ * those classes and is compiled against log4j1.2 will not run against 1.3. And
+ * code that uses those classes and is compiled against log4j1.3 will not run
+ * against 1.2. 
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Rod Waldhoff
  * @author Robert Burrell Donkin
  * @version $Id$
  */
-public class Log4JLogger implements Log, Serializable {
+public class Log4J13Logger implements Log, Serializable {
 
+    // Verify that log4j is available, and that it is version 1.3 or later.
+    // If an ExceptionInInitializerError is generated, then LogFactoryImpl
+    // will treat that as meaning that the appropriate underlying logging
+    // library is just not present - if discovery is in progress then
+    // discovery will continue.
+    //
+    // Note that in log4j 1.2, Priority is effectively deprecated. Its
+    // replacement, Level, extends Priority. In log4j 1.3, Priority is still
+    // included but instead extends Level. In later versions, Priority may
+    // not be included at all.
+    static {
+        Class levelSuperclass = Level.class.getSuperclass();
+        if (levelSuperclass.getName().equals("org.apache.log4j.Priority")) {
+            // nope, this is log4j 1.2, so force an ExceptionInInitializerError
+            throw new InstantiationError("Log4J 1.3 not available");
+        }
+    }
 
     // ------------------------------------------------------------- Attributes
 
     /** The fully qualified name of the Log4JLogger class. */
-    private static final String FQCN = Log4JLogger.class.getName();
+    private static final String FQCN = Log4J13Logger.class.getName();
     
-    private static final boolean is12 = Priority.class.isAssignableFrom(Level.class);
-
     /** Log to this logger */
     private transient Logger logger = null;
 
@@ -53,21 +74,21 @@ public class Log4JLogger implements Log, Serializable {
 
     // ------------------------------------------------------------ Constructor
 
-    public Log4JLogger() {
+    public Log4J13Logger() {
     }
 
 
     /**
      * Base constructor.
      */
-    public Log4JLogger(String name) {
+    public Log4J13Logger(String name) {
         this.name = name;
         this.logger = getLogger();
     }
 
     /** For use with a log4j factory.
      */
-    public Log4JLogger(Logger logger ) {
+    public Log4J13Logger(Logger logger ) {
         this.name = logger.getName();
         this.logger=logger;
     }
@@ -78,27 +99,17 @@ public class Log4JLogger implements Log, Serializable {
 
     /**
      * Log a message to the Log4j Logger with <code>TRACE</code> priority.
-     * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.DEBUG, message, null );
-        } else {
-            getLogger().log(FQCN, Level.DEBUG, message, null );
-        }
+        getLogger().log(FQCN, Level.TRACE, message, null );
     }
 
 
     /**
      * Log an error to the Log4j Logger with <code>TRACE</code> priority.
-     * Currently logs to <code>DEBUG</code> level in Log4J.
      */
     public void trace(Object message, Throwable t) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.DEBUG, message, t );
-        } else {
-            getLogger().log(FQCN, Level.DEBUG, message, t );
-        }
+        getLogger().log(FQCN, Level.TRACE, message, t );
     }
 
 
@@ -106,22 +117,14 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.DEBUG, message, null );
-        } else {
-            getLogger().log(FQCN, Level.DEBUG, message, null );
-        }
+        getLogger().log(FQCN, Level.DEBUG, message, null );
     }
 
     /**
      * Log an error to the Log4j Logger with <code>DEBUG</code> priority.
      */
     public void debug(Object message, Throwable t) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.DEBUG, message, t );
-        } else {
-            getLogger().log(FQCN, Level.DEBUG, message, t );
-        }
+        getLogger().log(FQCN, Level.DEBUG, message, t );
     }
 
 
@@ -129,11 +132,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>INFO</code> priority.
      */
     public void info(Object message) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.INFO, message, null );
-        } else {
-            getLogger().log(FQCN, Level.INFO, message, null );
-        }    
+        getLogger().log(FQCN, Level.INFO, message, null );
     }
 
 
@@ -141,11 +140,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>INFO</code> priority.
      */
     public void info(Object message, Throwable t) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.INFO, message, t );
-        } else {
-            getLogger().log(FQCN, Level.INFO, message, t );
-        }
+        getLogger().log(FQCN, Level.INFO, message, t );
     }
 
 
@@ -153,11 +148,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>WARN</code> priority.
      */
     public void warn(Object message) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.WARN, message, null );
-        } else {
-            getLogger().log(FQCN, Level.WARN, message, null );
-        }
+        getLogger().log(FQCN, Level.WARN, message, null );
     }
 
 
@@ -165,11 +156,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>WARN</code> priority.
      */
     public void warn(Object message, Throwable t) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.WARN, message, t );
-        } else {
-            getLogger().log(FQCN, Level.WARN, message, t );
-        }
+        getLogger().log(FQCN, Level.WARN, message, t );
     }
 
 
@@ -177,11 +164,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>ERROR</code> priority.
      */
     public void error(Object message) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.ERROR, message, null );
-        } else {
-            getLogger().log(FQCN, Level.ERROR, message, null );
-        }
+        getLogger().log(FQCN, Level.ERROR, message, null );
     }
 
 
@@ -189,11 +172,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>ERROR</code> priority.
      */
     public void error(Object message, Throwable t) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.ERROR, message, t );
-        } else {
-            getLogger().log(FQCN, Level.ERROR, message, t );
-        }
+        getLogger().log(FQCN, Level.ERROR, message, t );
     }
 
 
@@ -201,11 +180,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log a message to the Log4j Logger with <code>FATAL</code> priority.
      */
     public void fatal(Object message) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.FATAL, message, null );
-        } else {
-            getLogger().log(FQCN, Level.FATAL, message, null );
-        }
+        getLogger().log(FQCN, Level.FATAL, message, null );
     }
 
 
@@ -213,11 +188,7 @@ public class Log4JLogger implements Log, Serializable {
      * Log an error to the Log4j Logger with <code>FATAL</code> priority.
      */
     public void fatal(Object message, Throwable t) {
-        if(is12) {
-            getLogger().log(FQCN, (Priority) Level.FATAL, message, t );
-        } else {
-            getLogger().log(FQCN, Level.FATAL, message, t );
-        }
+        getLogger().log(FQCN, Level.FATAL, message, t );
     }
 
 
@@ -244,11 +215,7 @@ public class Log4JLogger implements Log, Serializable {
      * Check whether the Log4j Logger used is enabled for <code>ERROR</code> priority.
      */
     public boolean isErrorEnabled() {
-        if(is12) {
-            return getLogger().isEnabledFor((Priority) Level.ERROR);
-        } else {
-            return getLogger().isEnabledFor(Level.ERROR);
-        }
+        return getLogger().isEnabledFor(Level.ERROR);
     }
 
 
@@ -256,11 +223,7 @@ public class Log4JLogger implements Log, Serializable {
      * Check whether the Log4j Logger used is enabled for <code>FATAL</code> priority.
      */
     public boolean isFatalEnabled() {
-        if(is12) {
-            return getLogger().isEnabledFor((Priority) Level.FATAL);
-        } else {
-            return getLogger().isEnabledFor(Level.FATAL);
-        }
+        return getLogger().isEnabledFor(Level.FATAL);
     }
 
 
@@ -274,20 +237,15 @@ public class Log4JLogger implements Log, Serializable {
 
     /**
      * Check whether the Log4j Logger used is enabled for <code>TRACE</code> priority.
-     * For Log4J, this returns the value of <code>isDebugEnabled()</code>
      */
     public boolean isTraceEnabled() {
-        return getLogger().isDebugEnabled();
+        return getLogger().isTraceEnabled();
     }
 
     /**
      * Check whether the Log4j Logger used is enabled for <code>WARN</code> priority.
      */
     public boolean isWarnEnabled() {
-        if(is12) {
-            return getLogger().isEnabledFor((Priority) Level.WARN);
-        } else {
-            return getLogger().isEnabledFor(Level.WARN);
-        }
+        return getLogger().isEnabledFor(Level.WARN);
     }
 }
