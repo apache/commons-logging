@@ -154,7 +154,7 @@ public class DefaultConfigTestCase extends TestCase {
 
         assertNotNull("Log exists", log);
         assertEquals("Log class",
-                     "org.apache.commons.logging.impl.Log4JLogger",
+                     "org.apache.commons.logging.impl.Log4J12Logger",
                      log.getClass().getName());
 
         // Can we call level checkers with no exceptions?

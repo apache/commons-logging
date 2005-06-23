@@ -182,7 +182,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
         assertNotNull("Log exists", log);
         assertEquals("Log class",
-                     "org.apache.commons.logging.impl.Log4JLogger",
+                     "org.apache.commons.logging.impl.Log4J12Logger",
                      log.getClass().getName());
 
         // Assert which logging levels have been enabled
