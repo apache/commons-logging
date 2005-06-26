@@ -272,15 +272,18 @@
     
   <target name='warning' depends='log4j12-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning'/>
 
+  <target name="compile-only" 
+    depends="init,discovery,warning,show-lib-presence,compile-non-log4j,compile-log4j12,compile-log4j13,build-jar"/>
 
-  <target name="compile-only" depends="init,discovery,warning" >
-
+  <target name="show-lib-presence">
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
     <echo  message="log4j12.present=${log4j12.present}"/>
     <echo  message="log4j13.present=${log4j13.present}"/>
     <echo  message="logkit.present=${logkit.present}"/>
     <echo  message="avalon-framework.present=${avalon-framework.present}"/>
+  </target>
 
+  <target name="compile-non-log4j">
     <!-- compile everything except Log4J classes -->
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
@@ -303,7 +306,9 @@
       <exclude name="org/apache/commons/logging/impl/AvalonLogger.java"
                unless="avalon-framework.present"/>
     </javac>
+  </target>
 
+  <target name="compile-log4j12">
     <!-- compile the log4j1.2 support classes -->
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
@@ -325,7 +330,9 @@
       <include name="org/apache/commons/logging/impl/Log4J12Logger.java"
                if="log4j12.present"/>
     </javac>
+  </target>
 
+  <target name="compile-log4j13">
     <!-- compile the log4j1.3 support classes -->
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
@@ -343,8 +350,9 @@
       <include name="org/apache/commons/logging/impl/Log4J13Logger.java"
                if="log4j13.present"/>
     </javac>
+  </target>
 
-
+  <target name="build-jar">
     <copy  todir="${build.home}/classes" filtering="on">
       <fileset dir="${source.home}" excludes="**/*.java"/>
     </copy>
