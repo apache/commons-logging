@@ -231,14 +231,14 @@
   <target name="log4j12-warning" unless='log4j12.present' depends='init,discovery'>
     <echo>
     *** WARNING ***
-    Log4j12 not found: Cannot Build Log4J12Logger
+    Log4j 1.2 not found: Cannot Build Log4J12Logger
     </echo>
   </target>
   
   <target name="log4j13-warning" unless='log4j13.present' depends='init,discovery'>
     <echo>
     *** WARNING ***
-    Log4j13 not found: Cannot Build Log4J13Logger
+    Log4j 1.3 not found: Cannot Build Log4J13Logger
     </echo>
   </target>
   
@@ -270,7 +270,8 @@
     </echo>
   </target>
     
-  <target name='warning' depends='log4j12-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning'/>
+  <target name='warning' 
+    depends='log4j12-warning,log4j13-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning'/>
 
   <target name="compile-only" 
     depends="init,discovery,warning,show-lib-presence,compile-non-log4j,compile-log4j12,compile-log4j13,build-jar"/>
