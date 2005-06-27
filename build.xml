@@ -284,7 +284,7 @@
     <echo  message="avalon-framework.present=${avalon-framework.present}"/>
   </target>
 
-  <target name="compile-non-log4j" depends="prepare">
+  <target name="compile-non-log4j" depends="prepare,discovery">
     <!-- compile everything except Log4J classes -->
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
@@ -309,7 +309,7 @@
     </javac>
   </target>
 
-  <target name="compile-log4j12" depends="prepare">
+  <target name="compile-log4j12" depends="prepare,discovery">
     <!-- compile the log4j1.2 support classes -->
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
@@ -333,7 +333,7 @@
     </javac>
   </target>
 
-  <target name="compile-log4j13" depends="prepare">
+  <target name="compile-log4j13" depends="prepare,discovery">
     <!-- compile the log4j1.3 support classes -->
     <javac srcdir="${source.home}"
            destdir="${build.home}/classes"
