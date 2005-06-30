@@ -85,7 +85,7 @@ public class DefaultConfigTestCase extends TestCase {
     /**
      * Return the tests included in this test suite.
      */
-    public static Test suite() {
+    public static Test suite() throws Exception {
         return (new TestSuite(DefaultConfigTestCase.class));
     }
 

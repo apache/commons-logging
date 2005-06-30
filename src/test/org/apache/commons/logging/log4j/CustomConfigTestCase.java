@@ -23,12 +23,14 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.spi.LoggingEvent;
+
+import org.apache.commons.logging.PathableTestSuite;
+import org.apache.commons.logging.PathableClassLoader;
 
 
 /**
@@ -103,8 +105,17 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * Return the tests included in this test suite.
      */
-    public static Test suite() {
-        return (new TestSuite(CustomConfigTestCase.class));
+    public static Test suite() throws Exception {
+        PathableClassLoader parent = new PathableClassLoader(null);
+        parent.useSystemLoader("junit.");
+
+        PathableClassLoader child = new PathableClassLoader(parent);
+        child.addLogicalLib("testclasses");
+        child.addLogicalLib("log4j12");
+        child.addLogicalLib("commons-logging");
+        
+        Class testClass = child.loadClass(CustomConfigTestCase.class.getName());
+        return new PathableTestSuite(testClass, child);
     }
 
     /**
@@ -123,7 +134,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     // Test logging message strings with exceptions
     public void testExceptionMessages() throws Exception {
-
         logExceptionMessages();
         checkLoggingEvents(true);
 

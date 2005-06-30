@@ -28,6 +28,8 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.PathableTestSuite;
+import org.apache.commons.logging.PathableClassLoader;
 
 
 /**
@@ -85,8 +87,17 @@ public class DefaultConfigTestCase extends TestCase {
     /**
      * Return the tests included in this test suite.
      */
-    public static Test suite() {
-        return (new TestSuite(DefaultConfigTestCase.class));
+    public static Test suite() throws Exception {
+        PathableClassLoader parent = new PathableClassLoader(null);
+        parent.useSystemLoader("junit.");
+
+        PathableClassLoader child = new PathableClassLoader(parent);
+        child.addLogicalLib("testclasses");
+        child.addLogicalLib("log4j12");
+        child.addLogicalLib("commons-logging");
+        
+        Class testClass = child.loadClass(DefaultConfigTestCase.class.getName());
+        return new PathableTestSuite(testClass, child);
     }
 
     /**
