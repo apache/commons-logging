@@ -28,6 +28,9 @@ import java.util.logging.Logger;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.commons.logging.PathableTestSuite;
+import org.apache.commons.logging.PathableClassLoader;
+
 
 /**
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
@@ -114,8 +117,19 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * Return the tests included in this test suite.
      */
-    public static Test suite() {
-        return (new TestSuite(CustomConfigTestCase.class));
+    public static Test suite() throws Exception {
+        /*
+        PathableClassLoader loader = new PathableClassLoader(null);
+        loader.useSystemLoader("junit.");
+
+        PathableClassLoader child = new PathableClassLoader(parent);
+        child.addLogicalLib("testclasses");
+        child.addLogicalLib("commons-logging");
+        
+        Class testClass = child.loadClass(CustomConfigTestCase.class.getName());
+        return new PathableTestSuite(testClass, child);
+        */
+        return new TestSuite(CustomConfigTestCase.class);
     }
 
     /**
@@ -220,9 +234,9 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
                          testLevels[i], record.getLevel());
             assertEquals("LogRecord message",
                          testMessages[i], record.getMessage());
-            assertEquals("LogRecord class",
-                         this.getClass().getName(),
-                         record.getSourceClassName());
+            assertTrue("LogRecord class",
+                         record.getSourceClassName().startsWith(
+                                 "org.apache.commons.logging.jdk14.CustomConfig"));
             if (thrown) {
                 assertEquals("LogRecord method",
                              "logExceptionMessages",
