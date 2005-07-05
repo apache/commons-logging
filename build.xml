@@ -170,6 +170,7 @@
   <property name="test.sysprops.log4j13" value="${log4j13.jar}"/>
   <property name="test.sysprops.commons-logging" value="${build.home}/${core.jar.name}"/>
   <property name="test.sysprops.commons-logging-api" value="${build.home}/${api.jar.name}"/>
+  <property name="test.sysprops.commons-logging-adapters" value="${build.home}/${adapters.jar.name}"/>
   <propertyset id="test-lib-props">
     <propertyref prefix="test.sysprops."/>
     <mapper type="glob" from="test.sysprops.*" to="*"/>
