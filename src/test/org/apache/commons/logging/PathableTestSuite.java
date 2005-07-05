@@ -16,16 +16,9 @@
 
 package org.apache.commons.logging;
 
-import java.io.PrintStream;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestResult;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.Vector;
 
 /**
  * Custom TestSuite class that can be used to control the context classloader
