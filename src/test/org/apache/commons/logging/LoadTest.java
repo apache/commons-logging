@@ -19,8 +19,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.commons.logging.impl.LogFactoryImpl;
-
 /**
  * testcase to emulate container and application isolated from container
  * @author  baliuka
