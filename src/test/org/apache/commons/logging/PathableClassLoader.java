@@ -32,6 +32,10 @@ import java.io.IOException;
 
 /**
  * A ClassLoader which sees only the specified classes.
+ * <p>
+ * Note that this classloader is not "industrial strength"; users
+ * looking for such a class may wish to look at the Tomcat sourcecode
+ * instead. In particular, this class may not be threadsafe.
  */
 public class PathableClassLoader extends URLClassLoader {
     
@@ -174,9 +178,18 @@ public class PathableClassLoader extends URLClassLoader {
         if (parentFirst) {
             return super.loadClass(name, resolve);
         } else {
-            // ok, implement child-first
+            // Implement child-first. 
+            //
+            // It appears that the findClass method doesn't check whether the
+            // class has already been loaded. This seems odd to me, but without
+            // first checking via findLoadedClass we can get java.lang.LinkageError
+            // with message "duplicate class definition" which isn't good.
+            
             try {
-                Class clazz = super.findClass(name);
+                Class clazz = findLoadedClass(name);
+                if (clazz == null) {
+                    clazz = super.findClass(name);
+                }
                 if (resolve) {
                     resolveClass(clazz);
                 }
@@ -236,23 +249,32 @@ public class PathableClassLoader extends URLClassLoader {
         if (parentFirst) {
             return super.getResources(name);
         } else {
-            Enumeration local = super.findResources(name);
-            Enumeration parent = getParent().getResources(name);
+            Enumeration localResources = super.findResources(name);
+            ClassLoader parentLoader = getParent();
+            if (parentLoader == null) {
+                // There is no way, as far as I am aware, to call
+                // getResources on the bootclassloader. The Class
+                // class has methods getResource and getResourceAsStream
+                // but not getResources. So I guess we just assume there
+                // aren't any matches in the bootloader..
+                return localResources;
+            }
+            Enumeration parentResources = parentLoader.getResources(name);
             
-            if (!local.hasMoreElements()) {
-                return parent;
+            if (!localResources.hasMoreElements()) {
+                return parentResources;
             }
             
-            if (!parent.hasMoreElements()) {
-                return local;
+            if (!parentResources.hasMoreElements()) {
+                return localResources;
             }
 
             Vector v = new Vector();
-            while (local.hasMoreElements()) {
-                v.add(local.nextElement());
+            while (localResources.hasMoreElements()) {
+                v.add(localResources.nextElement());
             }
-            while (parent.hasMoreElements()) {
-                v.add(parent.nextElement());
+            while (parentResources.hasMoreElements()) {
+                v.add(parentResources.nextElement());
             }
             return v.elements();
         }
