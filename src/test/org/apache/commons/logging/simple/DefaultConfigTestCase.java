@@ -28,6 +28,8 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.PathableClassLoader;
+import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.SimpleLog;
 
 
@@ -61,20 +63,48 @@ public class DefaultConfigTestCase extends TestCase {
 
 
     /**
+     * Return the tests included in this test suite.
+     * <p>
+     * We need to use a PathableClassLoader here because the SimpleLog class
+     * is a pile of junk and chock-full of static variables. Any other test
+     * (like simple.CustomConfigTestCase) that has used the SimpleLog class
+     * will already have caused it to do once-only initialisation that we
+     * can't reset, even by calling LogFactory.releaseAll, because of those
+     * ugly statics. The only clean solution is to load a clean copy of
+     * commons-logging including SimpleLog via a nice clean classloader.
+     * Or we could fix SimpleLog to be sane...
+     */
+    public static Test suite() throws Exception {
+        Class thisClass = DefaultConfigTestCase.class;
+
+        PathableClassLoader loader = new PathableClassLoader(null);
+        loader.useSystemLoader("junit.");
+        loader.addLogicalLib("testclasses");
+        loader.addLogicalLib("commons-logging");
+        
+        Class testClass = loader.loadClass(thisClass.getName());
+        return new PathableTestSuite(testClass, loader);
+    }
+
+    /**
+     * Set system properties that will control the LogFactory/Log objects
+     * when they are created. Subclasses can override this method to
+     * define properties that suit them.
+     */
+    public void setProperties() {
+        System.setProperty(
+            "org.apache.commons.logging.Log",
+            "org.apache.commons.logging.impl.SimpleLog");
+    }
+
+    /**
      * Set up instance variables required by this test case.
      */
     public void setUp() throws Exception {
         LogFactory.releaseAll();
+        setProperties();
         setUpFactory();
         setUpLog("TestLogger");
-    }
-
-
-    /**
-     * Return the tests included in this test suite.
-     */
-    public static Test suite() {
-        return (new TestSuite(DefaultConfigTestCase.class));
     }
 
     /**
