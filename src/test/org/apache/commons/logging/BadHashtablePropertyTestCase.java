@@ -22,17 +22,13 @@ import java.util.Hashtable;
 /**
  * Tests behaviour when the property is misconfigured.
  */
-public class BadHashtablePropertyTest extends TestCase {
+public class BadHashtablePropertyTestCase extends TestCase {
 
-	public BadHashtablePropertyTest(String testName) {
-		super(testName);
-	}
-    
     public void testType()  {
         assertTrue(LogFactory.factories instanceof Hashtable);
     }
     
     public void testPutCalled() throws Exception {
-        Log log = LogFactory.getLog(BadHashtablePropertyTest.class);
+        Log log = LogFactory.getLog(BadHashtablePropertyTestCase.class);
     }
 }
