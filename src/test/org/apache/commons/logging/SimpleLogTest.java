@@ -29,18 +29,6 @@ import junit.framework.*;
  */
 public class SimpleLogTest extends AbstractLogTest
 {
-
-	/**
-	 * 
-	 * 
-	 * @param testName
-	 * 
-	 */
-	public SimpleLogTest(String testName)
-	{
-		super(testName);
-	}
-
 	/**
 	 * 
 	 * 
