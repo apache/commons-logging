@@ -27,22 +27,18 @@ import junit.framework.TestSuite;
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
  * @version $Revision$ $Date$
  */
-public class AvalonLoggerTest extends AbstractLogTest {
+public class AvalonLoggerTestCase extends AbstractLogTest {
 
     public static void main(String[] args) {
-        String[] testCaseName = { AvalonLoggerTest.class.getName() };
+        String[] testCaseName = { AvalonLoggerTestCase.class.getName() };
         junit.textui.TestRunner.main(testCaseName);	
     }
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(AvalonLoggerTest.class);
+        suite.addTestSuite(AvalonLoggerTestCase.class);
         return suite;
     }
-
-    public AvalonLoggerTest(String testName) {
-		super(testName);
-	}
 
     public Log getLogObject() {
         Log log = new AvalonLogger(new ConsoleLogger());
