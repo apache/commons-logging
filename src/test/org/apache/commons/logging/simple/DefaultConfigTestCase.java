@@ -42,19 +42,6 @@ import org.apache.commons.logging.impl.SimpleLog;
 public class DefaultConfigTestCase extends TestCase {
 
 
-    // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * <p>Construct a new instance of this test case.</p>
-     *
-     * @param name Name of the test case
-     */
-    public DefaultConfigTestCase(String name) {
-        super(name);
-    }
-
-
     // ----------------------------------------------------- Instance Variables
 
 
@@ -77,6 +64,7 @@ public class DefaultConfigTestCase extends TestCase {
      * Set up instance variables required by this test case.
      */
     public void setUp() throws Exception {
+        LogFactory.releaseAll();
         setUpFactory();
         setUpLog("TestLogger");
     }
