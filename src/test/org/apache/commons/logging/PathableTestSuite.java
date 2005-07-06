@@ -75,12 +75,6 @@ import junit.framework.TestResult;
  * tests that need specific system properties can simply set them in the
  * fixture or at the start of a test method.
  * <p>
- * This class cannot control the system classloader (ie what method 
- * ClassLoader.getSystemClassLoader returns) because Java provides no
- * mechanism for setting the system classloader. In this case, the only
- * option is to invoke the unit test in a separate JVM with the appropriate
- * settings.
- * <p>
  * <b>Important!</b> When the test case is run, "this.getClass()" refers of
  * course to the Class object passed to the constructor of this class - which 
  * is different from the class whose suite() method was executed to determine
@@ -88,7 +82,24 @@ import junit.framework.TestResult;
  * the test cases simply by setting static variables (for example to make the
  * custom classloaders available to the test methods or setUp/tearDown fixtures).
  * If this is really necessary then it is possible to use reflection to invoke
- * static methods on the class object passed to the constructor of this class 
+ * static methods on the class object passed to the constructor of this class.
+ * <p>
+ * <h2>Limitations</h2>
+ * <p>
+ * This class cannot control the system classloader (ie what method 
+ * ClassLoader.getSystemClassLoader returns) because Java provides no
+ * mechanism for setting the system classloader. In this case, the only
+ * option is to invoke the unit test in a separate JVM with the appropriate
+ * settings.
+ * <p>
+ * The effect of using this approach in a system that uses junit's
+ * "reloading classloader" behaviour is unknown. This junit feature is
+ * intended for junit GUI apps where a test may be run multiple times
+ * within the same JVM - and in particular, when the .class file may
+ * be modified between runs of the test. How junit achieves this is
+ * actually rather weird (the whole junit code is rather weird in fact)
+ * and it is not clear whether this approach will work as expected in
+ * such situations.
  */
 public class PathableTestSuite extends TestSuite {
 
