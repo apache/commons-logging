@@ -16,6 +16,7 @@
 
 package org.apache.commons.logging;
 
+import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.framework.TestResult;
@@ -66,7 +67,9 @@ import junit.framework.TestResult;
  * </pre>
  * This class ensures that any context classloader changes applied by a test
  * is undone after the test is run, so tests don't need to worry about
- * restoring the context classloader on exit.
+ * restoring the context classloader on exit. This class also ensures that
+ * the system properties are restored to their original settings after each
+ * test, so tests that manipulate those don't need to worry about resetting them. 
  * <p>
  * This class does not provide facilities for manipulating system properties;
  * tests that need specific system properties can simply set them in the
@@ -114,13 +117,18 @@ public class PathableTestSuite extends TestSuite {
      * This method is invoked once for each Test in the current TestSuite.
      * Note that a Test may itself be a TestSuite object (ie a collection
      * of tests).
+     * <p>
+     * The context classloader and system properties are saved before each
+     * test, and restored after the test completes to better isolate tests.
      */
     public void runTest(Test test, TestResult result) {
         ClassLoader origContext = Thread.currentThread().getContextClassLoader();
+        Properties oldSysProps = (Properties) System.getProperties().clone();
         try {
             Thread.currentThread().setContextClassLoader(contextLoader);
             test.run(result);
         } finally {
+            System.setProperties(oldSysProps);
             Thread.currentThread().setContextClassLoader(origContext);
         }
     }
