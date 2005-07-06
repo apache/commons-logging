@@ -1247,7 +1247,7 @@ public abstract class LogFactory {
     // ----------------------------------------------------------------------
 
     static {
-        // note: it's safe to call methods before initInternalLogging..
+        // note: it's safe to call methods before initDiagnostics.
         thisClassLoader = getClassLoader(LogFactory.class);
         initDiagnostics();
         logClassLoaderTree(LogFactory.class);
