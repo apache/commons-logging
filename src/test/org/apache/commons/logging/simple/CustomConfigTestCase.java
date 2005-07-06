@@ -24,6 +24,7 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.SimpleLog;
 
 
@@ -35,19 +36,6 @@ import org.apache.commons.logging.impl.SimpleLog;
  * @version $Revision$ $Date$
  */
 public class CustomConfigTestCase extends DefaultConfigTestCase {
-
-
-    // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * <p>Construct a new instance of this test case.</p>
-     *
-     * @param name Name of the test case
-     */
-    public CustomConfigTestCase(String name) {
-        super(name);
-    }
 
 
     // ----------------------------------------------------- Instance Variables
@@ -77,11 +65,26 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     // ------------------------------------------- JUnit Infrastructure Methods
 
+    /**
+     * Set system properties that will control the LogFactory/Log objects
+     * when they are created. Subclasses can override this method to
+     * define properties that suit them.
+     */
+    public void setProperties() {
+        System.setProperty(
+            "org.apache.commons.logging.Log",
+            "org.apache.commons.logging.simple.DecoratedSimpleLog");
+        System.setProperty(
+            "org.apache.commons.logging.simplelog.defaultlog",
+            "debug");
+    }
 
     /**
      * Set up instance variables required by this test case.
      */
     public void setUp() throws Exception {
+        LogFactory.releaseAll();
+        setProperties();
         expected = new ArrayList();
         setUpFactory();
         setUpLog("DecoratedLogger");
