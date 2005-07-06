@@ -18,12 +18,8 @@ package org.apache.commons.logging;
 
 import junit.framework.*;
 
-public class AltHashtableTest extends TestCase {
+public class AltHashtableTestCase extends TestCase {
 
-	public AltHashtableTest(String testName) {
-		super(testName);
-	}
-    
     public void testType() {
         assertTrue(LogFactory.factories instanceof AltHashtable);
     }
@@ -36,7 +32,7 @@ public class AltHashtableTest extends TestCase {
         Thread thread = new Thread(
             new Runnable() {
                 public void run() {
-                    LogFactory.getLog(AltHashtableTest.class);
+                    LogFactory.getLog(AltHashtableTestCase.class);
                 }
             }   
         );
