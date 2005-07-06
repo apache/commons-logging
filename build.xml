@@ -190,6 +190,19 @@
 <!-- ========== Executable Targets ======================================== -->
 
 
+  <!--
+    - Running this target will download all the necessary dependencies into the "lib" subdirectory.
+    -->
+  <property name="getlibs.base" value="http://www.ibiblio.org/maven"/>
+  <target name="getlibs">
+    <mkdir dir="lib"/>
+    <get dest="lib/junit-3.8.1.jar" src="${getlibs.base}/junit/jars/junit-3.8.1.jar"/>
+    <get dest="lib/logkit-1.0.1.jar" src="${getlibs.base}/logkit/jars/logkit-1.0.1.jar"/>
+    <get dest="lib/avalon-framework-4.1.3.jar" src="${getlibs.base}/avalon-framework/jars/avalon-framework-4.1.3.jar"/>
+    <get dest="lib/log4j-1.2.6.jar" src="${getlibs.base}/log4j/jars/log4j-1.2.6.jar"/>
+    <get dest="lib/servletapi-2.3.jar" src="${getlibs.base}/servletapi/jars/servletapi-2.3.jar"/>
+  </target>
+
   <target name="init"
    description="Initialize and evaluate conditionals">
     <echo message="-------- ${component.title} ${component.version} --------"/>
