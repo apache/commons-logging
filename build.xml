@@ -52,13 +52,9 @@
   <!--
     - The names of the unit tests to run. By default all tests are run, but
     - this can be overridden from the command line by something like:
-    -   ant -Dtestmatch=**/FooTestCase.java test
-    -
-    - Currently, the default is to run only the "pathable" test cases as
-    - the others still need to be converted over to specifying their
-    - custom classpaths.
+    -   ant -Dtestmatch=**/FooTestCase.java testall
     -->
-  <property name="testmatch" value="**/pathable/*TestCase"/>
+  <property name="testmatch" value="**/*TestCase"/>
 
 
 <!-- ========== Derived Values ============================================ -->
