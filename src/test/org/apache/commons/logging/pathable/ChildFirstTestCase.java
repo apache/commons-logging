@@ -281,40 +281,4 @@ public class ChildFirstTestCase extends TestCase {
         // but with different contents. That's a little tricky to set up so we'll
         // skip that for now.
     }
-    
-    /**
-     * Verify that the context classloader is a custom one, then reset it to
-     * a non-custom one.
-     */
-    private static void checkAndSetContext() {
-        ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
-        assertEquals("ContextLoader is of unexpected type", 
-                contextLoader.getClass().getName(), 
-                PathableClassLoader.class.getName());
-        
-        URL[] noUrls = new URL[0];
-        Thread.currentThread().setContextClassLoader(new URLClassLoader(noUrls));
-    }
-    
-    /**
-     * Verify that when a test method modifies the context classloader it is
-     * reset before the next test is run.
-     * <p>
-     * This method works in conjunction with testResetContext2. There is no
-     * way of knowing which test method junit will run first, but it doesn't
-     * matter; whichever one of them runs first will modify the contextClassloader.
-     * If the PathableTestSuite isn't resetting the contextClassLoader then whichever
-     * of them runs second will fail. Of course if other methods are run in-between
-     * then those methods might also fail...
-     */
-    public void testResetContext1() {
-        checkAndSetContext();
-    }
-
-    /**
-     * See testResetContext1.
-     */
-    public void testResetContext2() {
-        checkAndSetContext();
-    }
 }
