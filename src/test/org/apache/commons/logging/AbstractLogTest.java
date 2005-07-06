@@ -28,11 +28,6 @@ import junit.framework.*;
   */
 public abstract class AbstractLogTest extends TestCase {
 
-    public AbstractLogTest(String testName) {
-        super(testName);
-    }
-
-    
     public abstract Log getLogObject();
 
 	public void testLoggingWithNullParameters()

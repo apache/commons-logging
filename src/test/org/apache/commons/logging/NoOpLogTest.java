@@ -33,17 +33,6 @@ public class NoOpLogTest extends AbstractLogTest
 	/**
 	 * 
 	 * 
-	 * @param testName
-	 * 
-	 */
-	public NoOpLogTest(String testName)
-	{
-		super(testName);
-	}
-
-	/**
-	 * 
-	 * 
 	 * 
 	 */
 	public Log getLogObject()

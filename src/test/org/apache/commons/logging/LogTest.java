@@ -33,17 +33,6 @@ public class LogTest extends AbstractLogTest
     /**
      * 
      * 
-     * @param testName
-     * 
-     */
-    public LogTest(String testName)
-    {
-        super(testName);
-    }
-
-    /**
-     * 
-     * 
      * 
      */
     public Log getLogObject()
