@@ -16,6 +16,7 @@
 package org.apache.commons.logging.pathable;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.ArrayList;
 import java.net.URLClassLoader;
@@ -231,10 +232,17 @@ public class ParentFirstTestCase extends TestCase {
         resources = childLoader.getResources("org/apache/commons/logging/impl/Log4J12Logger.class");
         urls = toURLArray(resources);
         assertEquals("Unexpected number of Log4J12Logger.class resources found", 2, urls.length);
+        
+        // There is no gaurantee about the ordering of results returned from getResources
+        // To make this test portable across JVMs, sort the string to give them a known order
+        String[] urlsToStrings = new String[2];
+        urlsToStrings[0] = urls[0].toString();
+        urlsToStrings[1] = urls[1].toString();
+        Arrays.sort(urlsToStrings);
         assertTrue("Incorrect source for Log4J12Logger class",
-                urls[0].toString().indexOf("/commons-logging-1.") > 0);
+                urlsToStrings[0].indexOf("/commons-logging-1.") > 0);
         assertTrue("Incorrect source for Log4J12Logger class",
-                urls[1].toString().indexOf("/commons-logging-adapters-1.") > 0);
+                urlsToStrings[1].indexOf("/commons-logging-adapters-1.") > 0);
         
     }
 
