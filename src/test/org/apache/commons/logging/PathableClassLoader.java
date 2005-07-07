@@ -31,12 +31,24 @@ import java.io.InputStream;
 import java.io.IOException;
 
 /**
- * A ClassLoader which sees only the specified classes.
+ * A ClassLoader which sees only specified classes, and which can be
+ * set to do parent-first or child-first path lookup.
  * <p>
  * Note that this classloader is not "industrial strength"; users
  * looking for such a class may wish to look at the Tomcat sourcecode
  * instead. In particular, this class may not be threadsafe.
+ * <p>
+ * Note that the ClassLoader.getResources method isn't overloaded here.
+ * It would be nice to ensure that when child-first lookup is set the
+ * resources from the child are returned earlier in the list than the
+ * resources from the parent. However overriding this method isn't possible
+ * as the java 1.4 version of ClassLoader declares this method final
+ * (though the java 1.5 version has removed the final qualifier). As the
+ * ClassLoader javadoc doesn't specify the order in which resources
+ * are returned, it's valid to return the resources in any order (just
+ * untidy) so the inherited implementation is technically ok.
  */
+
 public class PathableClassLoader extends URLClassLoader {
     
     private static final URL[] NO_URLS = new URL[0];
@@ -237,46 +249,6 @@ public class PathableClassLoader extends URLClassLoader {
                 }
             }
             return super.getResourceAsStream(name);
-        }
-    }
-    
-    /**
-     * Same as parent class method except that when parentFirst is false
-     * the resources available from this class are returned at the head of
-     * the list instead of the tail.
-     */
-    public Enumeration getResources(String name) throws IOException {
-        if (parentFirst) {
-            return super.getResources(name);
-        } else {
-            Enumeration localResources = super.findResources(name);
-            ClassLoader parentLoader = getParent();
-            if (parentLoader == null) {
-                // There is no way, as far as I am aware, to call
-                // getResources on the bootclassloader. The Class
-                // class has methods getResource and getResourceAsStream
-                // but not getResources. So I guess we just assume there
-                // aren't any matches in the bootloader..
-                return localResources;
-            }
-            Enumeration parentResources = parentLoader.getResources(name);
-            
-            if (!localResources.hasMoreElements()) {
-                return parentResources;
-            }
-            
-            if (!parentResources.hasMoreElements()) {
-                return localResources;
-            }
-
-            Vector v = new Vector();
-            while (localResources.hasMoreElements()) {
-                v.add(localResources.nextElement());
-            }
-            while (parentResources.hasMoreElements()) {
-                v.add(parentResources.nextElement());
-            }
-            return v.elements();
         }
     }
 }

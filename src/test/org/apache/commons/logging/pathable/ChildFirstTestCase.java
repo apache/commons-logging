@@ -230,15 +230,21 @@ public class ChildFirstTestCase extends TestCase {
         assertEquals("Unexpected number of PathableTestSuite.class resources found", 1, urls.length);
         
         // getResources where the resource exists in both.
-        // resources should be returned in order (child-resource, parent-resource)
+        // resources should be returned in order (child-resource, parent-resource).
+        //
+        // IMPORTANT: due to the fact that in java 1.4 and earlier method
+        // ClassLoader.getResources is final it isn't possible for PathableClassLoader
+        // to override this. So even when child-first is enabled the resource order
+        // is still (parent-resources, child-resources). This test verifies the expected
+        // behaviour - even though it's not the desired behaviour.
+        
         resources = childLoader.getResources("org/apache/commons/logging/impl/Log4J12Logger.class");
         urls = toURLArray(resources);
         assertEquals("Unexpected number of Log4J12Logger.class resources found", 2, urls.length);
         assertTrue("Incorrect source for Log4J12Logger class",
-                urls[0].toString().indexOf("/commons-logging-adapters-1.") > 0);
+                urls[0].toString().indexOf("/commons-logging-1.") > 0);
         assertTrue("Incorrect source for Log4J12Logger class",
-                urls[1].toString().indexOf("/commons-logging-1.") > 0);
-        
+                urls[1].toString().indexOf("/commons-logging-adapters-1.") > 0);
     }
 
     /**
