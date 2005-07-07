@@ -30,8 +30,9 @@ servletapi.jar=/java/servletapi/servletapi.jar
 #
 # if you want to run the test cases, junit needs to be in the classpath.
 # the build.xml uses a default value so you might not need to set this property.
-#
-# junit.jar=../../jakarta-velocity/build/lib/junit-3.7.jar
+# Note that version junit 3.8 is required and 3.8.1 recommended.
+# 
+# junit.jar=../../jakarta-velocity/build/lib/junit-3.8.1.jar
 
 # Maven properties (for web site build)
 # Those committers using agents may like to use
