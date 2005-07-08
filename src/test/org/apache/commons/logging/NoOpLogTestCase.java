@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */ 
  
- package org.apache.commons.logging;
+package org.apache.commons.logging;
 
-import org.apache.commons.logging.impl.SimpleLog;
+import org.apache.commons.logging.impl.NoOpLog;
 import junit.framework.*;
 
 /**
@@ -27,8 +27,9 @@ import junit.framework.*;
  * 
  * 
  */
-public class SimpleLogTest extends AbstractLogTest
+public class NoOpLogTestCase extends AbstractLogTest
 {
+
 	/**
 	 * 
 	 * 
@@ -36,21 +37,12 @@ public class SimpleLogTest extends AbstractLogTest
 	 */
 	public Log getLogObject()
 	{
-		return (Log) new SimpleLog(this.getClass().getName());
+		return (Log) new NoOpLog(this.getClass().getName());
 	}
 
 	public static void main(String[] args)
 	{
-        String[] testCaseName = { SimpleLogTest.class.getName() };
+        String[] testCaseName = { NoOpLogTestCase.class.getName() };
         junit.textui.TestRunner.main(testCaseName);	
-    }
-	
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        
-        suite.addTestSuite(SimpleLogTest.class);
-        
-        return suite;
-    }
-	
+	}
 }
