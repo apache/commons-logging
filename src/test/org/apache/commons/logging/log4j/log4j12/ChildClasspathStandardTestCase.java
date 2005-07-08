@@ -47,4 +47,12 @@ public class ChildClasspathStandardTestCase extends StandardTests {
         Class testClass = child.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, child);
     }
+    
+    /**
+     * Return the name of a class that makes all direct calls to log4j
+     * apis. See StandardTests.TestHelper for more information.
+     */
+    public String getTestHelperClassName() {
+        return "org.apache.commons.logging.log4j.log4j12.TestHelper";
+    }
 }
