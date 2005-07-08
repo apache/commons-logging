@@ -172,7 +172,6 @@
 
   <!-- The test runner to execute -->
   <property name="test.runner" value="junit.textui.TestRunner"/>
-  <property name="test.entry" value="org.apache.commons.logging.TestAll"/>
 
   <!-- libs to pass to the tests -->
   <property name="test.sysprops.testclasses" value="${build.home}/tests"/>
@@ -595,15 +594,7 @@ limitations under the License.--&gt;'>
 
 
   <target name="test"
-       depends="log4j12-test-warning, compile.tests, testall, test.log4j"
-            if="test.entry"
-   description="Run all unit test cases">
-      <java    classname="${test.runner}" fork="yes"
-             failonerror="${test.failonerror}">
-        <arg       value="${test.entry}"/>
-        <classpath refid="test.classpath"/>
-      </java>
-  </target>
+       depends="log4j12-test-warning, compile.tests, testall, test.log4j"/>
 
 
   <!--
@@ -625,7 +616,7 @@ limitations under the License.--&gt;'>
     -->
 
   <target name="testall" depends="compile.tests"
-   description="Run unit tests specific to Pathable support classes">
+   description="Run all unit tests">
     <echo message="Test output can be found in directory ${build.home}/test-reports."/>
     <delete dir="${build.home}/test-reports"/>
     <mkdir dir="${build.home}/test-reports"/>
@@ -637,7 +628,7 @@ limitations under the License.--&gt;'>
       - The default settings cause a single VM to be created in which all of
       - the tests are then run. 
       -->
-    <junit printsummary="off" showoutput="no" fork="yes" forkmode="once">
+    <junit printsummary="off" showoutput="no" fork="yes" forkmode="once" failureproperty="test.failure">
       <!-- plain output to file; brief output to console. -->
       <formatter type="plain"/>
       <formatter usefile="false" type="brief"/>
@@ -676,6 +667,10 @@ limitations under the License.--&gt;'>
         </fileset>
       </batchtest>
     </junit>
+
+    <fail if="test.failure">
+      One or more unit tests failed.
+    </fail>
   </target>
 
   <target name="test.log4j" depends="compile.tests" if="log4j12.present"
@@ -735,7 +730,7 @@ limitations under the License.--&gt;'>
     <java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}">
       <sysproperty key="org.apache.commons.logging.Log"
                  value="org.apache.commons.logging.impl.Log4J12Logger"/>
-      <arg value="org.apache.commons.logging.BasicOperationsTest"/>
+      <arg value="org.apache.commons.logging.BasicOperationsTestCase"/>
       <classpath refid="test.classpath.log4j12"/>
       <syspropertyset refid="test-lib-props"/>
     </java>
