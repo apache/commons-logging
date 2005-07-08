@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,55 +14,59 @@
  * limitations under the License.
  */ 
 
-package org.apache.commons.logging.log4j;
+package org.apache.commons.logging.log4j.log4j12;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
+import org.apache.commons.logging.log4j.StandardTests;
 
 /**
  * A custom implementation of <code>org.apache.log4j.Appender</code> which
- * stores all received log event messages in memory. This allows test code
- * to check whether the messages it expected to log have actually been logged.
- * 
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
+ * converts the log4j-specific log event record into a representation that
+ * doesn't have a dependency on log4j and stores that new representation into
+ * an external list.
  */
 
 public class TestAppender extends AppenderSkeleton {
 
-
+    /**
+     * Constructor.
+     */
+    public TestAppender(List logEvents) {
+        events = logEvents;
+    }
 
     // ----------------------------------------------------- Instance Variables
 
 
     // The set of logged events for this appender
-    private List events = new ArrayList();
-
-
-    // --------------------------------------------------------- Public Methods
-
-
-    public Iterator events() {
-        return (events.iterator());
-    }
-
-
-    public void flush() {
-        events.clear();
-    }
+    private List events;
 
 
     // ------------------------------------------------------- Appender Methods
 
-
     protected void append(LoggingEvent event) {
-        events.add(event);
+        StandardTests.LogEvent lev = new StandardTests.LogEvent();
+        
+        lev.level = event.getLevel().toString();
+
+        if (event.getMessage() == null)
+            lev.msg = null;
+        else
+            lev.msg = event.getMessage().toString();
+        
+        if (event.getThrowableInformation() == null)
+            lev.throwable = null;
+        else
+            lev.throwable = event.getThrowableInformation().getThrowable();
+
+        events.add(lev);
     }
 
 

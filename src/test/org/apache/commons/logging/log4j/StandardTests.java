@@ -22,16 +22,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
 import junit.framework.TestCase;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.spi.LoggingEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,24 +45,40 @@ import org.apache.commons.logging.impl.Log4J12Logger;
 
 public abstract class StandardTests extends TestCase {
 
-    // -------------------------------------------------------------------
-    // Constants
-    // ------------------------------------------------------------------- 
-
     /**
-     * The set of message strings that methods logPlainMessages and 
-     * logExceptionMessages output when called.
+     * Simple structure to store information about messages that actually get
+     * logged by the underlying logging library.
      */
-    private static final String TEST_MESSAGES[] = { 
-        "info", "warn", "error", "fatal" 
-    };
-
+    public static class LogEvent {
+        public String msg;
+        public String level;
+        public Throwable throwable;
+    }
+    
     /**
-     * The message levels that the messages in TEST_MESSAGES are logged at.
+     * Simple helper class that can configure log4j to redirect all logged
+     * messages into a list of LogEvent messages.
+     * <p>
+     * The TestCase classes that junit will run later have two roles: they
+     * hold the tests to run, and they also provide the suite() method that
+     * indicates which tests to run. This causes complications for us in the
+     * case of log4j because of the binary-incompatible log4j versions. We 
+     * can't have any version of log4j to be in the classpath until we are
+     * actually running the tests returned by suite() - but junit can't load
+     * the class to call suite() on it if the class or any of its ancestors
+     * have direct references to log4j APIs (or NoClassDefFound occurs).
+     * <p>
+     * The answer is to move all the direct log4j calls out of the TestCase
+     * classes into a helper which is only loaded via reflection during the
+     * test runs (and not during calls to suite()). This class defines the
+     * interface required of that helper.
+     * <p>
+     * See also method getTestHelperClassName.  
      */
-    private static final Level TEST_LEVELS[] = { 
-        Level.INFO, Level.WARN, Level.ERROR, Level.FATAL 
-    };
+
+    public static interface TestHelper {
+        public void forwardMessages(List logEvents);
+    }
 
     // ------------------------------------------------------------------- 
     // JUnit Infrastructure Methods
@@ -84,17 +98,13 @@ public abstract class StandardTests extends TestCase {
         LogFactory.releaseAll();
     }
 
-    // ----------------------------------------------------------- Test Methods
+    // ----------------------------------------------------------- 
+    // abstract methods
+    // ----------------------------------------------------------- 
 
-    /**
-     * Test that our test harness code works, ie that we are able to
-     * configure log4j on the fly to write to an instance of TestAppender.
-     */
-    public void testAppender() throws Exception {
-        setUpTestAppender();
-        TestAppender testAppender = getTestAppender();
-        assertNotNull("Appender exists", testAppender);
-    }
+    protected abstract String getTestHelperClassName();
+
+    // ----------------------------------------------------------- Test Methods
 
     /**
      * Test that a LogFactory gets created as expected.
@@ -112,45 +122,33 @@ public abstract class StandardTests extends TestCase {
     }
 
     /**
-     * Test that a Log object gets created as expected.
-     */
-    public void testCreateLog() throws Exception {
-        setUpTestAppender();
-        Log log = LogFactory.getLog("test-category");
-        
-        // check that it is of the expected type, that we can access
-        // the underlying real logger and that the logger level has
-        // been set as expected after the call to setUpTestAppender.
-        Log4J12Logger log4j12 = (Log4J12Logger) log;
-        Logger logger = log4j12.getLogger();
-        assertEquals("Logger name", "test-category", logger.getName());
-        assertEquals("Logger level", Level.INFO, logger.getEffectiveLevel());
-    }
-
-    /**
      * Verify that we can log messages without exceptions.
      */
     public void testPlainMessages() throws Exception {
-        setUpTestAppender();
+        List logEvents = new ArrayList();
+        setUpTestAppender(logEvents);
         Log log = LogFactory.getLog("test-category");
         logPlainMessages(log);
-        checkLoggingEvents(false);
+        checkLoggingEvents(logEvents, false);
     }
 
     /**
      * Verify that we can log exception messages.
      */
     public void testExceptionMessages() throws Exception {
-        setUpTestAppender();
+        List logEvents = new ArrayList();
+        setUpTestAppender(logEvents);
         Log log = LogFactory.getLog("test-category");
         logExceptionMessages(log);
-        checkLoggingEvents(true);
+        checkLoggingEvents(logEvents, true);
     }
 
     /**
      * Test Serializability of Log instance
      */
     public void testSerializable() throws Exception {
+        List logEvents = new ArrayList();
+        setUpTestAppender(logEvents);
         Log log = LogFactory.getLog("test-category");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -165,37 +163,23 @@ public abstract class StandardTests extends TestCase {
 
         // Check the characteristics of the resulting object
         logExceptionMessages(newLog);
-        checkLoggingEvents(true);
+        checkLoggingEvents(logEvents, true);
     }
 
     // -------------------------------------------------------- Support Methods
 
     /**
-     * Call log4j's PropertyConfigurator passing specific config info
-     * in order to force log4j to create an instance of class TestAppender
-     * and send all logged messages to that appender object.
-     * <p>
-     * The TestAppender class stores all its messages in memory, so we
-     * can later check what messages it received from log4j.
+     * Modify log4j's setup so that all messages actually logged get redirected
+     * into the specified list.
      * <p>
      * This method also sets the logging level to INFO so that we
      * can test whether messages are getting properly filtered.
      */
-    private void setUpTestAppender() throws Exception {
-        Properties props = new Properties();
-        props.put("log4j.rootLogger", "INFO, A1");
-        props.put("log4j.appender.A1", "org.apache.commons.logging.log4j.TestAppender");
-        PropertyConfigurator.configure(props);
-    }
-
-    /**
-     * Get the custom TestAppender that has been set to recieve all
-     * messages logged via log4j. It is presumed that method setUpTestAppender
-     * has been called earlier to force a TestAppender to be used by log4j.
-     */
-    private TestAppender getTestAppender() {
-        Enumeration appenders = Logger.getRootLogger().getAllAppenders();
-        return (TestAppender) appenders.nextElement();
+    private void setUpTestAppender(List logEvents) throws Exception {
+        String testHelperClassName = getTestHelperClassName();
+        Class clazz = this.getClass().getClassLoader().loadClass(testHelperClassName);
+        TestHelper testHelper = (TestHelper) clazz.newInstance();
+        testHelper.forwardMessages(logEvents);
     }
 
     /**
@@ -207,36 +191,37 @@ public abstract class StandardTests extends TestCase {
      * called to log a known number of messages at known levels.
      * </ul>
      * 
+     * @param logEvents is the list of log events received.
+     * 
      * @param thrown False if logPlainMessages was called
      * (ie the TestAppender is expected to have received
      * logevents with no associated exception info). True if
      * logExceptionMessages was called.
      */
-    private void checkLoggingEvents(boolean thrown) {
-        TestAppender appender = getTestAppender();
-        Iterator events = appender.events();
-        for (int i = 0; i < TEST_MESSAGES.length; i++) {
-            assertTrue("Logged event " + i + " exists",events.hasNext());
-            LoggingEvent event = (LoggingEvent) events.next();
-            assertEquals("LoggingEvent level",
-                         TEST_LEVELS[i], event.getLevel());
-            assertEquals("LoggingEvent message",
-                         TEST_MESSAGES[i], event.getMessage());
-
-            if (thrown) {
-                assertNotNull("LoggingEvent thrown",
-                              event.getThrowableInformation().getThrowableStrRep());
-                assertTrue("LoggingEvent thrown type",
-                           event.getThrowableInformation()
-                                .getThrowableStrRep()[0]
-                                    .indexOf("IndexOutOfBoundsException")>0);
-            } else {
-                assertNull("LoggingEvent thrown",
-                           event.getThrowableInformation());
-            }
-        }
-        assertTrue(!events.hasNext());
-        appender.flush();
+    private void checkLoggingEvents(List logEvents, boolean thrown) {
+        LogEvent ev;
+        
+        assertEquals("Unexpected number of log events", 4, logEvents.size());
+        
+        ev = (LogEvent) logEvents.get(0);
+        assertEquals("Info message expected", "info", ev.msg);
+        assertEquals("Info level expected", "INFO", ev.level);
+        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
+        
+        ev = (LogEvent) logEvents.get(1);
+        assertEquals("Warn message expected", "warn", ev.msg);
+        assertEquals("Warn level expected", "WARN", ev.level);
+        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
+        
+        ev = (LogEvent) logEvents.get(2);
+        assertEquals("Error message expected", "error", ev.msg);
+        assertEquals("Error level expected", "ERROR", ev.level);
+        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
+        
+        ev = (LogEvent) logEvents.get(3);
+        assertEquals("Fatal message expected", "fatal", ev.msg);
+        assertEquals("Fatal level expected", "FATAL", ev.level);
+        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
     }
 
 
@@ -252,7 +237,7 @@ public abstract class StandardTests extends TestCase {
         log.fatal("fatal");
     }
 
-    /*
+    /**
      * Log messages with exceptions
      */
     private void logExceptionMessages(Log log) {
