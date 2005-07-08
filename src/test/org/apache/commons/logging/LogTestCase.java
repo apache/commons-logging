@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import junit.framework.TestSuite;
  * 
  * 
  */
-public class LogTest extends AbstractLogTest
+public class LogTestCase extends AbstractLogTest
 {
 
     /**
@@ -45,16 +45,7 @@ public class LogTest extends AbstractLogTest
 
     public static void main(String[] args)
     {
-            String[] testCaseName = { LogTest.class.getName() };
+            String[] testCaseName = { LogTestCase.class.getName() };
             junit.textui.TestRunner.main(testCaseName);    
     }
-    
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        
-        suite.addTestSuite(LogTest.class);
-        
-        return suite;
-    }
-    
 }
