@@ -1,5 +1,5 @@
 /*
- * Copyright 2004 The Apache Software Foundation.
+ * Copyright 2004,2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,22 +25,17 @@ import junit.framework.TestCase;
  * This is the minimum requirement for any well behaved logger 
  * and so this test should be run for each kind.
  */
-public class BasicOperationsTest extends TestCase
+public class BasicOperationsTestCase extends TestCase
 {
-    public BasicOperationsTest(String testName)
-    {
-        super(testName);
-    }
-    
     public void testIsEnabledClassLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTest.class);
+        Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeIsEnabledTest(log);
     }
     
     public void testIsEnabledNamedLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTest.class.getName());
+        Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeIsEnabledTest(log);
     }    
     
@@ -65,13 +60,13 @@ public class BasicOperationsTest extends TestCase
     
     public void testMessageWithoutExceptionClassLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTest.class);
+        Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithoutExceptionTest(log);
     }
     
     public void testMessageWithoutExceptionNamedLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTest.class.getName());
+        Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithoutExceptionTest(log);
     }    
     
@@ -95,13 +90,13 @@ public class BasicOperationsTest extends TestCase
     
     public void testMessageWithExceptionClassLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTest.class);
+        Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithExceptionTest(log);
     }
     
     public void testMessageWithExceptionNamedLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTest.class.getName());
+        Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithExceptionTest(log);
     }    
     

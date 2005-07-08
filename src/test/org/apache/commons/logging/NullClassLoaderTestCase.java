@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import junit.framework.TestSuite;
  * JCL is deployed via the bootclassloader - something that could be done when
  * using java in embedded systems.
  */
-public class NullClassLoaderTest extends TestCase{
+public class NullClassLoaderTestCase extends TestCase {
 
     //---------------------- Main ---------------------------------    
 
@@ -33,25 +33,10 @@ public class NullClassLoaderTest extends TestCase{
      * Main method so this test case can be run direct from the command line.
      */
     public static void main(String[] args){
-        String[] testCaseName = { NullClassLoaderTest.class.getName() };
+        String[] testCaseName = { NullClassLoaderTestCase.class.getName() };
         junit.textui.TestRunner.main(testCaseName);
     }
 
-    //---------------------- Constructors ---------------------------------    
-
-    /** Creates a new instance of LoadTest */
-    public NullClassLoaderTest(String testName) {
-        super(testName);
-    }
-
-    //---------------------- JUnit methods ---------------------------------    
-    
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTestSuite(NullClassLoaderTest.class);
-        return suite;
-    }
-    
     //---------------------- unit tests ---------------------------------    
     
     /**

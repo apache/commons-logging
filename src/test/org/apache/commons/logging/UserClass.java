@@ -36,7 +36,7 @@ public class UserClass {
     }
 
     public UserClass() {
-        Log log = LogFactory.getLog(LoadTest.class);
+        Log log = LogFactory.getLog(LoadTestCase.class);
       }
     
 }

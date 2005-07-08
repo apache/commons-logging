@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import junit.framework.TestSuite;
  * @author  baliuka
  * @version $Id$
  */
-public class LoadTest extends TestCase{
+public class LoadTestCase extends TestCase{
     //TODO: need some way to add service provider packages
     static private String LOG_PCKG[] = {"org.apache.commons.logging",
                                         "org.apache.commons.logging.impl"};
@@ -213,26 +213,9 @@ public class LoadTest extends TestCase{
     }
     
     
-    
-    /** Creates a new instance of LoadTest */
-    public LoadTest(String testName) {
-        super(testName);
-    }
-    
-    
-    
-    
     public static void main(String[] args){
-        String[] testCaseName = { LoadTest.class.getName() };
+        String[] testCaseName = { LoadTestCase.class.getName() };
         junit.textui.TestRunner.main(testCaseName);
-    }
-    
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        
-        suite.addTestSuite(LoadTest.class);
-        
-        return suite;
     }
     
     public void setUp() {
