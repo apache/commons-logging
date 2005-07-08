@@ -25,7 +25,10 @@ import org.apache.log4j.spi.LoggingEvent;
 
 
 /**
- * <p>Test implementation of <code>org.apache.log4j.Appender</code>.</p>
+ * A custom implementation of <code>org.apache.log4j.Appender</code> which
+ * stores all received log event messages in memory. This allows test code
+ * to check whether the messages it expected to log have actually been logged.
+ * 
  *
  * @author Craig R. McClanahan
  * @version $Revision$ $Date$
