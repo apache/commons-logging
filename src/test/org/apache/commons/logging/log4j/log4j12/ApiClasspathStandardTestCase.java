@@ -29,14 +29,12 @@ import org.apache.commons.logging.log4j.StandardTests;
  * the parent classpath and commons-logging.jar is in the child.
  */
 
-public class ApiClasspathStandardTestCase extends StandardTests {
+public class ApiClasspathStandardTestCase {
 
     /**
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        Class thisClass = ApiClasspathStandardTestCase.class;
-        
         PathableClassLoader parent = new PathableClassLoader(null);
         parent.useSystemLoader("junit.");
         parent.addLogicalLib("commons-logging-api");
@@ -46,15 +44,8 @@ public class ApiClasspathStandardTestCase extends StandardTests {
         child.addLogicalLib("commons-logging");
         child.addLogicalLib("testclasses");
 
-        Class testClass = child.loadClass(thisClass.getName());
+        Class testClass = child.loadClass(
+            "org.apache.commons.logging.log4j.log4j12.Log4j12StandardTests");
         return new PathableTestSuite(testClass, child);
-    }
-    
-    /**
-     * Return the name of a class that makes all direct calls to log4j
-     * apis. See StandardTests.TestHelper for more information.
-     */
-    public String getTestHelperClassName() {
-        return "org.apache.commons.logging.log4j.log4j12.TestHelper";
     }
 }

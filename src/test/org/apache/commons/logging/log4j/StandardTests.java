@@ -54,31 +54,6 @@ public abstract class StandardTests extends TestCase {
         public String level;
         public Throwable throwable;
     }
-    
-    /**
-     * Simple helper class that can configure log4j to redirect all logged
-     * messages into a list of LogEvent messages.
-     * <p>
-     * The TestCase classes that junit will run later have two roles: they
-     * hold the tests to run, and they also provide the suite() method that
-     * indicates which tests to run. This causes complications for us in the
-     * case of log4j because of the binary-incompatible log4j versions. We 
-     * can't have any version of log4j to be in the classpath until we are
-     * actually running the tests returned by suite() - but junit can't load
-     * the class to call suite() on it if the class or any of its ancestors
-     * have direct references to log4j APIs (or NoClassDefFound occurs).
-     * <p>
-     * The answer is to move all the direct log4j calls out of the TestCase
-     * classes into a helper which is only loaded via reflection during the
-     * test runs (and not during calls to suite()). This class defines the
-     * interface required of that helper.
-     * <p>
-     * See also method getTestHelperClassName.  
-     */
-
-    public static interface TestHelper {
-        public void forwardMessages(List logEvents);
-    }
 
     // ------------------------------------------------------------------- 
     // JUnit Infrastructure Methods
@@ -102,8 +77,15 @@ public abstract class StandardTests extends TestCase {
     // abstract methods
     // ----------------------------------------------------------- 
 
-    protected abstract String getTestHelperClassName();
-
+    /**
+     * Modify log4j's setup so that all messages actually logged get redirected
+     * into the specified list.
+     * <p>
+     * This method also sets the logging level to INFO so that we
+     * can test whether messages are getting properly filtered.
+     */
+    public abstract void setUpTestAppender(List logEvents) throws Exception;
+    
     // ----------------------------------------------------------- Test Methods
 
     /**
@@ -167,20 +149,6 @@ public abstract class StandardTests extends TestCase {
     }
 
     // -------------------------------------------------------- Support Methods
-
-    /**
-     * Modify log4j's setup so that all messages actually logged get redirected
-     * into the specified list.
-     * <p>
-     * This method also sets the logging level to INFO so that we
-     * can test whether messages are getting properly filtered.
-     */
-    private void setUpTestAppender(List logEvents) throws Exception {
-        String testHelperClassName = getTestHelperClassName();
-        Class clazz = this.getClass().getClassLoader().loadClass(testHelperClassName);
-        TestHelper testHelper = (TestHelper) clazz.newInstance();
-        testHelper.forwardMessages(logEvents);
-    }
 
     /**
      * Verify that the TestAppender has received the expected
