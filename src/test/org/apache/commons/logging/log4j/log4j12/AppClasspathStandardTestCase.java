@@ -27,29 +27,20 @@ import org.apache.commons.logging.log4j.StandardTests;
  * is in it, as would be the situation for a standalone application.
  */
 
-public class AppClasspathStandardTestCase extends StandardTests {
+public class AppClasspathStandardTestCase {
 
     /**
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        Class thisClass = AppClasspathStandardTestCase.class;
-        
         PathableClassLoader loader = new PathableClassLoader(null);
         loader.useSystemLoader("junit.");
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("log4j12");
         loader.addLogicalLib("commons-logging");
         
-        Class testClass = loader.loadClass(thisClass.getName());
+        Class testClass = loader.loadClass(
+            "org.apache.commons.logging.log4j.log4j12.Log4j12StandardTests");
         return new PathableTestSuite(testClass, loader);
-    }
-    
-    /**
-     * Return the name of a class that makes all direct calls to log4j
-     * apis. See StandardTests.TestHelper for more information.
-     */
-    public String getTestHelperClassName() {
-        return "org.apache.commons.logging.log4j.log4j12.TestHelper";
     }
 }
