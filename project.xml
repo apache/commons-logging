@@ -20,7 +20,8 @@
   <pomVersion>3</pomVersion>
   
   <name>Logging</name>
-  <id>commons-logging</id>
+  <groupId>commons-logging</groupId>
+  <artifactId>commons-logging</artifactId>
   <currentVersion>1.1-dev</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>Commons Logging</shortDescription>
@@ -167,27 +168,35 @@
   <dependencies>
     
     <dependency>
-      <id>log4j</id>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
       <version>1.2.6</version>
     </dependency>
     
     <dependency>
-      <id>logkit</id>
+      <groupId>logkit</groupId>
+      <artifactId>logkit</artifactId>
       <version>1.0.1</version>
     </dependency>
 
     <dependency>
-      <id>junit</id>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <version>3.8.1</version>
+      <properties>
+        <scope>test</scope>
+      </properties>
     </dependency>
     
     <dependency>
-      <id>avalon-framework</id>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework</artifactId>
       <version>4.1.3</version>
     </dependency>
     
     <dependency>
-      <id>servletapi</id>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
       <version>2.3</version>
     </dependency>
     
