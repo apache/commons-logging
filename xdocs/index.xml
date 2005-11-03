@@ -48,7 +48,7 @@ their choice.</p>
 Release Notes</a> document the new features and bug fixes that have been
 included in the latest release.</p>
 
-<p>The <a href="http://jakarta.apache.org/commons/logging/api/index.html">
+<p>The <a href="http://jakarta.apache.org/commons/logging/apidocs/index.html">
 JavaDoc API documents</a> for the latest release are available online.
 In particular, you should read the package overview of the <code>org.apache.commons.logging</code>
 package. In addition, there is a (short)
