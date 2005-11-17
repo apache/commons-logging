@@ -86,7 +86,7 @@ public class Log4J12Logger implements Log, Serializable {
         // calls to Log.trace(...) onto the DEBUG level.
         
         try {
-            traceLevel = (Priority) Priority.class.getDeclaredField("TRACE").get(null);
+            traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
         } catch(Exception ex) {
             // ok, trace not available
             traceLevel = Priority.DEBUG;
