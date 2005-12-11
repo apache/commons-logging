@@ -108,7 +108,6 @@
   <property name="core.jar.name" value="commons-${component.name}-${component.version}.jar"/>
   <property name="api.jar.name" value="commons-${component.name}-api-${component.version}.jar"/>
   <property name="adapters.jar.name" value="commons-${component.name}-adapters-${component.version}.jar"/>
-  <property name="optional.jar.name" value="commons-${component.name}-optional-${component.version}.jar"/>
   
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -570,20 +569,6 @@ limitations under the License.--&gt;'>
         <include name="${api.jar.name}"/>
         <include name="${adapters.jar.name}"/>
       </fileset>
-    </copy>
-
-    <!--
-      - Now build the optional jar in subdir "optional" and copy that into
-      - the dist directory too.
-      -->
-    <ant antfile='build.xml' target='dist' dir='${optional.home}' inheritAll="false" />
-    <copy todir="${dist.home}">
-        <fileset dir='${optional.dist.home}'>
-            <include name='*.jar'/>
-        </fileset>
-    </copy>
-    <copy todir="${dist.home}/docs-optional">
-        <fileset dir='${optional.dist.home}/docs'/>
     </copy>
   	
     <!--
