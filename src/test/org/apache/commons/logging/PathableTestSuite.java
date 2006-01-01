@@ -17,9 +17,10 @@
 package org.apache.commons.logging;
 
 import java.util.Properties;
+
 import junit.framework.Test;
-import junit.framework.TestSuite;
 import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 /**
  * Custom TestSuite class that can be used to control the context classloader

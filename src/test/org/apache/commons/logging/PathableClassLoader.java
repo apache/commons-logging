@@ -16,19 +16,16 @@
 
 package org.apache.commons.logging;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-// TODO: use Hashtable instead of HashMap
-import java.util.Map;
+// TODO: use HashTable instead of HashMap for java1.2 support
 import java.util.HashMap;
 import java.util.Iterator;
-
-import java.util.Enumeration;
-import java.util.Vector;
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
+import java.util.Map;
 
 /**
  * A ClassLoader which sees only specified classes, and which can be
