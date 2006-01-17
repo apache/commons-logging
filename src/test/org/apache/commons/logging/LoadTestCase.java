@@ -15,9 +15,7 @@
  */ 
 package org.apache.commons.logging;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * testcase to emulate container and application isolated from container
