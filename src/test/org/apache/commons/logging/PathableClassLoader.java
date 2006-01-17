@@ -84,7 +84,6 @@ public class PathableClassLoader extends URLClassLoader {
      * library in the build.xml file.
      */
     public void addURL(URL url) {
-        System.err.println("adding URL [" + url + "]");
         super.addURL(url);
     }
 
