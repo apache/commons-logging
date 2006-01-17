@@ -77,6 +77,16 @@ public class PathableClassLoader extends URLClassLoader {
     public PathableClassLoader(ClassLoader parent) {
         super(NO_URLS, parent);
     }
+    
+    /**
+     * Allow caller to explicitly add paths. Generally this not a good idea;
+     * use addLogicalLib instead, then define the location for that logical
+     * library in the build.xml file.
+     */
+    public void addURL(URL url) {
+        System.err.println("adding URL [" + url + "]");
+        super.addURL(url);
+    }
 
     /**
      * Specify whether this classloader should ask the parent classloader
