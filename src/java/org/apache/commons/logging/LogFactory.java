@@ -521,8 +521,7 @@ public abstract class LogFactory {
             // version of the LogFactoryImpl class and have it used dynamically
             // by an old LogFactory class in the parent, but that isn't 
             // necessarily a good idea anyway.
-            ClassLoader logFactoryClassLoader = getClassLoader(LogFactory.class);
-            factory = newFactory(FACTORY_DEFAULT, logFactoryClassLoader, contextClassLoader);
+            factory = newFactory(FACTORY_DEFAULT, thisClassLoader, contextClassLoader);
         }
 
         if (factory != null) {
