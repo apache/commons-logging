@@ -61,6 +61,13 @@ public abstract class LogFactory {
     public static final String PRIORITY_KEY = "priority";
 
     /**
+     * The name of the key in the config file used to specify whether logging
+     * classes should be loaded via the thread context class loader (TCCL),
+     * or not. By default, the TCCL is used.
+     */
+    public static final String TCCL_KEY = "use_tccl";
+
+    /**
      * The name of the property used to identify the LogFactory implementation
      * class name. This can be used as a system property, or as an entry in a
      * configuration properties file.
@@ -391,6 +398,25 @@ public abstract class LogFactory {
 
         Properties props = getConfigurationFile(contextClassLoader, FACTORY_PROPERTIES);
 
+        // Determine whether we will be using the thread context class loader to
+        // load logging classes or not by checking the loaded properties file (if any).
+        ClassLoader baseClassLoader = contextClassLoader;
+        if (props != null) {
+            String useTCCLStr = props.getProperty(TCCL_KEY);
+            if (useTCCLStr != null) {
+                if (Boolean.valueOf(useTCCLStr) == Boolean.FALSE) {
+                    // Don't use current context classloader when locating any
+                    // LogFactory or Log classes, just use the class that loaded
+                    // this abstract class. When this class is deployed in a shared
+                    // classpath of a container, it means webapps cannot deploy their
+                    // own logging implementations. It also means that it is up to the
+                    // implementation whether to load library-specific config files
+                    // from the TCCL or not.
+                    baseClassLoader = thisClassLoader; 
+                }
+            }
+        }
+
         // Determine which concrete LogFactory subclass to use.
         // First, try a global system property
         logDiagnostic(
@@ -404,7 +430,7 @@ public abstract class LogFactory {
                     "Creating an instance of LogFactory class " + factoryClass
                     + " as specified by system property " + FACTORY_PROPERTY);
 
-                factory = newFactory(factoryClass, contextClassLoader, contextClassLoader);
+                factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
             }
         } catch (SecurityException e) {
             logDiagnostic(
@@ -453,7 +479,7 @@ public abstract class LogFactory {
                             + " which was present in the path of the context"
                             + " classloader.");
 
-                        factory = newFactory( factoryClassName, contextClassLoader, contextClassLoader );
+                        factory = newFactory(factoryClassName, baseClassLoader, contextClassLoader );
                     }
                 }
             } catch( Exception ex ) {
@@ -489,7 +515,7 @@ public abstract class LogFactory {
 
                 String factoryClass = props.getProperty(FACTORY_PROPERTY);
                 if (factoryClass != null) {
-                    factory = newFactory(factoryClass, contextClassLoader, contextClassLoader);
+                    factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
                     
                     // what about handling an exception from newFactory??
                 }
@@ -1002,6 +1028,7 @@ public abstract class LogFactory {
             logDiagnostic("Unable to create logfactory instance.");
             if (logFactoryClass != null
                 && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
+                
                 return new LogConfigurationException(
                     "The chosen LogFactory implementation does not extend LogFactory."
                     + " Please check your configuration.",
