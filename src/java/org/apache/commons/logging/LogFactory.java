@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@ package org.apache.commons.logging;
 
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.FileOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Enumeration;
@@ -52,10 +53,17 @@ public abstract class LogFactory {
 
     // ----------------------------------------------------- Manifest Constants
 
+    /**
+     * The name of the key in the config file used to specify the priority of
+     * that particular config file. The associated value is a floating-point
+     * number; higher values take priority over lower values.
+     */
+    public static final String PRIORITY_KEY = "priority";
 
     /**
      * The name of the property used to identify the LogFactory implementation
-     * class name.
+     * class name. This can be used as a system property, or as an entry in a
+     * configuration properties file.
      */
     public static final String FACTORY_PROPERTY =
         "org.apache.commons.logging.LogFactory";
@@ -325,7 +333,6 @@ public abstract class LogFactory {
 
     // --------------------------------------------------------- Static Methods
 
-
     /**
      * <p>Construct (if necessary) and return a <code>LogFactory</code>
      * instance, using the following ordered lookup procedure to determine
@@ -352,7 +359,6 @@ public abstract class LogFactory {
      *  available or cannot be instantiated.
      */
     public static LogFactory getFactory() throws LogConfigurationException {
-
         // Identify the class loader we will be using
         ClassLoader contextClassLoader = getContextClassLoader();
 
@@ -383,23 +389,9 @@ public abstract class LogFactory {
         // As the properties file (if it exists) will be used one way or 
         // another in the end we may as well look for it first.
 
-        Properties props=null;
-        try {
-            InputStream stream = getResourceAsStream(contextClassLoader,
-                                                     FACTORY_PROPERTIES);
+        Properties props = getConfigurationFile(contextClassLoader, FACTORY_PROPERTIES);
 
-            if (stream != null) {
-                props = new Properties();
-                props.load(stream);
-                stream.close();
-            }
-        } catch (IOException e) {
-            ; // ignore
-        } catch (SecurityException e) {
-            ; // ignore
-        }
-
-
+        // Determine which concrete LogFactory subclass to use.
         // First, try a global system property
         logDiagnostic(
             "Looking for system property [" + FACTORY_PROPERTY 
@@ -513,8 +505,9 @@ public abstract class LogFactory {
                 + " via the same classloader that loaded this LogFactory"
                 + " class (ie not looking in the context classloader).");
             
-            // Note: we don't try to load the LogFactory implementation
-            // via the context classloader here because:
+            // Note: unlike the above code which can try to load custom LogFactory
+            // implementations via the TCCL, we don't try to load the default LogFactory
+            // implementation via the context classloader because:
             // * that can cause problems (see comments in newFactory method)
             // * no-one should be customising the code of the default class
             // Yes, we do give up the ability for the child to ship a newer
@@ -879,6 +872,8 @@ public abstract class LogFactory {
      * @param factoryClass Fully qualified name of the <code>LogFactory</code>
      *  implementation class
      * @param classLoader ClassLoader from which to load this class
+     * @param contextClassLoader is the context that this new factory will
+     * manage logging for.
      *
      * @exception LogConfigurationException if a suitable instance
      *  cannot be created
@@ -1016,6 +1011,12 @@ public abstract class LogFactory {
         }
     }
 
+    /**
+     * Applets may run in an environment where accessing resources of a loader is
+     * a secure operation, but where the commons-logging library has explicitly
+     * been granted permission for that operation. In this case, we need to 
+     * run the operation using an AccessController.
+     */
     private static InputStream getResourceAsStream(final ClassLoader loader,
                                                    final String name)
     {
@@ -1029,6 +1030,129 @@ public abstract class LogFactory {
                     }
                 }
             });
+    }
+
+    /**
+     * Given a filename, return an enumeration of URLs pointing to
+     * all the occurrences of that filename in the classpath.
+     * <p>
+     * This is just like ClassLoader.getResources except that the
+     * operation is done under an AccessController so that this method will
+     * succeed when this jarfile is privileged but the caller is not.
+     * This method must therefore remain private to avoid security issues.
+     * <p>
+     * If no instances are found, an Enumeration is returned whose
+     * hasMoreElements method returns false (ie an "empty" enumeration).
+     * If resources could not be listed for some reason, null is returned.
+     */
+    private static Enumeration getResources(final ClassLoader loader,
+            final String name)
+    {
+        PrivilegedAction action = 
+            new PrivilegedAction() {
+                public Object run() {
+                    try {
+                        if (loader != null) {
+                            return loader.getResources(name);
+                        } else {
+                            return ClassLoader.getSystemResources(name);
+                        }
+                    } catch(IOException e) {
+                        logDiagnostic(
+                            "Exception while trying to find configuration file "
+                            + name + ":" + e.getMessage());
+                        return null;
+                    }
+                }
+            };
+        Object result = AccessController.doPrivileged(action);
+        return (Enumeration) result;
+    }
+
+    /**
+     * Given a URL that refers to a .properties file, load that file.
+     * This is done under an AccessController so that this method will
+     * succeed when this jarfile is privileged but the caller is not.
+     * This method must therefore remain private to avoid security issues.
+     * <p>
+     * Null is returned if the URL cannot be opened.
+     */
+    private static Properties getProperties(final URL url) {
+        PrivilegedAction action = 
+            new PrivilegedAction() {
+                public Object run() {
+                    try {
+                        InputStream stream = url.openStream();
+                        if (stream != null) {
+                            Properties props = new Properties();
+                            props.load(stream);
+                            stream.close();
+                            return props;
+                        }
+                    } catch(IOException e) {
+                        logDiagnostic("Unable to read URL " + url);
+                    }
+
+                    return null;
+                }
+            };
+        return (Properties) AccessController.doPrivileged(action);
+    }
+
+    /**
+     * Locate a user-provided configuration file.
+     * <p>
+     * The classpath of the specified classLoader (usually the context classloader)
+     * is searched for properties files of the specified name. If none is found,
+     * null is returned. If more than one is found, then the file with the greatest
+     * value for its PRIORITY property is returned. If multiple files have the
+     * same PRIORITY value then the first in the classpath is returned.
+     * <p> 
+     * This differs from the 1.0.x releases; those always use the first one found.
+     * However as the priority is a new field, this change is backwards compatible.
+     * <p>
+     * The purpose of the priority field is to allow a webserver administrator to
+     * override logging settings in all webapps by placing a commons-logging.properties
+     * file in a shared classpath location with a priority > 0; this overrides any
+     * commons-logging.properties files without priorities which are in the
+     * webapps. Webapps can also use explicit priorities to override a configuration
+     * file in the shared classpath if needed. 
+     */
+    private static final Properties getConfigurationFile(
+            ClassLoader classLoader, String fileName) {
+
+        Properties props = null;
+        double priority = 0.0;
+        try {
+            Enumeration urls = getResources(classLoader, fileName);
+
+            if (urls == null) {
+                return null;
+            }
+            
+            while (urls.hasMoreElements()) {
+                URL url = (URL) urls.nextElement();
+                
+                Properties newProps = getProperties(url);
+                if (newProps != null) {
+                    if (props == null) {
+                        props = newProps;
+                    } else {
+                        String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
+                        if (newPriorityStr != null) {
+                            double newPriority = Double.valueOf(newPriorityStr).doubleValue();
+                            if (newPriority > priority) {
+                                props = newProps;
+                                priority = newPriority;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SecurityException e) {
+            logDiagnostic("SecurityException thrown");
+        }
+        return props;
     }
 
     /**
