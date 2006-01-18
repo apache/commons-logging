@@ -159,6 +159,11 @@ public class LogFactoryImpl extends LogFactory {
 
     // ----------------------------------------------------- Instance Variables
 
+    /**
+     * Determines whether logging classes should be loaded using the thread-context
+     * classloader, or via the classloader that loaded this LogFactoryImpl class.
+     */
+    private boolean useTCCL = true;
 
     /**
      * The string prefixed to every message output by the logDiagnostic method.
@@ -374,6 +379,10 @@ public class LogFactoryImpl extends LogFactory {
             attributes.remove(name);
         } else {
             attributes.put(name, value);
+        }
+        
+        if (name.equals(TCCL_KEY)) {
+            useTCCL = Boolean.valueOf(value.toString()).booleanValue();
         }
 
     }
@@ -699,7 +708,6 @@ public class LogFactoryImpl extends LogFactory {
         String specifiedLogClassName = findUserSpecifiedLogClassName();
 
         if (specifiedLogClassName != null) {
-            // note: createLogFromClass never returns null..
             result = createLogFromClass(specifiedLogClassName,
                                         logCategory,
                                         true);
@@ -834,7 +842,7 @@ public class LogFactoryImpl extends LogFactory {
                 Class c = Class.forName(logAdapterClassName, true, currentCL);
                 constructor = c.getConstructor(logConstructorSignature);
                 Object o = constructor.newInstance(params);
-                
+
                 // Note that we do this test after trying to create an instance
                 // [rather than testing Log.class.isAssignableFrom(c)] so that
                 // we don't complain about Log hierarchy problems when the
@@ -969,12 +977,17 @@ public class LogFactoryImpl extends LogFactory {
      * 
      */
     private ClassLoader getBaseClassLoader() throws LogConfigurationException {
-        ClassLoader contextClassLoader = getContextClassLoader();
         ClassLoader thisClassLoader = getClassLoader(LogFactoryImpl.class);
         
+        if (useTCCL == false) {
+            return thisClassLoader;
+        }
+
+        ClassLoader contextClassLoader = getContextClassLoader();
+
         ClassLoader baseClassLoader = getLowestClassLoader(
                 contextClassLoader, thisClassLoader);
-
+        
         if (baseClassLoader == null) {
            // The two classloaders are not part of a parent child relationship.
            // In some classloading setups (e.g. JBoss with its 
