@@ -361,6 +361,11 @@ public abstract class LogFactory {
      * <code>LogFactory</code> implementation class is utilized, all of the
      * properties defined in this file will be set as configuration attributes
      * on the corresponding <code>LogFactory</code> instance.</p>
+     * 
+     * <p><em>NOTE</em> - In a multithreaded environment it is possible 
+     * that two different instances will be returned for the same 
+     * classloader environment. 
+     * </p>
      *
      * @exception LogConfigurationException if the implementation class is not
      *  available or cannot be instantiated.
