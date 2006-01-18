@@ -16,8 +16,6 @@
  
 package org.apache.commons.logging;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 /**
  * 
