@@ -15,9 +15,7 @@
  */ 
 package org.apache.commons.logging;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Test cases for situations where getClassLoader or getContextClassLoader

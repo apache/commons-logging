@@ -17,7 +17,6 @@
 package org.apache.commons.logging;
 
 import org.apache.commons.logging.impl.NoOpLog;
-import junit.framework.*;
 
 /**
  * 
