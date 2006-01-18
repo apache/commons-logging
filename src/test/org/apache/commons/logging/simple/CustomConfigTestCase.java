@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;

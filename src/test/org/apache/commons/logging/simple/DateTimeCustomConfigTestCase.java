@@ -16,17 +16,14 @@
 
 package org.apache.commons.logging.simple;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.PathableClassLoader;
+import org.apache.commons.logging.PathableTestSuite;
 
 
 /**

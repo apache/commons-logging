@@ -28,9 +28,6 @@ import java.util.logging.Logger;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.commons.logging.PathableTestSuite;
-import org.apache.commons.logging.PathableClassLoader;
-
 
 /**
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
