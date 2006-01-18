@@ -16,17 +16,15 @@
 package org.apache.commons.logging.pathable;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.ArrayList;
-import java.net.URLClassLoader;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.PathableClassLoader;
+import org.apache.commons.logging.PathableTestSuite;
 
 /**
  * Tests for the PathableTestSuite and PathableClassLoader functionality,
