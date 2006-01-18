@@ -19,12 +19,9 @@ package org.apache.commons.logging.log4j.log4j12;
 
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.log4j.StandardTests;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
-
-import org.apache.commons.logging.log4j.StandardTests;
 
 /**
  * A custom implementation of <code>org.apache.log4j.Appender</code> which

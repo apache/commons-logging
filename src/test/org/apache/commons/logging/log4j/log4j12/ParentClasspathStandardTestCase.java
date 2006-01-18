@@ -18,9 +18,8 @@ package org.apache.commons.logging.log4j.log4j12;
 
 import junit.framework.Test;
 
-import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.PathableClassLoader;
-import org.apache.commons.logging.log4j.StandardTests;
+import org.apache.commons.logging.PathableTestSuite;
 
 /**
  * Tests for Log4J logging that emulate a webapp running within
