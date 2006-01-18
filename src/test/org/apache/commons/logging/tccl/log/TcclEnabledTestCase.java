@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 
-package org.apache.commons.logging.tccl;
+package org.apache.commons.logging.tccl.log;
 
 
 import java.net.URL;
@@ -22,20 +22,26 @@ import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-import org.apache.commons.logging.config.PriorityConfigTestCase;
 
 
 /**
- * Verify that by default LogFactoryImpl is loaded from the tccl classloader.
+ * Verify that by default the standard LogFactoryImpl class loads a
+ * custom Log implementation via the TCCL. 
  */
 
 public class TcclEnabledTestCase extends TestCase {
 
-    // ------------------------------------------- JUnit Infrastructure Methods
+    public static final String MY_LOG_PKG = 
+        "org.apache.commons.logging.tccl.custom";
 
+    public static final String MY_LOG_IMPL =
+        MY_LOG_PKG + ".MyLog";
+
+    // ------------------------------------------- JUnit Infrastructure Methods
 
     /**
      * Return the tests included in this test suite.
@@ -56,11 +62,10 @@ public class TcclEnabledTestCase extends TestCase {
         URL baseUrl = dummy.findResource(thisClassPath);
 
         // Now set up the desired classloader hierarchy. Everything goes into
-        // the parent classpath, but we exclude the custom LogFactoryImpl
-        // class.
+        // the parent classpath, but we exclude the custom Log class.
         //
         // We then create a tccl classloader that can see the custom
-        // LogFactory class. Therefore if that class can be found, then the
+        // Log class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
         PathableClassLoader emptyLoader = new PathableClassLoader(null);
         
@@ -69,9 +74,8 @@ public class TcclEnabledTestCase extends TestCase {
         parentLoader.addLogicalLib("commons-logging");
         parentLoader.addLogicalLib("testclasses");
         // hack to ensure that the testcase classloader can't see
-        // the cust MyLogFactoryImpl
-        parentLoader.useExplicitLoader(
-            "org.apache.commons.logging.tccl.custom.", emptyLoader);
+        // the custom MyLogFactoryImpl
+        parentLoader.useExplicitLoader(MY_LOG_PKG + ".", emptyLoader);
         
         URL propsEnableUrl = new URL(baseUrl, "props_enable_tccl/");
         parentLoader.addURL(propsEnableUrl);
@@ -106,30 +110,28 @@ public class TcclEnabledTestCase extends TestCase {
         
         ClassLoader thisClassLoader = this.getClass().getClassLoader();
         ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
-
+        
         // the tccl loader should NOT be the same as the loader that loaded this test class.
         assertNotSame("tccl not same as test classloader", thisClassLoader, tcclLoader);
 
-        // MyLogFactoryImpl should not be loadable via parent loader
+        // MyLog should not be loadable via parent loader
         try {
-            Class clazz = thisClassLoader.loadClass(
-                "org.apache.commons.logging.tccl.custom.MyLogFactoryImpl");
-            fail("Unexpectedly able to load MyLogFactoryImpl via test class classloader");
+            Class clazz = thisClassLoader.loadClass(MY_LOG_IMPL);
+            fail("Unexpectedly able to load MyLog via test class classloader");
         } catch(ClassNotFoundException ex) {
             // ok, expected
         }
         
-        // MyLogFactoryImpl should be loadable via tccl loader
+        // MyLog should be loadable via tccl loader
         try {
-            Class clazz = tcclLoader.loadClass(
-                "org.apache.commons.logging.tccl.custom.MyLogFactoryImpl");
+            Class clazz = tcclLoader.loadClass(MY_LOG_IMPL);
         } catch(ClassNotFoundException ex) {
-            fail("Unexpectedly unable to load MyLogFactoryImpl via tccl classloader");
+            fail("Unexpectedly unable to load MyLog via tccl classloader");
         }
     }
 
     /**
-     * Verify that the custom LogFactory implementation which is only accessable
+     * Verify that the custom Log implementation which is only accessable
      * via the TCCL has successfully been loaded as specified in the config file.
      * This proves that the TCCL was used to load that class.
      */
@@ -138,7 +140,13 @@ public class TcclEnabledTestCase extends TestCase {
         
         assertEquals(
             "Correct LogFactory loaded", 
-            "org.apache.commons.logging.tccl.custom.MyLogFactoryImpl",
+            "org.apache.commons.logging.impl.LogFactoryImpl",
             instance.getClass().getName());
+
+        Log log = instance.getLog("test");
+        assertEquals(
+            "Correct Log loaded",
+            MY_LOG_IMPL,
+            log.getClass().getName());
     }
 }
