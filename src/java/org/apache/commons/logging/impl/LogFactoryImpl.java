@@ -149,8 +149,7 @@ public class LogFactoryImpl extends LogFactory {
      * but broken/unusable for some reason.
      */
     private static final String[] classesToDiscover = {
-            "org.apache.commons.logging.impl.Log4J13Logger",
-            "org.apache.commons.logging.impl.Log4J12Logger",
+            "org.apache.commons.logging.impl.Log4JLogger",
             "org.apache.commons.logging.impl.Jdk14Logger",
             "org.apache.commons.logging.impl.Jdk13LumberjackLogger",
             "org.apache.commons.logging.impl.SimpleLog"

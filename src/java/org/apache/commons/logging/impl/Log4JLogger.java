@@ -46,12 +46,12 @@ import org.apache.log4j.Level;
  * @version $Id$
  */
 
-public class Log4J12Logger implements Log, Serializable {
+public class Log4JLogger implements Log, Serializable {
 
     // ------------------------------------------------------------- Attributes
 
-    /** The fully qualified name of the Log4J12Logger class. */
-    private static final String FQCN = Log4J12Logger.class.getName();
+    /** The fully qualified name of the Log4JLogger class. */
+    private static final String FQCN = Log4JLogger.class.getName();
     
     /** Log to this logger */
     private transient Logger logger = null;
@@ -96,21 +96,21 @@ public class Log4J12Logger implements Log, Serializable {
     
     // ------------------------------------------------------------ Constructor
 
-    public Log4J12Logger() {
+    public Log4JLogger() {
     }
 
 
     /**
      * Base constructor.
      */
-    public Log4J12Logger(String name) {
+    public Log4JLogger(String name) {
         this.name = name;
         this.logger = getLogger();
     }
 
     /** For use with a log4j factory.
      */
-    public Log4J12Logger(Logger logger ) {
+    public Log4JLogger(Logger logger ) {
         this.name = logger.getName();
         this.logger=logger;
     }
