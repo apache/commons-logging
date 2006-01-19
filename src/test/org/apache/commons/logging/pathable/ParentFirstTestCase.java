@@ -142,8 +142,8 @@ public class ParentFirstTestCase extends TestCase {
 
         // jcl adapter classes should be visible via both parent and child. However
         // as the classloaders are parent-first we should see the parent one.
-        Class log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4J12Logger");
-        assertSame("Log4J12Logger not loaded via parent", 
+        Class log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4JLogger");
+        assertSame("Log4JLogger not loaded via parent", 
                 log4jClass.getClassLoader(), parentLoader);
         
         // test classes should be visible via the child only
@@ -190,9 +190,9 @@ public class ParentFirstTestCase extends TestCase {
         // to the parent should be returned. The URL returned will be of form
         //  jar:file:/x/y.jar!path/to/resource. The filename part should include the jarname
         // of form commons-logging-nnnn.jar, not commons-logging-adapters-nnnn.jar
-        resource = childLoader.getResource("org/apache/commons/logging/impl/Log4J12Logger.class");
-        assertNotNull("Unable to locate Log4J12Logger.class resource", resource);
-        assertTrue("Incorrect source for Log4J12Logger class",
+        resource = childLoader.getResource("org/apache/commons/logging/impl/Log4JLogger.class");
+        assertNotNull("Unable to locate Log4JLogger.class resource", resource);
+        assertTrue("Incorrect source for Log4JLogger class",
                 resource.toString().indexOf("/commons-logging-1.") > 0);
     }
     
@@ -227,9 +227,9 @@ public class ParentFirstTestCase extends TestCase {
         
         // getResources where the resource exists in both.
         // resources should be returned in order (parent-resource, child-resource)
-        resources = childLoader.getResources("org/apache/commons/logging/impl/Log4J12Logger.class");
+        resources = childLoader.getResources("org/apache/commons/logging/impl/Log4JLogger.class");
         urls = toURLArray(resources);
-        assertEquals("Unexpected number of Log4J12Logger.class resources found", 2, urls.length);
+        assertEquals("Unexpected number of Log4JLogger.class resources found", 2, urls.length);
         
         // There is no gaurantee about the ordering of results returned from getResources
         // To make this test portable across JVMs, sort the string to give them a known order
@@ -237,9 +237,9 @@ public class ParentFirstTestCase extends TestCase {
         urlsToStrings[0] = urls[0].toString();
         urlsToStrings[1] = urls[1].toString();
         Arrays.sort(urlsToStrings);
-        assertTrue("Incorrect source for Log4J12Logger class",
+        assertTrue("Incorrect source for Log4JLogger class",
                 urlsToStrings[0].indexOf("/commons-logging-1.") > 0);
-        assertTrue("Incorrect source for Log4J12Logger class",
+        assertTrue("Incorrect source for Log4JLogger class",
                 urlsToStrings[1].indexOf("/commons-logging-adapters-1.") > 0);
         
     }
