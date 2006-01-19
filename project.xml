@@ -169,6 +169,10 @@
       <email>dennisl@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
+    <developer>
+      <name>Brian Stansberry</name>
+      <id>bstansberry</id>
+    </developer>
   </developers>
   
   <dependencies>
