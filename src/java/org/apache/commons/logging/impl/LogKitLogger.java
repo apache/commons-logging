@@ -85,15 +85,22 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log message to <code>LogKit</code> logger with <code>DEBUG</code> priority.
-     */
+     * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#trace(Object)
+    */
     public void trace(Object message) {
         debug(message);
     }
 
 
     /**
-     * Log error to <code>LogKit</code> logger with <code>DEBUG</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
     public void trace(Object message, Throwable t) {
         debug(message, t);
@@ -101,7 +108,10 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log message to <code>LogKit</code> logger with <code>DEBUG</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#debug(Object)
      */
     public void debug(Object message) {
         if (message != null) {
@@ -111,7 +121,11 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log error to <code>LogKit</code> logger with <code>DEBUG</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
     public void debug(Object message, Throwable t) {
         if (message != null) {
@@ -121,7 +135,10 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log message to <code>LogKit</code> logger with <code>INFO</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.INFO</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#info(Object)
      */
     public void info(Object message) {
         if (message != null) {
@@ -131,7 +148,11 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log error to <code>LogKit</code> logger with <code>INFO</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.INFO</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
     public void info(Object message, Throwable t) {
         if (message != null) {
@@ -141,7 +162,10 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log message to <code>LogKit</code> logger with <code>WARN</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.WARN</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#warn(Object)
      */
     public void warn(Object message) {
         if (message != null) {
@@ -151,7 +175,11 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log error to <code>LogKit</code> logger with <code>WARN</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.WARN</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
     public void warn(Object message, Throwable t) {
         if (message != null) {
@@ -161,7 +189,10 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log message to <code>LogKit</code> logger with <code>ERROR</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.ERROR</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#error(Object)
      */
     public void error(Object message) {
         if (message != null) {
@@ -171,7 +202,11 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log error to <code>LogKit</code> logger with <code>ERROR</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.ERROR</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
     public void error(Object message, Throwable t) {
         if (message != null) {
@@ -181,7 +216,10 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log message to <code>LogKit</code> logger with <code>FATAL_ERROR</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.FATAL_ERROR</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#fatal(Object)
      */
     public void fatal(Object message) {
         if (message != null) {
@@ -191,7 +229,11 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Log error to <code>LogKit</code> logger with <code>FATAL_ERROR</code> priority.
+     * Logs a message with <code>org.apache.log.Priority.FATAL_ERROR</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
     public void fatal(Object message, Throwable t) {
         if (message != null) {
@@ -201,7 +243,7 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
+     * Checks whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
     public boolean isDebugEnabled() {
         return getLogger().isDebugEnabled();
@@ -209,7 +251,7 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Check whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
+     * Checks whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
      */
     public boolean isErrorEnabled() {
         return getLogger().isErrorEnabled();
@@ -217,7 +259,7 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Check whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
+     * Checks whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
      */
     public boolean isFatalEnabled() {
         return getLogger().isFatalErrorEnabled();
@@ -225,7 +267,7 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Check whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
+     * Checks whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
      */
     public boolean isInfoEnabled() {
         return getLogger().isInfoEnabled();
@@ -233,7 +275,7 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Check whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
+     * Checks whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
     public boolean isTraceEnabled() {
         return getLogger().isDebugEnabled();
@@ -241,7 +283,7 @@ public class LogKitLogger implements Log, Serializable {
 
 
     /**
-     * Check whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
+     * Checks whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
      */
     public boolean isWarnEnabled() {
         return getLogger().isWarnEnabled();
