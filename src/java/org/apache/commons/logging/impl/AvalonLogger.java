@@ -94,62 +94,100 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
-     * @see org.apache.commons.logging.Log#debug(java.lang.Object, java.lang.Throwable)
+    * Logs a message with
+    * <code>org.apache.avalon.framework.logger.Logger.debug</code>.
+    * 
+    * @param message to log
+    * @param t log this cause
+    * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
     public void debug(Object o, Throwable t) {
         if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o), t);
     }
 
     /**
-     * @see org.apache.commons.logging.Log#debug(java.lang.Object)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.debug</code>.
+     * 
+     * @param message to log.
+     * @see org.apache.commons.logging.Log#debug(Object)
      */
     public void debug(Object o) {
         if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o));
     }
 
     /**
-     * @see org.apache.commons.logging.Log#error(java.lang.Object, java.lang.Throwable)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.error</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
     public void error(Object o, Throwable t) {
         if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(o), t);
     }
 
     /**
-     * @see org.apache.commons.logging.Log#error(java.lang.Object)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.error</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#error(Object)
      */
     public void error(Object o) {
         if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(o));
     }
 
     /**
-     * @see org.apache.commons.logging.Log#fatal(java.lang.Object, java.lang.Throwable)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.fatalError</code>.
+     * 
+     * @param message to log.
+     * @param t log this cause.
+     * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
     public void fatal(Object o, Throwable t) {
         if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(o), t);
     }
 
     /**
-     * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.fatalError</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#fatal(Object)
      */
     public void fatal(Object o) {
         if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(o));
     }
 
     /**
-     * @see org.apache.commons.logging.Log#info(java.lang.Object, java.lang.Throwable)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.info</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
     public void info(Object o, Throwable t) {
         if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(o), t);
     }
 
     /**
-     * @see org.apache.commons.logging.Log#info(java.lang.Object)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.info</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#info(Object)
      */
     public void info(Object o) {
         if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(o));
     }
 
     /**
+     * Is logging to 
+     * <code>org.apache.avalon.framework.logger.Logger.debug</code> enabled?
      * @see org.apache.commons.logging.Log#isDebugEnabled()
      */
     public boolean isDebugEnabled() {
@@ -157,6 +195,8 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
+     * Is logging to 
+     * <code>org.apache.avalon.framework.logger.Logger.error</code> enabled?
      * @see org.apache.commons.logging.Log#isErrorEnabled()
      */
     public boolean isErrorEnabled() {
@@ -164,6 +204,8 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
+     * Is logging to 
+     * <code>org.apache.avalon.framework.logger.Logger.fatalError</code> enabled?
      * @see org.apache.commons.logging.Log#isFatalEnabled()
      */
     public boolean isFatalEnabled() {
@@ -171,6 +213,8 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
+     * Is logging to
+     * <code>org.apache.avalon.framework.logger.Logger.info</code> enabled?
      * @see org.apache.commons.logging.Log#isInfoEnabled()
      */
     public boolean isInfoEnabled() {
@@ -178,6 +222,8 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
+     * Is logging to 
+     * <code>org.apache.avalon.framework.logger.Logger.debug</code> enabled?
      * @see org.apache.commons.logging.Log#isTraceEnabled()
      */
     public boolean isTraceEnabled() {
@@ -185,6 +231,8 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
+     * Is logging to 
+     * <code>org.apache.avalon.framework.logger.Logger.warn</code> enabled?
      * @see org.apache.commons.logging.Log#isWarnEnabled()
      */
     public boolean isWarnEnabled() {
@@ -192,28 +240,46 @@ public class AvalonLogger implements Log, Serializable {
     }
 
     /**
-     * @see org.apache.commons.logging.Log#trace(java.lang.Object, java.lang.Throwable)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.debug</code>.
+     * 
+     * @param message to log.
+     * @param t log this cause.
+     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
     public void trace(Object o, Throwable t) {
         if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o), t);
     }
 
     /**
-     * @see org.apache.commons.logging.Log#trace(java.lang.Object)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.debug</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#trace(Object)
      */
     public void trace(Object o) {
         if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o));
     }
 
     /**
-     * @see org.apache.commons.logging.Log#warn(java.lang.Object, java.lang.Throwable)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.warn</code>.
+     * 
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
     public void warn(Object o, Throwable t) {
         if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(o), t);
     }
 
     /**
-     * @see org.apache.commons.logging.Log#warn(java.lang.Object)
+     * Logs a message with
+     * <code>org.apache.avalon.framework.logger.Logger.warn</code>.
+     * 
+     * @param message to log
+     * @see org.apache.commons.logging.Log#warn(Object)
      */
     public void warn(Object o) {
         if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(o));
