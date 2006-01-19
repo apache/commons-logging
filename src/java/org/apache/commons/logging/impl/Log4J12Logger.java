@@ -135,9 +135,12 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log a message to the Log4j Logger with <code>TRACE</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.TRACE</code>.
      * When using a log4j version that does not support the <code>TRACE</code>
      * level, the message will be logged at the <code>DEBUG</code> level.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#trace(Object)
      */
     public void trace(Object message) {
         getLogger().log(FQCN, traceLevel, message, null );
@@ -145,9 +148,13 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log an error to the Log4j Logger with <code>TRACE</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.TRACE</code>.
      * When using a log4j version that does not support the <code>TRACE</code>
      * level, the message will be logged at the <code>DEBUG</code> level.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
     public void trace(Object message, Throwable t) {
         getLogger().log(FQCN, traceLevel, message, t );
@@ -155,14 +162,21 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log a message to the Log4j Logger with <code>DEBUG</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.DEBUG</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#debug(Object)
      */
     public void debug(Object message) {
         getLogger().log(FQCN, Priority.DEBUG, message, null );
     }
 
     /**
-     * Log an error to the Log4j Logger with <code>DEBUG</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.DEBUG</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
     public void debug(Object message, Throwable t) {
         getLogger().log(FQCN, Priority.DEBUG, message, t );
@@ -170,7 +184,10 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log a message to the Log4j Logger with <code>INFO</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.INFO</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#info(Object)
      */
     public void info(Object message) {
         getLogger().log(FQCN, Priority.INFO, message, null );
@@ -178,7 +195,11 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log an error to the Log4j Logger with <code>INFO</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.INFO</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
     public void info(Object message, Throwable t) {
         getLogger().log(FQCN, Priority.INFO, message, t );
@@ -186,7 +207,10 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log a message to the Log4j Logger with <code>WARN</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.WARN</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#warn(Object)
      */
     public void warn(Object message) {
         getLogger().log(FQCN, Priority.WARN, message, null );
@@ -194,7 +218,11 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log an error to the Log4j Logger with <code>WARN</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.WARN</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
     public void warn(Object message, Throwable t) {
         getLogger().log(FQCN, Priority.WARN, message, t );
@@ -202,7 +230,10 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log a message to the Log4j Logger with <code>ERROR</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.ERROR</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#error(Object)
      */
     public void error(Object message) {
         getLogger().log(FQCN, Priority.ERROR, message, null );
@@ -210,7 +241,11 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log an error to the Log4j Logger with <code>ERROR</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.ERROR</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
     public void error(Object message, Throwable t) {
         getLogger().log(FQCN, Priority.ERROR, message, t );
@@ -218,7 +253,10 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log a message to the Log4j Logger with <code>FATAL</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.FATAL</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#fatal(Object)
      */
     public void fatal(Object message) {
         getLogger().log(FQCN, Priority.FATAL, message, null );
@@ -226,7 +264,11 @@ public class Log4J12Logger implements Log, Serializable {
 
 
     /**
-     * Log an error to the Log4j Logger with <code>FATAL</code> priority.
+     * Logs a message with <code>org.apache.log4j.Priority.FATAL</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
     public void fatal(Object message, Throwable t) {
         getLogger().log(FQCN, Priority.FATAL, message, t );
