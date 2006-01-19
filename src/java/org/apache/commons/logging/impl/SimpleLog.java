@@ -360,7 +360,11 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log a message with debug log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#debug(Object)
      */
     public final void debug(Object message) {
 
@@ -371,7 +375,12 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log an error with debug log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
     public final void debug(Object message, Throwable t) {
 
@@ -382,7 +391,11 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log a message with trace log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
     public final void trace(Object message) {
 
@@ -393,7 +406,12 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log an error with trace log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
     public final void trace(Object message, Throwable t) {
 
@@ -404,7 +422,11 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log a message with info log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#info(Object)
      */
     public final void info(Object message) {
 
@@ -415,7 +437,12 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log an error with info log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
     public final void info(Object message, Throwable t) {
 
@@ -426,7 +453,11 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log a message with warn log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#warn(Object)
      */
     public final void warn(Object message) {
 
@@ -437,7 +468,12 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log an error with warn log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
     public final void warn(Object message, Throwable t) {
 
@@ -448,7 +484,11 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log a message with error log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#error(Object)
      */
     public final void error(Object message) {
 
@@ -459,7 +499,12 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log an error with error log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
     public final void error(Object message, Throwable t) {
 
@@ -470,7 +515,11 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log a message with fatal log level.</p>
+     * Log a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#fatal(Object)
      */
     public final void fatal(Object message) {
 
@@ -481,7 +530,12 @@ public class SimpleLog implements Log, Serializable {
 
 
     /**
-     * <p> Log an error with fatal log level.</p>
+     * Logs a message with 
+     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
     public final void fatal(Object message, Throwable t) {
 
