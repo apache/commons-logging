@@ -266,7 +266,7 @@
   <target name="log4j12-warning" unless='log4j12.present' depends='init,discovery'>
     <echo>
     *** WARNING ***
-    Log4j 1.2 not found: Cannot Build Log4J12Logger
+    Log4j 1.2 not found: Cannot Build Log4JLogger
     </echo>
   </target>
   
@@ -363,7 +363,7 @@
         <pathelement location="${log4j12.jar}"/> 
       </classpath>
 
-      <include name="org/apache/commons/logging/impl/Log4J12Logger.java"
+      <include name="org/apache/commons/logging/impl/Log4JLogger.java"
                if="log4j12.present"/>
     </javac>
   </target>
@@ -383,6 +383,11 @@
         <pathelement location="${log4j13.jar}"/> 
       </classpath>
 
+    <!--
+      - Note: log4j13 support not available in 1.1 release. However if we do add it
+      - in a future release, this entry will pick it up. In the meantime, this
+      - simply compiles no classes.
+      -->
       <include name="org/apache/commons/logging/impl/Log4J13Logger.java"
                if="log4j13.present"/>
     </javac>
