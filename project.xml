@@ -163,6 +163,12 @@
       <email>skitching@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
+    <developer>
+      <name>Dennis Lundberg</name>
+      <id>dennisl</id>
+      <email>dennisl@apache.org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
   </developers>
   
   <dependencies>
