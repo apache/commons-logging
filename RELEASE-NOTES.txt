@@ -1,6 +1,6 @@
 <!--
 
- Copyright 2005 The Apache Software Foundation.
+ Copyright 2005,2006 The Apache Software Foundation.
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -26,6 +26,9 @@ $Id$
 INTRODUCTION:
 ============
 
+This release of Jakarta Commons Logging (JCL) is a maintenance release, with a
+few new configuration features but no major changes in services provided.
+
 This release introduces significant changes in the way that discovery of
 logging implementations occurs, and how errors are handled. A number of
 problems that have troubled users in past releases (particularly the
@@ -34,51 +37,97 @@ significantly reduced or cured.
 
 This release is 100% compatible with existing code that calls 
 commons-logging. There are some incompatibilities with code that extends
-commons-logging, for example to implement custom logging adapters.
+commons-logging, for example to implement custom logging adapters. See
+the compatibility section for details.
+
+For further details, please see the Jakarta Commons Logging website:
+  http://jakarta.apache.org/commons/logging.
+
+For the very latest news, hints, FAQs etc. please see the
+Jakarta Commons Logging wiki site:
+  http://wiki.apache.org/jakarta-commons/Logging
 
 == New Features ==
 
-* jars now have release-numbers embedded in the names
-* commons-logging-adapters-xxx.jar now included.
-* creation of optional jar containing WeakHashtable implementation
-  Changes to LogFactory to use a WeakHashtable if one is available.
+* Jarfiles now have release-numbers embedded in the names, for easier management.
 
-* added internal diagnostics feature. If commons-logging is behaving in an
+* New jarfile commons-logging-adapters-xxx.jar is now provided. This can be
+  used to resolve class cast conflicts where parts of commons-logging are
+  deployed via different classloaders.
+
+* New internal diagnostics feature. If commons-logging is behaving in an
   unexpected manner, you can now set system property
     org.apache.commons.logging.diagnostics.dest
   to the value STDOUT, STDERR or a filename. As commons-logging initialises
   itself for each new contextClassLoader it detects, useful information will
   be output about which logging library is bound to and why.
   
-* new configurable attributes ALLOW_FLAWED_HIERARCHY, ALLOW_FLAWED_DISCOVERY and 
-  ALLOW_FLAWED_CONTEXT. The default values for these are all true, meaning that
-  commons-logging attempts to recover from bad logging configuration situations
-  by finding *some* logger to use even when it isn't quite the one that might
-  be expected. This will significantly reduce the occurrence of the dreaded
-  LogConfigurationException on application/webapp startup at the cost of
-  slightly more ambiguity about where output will go. In cases where no logging
-  output is generated or wanted (which is the case 99% of the time) this is definitely a 
-  more convenient approach. Users who cannot figure out where logging went or
-  why it went to an unexpected destination can enable diagnostics to find out,
-  or set the ALLOW_FLAWED_ settings to false to force LogConfigurationException
-  to be thrown as in earlier releases.
+* JCL now prefers to "make a best attempt" in problem scenarios rather than
+  report an error and fail to initialise. New configurable attributes
+  ALLOW_FLAWED_HIERARCHY, ALLOW_FLAWED_DISCOVERY and ALLOW_FLAWED_CONTEXT are
+  provided to control startup behavior. The default values for these are all
+  true, meaning that commons-logging attempts to recover from bad logging
+  configuration situations by finding *some* logger to use even when it isn't
+  quite the one that might be expected. This will significantly reduce the
+  occurrence of the dreaded LogConfigurationException on application/webapp
+  startup at the cost of slightly more ambiguity about where output will go.
+  In cases where no logging output is generated or wanted (which is the case
+  99% of the time) this is definitely a more convenient approach. Users who
+  cannot figure out where logging went or why it went to an unexpected
+  destination can enable diagnostics to find out, or set the ALLOW_FLAWED_
+  settings to false to force LogConfigurationException to be thrown as in
+  earlier releases.
   
-  
-* ServletContextCleaner class now provided to ensure memory is released
-  when undeploying webapps. This does require an entry in the webapp
-  deployment descriptor to enable.
+* Fix for the problem where memory was not being released under some circumstances
+  when a webapp was undeployed. An internal change fixes some situations where
+  that occurs (by using weak references); this requires no action on the part of
+  users of this library. In addition, a utility class ServletContextCleaner is
+  provided in the jarfile which is expected to resolve this problem in all
+  situations; however it is necessary for an application to define this class as
+  a ServletContextListener in the web.xml in order for this to be invoked.
+
+* Prioritised commons-logging.properties files. A file with the name
+  "commons-logging.properties" placed in the classpath can be used to set
+  various JCL configuration options. In previous releases, the first
+  such file found in the classpath was used to configure JCL. Now, each file
+  can have an entry "priority", and the file with the highest priority is used.
+  Where two files have equal priority, the first one in the classpath is used;
+  this maintains backwards compatibility.
+
+* New feature to disable loading of logging classes via the thread context
+  classloader (TCCL), on a per-webapp basis. Simply putting an entry
+  "use_tccl=false" in a commons-logging.properties file will ensure that
+  all classes used for logging are loaded via the same classloader that
+  loads the LogFactory class. This resolves any "class cast" issues with
+  JCL, though at the price of losing some control over logging configuration.
+
+* The log4j logging adapter now supports the TRACE level (added to log4j 1.2.12).
+  Formerly, any calls to log.trace were output at the log4j debug level.
 
 == Incompatibilities ==
 
-The isXXXAvailable methods in org.apache.commons.logging.impl.LogFactoryImpl
-are no longer called during discovery by that class. Therefore classes which
-subclass LogFactoryImpl and override those methods will not have their 
-methods called. This is a pretty unusual thing to do, so it isn't expected that
-any apps will actually be affected by this.
+There are no changes for code that calls LogFactory or Log methods. This means
+that any application which is a simple "user" of the JCL library can safely
+upgrade to this version.
+
+All changes to JCL configuration are backwards compatible.
+
+For code that extends the JCL LogFactoryImpl class, the isXXXAvailable methods
+in org.apache.commons.logging.impl.LogFactoryImpl are no longer called during
+discovery by that class. Therefore classes which subclass LogFactoryImpl and
+override those methods will not have their methods called. This is a pretty
+unusual thing to do, so it isn't expected that any apps will actually be
+affected by this.
+
+== General Notes ==
+
+Log4J 1.3 is expected to include a binary-incompatible change from the 1.2 series that 
+unfortunately makes it impossible for a single adapter class to support both.
+This release does not include support for Log4J 1.3. 
 
 == Bugs Fixed ==
 
-* 31597: problem where log4j adapter in parent classloader but log4j.jar was
+* 31597: problem where log4j adapter was in parent classloader but log4j.jar was
   in child classloader led to failure to initialise logging has been
   fixed.
 
@@ -101,7 +150,7 @@ any apps will actually be affected by this.
 DEPRECATIONS:
 ============
 
-    (These are carried forward from Version 1.0.3)
+    (These are carried forward from Version 1.0.4)
 
 [LogSource]        Previously deprecated, replaced by LogFactory.
 
