@@ -19,6 +19,11 @@
 <!--
   - Ant build file for commons-logging.
   -
+  - Quick build instructions:
+  -  * ant getlibs
+  -  * cp build.properties.sample build.properties
+  -  * ant -lib lib/junit-3.8.1.jar dist 
+  -
   - Note that this build file uses the optional <junit> task. While the
   - task "adapter" class comes by default with ant 1.6+, the junit libraries
   - (3.8.1 or later) are also required to be made available to ant. This
@@ -61,11 +66,11 @@
 
 
   <!-- The locations of necessary jar files -->
-  <property name="junit.jar"               value="${junit.home}/junit.jar"/>
+  <property name="junit.jar"               value="junit-3.8.1.jar"/>
   <property name="log4j12.jar"             value="log4j-1.2.9.jar"/>
   <property name="log4j13.jar"             value="log4j-1.3.0.jar"/>
-  <property name="logkit.jar"              value="${jakarta.home}/jakarta-avalon-logkit/build/log/logkit"/>
-  <property name="avalon-framework.jar"    value="../../Avalon-4.1.4/avalon-framework-4.1.4.jar"/>
+  <property name="logkit.jar"              value="logkit-1.0.1.jar"/>
+  <property name="avalon-framework.jar"    value="avalon-framework-4.1.3.jar"/>
   <property name="servletapi.jar"          value="servletapi-2.3.jar"/>
 
 
@@ -170,6 +175,12 @@
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${build.home}/tests"/>
     <pathelement location="${junit.jar}"/>
+    <pathelement location="${log4j12.jar}"/>
+  </path>
+
+  <!-- Construct javadoc classpath -->
+  <path id="javadoc.classpath">
+    <path refid="compile.classpath"/>
     <pathelement location="${log4j12.jar}"/>
   </path>
 
@@ -551,7 +562,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.--&gt;'>
-      <classpath refid="test.classpath"/>
+      <classpath refid="javadoc.classpath"/>
     </javadoc>
   </target>
 
