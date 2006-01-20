@@ -161,10 +161,6 @@ favour of the "minimal" jarfile.
 
 == General Notes ==
 
-Log4J 1.3 is expected to include a binary-incompatible change from the 1.2 series that 
-unfortunately makes it impossible for a single adapter class to support both.
-This release does not include support for Log4J 1.3. 
-
 The jakarta commons project has migrated to the Subversion version control system
 (previously, CVS was used). There should be no effect on users of the JCL
 library, but obviously the process of examining the latest source code, and of
@@ -199,9 +195,4 @@ DEPRECATIONS:
     (These are carried forward from Version 1.0.4)
 
 [LogSource]        Previously deprecated, replaced by LogFactory.
-
-[Log4jFactory]     A proxy instance of this class was transparently created
-                   when Log4J logging was selected, yet it serves no useful
-                   purpose.  The class is now deprecated, and the proxy
-                   instance is no longer created.
 
