@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-// TODO: use HashTable instead of HashMap for java1.2 support
+// TODO: use HashTable instead of HashMap for java1.1 support
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
