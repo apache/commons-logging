@@ -937,6 +937,26 @@ public abstract class LogFactory {
     }
 
     /**
+     * Method provided for backwards compatibility; see newFactory version that
+     * takes 3 parameters.
+     * <p>
+     * This method would only ever be called in some rather odd situation.
+     * Note that this method is static, so overriding in a subclass doesn't
+     * have any effect unless this method is called from a method in that
+     * subclass. However this method only makes sense to use from the
+     * getFactory method, and as that is almost always invoked via
+     * LogFactory.getFactory, any custom definition in a subclass would be
+     * pointless. Only a class with a custom getFactory method, then invoked
+     * directly via CustomFactoryImpl.getFactory or similar would ever call
+     * this. Anyway, it's here just in case, though the "managed class loader"
+     * value output to the diagnostics will not report the correct value.
+     */
+    protected static LogFactory newFactory(final String factoryClass,
+                                           final ClassLoader classLoader) {
+	    return newFactory(factoryClass, classLoader, null);
+    }
+
+    /**
      * Implements the operations described in the javadoc for newFactory.
      * 
      * @param factoryClass
