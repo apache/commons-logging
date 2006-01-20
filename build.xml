@@ -431,6 +431,7 @@
       <include name="org/apache/commons/logging/impl/**.class" />
       <include name="META-INF/LICENSE.txt"/>
       <include name="META-INF/NOTICE.txt"/>
+      <exclude name="org/apache/commons/logging/impl/WeakHashtable*.class" />
     </jar>
   </target>
 
