@@ -101,8 +101,8 @@ public class AvalonLogger implements Log, Serializable {
     * @param t log this cause
     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
-    public void debug(Object o, Throwable t) {
-        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o), t);
+    public void debug(Object message, Throwable t) {
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(message), t);
     }
 
     /**
@@ -112,8 +112,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param message to log.
      * @see org.apache.commons.logging.Log#debug(Object)
      */
-    public void debug(Object o) {
-        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o));
+    public void debug(Object message) {
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(message));
     }
 
     /**
@@ -124,8 +124,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
-    public void error(Object o, Throwable t) {
-        if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(o), t);
+    public void error(Object message, Throwable t) {
+        if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(message), t);
     }
 
     /**
@@ -135,8 +135,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
-    public void error(Object o) {
-        if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(o));
+    public void error(Object message) {
+        if (getLogger().isErrorEnabled()) getLogger().error(String.valueOf(message));
     }
 
     /**
@@ -147,8 +147,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param t log this cause.
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
-    public void fatal(Object o, Throwable t) {
-        if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(o), t);
+    public void fatal(Object message, Throwable t) {
+        if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(message), t);
     }
 
     /**
@@ -158,8 +158,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
-    public void fatal(Object o) {
-        if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(o));
+    public void fatal(Object message) {
+        if (getLogger().isFatalErrorEnabled()) getLogger().fatalError(String.valueOf(message));
     }
 
     /**
@@ -170,8 +170,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
-    public void info(Object o, Throwable t) {
-        if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(o), t);
+    public void info(Object message, Throwable t) {
+        if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(message), t);
     }
 
     /**
@@ -181,8 +181,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
-    public void info(Object o) {
-        if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(o));
+    public void info(Object message) {
+        if (getLogger().isInfoEnabled()) getLogger().info(String.valueOf(message));
     }
 
     /**
@@ -247,8 +247,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param t log this cause.
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
-    public void trace(Object o, Throwable t) {
-        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o), t);
+    public void trace(Object message, Throwable t) {
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(message), t);
     }
 
     /**
@@ -258,8 +258,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
-    public void trace(Object o) {
-        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(o));
+    public void trace(Object message) {
+        if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(message));
     }
 
     /**
@@ -270,8 +270,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
-    public void warn(Object o, Throwable t) {
-        if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(o), t);
+    public void warn(Object message, Throwable t) {
+        if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(message), t);
     }
 
     /**
@@ -281,8 +281,8 @@ public class AvalonLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
-    public void warn(Object o) {
-        if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(o));
+    public void warn(Object message) {
+        if (getLogger().isWarnEnabled()) getLogger().warn(String.valueOf(message));
     }
 
 }
