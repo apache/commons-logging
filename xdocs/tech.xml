@@ -187,7 +187,7 @@
 	posting to the <a href='http://jakarta.apache.org/site/mail.html'>jakarta commons-dev mailing list</a> or
 				</li>
 				<li>
-	creating an issue in <a href='http://issues.apache.org/bugzilla'>Bugzilla</a>.	
+	creating an issue in <a href='http://issues.apache.org/bugzilla/'>Bugzilla</a>.	
 				</li>
 			</ul>
 			<p>
@@ -596,19 +596,19 @@ above.
 					<ul>
 						<li>
 							<a 
-		href='http://jakarta.apache.org/tomcat/tomcat-4.1-doc/class-loader-howto.html'>
+		href='http://tomcat.apache.org/tomcat-4.1-doc/class-loader-howto.html'>
 	Tomcat 4.1 ClassLoader Guide
 							</a>
 						</li>
 						<li>
 							<a
-		href='http://jakarta.apache.org/tomcat/tomcat-5.0-doc/class-loader-howto.html'>
+		href='http://tomcat.apache.org/tomcat-5.0-doc/class-loader-howto.html'>
 	Tomcat 5.0 ClassLoader Guide
 							</a>	
 						</li>
 						<li>
 							<a
-href='http://publib.boulder.ibm.com/infocenter/ws60help/index.jsp?topic=/com.ibm.websphere.express.doc/info/exp/ae/trun_classload_web.html'>
+href='http://publib.boulder.ibm.com/infocenter/wasinfo/v6r0/index.jsp?topic=/com.ibm.websphere.express.doc/info/exp/ae/trun_classload_web.html'>
 	Classloading In WebSphere
 							</a>
 						</li>

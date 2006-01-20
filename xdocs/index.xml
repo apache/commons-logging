@@ -68,7 +68,7 @@ This gives short introductions to topics such as advanced class loading.
     <strong>Note:</strong> <em>this has now been blessed with alpha status.</em>
     		</p>
 		<p>
-Please <a href='http://cvs.apache.org/dist/jakarta/commons/logging'>download</a> and test this release. Reports should be directed to the commons-dev
+Please <a href='http://cvs.apache.org/dist/jakarta/commons/logging/'>download</a> and test this release. Reports should be directed to the commons-dev
 mailing list.
 		</p>
         <p>
@@ -92,10 +92,8 @@ signature of the release from the
 when downloading from a mirror.
 </p>
 <p>
-    Binary releases are available
-       <a href="http://jakarta.apache.org/site/binindex.cgi">here</a>.
-    Source releases are available
-       <a href="http://jakarta.apache.org/site/sourceindex.cgi">here</a>
+    Binary and source releases are available
+       <a href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi">here</a>.
 </p>
 <p>
 <ul>
@@ -108,9 +106,8 @@ when downloading from a mirror.
     <p>
     <ul>
 <ul>
-<li><a href="http://jakarta.apache.org/builds/jakarta-commons/release/commons-logging/v1.0.2/">Version 1.0.2</a></li>
-<li><a href="http://jakarta.apache.org/builds/jakarta-commons/release/commons-logging/v1.0.1/">Version 1.0.1</a></li>
-<li><a href="http://jakarta.apache.org/builds/jakarta-commons/release/commons-logging/v1.0/">Version 1.0</a></li>
+<li><a href="http://archive.apache.org/dist/jakarta/commons/logging/binaries/">Binary releases</a></li>
+<li><a href="http://archive.apache.org/dist/jakarta/commons/logging/source/">Source releases</a></li>
 </ul>
     </ul>
     </p>
