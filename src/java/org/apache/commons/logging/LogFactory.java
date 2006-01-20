@@ -409,7 +409,7 @@ public abstract class LogFactory {
         if (props != null) {
             String useTCCLStr = props.getProperty(TCCL_KEY);
             if (useTCCLStr != null) {
-                if (Boolean.valueOf(useTCCLStr) == Boolean.FALSE) {
+                if (Boolean.valueOf(useTCCLStr).booleanValue() == false) {
                     // Don't use current context classloader when locating any
                     // LogFactory or Log classes, just use the class that loaded
                     // this abstract class. When this class is deployed in a shared
