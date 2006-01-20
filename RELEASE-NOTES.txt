@@ -22,6 +22,7 @@ $Id$
                                 Version 1.1.0
                                 Release Notes
 
+Last updated: 2005-01-20
 
 INTRODUCTION:
 ============
@@ -104,6 +105,8 @@ Jakarta Commons Logging wiki site:
 * The log4j logging adapter now supports the TRACE level (added to log4j 1.2.12).
   Formerly, any calls to log.trace were output at the log4j debug level.
 
+* Better behaviour for systems with null classloaders (generally embedded systems).
+
 == Incompatibilities ==
 
 There are no changes for code that calls LogFactory or Log methods. This means
@@ -119,11 +122,51 @@ override those methods will not have their methods called. This is a pretty
 unusual thing to do, so it isn't expected that any apps will actually be
 affected by this.
 
+== Dependencies ==
+
+Commons-logging has no mandatory dependencies.
+
+Java 1.2 and later are supported. It may be possible to recompile the source for
+use with java 1.1 but this has not been tested.
+
+== Distributed jarfiles ==
+
+File commons-logging-nn.jar is the one most people will want. It provides the
+base implementation and adapters to a number of popular logging libraries.
+
+File commons-logging-adapters-nn.jar includes only the adapters to various
+concrete logging libraries. When commons-logging-nn.jar or
+commons-logging-api-nn.jar is deployed in a container classpath, then this
+adapters-only jarfile should be deployed in the webapp, not the complete JCL
+distribution. This ensures that the core Log/LogFactory classes are only
+deployed via one classloader, thus avoiding "Log4JLogger does not implement Log"
+and similar problems.
+
+File commons-logging-minimal-nn.jar provides no adapters to external logging
+libraries, just the internally implemented SimpleLog and NoOpLog classes. This
+jarfile may be used as a declared dependency for projects that care about
+"transitive dependencies" and can't handle jarfiles such as commons-logging-nn.jar
+which have "optional" dependencies depending on how they are used. In addition,
+this jarfile can be useful for "rebundlers" of JCL who recompile the source-code
+but who may not be able to recompile against the full set of supported adapters;
+such projects should be able to at least recreate an equivalent of this jarfile.
+
+File commons-logging-api-nn.jar was created with the same goals as commons-logging-minimal,
+but unforunately included the Jdk14Logger implementation from the start. For backwards
+compatibility this same jarfile is provided but should be treated as deprecated, in
+favour of the "minimal" jarfile.
+
 == General Notes ==
 
 Log4J 1.3 is expected to include a binary-incompatible change from the 1.2 series that 
 unfortunately makes it impossible for a single adapter class to support both.
 This release does not include support for Log4J 1.3. 
+
+The jakarta commons project has migrated to the Subversion version control system
+(previously, CVS was used). There should be no effect on users of the JCL
+library, but obviously the process of examining the latest source code, and of
+creating patches for JCL has now changed. Please see the jakarta commons
+website for details (http://jakarta.apache.org/commons).
 
 == Bugs Fixed ==
 
