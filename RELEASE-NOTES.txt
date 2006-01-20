@@ -115,6 +115,9 @@ upgrade to this version.
 
 All changes to JCL configuration are backwards compatible.
 
+Classes Log4JCategoryLog and Log4jFactory have been removed; these were both
+deprecated in the 1.0.3 release (April 2003).
+
 For code that extends the JCL LogFactoryImpl class, the isXXXAvailable methods
 in org.apache.commons.logging.impl.LogFactoryImpl are no longer called during
 discovery by that class. Therefore classes which subclass LogFactoryImpl and
