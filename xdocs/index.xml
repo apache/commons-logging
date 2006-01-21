@@ -65,18 +65,12 @@ This gives short introductions to topics such as advanced class loading.
 <section name="Releases">
     <subsection name='1.0.5 Release (Alpha)'>
     		<p>
-    <strong>Note:</strong> <em>this has now been blessed with alpha status.</em>
+    <strong>Note:</strong> the 1.0.5 release was abandoned at alpha status.
     		</p>
-		<p>
-Please <a href='http://cvs.apache.org/dist/jakarta/commons/logging/'>download</a> and test this release. Reports should be directed to the commons-dev
-mailing list.
-		</p>
-        <p>
-JCL 1.0.5 is a service release adding optional improved automatic memory management
-for containers which do not support JCL explicit memory release
-during hot reployment (1.4+ JVMs only). For more details see the
-<a href='guide.html#Classloader%20and%20Memory%20Management'>user guide</a>.
-        </p>
+    		<p>
+    The next JCL release will be designated 1.1 since we feel this more 
+    accurately reflects the improvements made to the codebase.
+    		</p>
     </subsection>
     <subsection name='1.0.4 Release'>
         <p>
