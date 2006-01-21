@@ -277,7 +277,7 @@ public abstract class LogFactory {
     
     /**
      * Prevously constructed <code>LogFactory</code> instance as in the
-     * <code>factories</code> map. but for the case where
+     * <code>factories</code> map, but for the case where
      * <code>getClassLoader</code> returns <code>null</code>.
      * This can happen when:
      * <ul>
