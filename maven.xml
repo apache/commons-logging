@@ -27,12 +27,20 @@
     -
     -  This goal assumes that commons-build is checked out as a sibling
     -  to the directory we are doing the build in. 
+    -
+    -  Copy the release notes into the target directory, so that they
+    -  are available on the website.
     ================================================================== -->
 
   <postGoal name="xdoc:copy-resources">  
     <copy todir="${basedir}/target/docs/style/" failonerror="false">
       <fileset dir="${basedir}/../commons-build/xdocs/style">
       	<include name='**/*'/>
+      </fileset>
+    </copy>
+    <copy todir="${basedir}/target/docs/" failonerror="false">
+      <fileset dir="${basedir}">
+      	<include name='RELEASE-NOTES.txt'/>
       </fileset>
     </copy>
   </postGoal>
