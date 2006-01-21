@@ -257,7 +257,6 @@ There is no easy way to run these under maven at the moment.
     <report>maven-junit-report-plugin</report>
     <report>maven-jxr-plugin</report>
     <report>maven-license-plugin</report>
-    <report>maven-tasklist-plugin</report>
   </reports>
   
 </project>
