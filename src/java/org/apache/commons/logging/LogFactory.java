@@ -409,6 +409,8 @@ public abstract class LogFactory {
         if (props != null) {
             String useTCCLStr = props.getProperty(TCCL_KEY);
             if (useTCCLStr != null) {
+                // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
+                // is required for Java 1.2 compatability.
                 if (Boolean.valueOf(useTCCLStr).booleanValue() == false) {
                     // Don't use current context classloader when locating any
                     // LogFactory or Log classes, just use the class that loaded
