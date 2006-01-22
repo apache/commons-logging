@@ -52,7 +52,13 @@ Jakarta Commons Logging wiki site:
 
 * New jarfile commons-logging-adapters-xxx.jar is now provided. This can be
   used to resolve class cast conflicts where parts of commons-logging are
-  deployed via different classloaders.
+  deployed via different classloaders. It is not expected to be frequently
+  used; it is only necessary in situations where a container has deployed
+  commons-logging-api.jar and a webapp wants to bind to a third-party
+  logging implementation such as log4j. In this case, the webapp can
+  experience problems if it deploys commons-logging.jar as this causes
+  duplicates of the core commons-logging classes, but commons-logging-adapters
+  can be safely used.
 
 * New internal diagnostics feature. If commons-logging is behaving in an
   unexpected manner, you can now set system property
