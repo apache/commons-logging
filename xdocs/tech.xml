@@ -393,10 +393,6 @@
 			<p>
 	Parent-first loading has been the standard mechanism in the JDK
 	class loader, at least since Java 1.2 introduced hierarchical classloaders.  
-	The primary reason for this is safety -- parent-first
-	makes it impossible for malicious code to trick the JVM into
-	replacing a core class (say, <code>java.security.SecurityManager</code>) with a
-	class of the same name loaded from a child classloader.
 			</p>
 			<p>
 	Child-first classloading has the advantage of helping to improve isolation 
