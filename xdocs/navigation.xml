@@ -48,6 +48,8 @@
     <menu name='1.0.4 Release'>
       <item   name='Documentation'
               href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/'/>
+      <item   name='JavaDoc'
+              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/'/>
       <item   name='Release Notes'
               href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/RELEASE-NOTES.txt'/>
     </menu>
