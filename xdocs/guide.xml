@@ -45,8 +45,8 @@
                 <li><a href='#Jars Included in the Standard Distribution'>Jars Included in the Standard Distribution</a>
                      <ol>
                         <li><a href='#commons-logging.jar'>commons-logging.jar</a></li>
-                        <li><a href='#commons-logging-optional.jar'>commons-logging-optional.jar</a></li>
                         <li><a href='#commons-logging-api.jar'>commons-logging-api.jar</a></li>
+                        <li><a href='#commons-logging-adapters.jar'>commons-logging-adapters.jar</a></li>
                      </ol>
                 </li>
                 <li><a href='#JCL Best Practices'>JCL Best Practices</a></li>
@@ -350,41 +350,46 @@ logging implementation in the classpath should be all that is required to
 use JCL.
    </p>
     </subsection>
-    <subsection name="commons-logging-optional.jar">
-    <p>
-The optional jar includes, oddly enough, optional classes that are useful but 
-not strictly required to make JCL functional.  As these classes introduce 
-dependencies on JDK 1.3+ JVMs and a goal of JCL is to be usable on JDK 1.2 
-and earlier JVMs, these optional classes are not included in the main 
-<code>commons-logging.jar</code>.
-   </p>
-   <p>
-Included in the optional jar are classes which allow JCL to (potentially) improve
-it's memory utilization (see 
-<a href='#Classloader and Memory Management'>Classloader and Memory Management</a> 
-below). It is therefore recommended that (when running on a 1.3+ JDK) the optional jar 
-be deployed alongside the 
-main <code>commons-logging.jar</code>.  It should be deployed such that it will be loaded 
-by the same classloader that loads <code>LogFactory</code>. When so deployed, JCL will
-discover the appropriate classes and configure itself to use them.
-   </p>
-    </subsection>
     <subsection name="commons-logging-api.jar">
-    <p>
+<p>
 The <code>commons-logging-api.jar</code> file includes the JCL API and the 
-default <code>LogFactory</code> implementation, but does not include the 
-wrapper <code>Log</code> implementations for <code>Log4j</code>,
-<code>Avalon</code> and <code>Lumberjack</code>.  This jar is intended for 
-use in specialized containers such as 
-<a href='http://tomcat.apache.org/'>Tomcat</a> that wish to use 
-JCL internally but also need to make JCL available for use by deployed 
-applications.
-   </p>
-  <p>
-  If this jar is used, in order to benefit from improved memory management in modern JVMs (1.3+),
-  it is recommended that the <code>commons-logging-optional.jar</code> is deployed in 
-  the same classloader as this jar.
-  </p>
+default <code>LogFactory</code> implementation as well as the built-in
+<code>Log</code> implementations SimpleLog and NoOpLog. However it does not
+include the wrapper <code>Log</code> implementations that require additional
+libraries such as <code>Log4j</code>, <code>Avalon</code> and
+<code>Lumberjack</code>. 
+</p>
+<p>
+This jar is intended for use by projects that recompile the commons-logging
+source using alternate java environments, and cannot compile against all of
+the optional libraries that the Apache release of commons-logging supports.
+Because of the reduced dependencies of this jarfile, such projects should be
+able to create an equivalent of this library with fewer difficulties.
+</p>
+<p>
+This jar is also useful for build environments that automatically track
+dependencies, and thus have difficulty with the concept that the main
+commons-logging.jar has "optional" dependencies on various logging
+implementations that can safely go unsatisfied at runtime.
+</p>
+    </subsection>
+    <subsection name="commons-logging-adapters.jar">
+<p>
+The <code>commons-logging-adapters.jar</code> file includes only adapters
+to third-party logging implementations, and none of the core commons-logging
+framework. As such, it cannot be used alone; either commons-logging.jar or
+commons-logging-api.jar must also be present in the classpath.
+</p>
+<p>
+This library will not often be used; it is only intended for situations where
+a container has deployed commons-logging-api.jar in a shared classpath but a
+webapp wants to bind logging to one of the external logging implementations
+that the api jar does not include. In this situation, deploying the
+commons-logging.jar file within the webapp can cause problems as this leads to
+duplicates of the core commons-logging classes (Log, LogFactory, etc) in
+the classpath which in turn can cause unpleasant ClassCastException exceptions
+to occur. Deploying only the adapters avoids this problem.
+</p>
     </subsection>
 </section>
         <section name='JCL Best Practices'>
@@ -618,20 +623,15 @@ classloader (and thus to all the classes loaded by it) will be
 held in <code>LogFactory</code>'s static hashtable.
             </p>
             <p>
-Beginning with JCL 1.0.5, <code>LogFactory</code> will attempt to cache factory
-implementations in a 
-<a href='http://jakarta.apache.org/commons/logging/optional/apidocs/org/apache/commons/logging/impl/WeakHashtable.html'>WeakHashtable</a>.  
-This class is analogous to <code>java.util.WeakHashMap</code> in that it holds 
-<code>WeakReference</code>s to its keys, thus allowing classloaders to be GC'd 
+Beginning with JCL 1.1, <code>LogFactory</code> caches factory implementations in a 
+"WeakHashtable". This class is similar to <code>java.util.WeakHashMap</code> in that it holds a
+<code>WeakReference</code> to each key's value, thus allowing classloaders to be GC'd 
 even if <code>LogFactory.release()</code> is never invoked.
             </p>
             <p>
-Because <code>WeakHashtable</code> depends on JDK 1.3+ features, it cannot 
-be included in the main <code>commons-logging.jar</code> file.  It is found 
-in <code>commons-logging-optional.jar</code>.  <strong>J2EE container 
-implementors who distribute JCL with their application are strongly 
-encouraged to place <code>commons-logging-optional.jar</code> on the classpath 
-in the same location where <code>LogFactory</code> is loaded.</strong>
+Because <code>WeakHashtable</code> depends on JDK 1.3+ features, it is dynamically
+loaded depending on the JVM version; when commons-logging is run on java versions
+prior to 1.3 the code defaults to a standard Hashtable instead.
             </p>
             <p>
 In a particular usage scenario, <code>WeakHashtable</code> alone will
@@ -642,8 +642,8 @@ loaded by a parent classloader and a concrete subclass implementation of
 implementation will have a strong reference to the child classloader via the
 chain <code>getClass().getClassLoader()</code>. The <code>WeakHashtable</code>
 will have a strong reference to the <code>LogFactory</code> implementation as
-one of the values in its map. This chain of references will prevent 
-collection of the child classloader.
+one of the keys in its map (only values can use weak references). This chain
+of references will prevent collection of the child classloader.
            </p>
            <p>
 Such a situation would typically only occur if commons-logging.jar were
