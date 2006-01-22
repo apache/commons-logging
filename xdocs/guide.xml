@@ -417,7 +417,7 @@ Code guards are typically used to guard code that
 only needs to execute in support of logging,
 that otherwise introduces undesirable runtime overhead
 in the general case (logging disabled).
-Examples are multiple parameters, or expressions (i.e. string + " more") for parameters.
+Examples are multiple parameters, or expressions (e.g. string + " more") for parameters.
 Use the guard methods of the form <code>log.is&lt;<i>Priority</i>&gt;()</code> to verify
 that logging should be performed, before incurring the overhead of the logging method call.
 Yes, the logging methods will perform the same check, but only after resolving parameters.
@@ -518,15 +518,15 @@ listed in the 'throws' clause of a method signature.
 <br/>
 Appropriate handling of these exceptions depends upon the type
 of code you are developing.
-API's for utility functions and tools should log these at the <b>debug</b> level,
+APIs for utility functions and tools should log these at the <b>debug</b> level,
 if they are caught at all.
 <br/>
 For higher level frameworks and middleware components,
-these exceptions should be caught immediatly prior to crossing
+these exceptions should be caught immediately prior to crossing
 the API/SPI interface back to user code-space,
 logged with full stack trace at <b>info</b> level,
 and rethrown/wrapped as <code><i>Component</i>InternalError</code>.
-The assures that the log contains a record of the root cause for
+This ensures that the log contains a record of the root cause for
 future analysis <i>in the event that the exception is not caught and
 logged/reported as expected by the user's code</i>.
             </li>
@@ -538,10 +538,9 @@ at the programmer's discretion.
             </li>
                 <li>
 <b>Significant Internal Boundaries</b>.
-This typically only applies to middleware components
-that span networks or runtime processes.
-Exceptions that cross over significant internal component boundaries, such as networks.
-These should be logged when caught as <b>info</b> messages.
+This typically only applies to middleware components that span networks or runtime processes.
+Exceptions that cross over significant internal component boundaries such as networks
+should be logged when caught as <b>info</b> messages.
 Do not assume that such a (process/network) boundary will deliver exceptions to the 'other side'.
                 </li>
             </ul>
@@ -733,58 +732,11 @@ for details.
     </subsection>
 </section>
     <section name='Frequently Asked Questions'>
-        <subsection name='Is JCL Thread Safe?'>
-            <p>
-JCL doesn't (and cannot) impose any requirement on thread safety on the underlying implementation
-and thus its SPI contract doesn't guarantee thread safety.
-However, JCL can be safely used in a multi-threaded environment
-as long as the underlying implementation is thread-safe.
-        </p>
-            <p>
-It would be very unusual for a logging system to be thread unsafe.
-Certainly, JCL is thread safe when used with the distributed Log implementations.
-        </p>
-    </subsection>
-        <subsection name='Why "xxxLogger does not implement Log"?'>
-            <p>    
-Upon application startup (especially in a container environment), an exception is thrown
-with message 'xxxLogger does not implement Log'! What's the cause and how can 
-I fix this problem?
-        </p>
-            <p>
-This almost always a classloader issue. Log has been loaded by a different 
-classloader from the logging implementation. Please ensure that:
-        </p>
-            <ul>
-                <li>
-all the logging classes (both Log and the logging implementations) 
-are deployed by the same classloader
-            </li>
-        </ul>
-            <ul>
-                <li>
-there is only copy of the classes to be found within the classloader hierarchy. 
-In application container environments this means ensuring that if the classes 
-are found in a parent classloader, they are not also present in the leaf classloader 
-associated with the application. 
-So, if the jar is deployed within the root classloader of the container then it 
-should be removed from the application's library.
-            </li>
-        </ul>
-    </subsection>
-        <subsection name='How Can I Switch Logging Levels On And Off?'>
-            <p>
-See <a href='#How Do I Change The Logging System Configuration?'>
-How Can I Change The Logging System Configuration?</a>
-        </p>
-    </subsection>
-        <subsection name='How Do I Change The Logging System Configuration?'>
-            <p>
-The configuration supported by JCL is limited to choosing the underlying logging system.
-JCL does not (and will never) support changing the configuration of the wrapped logging system.
-Please use the mechanisms provided by the underlying logging system.
-        </p>
-    </subsection>
+<p>
+See the <a href="http://wiki.apache.org/jakarta-commons/Logging/FrequentlyAskedQuestions">FAQ document</a>
+on the commons-logging wiki site
+</p>
 </section>
+
 </body>
 </document>
