@@ -2,7 +2,7 @@
 
 <!--
 
- Copyright 2001-2004 The Apache Software Foundation.
+ Copyright 2001-2004,2006 The Apache Software Foundation.
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -114,7 +114,8 @@ when downloading from a mirror.
 </p>
 <p>
 <ul>
-       <li>Version 1.0.4 (latest) - 16 Jun 2004</li>
+       <li>Version 1.1   - Jan 2006</li>
+       <li>Version 1.0.4 - 16 Jun 2004</li>
        <li>Version 1.0.3 - 7 Apr 2003</li>
 </ul>
 </p>
