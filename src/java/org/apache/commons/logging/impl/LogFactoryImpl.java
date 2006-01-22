@@ -397,6 +397,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * Gets the context classloader.
      * This method is a workaround for a java 1.2 compiler bug.
+     * @since 1.1
      */
     protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
         return LogFactory.getContextClassLoader();
@@ -415,6 +416,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * Workaround for bug in Java1.2; in theory this method is not needed.
      * See LogFactory.getClassLoader.
+     * @since 1.1
      */
     protected static ClassLoader getClassLoader(Class clazz) {
         return LogFactory.getClassLoader(clazz);
@@ -453,7 +455,8 @@ public class LogFactoryImpl extends LogFactory {
      * Output a diagnostic message to a user-specified destination (if the
      * user has enabled diagnostic logging).
      * 
-     * @param msg
+     * @param msg diagnostic message
+     * @since 1.1
      */
     protected void logDiagnostic(String msg) {
         if (isDiagnosticsEnabled()) {

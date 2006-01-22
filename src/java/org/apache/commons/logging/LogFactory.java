@@ -685,6 +685,7 @@ public abstract class LogFactory {
      * just disable all commons-logging? Not high priority though - as stated
      * above, security policies that prevent classloader access aren't common.
      * 
+     * @since 1.1
      */
     protected static ClassLoader getClassLoader(Class clazz) {
         try {
@@ -746,6 +747,7 @@ public abstract class LogFactory {
      * @exception SecurityException if the java security policy forbids
      * access to the context classloader from one of the classes in the
      * current call stack. 
+     * @since 1.1
      */
     protected static ClassLoader directGetContextClassLoader()
         throws LogConfigurationException
@@ -910,6 +912,7 @@ public abstract class LogFactory {
      *
      * @exception LogConfigurationException if a suitable instance
      *  cannot be created
+     * @since 1.1
      */
     protected static LogFactory newFactory(final String factoryClass,
                                            final ClassLoader classLoader,
@@ -965,6 +968,7 @@ public abstract class LogFactory {
      * @param classLoader
      * 
      * @return either a LogFactory object or a LogConfigurationException object.
+     * @since 1.1
      */
     protected static Object createFactory(String factoryClass, ClassLoader classLoader) {
 
@@ -1270,6 +1274,7 @@ public abstract class LogFactory {
      * areDiagnosticsEnabled just isn't java beans style.
      * 
      * @return true if calls to logDiagnostic will have any effect.
+     * @since 1.1
      */
     protected static boolean isDiagnosticsEnabled() {
         return diagnosticsStream != null;
@@ -1305,6 +1310,7 @@ public abstract class LogFactory {
      * Write the specified message to the internal logging destination.
      * 
      * @param msg is the diagnostic message to be output.
+     * @since 1.1
      */
     protected static final void logRawDiagnostic(String msg) {
         if (diagnosticsStream != null) {
@@ -1395,6 +1401,7 @@ public abstract class LogFactory {
      * 
      * @param o may be null.
      * @return a string of form classname@hashcode, or "null" if param o is null.
+     * @since 1.1
      */
     public static String objectId(Object o) {
         if (o == null) {

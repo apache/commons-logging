@@ -48,6 +48,8 @@ import org.apache.commons.logging.LogFactory;
  * this class on webapp undeploy; the contextDestroyed method will tell
  * LogFactory that the entry in its map for the current webapp's context
  * classloader should be cleared.
+ * 
+ * @since 1.1
  */
 
 public class ServletContextCleaner implements ServletContextListener {
