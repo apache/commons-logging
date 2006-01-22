@@ -67,7 +67,7 @@
 
   <!-- The locations of necessary jar files -->
   <property name="junit.jar"               value="junit-3.8.1.jar"/>
-  <property name="log4j12.jar"             value="log4j-1.2.9.jar"/>
+  <property name="log4j12.jar"             value="log4j-1.2.12.jar"/>
   <property name="log4j13.jar"             value="log4j-1.3.0.jar"/>
   <property name="logkit.jar"              value="logkit-1.0.1.jar"/>
   <property name="avalon-framework.jar"    value="avalon-framework-4.1.3.jar"/>
@@ -216,7 +216,7 @@
     <get dest="lib/junit-3.8.1.jar" src="${getlibs.base}/junit/jars/junit-3.8.1.jar"/>
     <get dest="lib/logkit-1.0.1.jar" src="${getlibs.base}/logkit/jars/logkit-1.0.1.jar"/>
     <get dest="lib/avalon-framework-4.1.3.jar" src="${getlibs.base}/avalon-framework/jars/avalon-framework-4.1.3.jar"/>
-    <get dest="lib/log4j-1.2.6.jar" src="${getlibs.base}/log4j/jars/log4j-1.2.6.jar"/>
+    <get dest="lib/log4j-1.2.12.jar" src="${getlibs.base}/log4j/jars/log4j-1.2.12.jar"/>
     <get dest="lib/servletapi-2.3.jar" src="${getlibs.base}/servletapi/jars/servletapi-2.3.jar"/>
   </target>
 
@@ -429,7 +429,7 @@
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/*.class" />
       <include name="org/apache/commons/logging/impl/LogFactoryImpl*.class" />
-      <include name="org/apache/commons/logging/impl/Jdk14*.class" />
+      <include name="org/apache/commons/logging/impl/WeakHashtable*.class" />
       <include name="org/apache/commons/logging/impl/SimpleLog*.class" />
       <include name="org/apache/commons/logging/impl/NoOpLog*.class" />
       <include name="META-INF/LICENSE.txt"/>

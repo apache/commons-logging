@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Apache Log4j 1.2.x series
-log4j12.jar=lib/log4j-1.2.6.jar
+log4j12.jar=lib/log4j-1.2.12.jar
 
 # Apache Log4j 1.3.x series
 log4j13.jar=lib/log4j-1.3.0.jar
