@@ -95,8 +95,8 @@ a specific logging implementation.
 <p>JCL provides thin-wrapper <code>Log</code> implementations for
 other logging tools, including
 <a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>,
-the Avalon Framework's logging infrastructure,
+<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>
+(the Avalon Framework's logging infrastructure),
 JDK 1.4, and an implementation of JDK 1.4 logging APIs (JSR-47) for pre-1.4
 systems.
 The interface maps closely to Log4J and LogKit.
@@ -117,9 +117,10 @@ need to do any configuration at all!
             <p>
 There are two base abstractions used by JCL: <code>Log</code>
 (the basic logger) and <code>LogFactory</code> (which knows how to create <code>Log</code>
-instances). Using <code>LogFactory</code> implementations other than the default is a
-subject for advanced users only, so let's concentrate on configuring the default
-implementation.
+instances). Specifying a particular Log implementation is very useful (whether that is
+one provided by commons-logging or a user-defined one). Specifying a 
+<code>LogFactory</code> implementation other than the default is a subject for
+advanced users only, so will not be addressed here.
         </p>
             <p>
 The default <code>LogFactory</code> implementation uses the following discovery process
@@ -130,9 +131,23 @@ to determine what type of <code>Log</code> implementation it should use
             <ol>
                 <li>
 Look for a configuration attribute of this factory named
-<code>org.apache.commons.logging.Log</code> (for backwards
-compatibility to pre-1.0 versions of this API, an attribute
+<code>org.apache.commons.logging.Log</code> (for backwards compatibility to
+pre-1.0 versions of this API, an attribute
 <code>org.apache.commons.logging.log</code> is also consulted).
+<p>
+Configuration attributes can be set explicitly by java code, but they are more
+commonly set by placing a file named commons-logging.properties in the classpath.
+When such a file exists, every entry in the properties file becomes an "attribute"
+of the LogFactory. When there is more than one such file in the classpath, releases
+of commons-logging prior to 1.1 simply use the first one found. From release 1.1,
+each file may define a <code>priority</code> key in each file, and the file with
+the highest priority is used (no priority definition implies priority of zero).
+When multiple files have the same priority, the first one found is used.
+</p>
+<p>
+Defining this property in a commons-logging.properties file is the recommended
+way of explicitly selecting a Log implementation.
+</p>
             </li>
                 <li>
 Look for a system property named
@@ -262,11 +277,20 @@ For each class definition, declare and initialize a
             <source>
 public class CLASS
 {
-    private static Log log = LogFactory.getLog(CLASS.class);
+    private Log log = LogFactory.getLog(CLASS.class);
     ...
     ;
         </source>
     </ul>
+    <p>
+Note that for application code, declaring the log member as "static" is more
+efficient as one Log object is created per class, and is recommended.
+However this is not safe to do for a class which may be deployed via a "shared"
+classloader in a servlet or j2ee container or similar environment. If the class
+may end up invoked with different thread-context-classloader values set then the
+member must <i>not</i> be declared static. The use of "static" should therefore
+be avoided in code within any "library" type project.
+    </p>
         <p>
 Messages are logged to a <em>logger</em>, such as <code>log</code>
 by invoking a method corresponding to <em>priority</em>.
