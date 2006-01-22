@@ -116,6 +116,8 @@ import java.util.*;
  *
  *
  * @author Brian Stansberry
+ * 
+ * @since 1.1
  */
 public final class WeakHashtable extends Hashtable {
 
