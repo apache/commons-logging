@@ -44,6 +44,8 @@
             href='/apidocs/index.html'/>
       <item name="Release Notes"
             href="/RELEASE-NOTES.txt"/>
+      <item name="Download"
+            href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi"/>
     </menu>
     <menu name='1.0.4 Release'>
       <item   name='Documentation'
