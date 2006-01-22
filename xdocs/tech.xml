@@ -229,8 +229,8 @@
 			</p>
 			<p>
 	(<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#73492'>VMSpec 5.4.3</a>)
-	Resolution of a symbolic reference occurs dymanically at runtime and is carried out by
-	the Java Vitual Machine. Resolution of a symbolic reference requires loading and linking of the new class. 
+	Resolution of a symbolic reference occurs dynamically at runtime and is carried out by
+	the Java Virtual Machine. Resolution of a symbolic reference requires loading and linking of the new class. 
 			</p>
 			<p>
 				<em>
@@ -241,8 +241,8 @@
 		<subsection name='Loading'>
 			<p>
 	(<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#19175'>VMSpec 2.17.2</a>) 
-	Loading is the name given process by which a binary form of a class is obtained 
-	by the Java Virutal Machine. 
+	Loading is the name given to the process by which a binary form of a class is obtained 
+	by the Java Virtual Machine. 
 	Java classes are always loaded and linked dynamically by the Java Virtual Machine
 	(rather than statically by the compiler).
 			</p>
@@ -251,7 +251,7 @@
 	In practical development terms:
 	This means that the developer has no certain knowledge about the actual
 	bytecode that will be used to execute any external call (one made outside the class). This is determined only
-	at execution time and is effected by the way that the code is deployed.
+	at execution time and is affected by the way that the code is deployed.
 				</em>
 			</p>
     	</subsection>
@@ -272,7 +272,7 @@
 	In practical development terms: This means that different JVMs may realize that a reference cannot be
 	resolved at different times during execution. Consequently, the actual behaviour cannot be precisely predicted 
 	without intimate knowledge of the JVM (on which the bytecode will be executed). 
-	This makes it hard to give universal guildance to users.  	
+	This makes it hard to give universal guidance to users.  	
 				</em>
 			</p>
     	</subsection>
@@ -300,7 +300,7 @@
 			<p>
 	(<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSPEC 5.3</a>) 
 	The bootstrap is the base <code>ClassLoader</code> supplied by the Java Virtual Machine.
-	All others are user (also known as application) <code>ClassLoader</code>'s.
+	All others are user (also known as application) <code>ClassLoader</code> instances.
 			</p>
 			<p>
 				<em>
@@ -314,7 +314,7 @@
 		<subsection name='Runtime Package'>
 			<p>
 	(<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSpec 5.3</a>) 
-	At runtime, a class (or interface) is determined by it's fully qualified name 
+	At runtime, a class (or interface) is determined by its fully qualified name 
 	and by the classloader that defines it. This is known as the class's runtime package. 
 			</p>
 			<p>
@@ -328,7 +328,7 @@
 	two classes with the same fully qualified name are found to be incompatible during a method call. 
 	This may happen when a member is expecting an interface which is (seemingly) implemented by a class
 	but the class is in a different runtime package after being defined by a different classloader. This is a 
-	fundemental java language security feature. 
+	fundamental java language security feature. 
 				</em>
 			</p>
     	</subsection>
@@ -379,8 +379,8 @@
 		<subsection name='Parent-First And Child-First Class Loaders'>
 			<p>
 	When a classloader is asked to load a class, a question presents itself: should it immediately
-	delegate the loading to it's parent (and thus only define those classes not defined by it's parent)
-	or should it try to define it first itself (and only delegate to it's parent those classes it does
+	delegate the loading to its parent (and thus only define those classes not defined by its parent)
+	or should it try to define it first itself (and only delegate to its parent those classes it does
 	not itself define). Classloaders which universally adopt the first approach are termed parent-first
 	and the second child-first. 
 			</p>
@@ -434,7 +434,7 @@
 			<p>
 	Java 1.2 introduces a mechanism which allows code to access classloaders
 	which are not the class classloader or one of its parents.
-	A thread may have a class loader associated with it by it's creator for use
+	A thread may have a class loader associated with it by its creator for use
 	by code running in the thread when loading resources and classes. 
 	This classloader is accessed by the <code>getContextClassLoader</code> 
 	method on <code>Thread</code>. It is therefore often known as the context classloader.
