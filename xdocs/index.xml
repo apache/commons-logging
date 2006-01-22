@@ -76,6 +76,10 @@ This gives short introductions to topics such as advanced class loading.
 
 
 <section name="Releases">
+	<p>
+Binary and source distributions are available
+       <a href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi">here</a>.
+    </p>
     <subsection name='1.1 Release'>
       <p>This release makes several changes that are intended to resolve issues that
       have been encountered when using commons-logging in servlet containers or j2ee
@@ -117,20 +121,5 @@ The 1.0.1 release is a packaging of bug fixes and minor enhancements since relea
     	</p>
     </subsection>
 </section>
-<section name='Downloads'>
-<p>
-Binary and source distributions for newer releases are available
-       <a href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi">here</a>.
-</p>
-<p>
-Older releases are available from the archives:
-</p>
-<ul>
-<li><a href="http://archive.apache.org/dist/jakarta/commons/logging/binaries/">Binary distributions</a></li>
-<li><a href="http://archive.apache.org/dist/jakarta/commons/logging/source/">Source distributions</a></li>
-</ul>
-</section>
-
-
 </body>
 </document>
