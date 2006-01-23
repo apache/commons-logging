@@ -623,9 +623,10 @@ held in <code>LogFactory</code>'s static hashtable.
             </p>
             <p>
 Beginning with JCL 1.1, <code>LogFactory</code> caches factory implementations in a 
-"WeakHashtable". This class is similar to <code>java.util.WeakHashMap</code> in that it holds a
-<code>WeakReference</code> to each key's value, thus allowing classloaders to be GC'd 
-even if <code>LogFactory.release()</code> is never invoked.
+"WeakHashtable". This class is similar to <code>java.util.WeakHashMap</code> in
+that it holds a <code>WeakReference</code> to each key (but a strong reference
+to each value), thus allowing classloaders to be GC'd even if
+<code>LogFactory.release()</code> is never invoked.
             </p>
             <p>
 Because <code>WeakHashtable</code> depends on JDK 1.3+ features, it is dynamically
@@ -633,29 +634,26 @@ loaded depending on the JVM version; when commons-logging is run on java version
 prior to 1.3 the code defaults to a standard Hashtable instead.
             </p>
             <p>
-In a particular usage scenario, <code>WeakHashtable</code> alone will
-be insufficent to allow garbage collection of a classloader without a call to
-<code>release</code>.  If the abstract class <code>LogFactory</code> is 
-loaded by a parent classloader and a concrete subclass implementation of 
-<code>LogFactory</code> is loaded by a child classloader, the concrete
-implementation will have a strong reference to the child classloader via the
-chain <code>getClass().getClassLoader()</code>. The <code>WeakHashtable</code>
-will have a strong reference to the <code>LogFactory</code> implementation as
-one of the keys in its map (only values can use weak references). This chain
-of references will prevent collection of the child classloader.
+If a custom LogFactory implementation is used, however, then a
+<code>WeakHashtable</code> alone can be insufficent to allow garbage collection
+of a classloader without a call to <code>release</code>.  If the abstract class
+<code>LogFactory</code> is loaded by a parent classloader and a concrete
+subclass implementation of <code>LogFactory</code> is loaded by a child
+classloader, the WeakHashtable's key is a weak reference to the TCCL (child
+classloader), but the value is a strong reference to the LogFactory instance,
+which in turn contains a strong reference to its class and thus loading
+classloader - the child classloader. This chain of strong references prevents
+the child loader from being garbage collected.
            </p>
            <p>
-Such a situation would typically only occur if commons-logging.jar were
-loaded by a parent classloader (e.g. a server level classloader in a
-servlet container) and a custom <code>LogFactory</code> implementation were
-loaded by a child classloader (e.g. a web app classloader).  If use of
-a custom <code>LogFactory</code> subclass is desired, ensuring that the
-custom subclass is loaded by the same classloader as <code>LogFactory</code>
+If use of a custom <code>LogFactory</code> subclass is desired, ensuring that
+the custom subclass is loaded by the same classloader as <code>LogFactory</code>
 will prevent problems.  In normal deployments, the standard implementations 
 of <code>LogFactory</code> found in package <code>org.apache.commons.logging.impl</code> 
 will be loaded by the same classloader that loads <code>LogFactory</code> 
 itself, so use of the standard <code>LogFactory</code> implementation
-should not pose problems.
+should not pose problems. Alternatively, use the provided ServletContextCleaner
+to ensure this reference is explicitly released on webapp unload.
          </p>
             </subsection>
     </section>
