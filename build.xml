@@ -444,6 +444,7 @@
       <include name="META-INF/LICENSE.txt"/>
       <include name="META-INF/NOTICE.txt"/>
       <exclude name="org/apache/commons/logging/impl/WeakHashtable*.class" />
+      <exclude name="org/apache/commons/logging/impl/LogFactoryImpl.class" />
     </jar>
   </target>
 
