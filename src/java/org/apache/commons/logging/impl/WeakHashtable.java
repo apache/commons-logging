@@ -44,15 +44,14 @@ import java.util.*;
  * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
  * </p>
  *
- * <p><code>org.apache.commons.logging.LogFactory</code> looks to see whether this 
- * class is present in the classpath, and if so then uses it to store
+ * <p><code>org.apache.commons.logging.LogFactory</code> checks whether this class
+ * can be supported by the current JVM, and if so then uses it to store
  * references to the <code>LogFactory</code> implementationd it loads 
  * (rather than using a standard Hashtable instance). 
  * Having this class used instead of <code>Hashtable</code> solves
  * certain issues related to dynamic reloading of applications in J2EE-style
  * environments. However this class requires java 1.3 or later (due to its use
- * of <code>java.lang.ref.WeakReference</code> and associates) and therefore cannot be
- * included in the main logging distribution which supports JVMs prior to 1.3.
+ * of <code>java.lang.ref.WeakReference</code> and associates).
  * And by the way, this extends <code>Hashtable</code> rather than <code>HashMap</code>
  * for backwards compatibility reasons. See the documentation
  * for method <code>LogFactory.createFactoryStore</code> for more details.</p>
@@ -66,31 +65,20 @@ import java.util.*;
  * stomp on each other. When the component is later unloaded, the container
  * sets the component's classloader to null with the intent that all the 
  * component's classes get garbage-collected. However there's still a
- * reference to the component's classloader from the "global" <code>LogFactory</code>'s
- * factories member! If <code>LogFactory.release()</code> is called whenever component
- * is unloaded (as happens in some famous containers), the classloaders will be correctly  
- * garbage collected.
- * However, holding the classloader references weakly ensures that the classloader
- * will be garbage collected without programmatic intervention. 
- * Unfortunately, weak references are
- * only available in java 1.3+, so this code only uses <code>WeakHashtable</code> if the
- * class has explicitly been made available on the classpath.</p>
- *
- * <p>
- * Because the presence of this class in the classpath ensures proper
- * unload of components without the need to call method 
- * {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release ClassLoader)},
- * it is recommended that this class be deployed along with the standard
- * commons-logging.jar file when using commons-logging in J2EE
- * environments (which will presumably be running on Java 1.3 or later). 
- * There are no know ill effects from using this class.</p>
+ * reference to the component's classloader from a key in the "global"
+ * <code>LogFactory</code>'s factories member! If <code>LogFactory.release()</code>
+ * is called whenever component is unloaded, the classloaders will be correctly
+ * garbage collected; this <i>should</i> be done by any container that 
+ * bundles commons-logging by default. However, holding the classloader
+ * references weakly ensures that the classloader will be garbage collected
+ * without the container performing this step. </p>
  *
  * <p>
  * <strong>Limitations:</strong>
  * There is still one (unusual) scenario in which a component will not 
  * be correctly unloaded without an explicit release. Though weak references
- * are used for its keys, it is necessary to use 
- * strong references for its values.</p>
+ * are used for its keys, it is necessary to use strong references for its values.
+ * </p>
  * 
  * <p> If the abstract class <code>LogFactory</code> is 
  * loaded by the container classloader but a subclass of 
