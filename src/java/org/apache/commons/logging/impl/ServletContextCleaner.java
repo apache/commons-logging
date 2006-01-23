@@ -31,23 +31,19 @@ import org.apache.commons.logging.LogFactory;
  * a webapp, and responds by ensuring that commons-logging releases all
  * memory associated with the undeployed webapp.
  * <p>
- * This class is necessary when code using commons-logging is deployed within
- * a servlet container and commons-logging is deployed via a shared classloader.
- * When commons-logging is deployed in a "shared" classloader that is visible 
- * to all webapps, commons-logging still ensures that each webapp gets its own
- * logging configuration by setting up a separate LogFactory object for each 
- * context classloader, and ensuring that the correct LogFactory object is 
- * used based on the context classloader set whenever LogFactory.getLog is 
- * called. However the negative side of this is that LogFactory needs to keep 
- * a static map of LogFactory objects keyed by context classloader; when the 
- * webapp is "undeployed" this means there is still a reference to the 
- * undeployed classloader preventing the memory used by all its classes from 
- * being reclaimed.  
+ * In general, the WeakHashtable support added in commons-logging release 1.1
+ * ensures that logging classes do not hold references that prevent an
+ * undeployed webapp's memory from being garbage-collected even when multiple
+ * copies of commons-logging are deployed via multiple classloaders (a
+ * situation that earlier versions had problems with). However there are
+ * some rare cases where the WeakHashtable approach does not work; in these
+ * situations specifying this class as a listener for the web application will
+ * ensure that all references held by commons-logging are fully released.
  * <p>
  * To use this class, configure the webapp deployment descriptor to call
  * this class on webapp undeploy; the contextDestroyed method will tell
- * LogFactory that the entry in its map for the current webapp's context
- * classloader should be cleared.
+ * every accessable LogFactory class that the entry in its map for the
+ * current webapp's context classloader should be cleared.
  * 
  * @since 1.1
  */
