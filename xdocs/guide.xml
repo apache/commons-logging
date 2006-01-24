@@ -74,12 +74,6 @@
                     </ol>
                 </li>
                 <li><a href='#Frequently Asked Questions'>Frequently Asked Questions</a>
-                    <ol>
-                        <li><a href='#Is JCL Thread Safe?'>Is JCL Thread Safe?</a></li>
-                        <li><a href='#Why "xxxLogger does not implement Log"?'>Why "xxxLogger does not implement Log"?</a></li>
-                        <li><a href='#How Can I Switch Logging Levels On And Off?'>How Can I Switch Logging Levels On And Off?</a></li>
-                        <li><a href='#How Do I Change The Logging System Configuration?'>How Do I Change The Logging System Configuration?</a></li>
-                    </ol>
                 </li>
             </ol>
         </p>
