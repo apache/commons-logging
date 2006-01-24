@@ -105,10 +105,6 @@
   <property name="test.home"               value="src/test"/>
 
 
-  <!-- Optional build -->
-  <property name="optional.home"               value="optional"/>
-  <property name="optional.dist.home"           value="${optional.home}/dist"/>
-
   <!-- jar names -->
   <property name="core.jar.name" value="commons-${component.name}-${component.version}.jar"/>
   <property name="api.jar.name" value="commons-${component.name}-api-${component.version}.jar"/>
@@ -198,7 +194,6 @@
   <property name="test.sysprops.commons-logging" value="${build.home}/${core.jar.name}"/>
   <property name="test.sysprops.commons-logging-api" value="${build.home}/${api.jar.name}"/>
   <property name="test.sysprops.commons-logging-adapters" value="${build.home}/${adapters.jar.name}"/>
-  <property name="test.sysprops.commons-logging-optional" value="${dist.home}/${optional.jar.name}"/>
   <propertyset id="test-lib-props">
     <propertyref prefix="test.sysprops."/>
     <mapper type="glob" from="test.sysprops.*" to="*"/>
