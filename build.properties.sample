@@ -38,3 +38,8 @@ junit.jar=lib/junit-3.8.1.jar
 # Those committers using agents may like to use
 #maven.username=rdonkin
 #logging.cvs=lserver:rdonkin@cvs.apache.org:/home/cvs
+
+
+# The path to a 1.4 JSDK javac
+# Optional - used when building with a 1.2 JVM for releases
+# executable.javac1.4=/opt/java/jdks/j2sdk1.4.2_10/bin/javac

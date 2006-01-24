@@ -33,6 +33,11 @@
   -  * run ant as "ant -lib path-to-junit-jar"
   -  * put the junit jar in $CLASSPATH
   -
+  - Note when building JCL for release it is strongly recommended that a 1.2 JVM
+  - is used for the main compile and the home.jdk4 property used to specify
+  - the path to a 1.4 J2SDK. This will be used to compile those classes
+  - which require the 1.4 API. 
+  -
   - $Id$
   -->
 
@@ -97,6 +102,9 @@
 
   <!-- The base directory for distribution targets -->
   <property name="dist.home"               value="dist"/>
+	
+  <!-- The base directory for releases  -->
+  <property name="artifacts.home"               value="artifacts"/>
 
   <!-- The base directory for component sources -->
   <property name="source.home"             value="src/java"/>
@@ -104,11 +112,14 @@
   <!-- The base directory for unit test sources -->
   <property name="test.home"               value="src/test"/>
 
-
   <!-- jar names -->
   <property name="core.jar.name" value="commons-${component.name}-${component.version}.jar"/>
   <property name="api.jar.name" value="commons-${component.name}-api-${component.version}.jar"/>
   <property name="adapters.jar.name" value="commons-${component.name}-adapters-${component.version}.jar"/>
+	
+  <!-- dist names -->
+  <property name="windows.dist.name" value="commons-${component.name}-${component.version}.zip"/>
+  <property name="nix.dist.name" value="commons-${component.name}-${component.version}.tar.gz"/>
   
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -236,8 +247,6 @@
     <mkdir dir="${build.home}"/>
     <mkdir dir="${build.home}/classes"/>
     <mkdir dir="${build.home}/conf"/>
-    <mkdir dir="${build.home}/docs"/>
-    <mkdir dir="${build.home}/docs/api"/>
     <mkdir dir="${build.home}/tests"/>
   </target>
 
@@ -313,7 +322,7 @@
   </target>
     
   <target name='warning' 
-    depends='log4j12-warning,log4j13-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning'/>
+    depends='log4j12-warning,log4j13-warning,logkit-warning,jdk1.4-warning,avalon-framework-warning,compile-1.4'/>
 
   <target name="compile-only" 
     depends="prepare,discovery,warning,show-lib-presence,compile-non-log4j,compile-log4j12,compile-log4j13,build-jar"/>
@@ -350,6 +359,38 @@
                unless="avalon-framework.present"/>
     </javac>
   </target>
+	
+  <target name="compile-1.4" depends="prepare,discovery,compile-non-log4j" if='executable.javac1.4'>
+	    <!-- 
+Compiles those classes which require a 1.4+ JSDK.
+This target will only be executed when ant is running a pre-1.4 JVM
+and the home.jdk4 property is set.
+This configuration is typically used to create a release only.
+		-->
+  	    <echo  message=""/>
+  	    <echo  message="************************************************************"/>
+  		<echo  message="    Compiling 1.4 only classes using compiler@${executable.javac1.4}"/>
+     	<echo  message="************************************************************"/>
+	    <echo  message=""/>
+	    <javac srcdir="${source.home}"
+	           destdir="${build.home}/classes"
+	           debug="${compile.debug}"
+	           deprecation="${compile.deprecation}"
+	           optimize="${compile.optimize}"
+	           source="${source.version}"
+	           target="${target.version}"
+	    	   compiler='javac1.4'
+	    	   fork='yes'
+	    	   executable='${executable.javac1.4}'>
+
+	      <classpath refid="compile.classpath"/>
+	    
+	      <include name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
+	               unless="jdk.1.4.present"/>
+	      <include name="org/apache/commons/logging/impl/Jdk14Logger.java"
+	               unless="jdk.1.4.present"/>
+	    </javac>
+	  </target>
 
   <target name="compile-log4j12" depends="prepare,discovery">
     <!-- compile the log4j1.2 support classes -->
@@ -523,8 +564,11 @@
 
   <target name="clean"
    description="Clean build and distribution directories">
-    <delete    dir="${build.home}"/>
+    <delete includeemptydirs='yes'>
+    	<fileset dir="${build.home}" excludes='docs/**/*'/>
+    </delete>
     <delete    dir="${dist.home}"/>
+  	<delete    dir="${artifacts.home}"/>
   </target>
 
 
@@ -532,7 +576,7 @@
    description="Clean and compile all components"/>
 
 
-  <target name="dist" depends="compile"
+  <target name="dist" depends="all"
    description="Create binary distribution">
   	
     <!--
@@ -560,6 +604,26 @@
     <mkdir dir="${dist.home}/src"/>
     <copy todir="${dist.home}/src" filtering="on">
       <fileset dir="${source.home}"/>
+    </copy>
+    <mkdir dir="${dist.home}/docs"/>
+    <copy todir="${dist.home}/docs">
+      <fileset dir="${build.home}/docs"/>
+    </copy>
+  	<mkdir dir="${artifacts.home}"/>
+  	<fixcrlf srcdir='${dist.home}' eol='dos' includes='**/*.txt,**/*.java,**/*.html'/>
+  	<zip destfile='${artifacts.home}/${windows.dist.name}'>
+  		<zipfileset dir='${dist.home}' prefix='commons-${component.name}-${component.version}'/>
+  	</zip>
+  	<fixcrlf srcdir='${dist.home}' eol='unix' includes='**/*.txt,**/*.java,**/*.html'/>
+  	<tar compression="gzip" destfile='${artifacts.home}/${nix.dist.name}'>
+  		<tarfileset dir='${dist.home}' prefix='commons-${component.name}-${component.version}'/>
+    </tar>
+  	<copy todir="${artifacts.home}">
+      <fileset dir="${build.home}">
+        <include name="${core.jar.name}"/>
+        <include name="${api.jar.name}"/>
+        <include name="${adapters.jar.name}"/>
+      </fileset>
     </copy>
   </target>
 
