@@ -715,8 +715,8 @@ public class LogFactoryImpl extends LogFactory {
                                         true);
             if (result == null) {
                 throw new LogConfigurationException(
-                        "User-specified log class " + specifiedLogClassName
-                        + " cannot be found or is not useable.");
+                        "User-specified log class '" + specifiedLogClassName
+                        + "' cannot be found or is not useable.");
             }
             
             return result;
