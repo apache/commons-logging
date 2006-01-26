@@ -279,6 +279,7 @@
 
     <available file="${log4j12.jar}" property="log4j12.present"/>
     <available file="${log4j13.jar}" property="log4j13.present"/>
+	<available file="${build.home}/docs" property="maven.generated.docs.present"/>
   </target>
 
   <target name="log4j12-warning" unless='log4j12.present' depends='init,discovery'>
@@ -579,7 +580,15 @@ This configuration is typically used to create a release only.
    description="Clean and compile all components"/>
 
 
-  <target name="dist" depends="all"
+  <target name="maven-docs-warning" unless="maven.generated.docs.present" depends="discovery">
+    <echo>
+    *** WARNING ***
+    Maven generated documentation not found: Documentation distribution will be empty
+    </echo>
+  </target>
+  
+
+  <target name="dist" depends="all,maven-docs-warning"
    description="Create binary distribution">
   	
   	<!--
