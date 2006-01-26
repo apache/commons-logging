@@ -566,6 +566,7 @@ This configuration is typically used to create a release only.
 
   <target name="clean"
    description="Clean build and distribution directories">
+  	<mkdir dir='${build.home}'/>
     <delete includeemptydirs='yes'>
     	<fileset dir="${build.home}" excludes='docs/**/*'/>
     </delete>
@@ -580,6 +581,15 @@ This configuration is typically used to create a release only.
 
   <target name="dist" depends="all"
    description="Create binary distribution">
+  	
+  	<!--
+  	Maven is used to generate the documentation.
+  	However, we cannot assume that it has been run.
+  	So, create the appropriate directories.
+  	-->
+  	<mkdir dir='${build.home}'/>
+  	<mkdir dir='${build.home}/docs'/>
+  	<mkdir dir='${build.home}/docs/apidocs'/>
   	
     <!--
       - Create a dist directory to hold all the files that go into a distribution.
