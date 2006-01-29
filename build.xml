@@ -241,7 +241,8 @@
 
     <echo>
     Log4j12: ${log4j12.jar}
-    Log4j13: ${log4j13.jar}
+    <!-- Note: log4j13 support is not available in the 1.1 release. -->
+    <!--Log4j13: ${log4j13.jar}-->
     LogKit: ${logkit.jar}
     Avalon-Framework: ${avalon-framework.jar}
     </echo>
@@ -290,10 +291,16 @@
   </target>
   
   <target name="log4j13-warning" unless='log4j13.present' depends='init,discovery'>
+    <!--
+      - Note: log4j13 support is not available in the 1.1 release.
+      - If we add it in a future release, the code below should be uncommented.
+      -->
+    <!--
     <echo>
     *** WARNING ***
     Log4j 1.3 not found: Cannot Build Log4J13Logger
     </echo>
+    -->
   </target>
   
   <target name="logkit-warning" unless='logkit.present' depends='init,discovery'>
@@ -333,7 +340,8 @@
   <target name="show-lib-presence">
     <echo  message="jdk.1.4.present=${jdk.1.4.present}"/>
     <echo  message="log4j12.present=${log4j12.present}"/>
-    <echo  message="log4j13.present=${log4j13.present}"/>
+    <!-- Note: log4j13 support is not available in the 1.1 release. -->
+    <!--<echo  message="log4j13.present=${log4j13.present}"/>-->
     <echo  message="logkit.present=${logkit.present}"/>
     <echo  message="avalon-framework.present=${avalon-framework.present}"/>
   </target>
