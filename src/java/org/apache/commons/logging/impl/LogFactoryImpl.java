@@ -840,6 +840,13 @@ public class LogFactoryImpl extends LogFactory {
         ClassLoader currentCL = getBaseClassLoader();
         
         for(;;) {
+            // Loop through the classloader hierarchy trying to find
+            // a viable classloader.
+            logDiagnostic(
+                    "Trying to load "
+                    + logAdapterClassName
+                    + " from classloader "
+                    + objectId(currentCL));
             try {
                 Class c = Class.forName(logAdapterClassName, true, currentCL);
                 constructor = c.getConstructor(logConstructorSignature);

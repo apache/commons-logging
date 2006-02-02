@@ -1341,6 +1341,13 @@ public abstract class LogFactory {
             return;
         }
         
+        try {
+            logDiagnostic("Extension directories: " + System.getProperty("java.ext.dir"));
+            logDiagnostic("Application classpath: " + System.getProperty("java.class.path"));
+        } catch(SecurityException ex) {
+            logDiagnostic("Security setting prevent interrogation of system classpaths.");
+        }
+        
         String className = clazz.getName();
         ClassLoader classLoader;
         ClassLoader systemClassLoader;
