@@ -111,6 +111,8 @@ Jakarta Commons Logging wiki site:
 
 * Better behaviour for systems with null classloaders (generally embedded systems).
 
+* New zip file containing source and javadocs for those using modern IDEs.
+
 == Incompatibilities ==
 
 There are no changes for code that calls LogFactory or Log methods. This means
