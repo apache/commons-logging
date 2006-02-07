@@ -853,7 +853,41 @@ public class LogFactoryImpl extends LogFactory {
                     + " from classloader "
                     + objectId(currentCL));
             try {
-                Class c = Class.forName(logAdapterClassName, true, currentCL);
+                Class c = null;
+                try {
+                    c = Class.forName(logAdapterClassName, true, currentCL);
+                } catch (ClassNotFoundException originalClassNotFoundException) {
+                    // The current classloader was unable to find the log adapter 
+                    // in this or any ancestor classloader. There's no point in
+                    // trying higher up in the hierarchy in this case..
+                    String msg = "" + originalClassNotFoundException.getMessage();
+                    logDiagnostic(
+                        "The log adapter "
+                        + logAdapterClassName
+                        + " is not available via classloader " 
+                        + objectId(currentCL)
+                        + ": "
+                        + msg.trim());
+                    try {
+                        // Try the class classloader.
+                        // This may work in cases where the TCCL
+                        // does not contain the code executed or JCL.
+                        // This behaviour indicates that the application 
+                        // classloading strategy is not consistent with the
+                        // Java 1.2 classloading guidelines but JCL can
+                        // and so should handle this case.
+                        c = Class.forName(logAdapterClassName);
+                    } catch (ClassNotFoundException secondaryClassNotFoundException) {
+                        // no point continuing: this adapter isn't available
+                        msg = "" + secondaryClassNotFoundException.getMessage();
+                        logDiagnostic(
+                            "The log adapter "
+                            + logAdapterClassName
+                            + " is not available via the LogFactoryImpl class classloader: "
+                            + msg.trim());
+                        break;
+                    }
+                }
                 constructor = c.getConstructor(logConstructorSignature);
                 Object o = constructor.newInstance(params);
 
@@ -879,19 +913,6 @@ public class LogFactoryImpl extends LogFactory {
                 // LogConfigurationException if it regards this problem as
                 // fatal, and just return if not.
                 handleFlawedHierarchy(currentCL, c);
-            } catch (ClassNotFoundException e) {
-                // The current classloader was unable to find the log adapter 
-                // in this or any ancestor classloader. There's no point in
-                // trying higher up in the hierarchy in this case..
-                String msg = "" + e.getMessage();
-                logDiagnostic(
-                    "The log adapter "
-                    + logAdapterClassName
-                    + " is not available via classloader " 
-                    + objectId(currentCL)
-                    + ": "
-                    + msg.trim());
-                break;
             } catch (NoClassDefFoundError e) {
                 // We were able to load the adapter but it had references to
                 // other classes that could not be found. This simply means that
