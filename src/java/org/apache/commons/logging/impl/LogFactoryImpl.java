@@ -839,6 +839,11 @@ public class LogFactoryImpl extends LogFactory {
         Class logAdapterClass = null;
         ClassLoader currentCL = getBaseClassLoader();
         
+        //
+        // This variable is used to ensure that the system classloader
+        // is tried only once when getParent is null.
+        boolean systemClassloaderTried = false;
+        
         for(;;) {
             // Loop through the classloader hierarchy trying to find
             // a viable classloader.
@@ -934,7 +939,66 @@ public class LogFactoryImpl extends LogFactory {
             }
             
             // try the parent classloader
-            currentCL = currentCL.getParent();
+            final ClassLoader parentCL = currentCL.getParent();
+            
+            //
+            // getParent may return null to indicate that the parent
+            // is the 'bootstrap classloader'. This term is difficult.
+            // A reasonable way to interpret this is as
+            // the system classloader which is provided as a base
+            // for delegating classloaders.
+            // 
+            // Note that this functionality cannot be easily tested
+            // since it depends upon an optional behaviour of the basic
+            // java libraries. The Sun libraries do not behave in this 
+            // fashion. It may be possible to create a test that
+            // uses a customized boot classpath containing a special 
+            // implementation but this approach
+            // would need to wait until an open source Java implementation
+            // exists. So sadly, this code path is not unit tested.
+            //
+            if (parentCL == null) {
+                if (systemClassloaderTried == true)
+                {
+                    logDiagnostic("Parent classloader is NULL. But System ClassLoader has already been tried.");
+                    break;
+                }
+                // try system classloader
+                try {
+                    final ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+                    if (systemClassLoader == null) {
+                        logDiagnostic("System classloader is NULL. Cannot find parent of classloader " 
+                                        + objectId(currentCL));
+                        break;
+                    } else if (systemClassLoader.equals(currentCL)) {
+                        // the system classloader has already been tried and failed
+                        logDiagnostic("System classloader tried and failed.");
+                        break;
+                    } else {
+                        // the parent is null indicating that the parent is the boot classloader
+                        // so retry with system classloader
+                        currentCL = systemClassLoader;
+                        
+                        //
+                        // avoid infinite loops by trying the system loader only the
+                        // first time a classloader 
+                        systemClassloaderTried = true;
+                        logDiagnostic("Parent classloader is NULL. Trying System ClassLoader.");
+                    }
+                } catch (Throwable t) {
+                    // getSystemClassLoader is allowed to fail in 
+                    // many strange ways: so need to catch everything
+                    // including errors
+                    logDiagnostic("Failed to get system classloader: '" 
+                                        + t.getMessage() 
+                                        + "'. Cannot find parent of classloader " 
+                                        + objectId(currentCL));
+                    break;
+                }
+            } else {
+                currentCL = parentCL;
+            }
+                
         }
 
         if ((logAdapter != null) && affectState) {
