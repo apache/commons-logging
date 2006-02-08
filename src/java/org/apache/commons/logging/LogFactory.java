@@ -1120,6 +1120,11 @@ public abstract class LogFactory {
                             "Exception while trying to find configuration file "
                             + name + ":" + e.getMessage());
                         return null;
+                    } catch(NoSuchMethodError e) {
+                        // we must be running on a 1.1 JVM which doesn't support
+                        // ClassLoader.getSystemResources; just return null in
+                        // this case.
+                        return null;
                     }
                 }
             };
