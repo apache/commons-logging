@@ -66,8 +66,20 @@ import org.apache.commons.logging.LogFactory;
 
 public class LogFactoryImpl extends LogFactory {
 
+
+    /** Log4JLogger class name */
+    private static final String LOGGING_IMPL_LOG4J_LOGGER = "org.apache.commons.logging.impl.Log4JLogger";
+    /** Jdk14Logger class name */
+    private static final String LOGGING_IMPL_JDK14_LOGGER = "org.apache.commons.logging.impl.Jdk14Logger";
+    /** Jdk13LumberjackLogger class name */
+    private static final String LOGGING_IMPL_LUMBERJACK_LOGGER = "org.apache.commons.logging.impl.Jdk13LumberjackLogger";
+    /** SimpleLog class name */
+    private static final String LOGGING_IMPL_SIMPLE_LOGGER = "org.apache.commons.logging.impl.SimpleLog";
+
+    
     // ----------------------------------------------------------- Constructors
 
+   
 
     /**
      * Public no-arguments constructor required by the lookup mechanism.
@@ -149,7 +161,7 @@ public class LogFactoryImpl extends LogFactory {
      * but broken/unusable for some reason.
      */
     private static final String[] classesToDiscover = {
-            "org.apache.commons.logging.impl.Log4JLogger",
+            LOGGING_IMPL_LOG4J_LOGGER,
             "org.apache.commons.logging.impl.Jdk14Logger",
             "org.apache.commons.logging.impl.Jdk13LumberjackLogger",
             "org.apache.commons.logging.impl.SimpleLog"
@@ -546,7 +558,7 @@ public class LogFactoryImpl extends LogFactory {
     protected boolean isLog4JAvailable() {
         return isLogLibraryAvailable(
                 "Log4J",
-                "org.apache.commons.logging.impl.Log4JLogger");
+                LOGGING_IMPL_LOG4J_LOGGER);
     }
 
 
@@ -714,9 +726,21 @@ public class LogFactoryImpl extends LogFactory {
                                         logCategory,
                                         true);
             if (result == null) {
-                throw new LogConfigurationException(
-                        "User-specified log class '" + specifiedLogClassName
-                        + "' cannot be found or is not useable.");
+                StringBuffer messageBuffer =  new StringBuffer("User-specified log class '");
+                messageBuffer.append(specifiedLogClassName);
+                messageBuffer.append("' cannot be found or is not useable.");
+                
+                //
+                // Mistyping or misspelling names is a common fault.
+                // Construct a good error message, if we can
+                if (specifiedLogClassName != null) {
+                    final String trimmedName = specifiedLogClassName.trim();
+                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_LOG4J_LOGGER);
+                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_JDK14_LOGGER);
+                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_LUMBERJACK_LOGGER);
+                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_SIMPLE_LOGGER);
+                }
+                throw new LogConfigurationException(messageBuffer.toString());
             }
             
             return result;
@@ -760,6 +784,26 @@ public class LogFactoryImpl extends LogFactory {
         }
         
         return result;        
+    }
+
+
+    
+    /**
+     * Appends message if the given name is similar to the candidate.
+     * @param messageBuffer <code>StringBuffer</code> the message should be appended to, 
+     * not null
+     * @param name the (trimmed) name to be test against the candidate, not null
+     * @param candidate the candidate name 
+     */
+    private void informUponSimilarName(final StringBuffer messageBuffer, final String name, 
+            final String candidate) {
+        // this formular (first four letters of the name excluding package) 
+        // gives a reason guess
+        if (candidate.regionMatches(true, 0, name, 0, 38)) {
+            messageBuffer.append(" Did you mean '");
+            messageBuffer.append(candidate);
+            messageBuffer.append("'?");
+        }
     }
     
     
