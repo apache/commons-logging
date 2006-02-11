@@ -22,7 +22,7 @@
   <name>Logging</name>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
-  <currentVersion>1.1-RC3</currentVersion>
+  <currentVersion>1.1-RC$</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>Commons Logging</shortDescription>
   <description>
