@@ -54,21 +54,22 @@ public abstract class LogFactory {
     // ----------------------------------------------------- Manifest Constants
 
     /**
-     * The name of the key in the config file used to specify the priority of
-     * that particular config file. The associated value is a floating-point
-     * number; higher values take priority over lower values.
+     * The name (<code>priority</code>) of the key in the config file used to 
+     * specify the priority of that particular config file. The associated value 
+     * is a floating-point number; higher values take priority over lower values.
      */
     public static final String PRIORITY_KEY = "priority";
 
     /**
-     * The name of the key in the config file used to specify whether logging
-     * classes should be loaded via the thread context class loader (TCCL),
-     * or not. By default, the TCCL is used.
+     * The name (<code>use_tccl</code>) of the key in the config file used 
+     * to specify whether logging classes should be loaded via the thread 
+     * context class loader (TCCL), or not. By default, the TCCL is used.
      */
     public static final String TCCL_KEY = "use_tccl";
 
     /**
-     * The name of the property used to identify the LogFactory implementation
+     * The name (<code>org.apache.commons.logging.LogFactory</code>) of the property 
+     * used to identify the LogFactory implementation
      * class name. This can be used as a system property, or as an entry in a
      * configuration properties file.
      */
@@ -83,7 +84,7 @@ public abstract class LogFactory {
         "org.apache.commons.logging.impl.LogFactoryImpl";
 
     /**
-     * The name of the properties file to search for.
+     * The name (<code>commons-logging.properties</code>) of the properties file to search for.
      */
     public static final String FACTORY_PROPERTIES =
         "commons-logging.properties";
@@ -97,7 +98,8 @@ public abstract class LogFactory {
         "META-INF/services/org.apache.commons.logging.LogFactory";
 
     /**
-     * The name of the property used to enable internal commons-logging
+     * The name (<code>org.apache.commons.logging.diagnostics.dest</code>) 
+     * of the property used to enable internal commons-logging
      * diagnostic output, in order to get information on what logging
      * implementations are being discovered, what classloaders they 
      * are loaded through, etc.
@@ -106,6 +108,9 @@ public abstract class LogFactory {
      * assumed to be the name of a file. The special strings
      * STDOUT or STDERR (case-sensitive) indicate output to
      * System.out and System.err respectively.
+     * <p>
+     * Diagnostic logging should be used only to debug problematic
+     * configurations and should not be set in normal production use.
      */
     public static final String DIAGNOSTICS_DEST_PROPERTY =
         "org.apache.commons.logging.diagnostics.dest";
@@ -125,7 +130,9 @@ public abstract class LogFactory {
     private static String diagnosticPrefix;
     
     /**
-     * <p>Setting this system property value allows the <code>Hashtable</code> used to store
+     * <p>Setting this system property 
+     * (<code>org.apache.commons.logging.LogFactory.HashtableImpl</code>) 
+     * value allows the <code>Hashtable</code> used to store
      * classloaders to be substituted by an alternative implementation.
      * </p>
      * <p>
@@ -161,7 +168,8 @@ public abstract class LogFactory {
     public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
         "org.apache.commons.logging.LogFactory.HashtableImpl";
     /** Name used to load the weak hashtable implementation by names */
-    private static final String WEAK_HASHTABLE_CLASSNAME = "org.apache.commons.logging.impl.WeakHashtable";
+    private static final String WEAK_HASHTABLE_CLASSNAME = 
+        "org.apache.commons.logging.impl.WeakHashtable";
 
     /**
      * A reference to the classloader that loaded this class. This is the
