@@ -95,8 +95,8 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * The name of the system property identifying our {@link Log}
-     * implementation class.
+     * The name (<code>org.apache.commons.logging.Log</code>) of the system 
+     * property identifying our {@link Log} implementation class.
      */
     public static final String LOG_PROPERTY =
         "org.apache.commons.logging.Log";
@@ -104,13 +104,14 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * The deprecated system property used for backwards compatibility with
-     * the old {@link org.apache.commons.logging.LogSource} class.
+     * old versions of JCL.
      */
     protected static final String LOG_PROPERTY_OLD =
         "org.apache.commons.logging.log";
 
     /**
-     * The name of the system property which can be set true/false to
+     * The name (<code>org.apache.commons.logging.Log.allowFlawedContext</code>) 
+     * of the system property which can be set true/false to
      * determine system behaviour when a bad context-classloader is encountered.
      * When set to false
      * 
@@ -122,7 +123,8 @@ public class LogFactoryImpl extends LogFactory {
         "org.apache.commons.logging.Log.allowFlawedContext";
 
     /**
-     * The name of the system property which can be set true/false to
+     * The name (<code>org.apache.commons.logging.Log.allowFlawedDiscovery</code>) 
+     * of the system property which can be set true/false to
      * determine system behaviour when a bad logging adapter class is
      * encountered during logging discovery. When set to false, an
      * exception will be thrown and the app will fail to start. When set
@@ -137,7 +139,8 @@ public class LogFactoryImpl extends LogFactory {
         "org.apache.commons.logging.Log.allowFlawedDiscovery";
 
     /**
-     * The name of the system property which can be set true/false to
+     * The name (<code>org.apache.commons.logging.Log.allowFlawedHierarchy</code>) 
+     * of the system property which can be set true/false to
      * determine system behaviour when a logging adapter class is
      * encountered which has bound to the wrong Log class implementation.
      * When set to false, an exception will be thrown and the app will fail
