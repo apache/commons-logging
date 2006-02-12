@@ -1377,15 +1377,18 @@ public abstract class LogFactory {
         logDiagnostic(
             "[ENV] Class " + className + " was loaded via classloader "
             + objectId(classLoader));
-            
+        if (classLoader != null) {
+            final String classLoaderString = classLoader.toString();
+            logDiagnostic("[ENV] " + objectId(classLoader) + " == '" + classLoaderString + "'");
+        }
+        
         try {
             systemClassLoader = ClassLoader.getSystemClassLoader();
         } catch(SecurityException ex) {
             logDiagnostic(
                 "[ENV] Security forbids determining the system classloader.");
             return;
-        }
-
+        }        
         if (classLoader != null) {
             StringBuffer buf = new StringBuffer("[ENV] ClassLoader tree:");
             for(;;) {
