@@ -640,7 +640,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     private boolean isLogLibraryAvailable(String name, String classname) {
         if (isDiagnosticsEnabled()) {
-            logDiagnostic("Checking for " + name + ".");
+            logDiagnostic("Checking for '" + name + "'.");
         }
         try {
             Log log = createLogFromClass(
@@ -650,18 +650,18 @@ public class LogFactoryImpl extends LogFactory {
 
             if (log == null) {
                 if (isDiagnosticsEnabled()) {
-                    logDiagnostic("Did not find " + name + ".");
+                    logDiagnostic("Did not find '" + name + "'.");
                 }
                 return false;
             } else {
                 if (isDiagnosticsEnabled()) {
-                    logDiagnostic("Found " + name + ".");
+                    logDiagnostic("Found '" + name + "'.");
                 }
                 return true;
             }
         } catch(LogConfigurationException e) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("Logging system " + name + " is available but not useable.");
+                logDiagnostic("Logging system '" + name + "' is available but not useable.");
             }
             return false;
         }
