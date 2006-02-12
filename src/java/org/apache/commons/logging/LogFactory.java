@@ -398,6 +398,7 @@ public abstract class LogFactory {
         logDiagnostic(
             "[LOOKUP] LogFactory implementation requested for the first time for context classloader "
             + objectId(contextClassLoader));
+        logHierarchy("[LOOKUP] ", contextClassLoader);
 
         // Load properties file.
         //
