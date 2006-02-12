@@ -831,18 +831,18 @@ public class LogFactoryImpl extends LogFactory {
      */
     private String findUserSpecifiedLogClassName()
     {
-        logDiagnostic("Trying to get log class from attribute " + LOG_PROPERTY);
+        logDiagnostic("Trying to get log class from attribute '" + LOG_PROPERTY + "'");
         String specifiedClass = (String) getAttribute(LOG_PROPERTY);
 
         if (specifiedClass == null) { // @deprecated
-            logDiagnostic("Trying to get log class from attribute " + 
-                          LOG_PROPERTY_OLD);
+            logDiagnostic("Trying to get log class from attribute '" + 
+                          LOG_PROPERTY_OLD + "'");
             specifiedClass = (String) getAttribute(LOG_PROPERTY_OLD);
         }
 
         if (specifiedClass == null) {
-            logDiagnostic("Trying to get log class from system property " + 
-                          LOG_PROPERTY);
+            logDiagnostic("Trying to get log class from system property '" + 
+                          LOG_PROPERTY + "'");
             try {
                 specifiedClass = System.getProperty(LOG_PROPERTY);
             } catch (SecurityException e) {
@@ -851,8 +851,8 @@ public class LogFactoryImpl extends LogFactory {
         }
 
         if (specifiedClass == null) { // @deprecated
-            logDiagnostic("Trying to get log class from system property " + 
-                          LOG_PROPERTY_OLD);
+            logDiagnostic("Trying to get log class from system property '" + 
+                          LOG_PROPERTY_OLD + "'");
             try {
                 specifiedClass = System.getProperty(LOG_PROPERTY_OLD);
             } catch (SecurityException e) {
