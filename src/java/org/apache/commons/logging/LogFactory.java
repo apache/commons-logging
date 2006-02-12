@@ -1263,21 +1263,21 @@ public abstract class LogFactory {
         // In order to avoid confusion where multiple instances of JCL are
         // being used via different classloaders within the same app, we
         // ensure each logged message has a prefix of form
-        //   LogFactory@12345: 
-        Class clazz = LogFactory.class;
+        // [LogFactory --> classloader OID]
+        // Note that this prefix should be kept consistent with that 
+        // in LogFactoryImpl
         String classLoaderName;
         try {
             ClassLoader classLoader = thisClassLoader;
             if (thisClassLoader == null) {
                 classLoaderName = "BOOTLOADER";
             } else {
-                classLoaderName = String.valueOf(System.identityHashCode(classLoader));
+                classLoaderName = objectId(classLoader);
             }
         } catch(SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
-        diagnosticPrefix = 
-            clazz.getName() + "@" + classLoaderName + ": ";
+        diagnosticPrefix = "[LogFactory     -> " + classLoaderName + "] ";
     }
 
     /**

@@ -460,9 +460,21 @@ public class LogFactoryImpl extends LogFactory {
         // see the context & impl ids from when this object was instantiated,
         // in order to link the impl id output as this object's prefix back to
         // the context it is intended to manage.
+        // Note that this prefix should be kept consistent with that 
+        // in LogFactory.
         Class clazz = this.getClass();
         ClassLoader classLoader = getClassLoader(clazz);
-        diagnosticPrefix = clazz.getName() + "@" + classLoader.toString() + ":";
+        String classLoaderName;
+        try {
+            if (classLoader == null) {
+                classLoaderName = "BOOTLOADER";
+            } else {
+                classLoaderName = objectId(classLoader);
+            }
+        } catch(SecurityException e) {
+            classLoaderName = "UNKNOWN";
+        }
+        diagnosticPrefix = "[LogFactoryImpl -> " + classLoaderName + "] ";
     }
 
     
