@@ -1278,7 +1278,7 @@ public abstract class LogFactory {
         } catch(SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
-        diagnosticPrefix = "[LogFactory     -> " + classLoaderName + "] ";
+        diagnosticPrefix = "[LogFactory -> " + classLoaderName + "] ";
     }
 
     /**
