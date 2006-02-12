@@ -889,7 +889,7 @@ public class LogFactoryImpl extends LogFactory {
                                    boolean affectState) 
             throws LogConfigurationException {       
 
-        logDiagnostic("Attempting to instantiate " + logAdapterClassName);
+        logDiagnostic("Attempting to instantiate '" + logAdapterClassName + "'");
         
         Object[] params = { logCategory };
         Log logAdapter = null;
@@ -907,9 +907,9 @@ public class LogFactoryImpl extends LogFactory {
             // Loop through the classloader hierarchy trying to find
             // a viable classloader.
             logDiagnostic(
-                    "Trying to load "
+                    "Trying to load '"
                     + logAdapterClassName
-                    + " from classloader "
+                    + "' from classloader "
                     + objectId(currentCL));
             try {
                 Class c = null;
@@ -921,9 +921,9 @@ public class LogFactoryImpl extends LogFactory {
                     // trying higher up in the hierarchy in this case..
                     String msg = "" + originalClassNotFoundException.getMessage();
                     logDiagnostic(
-                        "The log adapter "
+                        "The log adapter '"
                         + logAdapterClassName
-                        + " is not available via classloader " 
+                        + "' is not available via classloader " 
                         + objectId(currentCL)
                         + ": "
                         + msg.trim());
@@ -940,9 +940,9 @@ public class LogFactoryImpl extends LogFactory {
                         // no point continuing: this adapter isn't available
                         msg = "" + secondaryClassNotFoundException.getMessage();
                         logDiagnostic(
-                            "The log adapter "
+                            "The log adapter '"
                             + logAdapterClassName
-                            + " is not available via the LogFactoryImpl class classloader: "
+                            + "' is not available via the LogFactoryImpl class classloader: "
                             + msg.trim());
                         break;
                     }
@@ -980,9 +980,9 @@ public class LogFactoryImpl extends LogFactory {
                 // in the hierarchy in this case..
                 String msg = "" + e.getMessage();
                 logDiagnostic(
-                    "The log adapter "
+                    "The log adapter '"
                     + logAdapterClassName
-                    + " is missing dependencies when loaded via classloader "
+                    + "' is missing dependencies when loaded via classloader "
                     + objectId(currentCL)
                     + ": "
                     + msg.trim());
@@ -996,9 +996,9 @@ public class LogFactoryImpl extends LogFactory {
                 // library could not be found.
                 String msg = "" + e.getMessage();
                 logDiagnostic(
-                    "The log adapter "
+                    "The log adapter '"
                     + logAdapterClassName
-                    + " is unable to initialize itself when loaded via classloader "
+                    + "' is unable to initialize itself when loaded via classloader "
                     + objectId(currentCL)
                     + ": "
                     + msg.trim());
@@ -1090,20 +1090,20 @@ public class LogFactoryImpl extends LogFactory {
             try {
                 this.logMethod = logAdapterClass.getMethod("setLogFactory",
                                                logMethodSignature);
-                logDiagnostic("Found method setLogFactory(LogFactory) in " 
-                              + logAdapterClassName);
+                logDiagnostic("Found method setLogFactory(LogFactory) in '" 
+                              + logAdapterClassName + "'");
             } catch (Throwable t) {
                 this.logMethod = null;
                 logDiagnostic(
-                    "info:" + logAdapterClassName 
-                    + " from classloader " + objectId(currentCL)
+                    "info: '" + logAdapterClassName 
+                    + "' from classloader " + objectId(currentCL)
                     + " does not declare optional method "
                     + "setLogFactory(LogFactory)");
             }
             
             logDiagnostic(
-                "Log adapter " + logAdapterClassName 
-                + " from classloader " + objectId(currentCL)
+                "Log adapter '" + logAdapterClassName 
+                + "' from classloader " + objectId(currentCL)
                 + " has been selected for use.");
         }
         
@@ -1248,8 +1248,8 @@ public class LogFactoryImpl extends LogFactory {
                                        ClassLoader classLoader,
                                        Throwable discoveryFlaw) {
         
-        logDiagnostic("Could not instantiate Log "
-                      + logAdapterClassName + " -- "
+        logDiagnostic("Could not instantiate Log '"
+                      + logAdapterClassName + "' -- "
                       + discoveryFlaw.getLocalizedMessage());        
 
         if (!allowFlawedDiscovery) {
