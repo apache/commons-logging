@@ -1349,8 +1349,8 @@ public class LogFactoryImpl extends LogFactory {
                 try {
                     ClassLoader logInterfaceClassLoader = getClassLoader(Log.class);
                     logDiagnostic(
-                        "Class " + badClass.getName()
-                        + " was found in classloader " 
+                        "Class '" + badClass.getName()
+                        + "' was found in classloader " 
                         + objectId(badClassLoader)
                         + ". It is bound to a Log interface which is not"
                         + " the one loaded from classloader "
@@ -1358,7 +1358,7 @@ public class LogFactoryImpl extends LogFactory {
                 } catch (Throwable t) {
                     logDiagnostic(
                         "Error while trying to output diagnostics about"
-                        + " bad class " + badClass);
+                        + " bad class '" + badClass + "'");
                 }
             }
             
@@ -1366,9 +1366,9 @@ public class LogFactoryImpl extends LogFactory {
                 StringBuffer msg = new StringBuffer();
                 msg.append("Terminating logging for this context ");
                 msg.append("due to bad log hierarchy. ");
-                msg.append("You have more than one version of ");
+                msg.append("You have more than one version of '");
                 msg.append(Log.class.getName());
-                msg.append(" visible.");
+                msg.append("' visible.");
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic(msg.toString());
                 } 
@@ -1378,9 +1378,9 @@ public class LogFactoryImpl extends LogFactory {
             if (isDiagnosticsEnabled()) {
                 StringBuffer msg = new StringBuffer();
                 msg.append("Warning: bad log hierarchy. ");
-                msg.append("You have more than one version of ");
+                msg.append("You have more than one version of '");
                 msg.append(Log.class.getName());
-                msg.append(" visible.");
+                msg.append("' visible.");
                 logDiagnostic(msg.toString());
             }
         } else {
@@ -1388,9 +1388,9 @@ public class LogFactoryImpl extends LogFactory {
             if (!allowFlawedDiscovery) {
                 StringBuffer msg = new StringBuffer();
                 msg.append("Terminating logging for this context. ");
-                msg.append("Log class ");
+                msg.append("Log class '");
                 msg.append(badClass.getName());
-                msg.append(" does not implement the Log interface.");
+                msg.append("' does not implement the Log interface.");
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic(msg.toString());
                 }
@@ -1400,9 +1400,9 @@ public class LogFactoryImpl extends LogFactory {
 
             if (isDiagnosticsEnabled()) {
                 StringBuffer msg = new StringBuffer();
-                msg.append("Warning: Log class ");
+                msg.append("[WARNING] Log class '");
                 msg.append(badClass.getName());
-                msg.append(" does not implement the Log interface.");
+                msg.append("' does not implement the Log interface.");
                 logDiagnostic(msg.toString());
             }
         }
