@@ -396,7 +396,7 @@ public abstract class LogFactory {
         }
 
         logDiagnostic(
-            "LogFactory requested for the first time for context classloader "
+            "LogFactory implementation requested for the first time for context classloader "
             + objectId(contextClassLoader));
 
         // Load properties file.
@@ -1363,7 +1363,6 @@ public abstract class LogFactory {
         
         String className = clazz.getName();
         ClassLoader classLoader;
-        ClassLoader systemClassLoader;
         
         try {
             classLoader = getClassLoader(clazz);
@@ -1377,20 +1376,32 @@ public abstract class LogFactory {
         logDiagnostic(
             "[ENV] Class " + className + " was loaded via classloader "
             + objectId(classLoader));
+        logHierarchy("[ENV] ", classLoader);
+    }
+
+    /**
+     * Logs diagnostic messages about the given classloader
+     * and it's hierarchy. The prefix is prepended to the message
+     * and is intended to make it easier to understand the logs.
+     * @param prefix 
+     * @param classLoader
+     */
+    private static void logHierarchy(String prefix, ClassLoader classLoader) {
+        ClassLoader systemClassLoader;
         if (classLoader != null) {
             final String classLoaderString = classLoader.toString();
-            logDiagnostic("[ENV] " + objectId(classLoader) + " == '" + classLoaderString + "'");
+            logDiagnostic(prefix + objectId(classLoader) + " == '" + classLoaderString + "'");
         }
         
         try {
             systemClassLoader = ClassLoader.getSystemClassLoader();
         } catch(SecurityException ex) {
             logDiagnostic(
-                "[ENV] Security forbids determining the system classloader.");
+                    prefix + "Security forbids determining the system classloader.");
             return;
         }        
         if (classLoader != null) {
-            StringBuffer buf = new StringBuffer("[ENV] ClassLoader tree:");
+            StringBuffer buf = new StringBuffer(prefix + "ClassLoader tree:");
             for(;;) {
                 buf.append(objectId(classLoader));
                 if (classLoader == systemClassLoader) {
