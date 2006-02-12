@@ -997,11 +997,23 @@ public abstract class LogFactory {
                             "Loaded class " + logFactoryClass.getName()
                             + " from classloader " + objectId(classLoader));
                     } else {
+                        //
+                        // This indicates a problem with the ClassLoader tree.
+                        // An incompatible ClassLoader was used to load the 
+                        // implementation. 
+                        // As the same classes
+                        // must be available in multiple class loaders,
+                        // it is very likely that multiple JCL jars are present.
+                        // The most likely fix for this
+                        // problem is to remove the extra JCL jars from the 
+                        // ClassLoader hierarchy. 
+                        // 
                         logDiagnostic(
                             "Factory class " + logFactoryClass.getName()
                             + " loaded from classloader " + objectId(classLoader)
                             + " does not extend '" + LogFactory.class.getName()
                             + "' as loaded by this classloader.");
+                        logHierarchy("[BAD CL TREE] ", classLoader);
                     }
                     
                     return (LogFactory) logFactoryClass.newInstance();
