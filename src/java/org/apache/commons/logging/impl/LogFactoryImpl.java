@@ -846,7 +846,8 @@ public class LogFactoryImpl extends LogFactory {
             try {
                 specifiedClass = System.getProperty(LOG_PROPERTY);
             } catch (SecurityException e) {
-                ;
+                logDiagnostic("No access allowed to system property '" + 
+                        LOG_PROPERTY + "' - " + e.getMessage());
             }
         }
 
@@ -856,7 +857,8 @@ public class LogFactoryImpl extends LogFactory {
             try {
                 specifiedClass = System.getProperty(LOG_PROPERTY_OLD);
             } catch (SecurityException e) {
-                ;
+                logDiagnostic("No access allowed to system property '" + 
+                        LOG_PROPERTY_OLD + "' - " + e.getMessage());
             }
         }
         
