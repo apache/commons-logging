@@ -87,7 +87,9 @@ public class LogFactoryImpl extends LogFactory {
     public LogFactoryImpl() {
         super();
         initDiagnostics();  // method on this object
-        logDiagnostic("Instance created.");
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Instance created.");
+        }
     }
 
 
@@ -637,7 +639,9 @@ public class LogFactoryImpl extends LogFactory {
      * affect the future behaviour of this class.
      */
     private boolean isLogLibraryAvailable(String name, String classname) {
-        logDiagnostic("Checking for " + name + ".");
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Checking for " + name + ".");
+        }
         try {
             Log log = createLogFromClass(
                         classname, 
@@ -645,14 +649,20 @@ public class LogFactoryImpl extends LogFactory {
                         false);
 
             if (log == null) {
-                logDiagnostic("Did not find " + name + ".");
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("Did not find " + name + ".");
+                }
                 return false;
             } else {
-                logDiagnostic("Found " + name + ".");
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("Found " + name + ".");
+                }
                 return true;
             }
         } catch(LogConfigurationException e) {
-            logDiagnostic("Logging system " + name + " is available but not useable.");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Logging system " + name + " is available but not useable.");
+            }
             return false;
         }
     }
@@ -669,22 +679,33 @@ public class LogFactoryImpl extends LogFactory {
      * @return the value associated with the property, or null.
      */
     private String getConfigurationValue(String property) {
-        logDiagnostic("[ENV] Trying to get configuration for item " + property);
-    
-        logDiagnostic("[ENV] Looking for attribute " + property);
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("[ENV] Trying to get configuration for item " + property);
+        }
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("[ENV] Looking for attribute " + property);
+        }
         Object valueObj =  getAttribute(property);
         if (valueObj != null) {
-            logDiagnostic("[ENV] Found value [" + valueObj + "] for " + property);
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("[ENV] Found value [" + valueObj + "] for " + property);
+            }
             return valueObj.toString();
         }
         
-        logDiagnostic("[ENV] Looking for system property " + property);
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("[ENV] Looking for system property " + property);
+        }
         try {
             String value = System.getProperty(property);
-            logDiagnostic("[ENV] Found value [" + value + "] for " + property);
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("[ENV] Found value [" + value + "] for " + property);
+            }
             return value;
         } catch (SecurityException e) {
-            logDiagnostic("[ENV] Security prevented reading system property.");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("[ENV] Security prevented reading system property.");
+            }
         }
         
         return null;
@@ -727,7 +748,9 @@ public class LogFactoryImpl extends LogFactory {
     private Log discoverLogImplementation(String logCategory)
     throws LogConfigurationException
     {
-        logDiagnostic("Attempting to discover a Log implementation.");
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Attempting to discover a Log implementation.");
+        }
         
         initConfiguration();
         
@@ -831,34 +854,46 @@ public class LogFactoryImpl extends LogFactory {
      */
     private String findUserSpecifiedLogClassName()
     {
-        logDiagnostic("Trying to get log class from attribute '" + LOG_PROPERTY + "'");
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Trying to get log class from attribute '" + LOG_PROPERTY + "'");
+        }
         String specifiedClass = (String) getAttribute(LOG_PROPERTY);
 
         if (specifiedClass == null) { // @deprecated
-            logDiagnostic("Trying to get log class from attribute '" + 
-                          LOG_PROPERTY_OLD + "'");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Trying to get log class from attribute '" + 
+                              LOG_PROPERTY_OLD + "'");
+            }
             specifiedClass = (String) getAttribute(LOG_PROPERTY_OLD);
         }
 
         if (specifiedClass == null) {
-            logDiagnostic("Trying to get log class from system property '" + 
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Trying to get log class from system property '" + 
                           LOG_PROPERTY + "'");
+            }
             try {
                 specifiedClass = System.getProperty(LOG_PROPERTY);
             } catch (SecurityException e) {
-                logDiagnostic("No access allowed to system property '" + 
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("No access allowed to system property '" + 
                         LOG_PROPERTY + "' - " + e.getMessage());
+                }
             }
         }
 
         if (specifiedClass == null) { // @deprecated
-            logDiagnostic("Trying to get log class from system property '" + 
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Trying to get log class from system property '" + 
                           LOG_PROPERTY_OLD + "'");
+            }
             try {
                 specifiedClass = System.getProperty(LOG_PROPERTY_OLD);
             } catch (SecurityException e) {
-                logDiagnostic("No access allowed to system property '" + 
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("No access allowed to system property '" + 
                         LOG_PROPERTY_OLD + "' - " + e.getMessage());
+                }
             }
         }
         
@@ -891,7 +926,9 @@ public class LogFactoryImpl extends LogFactory {
                                    boolean affectState) 
             throws LogConfigurationException {       
 
-        logDiagnostic("Attempting to instantiate '" + logAdapterClassName + "'");
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Attempting to instantiate '" + logAdapterClassName + "'");
+        }
         
         Object[] params = { logCategory };
         Log logAdapter = null;
@@ -1148,11 +1185,13 @@ public class LogFactoryImpl extends LogFactory {
            // In some classloading setups (e.g. JBoss with its 
            // UnifiedLoaderRepository) this can still work, so if user hasn't
            // forbidden it, just return the contextClassLoader.
-           if (allowFlawedContext) {              
-              logDiagnostic(
-                 "Warning: the context classloader is not part of a"
-                 + " parent-child relationship with the classloader that"
-                 + " loaded LogFactoryImpl.");
+           if (allowFlawedContext) {   
+              if (isDiagnosticsEnabled()) {
+                   logDiagnostic(
+                           "Warning: the context classloader is not part of a"
+                           + " parent-child relationship with the classloader that"
+                           + " loaded LogFactoryImpl.");
+              }
               // If contextClassLoader were null, getLowestClassLoader() would
               // have returned thisClassLoader.  The fact we are here means
               // contextClassLoader is not null, so we can just return it.
@@ -1173,12 +1212,14 @@ public class LogFactoryImpl extends LogFactory {
             // custom classloaders but fail to set the context classloader so
             // we handle those flawed systems anyway.
             if (allowFlawedContext) {
-                logDiagnostic(
-                "Warning: the context classloader is an ancestor of the"
-                + " classloader that loaded LogFactoryImpl; it should be"
-                + " the same or a descendant. The application using"
-                + " commons-logging should ensure the context classloader"
-                + " is used correctly.");
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(
+                            "Warning: the context classloader is an ancestor of the"
+                            + " classloader that loaded LogFactoryImpl; it should be"
+                            + " the same or a descendant. The application using"
+                            + " commons-logging should ensure the context classloader"
+                            + " is used correctly.");
+                }
             } else {
                 throw new LogConfigurationException(
                         "Bad classloader hierarchy; LogFactoryImpl was loaded via"
@@ -1250,10 +1291,12 @@ public class LogFactoryImpl extends LogFactory {
                                        ClassLoader classLoader,
                                        Throwable discoveryFlaw) {
         
-        logDiagnostic("Could not instantiate Log '"
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Could not instantiate Log '"
                       + logAdapterClassName + "' -- "
-                      + discoveryFlaw.getLocalizedMessage());        
-
+                      + discoveryFlaw.getLocalizedMessage());       
+        }
+        
         if (!allowFlawedDiscovery) {
             throw new LogConfigurationException(discoveryFlaw);
         }
@@ -1326,17 +1369,20 @@ public class LogFactoryImpl extends LogFactory {
                 msg.append("You have more than one version of ");
                 msg.append(Log.class.getName());
                 msg.append(" visible.");
-                logDiagnostic(msg.toString());
-
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(msg.toString());
+                } 
                 throw new LogConfigurationException(msg.toString());
             }
         
-            StringBuffer msg = new StringBuffer();
-            msg.append("Warning: bad log hierarchy. ");
-            msg.append("You have more than one version of ");
-            msg.append(Log.class.getName());
-            msg.append(" visible.");
-            logDiagnostic(msg.toString());
+            if (isDiagnosticsEnabled()) {
+                StringBuffer msg = new StringBuffer();
+                msg.append("Warning: bad log hierarchy. ");
+                msg.append("You have more than one version of ");
+                msg.append(Log.class.getName());
+                msg.append(" visible.");
+                logDiagnostic(msg.toString());
+            }
         } else {
             // this is just a bad adapter class
             if (!allowFlawedDiscovery) {
@@ -1345,16 +1391,20 @@ public class LogFactoryImpl extends LogFactory {
                 msg.append("Log class ");
                 msg.append(badClass.getName());
                 msg.append(" does not implement the Log interface.");
-                logDiagnostic(msg.toString());
-
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(msg.toString());
+                }
+                
                 throw new LogConfigurationException(msg.toString());
             }
 
-            StringBuffer msg = new StringBuffer();
-            msg.append("Warning: Log class ");
-            msg.append(badClass.getName());
-            msg.append(" does not implement the Log interface.");
-            logDiagnostic(msg.toString());
+            if (isDiagnosticsEnabled()) {
+                StringBuffer msg = new StringBuffer();
+                msg.append("Warning: Log class ");
+                msg.append(badClass.getName());
+                msg.append(" does not implement the Log interface.");
+                logDiagnostic(msg.toString());
+            }
         }
     }
 }
