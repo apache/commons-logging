@@ -749,7 +749,7 @@ public class LogFactoryImpl extends LogFactory {
     throws LogConfigurationException
     {
         if (isDiagnosticsEnabled()) {
-            logDiagnostic("Attempting to discover a Log implementation.");
+            logDiagnostic("Attempting to discover a Log implementation...");
         }
         
         initConfiguration();
