@@ -1095,7 +1095,7 @@ public class LogFactoryImpl extends LogFactory {
             } catch (Throwable t) {
                 this.logMethod = null;
                 logDiagnostic(
-                    "info: '" + logAdapterClassName 
+                    "[INFO] '" + logAdapterClassName 
                     + "' from classloader " + objectId(currentCL)
                     + " does not declare optional method "
                     + "setLogFactory(LogFactory)");
