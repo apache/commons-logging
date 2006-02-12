@@ -386,7 +386,9 @@ public abstract class LogFactory {
             // This is an odd enough situation to report about. This
             // output will be a nuisance on JDK1.1, as the system
             // classloader is null in that environment.
-            logDiagnostic("Context classloader is null.");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Context classloader is null.");
+            }
         }
 
         // Return any previously registered factory for this class loader
@@ -395,10 +397,12 @@ public abstract class LogFactory {
             return factory;
         }
 
-        logDiagnostic(
-            "[LOOKUP] LogFactory implementation requested for the first time for context classloader "
-            + objectId(contextClassLoader));
-        logHierarchy("[LOOKUP] ", contextClassLoader);
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic(
+                    "[LOOKUP] LogFactory implementation requested for the first time for context classloader "
+                    + objectId(contextClassLoader));
+            logHierarchy("[LOOKUP] ", contextClassLoader);
+        }
 
         // Load properties file.
         //
@@ -435,25 +439,31 @@ public abstract class LogFactory {
 
         // Determine which concrete LogFactory subclass to use.
         // First, try a global system property
-        logDiagnostic(
-            "[LOOKUP] Looking for system property [" + FACTORY_PROPERTY 
-            + "] to define the LogFactory subclass to use...");
-
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic(
+                    "[LOOKUP] Looking for system property [" + FACTORY_PROPERTY 
+                    + "] to define the LogFactory subclass to use...");
+        }
+        
         try {
             String factoryClass = System.getProperty(FACTORY_PROPERTY);
             if (factoryClass != null) {
-                logDiagnostic(
-                    "[LOOKUP] Creating an instance of LogFactory class '" + factoryClass
-                    + "' as specified by system property " + FACTORY_PROPERTY);
-
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(
+                            "[LOOKUP] Creating an instance of LogFactory class '" + factoryClass
+                            + "' as specified by system property " + FACTORY_PROPERTY);
+                }
+                
                 factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
             }
         } catch (SecurityException e) {
-            logDiagnostic(
-                "[LOOKUP] A security exception occurred while trying to create an"
-                + " instance of the custom factory class"
-                + ": [" + e.getMessage().trim()
-                + "]. Trying alternative implementations...");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
+                        "[LOOKUP] A security exception occurred while trying to create an"
+                        + " instance of the custom factory class"
+                        + ": [" + e.getMessage().trim()
+                        + "]. Trying alternative implementations...");
+            }
             ;  // ignore
         }
 
@@ -465,10 +475,11 @@ public abstract class LogFactory {
         // that implements the desired interface.
 
         if (factory == null) {
-            logDiagnostic(
-                "[LOOKUP] Looking for a resource file of name [" + SERVICE_ID
-                + "] to define the LogFactory subclass to use...");
-
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
+                        "[LOOKUP] Looking for a resource file of name [" + SERVICE_ID
+                        + "] to define the LogFactory subclass to use...");
+            }
             try {
                 InputStream is = getResourceAsStream(contextClassLoader,
                                                      SERVICE_ID);
@@ -488,23 +499,24 @@ public abstract class LogFactory {
 
                     if (factoryClassName != null &&
                         ! "".equals(factoryClassName)) {
-
-                        logDiagnostic(
-                            "[LOOKUP]  Creating an instance of LogFactory class " + factoryClassName
-                            + " as specified by file '" + SERVICE_ID 
-                            + "' which was present in the path of the context"
-                            + " classloader.");
-
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                    "[LOOKUP]  Creating an instance of LogFactory class " + factoryClassName
+                                    + " as specified by file '" + SERVICE_ID 
+                                    + "' which was present in the path of the context"
+                                    + " classloader.");
+                        }
                         factory = newFactory(factoryClassName, baseClassLoader, contextClassLoader );
                     }
                 }
             } catch( Exception ex ) {
-                logDiagnostic(
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(
                         "[LOOKUP] A security exception occurred while trying to create an"
                         + " instance of the custom factory class"
                         + ": [" + ex.getMessage().trim()
                         + "]. Trying alternative implementations...");
-
+                }
                 ; // ignore
             }
         }
@@ -519,16 +531,18 @@ public abstract class LogFactory {
         // system property )
 
         if (factory == null) {
-            logDiagnostic(
-                "[LOOKUP] Looking for a properties file of name '" + FACTORY_PROPERTIES
-                + "' to define the LogFactory subclass to use...");
-
-            if (props != null) {
+            if (isDiagnosticsEnabled()) {
                 logDiagnostic(
+                        "[LOOKUP] Looking for a properties file of name '" + FACTORY_PROPERTIES
+                        + "' to define the LogFactory subclass to use...");
+            }
+            if (props != null) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(
                         "[LOOKUP] Properties file found. Looking for property '" 
                         + FACTORY_PROPERTY
                         + "' to define the LogFactory subclass to use...");
-
+                }
                 String factoryClass = props.getProperty(FACTORY_PROPERTY);
                 if (factoryClass != null) {
                     factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
@@ -542,10 +556,12 @@ public abstract class LogFactory {
         // Fourth, try the fallback implementation class
 
         if (factory == null) {
-            logDiagnostic(
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
                 "[LOOKUP] Loading the default LogFactory implementation '" + FACTORY_DEFAULT
                 + "' via the same classloader that loaded this LogFactory"
                 + " class (ie not looking in the context classloader).");
+            }
             
             // Note: unlike the above code which can try to load custom LogFactory
             // implementations via the TCCL, we don't try to load the default LogFactory
@@ -625,7 +641,9 @@ public abstract class LogFactory {
      */
     public static void release(ClassLoader classLoader) {
 
-        logDiagnostic("Releasing factory for classloader " + objectId(classLoader));
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Releasing factory for classloader " + objectId(classLoader));
+        }
         synchronized (factories) {
             if (classLoader == null) {
                 if (nullClassLoaderFactory != null) {
@@ -654,7 +672,9 @@ public abstract class LogFactory {
      */
     public static void releaseAll() {
 
-        logDiagnostic("Releasing factory for all classloaders.");
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Releasing factory for all classloaders.");
+        }
         synchronized (factories) {
             Enumeration elements = factories.elements();
             while (elements.hasMoreElements()) {
@@ -700,9 +720,11 @@ public abstract class LogFactory {
         try {
             return clazz.getClassLoader();
         } catch(SecurityException ex) {
-            logDiagnostic(
-                "Unable to get classloader for class " + clazz
-                + " due to security restrictions.");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
+                        "Unable to get classloader for class " + clazz
+                        + " due to security restrictions.");
+            }
             throw ex;
         }
     }
@@ -937,16 +959,18 @@ public abstract class LogFactory {
 
         if (result instanceof LogConfigurationException) {
             LogConfigurationException ex = (LogConfigurationException) result;
-            logDiagnostic(
-                "An error occurred while loading the factory class:"
-                + ex.getMessage());
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
+                        "An error occurred while loading the factory class:"
+                        + ex.getMessage());
+            }
             throw ex;
         }
-
-        logDiagnostic(
-            "Created object " + objectId(result)
-            + " to manage classloader " + objectId(contextClassLoader));
-
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic(
+                    "Created object " + objectId(result)
+                    + " to manage classloader " + objectId(contextClassLoader));
+        }
         return (LogFactory)result;
     }
 
@@ -993,9 +1017,11 @@ public abstract class LogFactory {
                     // to be generated/caught & recast properly.
                     logFactoryClass = classLoader.loadClass(factoryClass);
                     if (LogFactory.class.isAssignableFrom(logFactoryClass)) {
-                        logDiagnostic(
-                            "Loaded class " + logFactoryClass.getName()
-                            + " from classloader " + objectId(classLoader));
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                    "Loaded class " + logFactoryClass.getName()
+                                    + " from classloader " + objectId(classLoader));
+                        }
                     } else {
                         //
                         // This indicates a problem with the ClassLoader tree.
@@ -1007,13 +1033,15 @@ public abstract class LogFactory {
                         // The most likely fix for this
                         // problem is to remove the extra JCL jars from the 
                         // ClassLoader hierarchy. 
-                        // 
-                        logDiagnostic(
-                            "Factory class " + logFactoryClass.getName()
-                            + " loaded from classloader " + objectId(classLoader)
-                            + " does not extend '" + LogFactory.class.getName()
-                            + "' as loaded by this classloader.");
-                        logHierarchy("[BAD CL TREE] ", classLoader);
+                        //
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                    "Factory class " + logFactoryClass.getName()
+                                + " loaded from classloader " + objectId(classLoader)
+                                + " does not extend '" + LogFactory.class.getName()
+                                + "' as loaded by this classloader.");
+                            logHierarchy("[BAD CL TREE] ", classLoader);
+                        }
                     }
                     
                     return (LogFactory) logFactoryClass.newInstance();
@@ -1021,20 +1049,24 @@ public abstract class LogFactory {
                 } catch (ClassNotFoundException ex) {
                     if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
-                        logDiagnostic(
-                            "Unable to locate any class called '" + factoryClass
-                            + "' via classloader " + objectId(classLoader));
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                    "Unable to locate any class called '" + factoryClass
+                                    + "' via classloader " + objectId(classLoader));
+                        }
                         throw ex;
                     }
                     // ignore exception, continue
                 } catch (NoClassDefFoundError e) {
                     if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
-                        logDiagnostic(
-                            "Class '" + factoryClass + "' cannot be loaded"
-                            + " via classloader " + objectId(classLoader)
-                            + " - it depends on some other class that cannot"
-                            + " be found.");
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                    "Class '" + factoryClass + "' cannot be loaded"
+                                    + " via classloader " + objectId(classLoader)
+                                    + " - it depends on some other class that cannot"
+                                    + " be found.");
+                        }
                         throw e;
                     }
                     // ignore exception, continue
@@ -1043,9 +1075,11 @@ public abstract class LogFactory {
                         // This cast exception is not due to classloader issues;
                         // the specified class *really* doesn't extend the 
                         // required LogFactory base class.
-                        logDiagnostic(
-                            "Class '" + factoryClass + "' really does not extend '"
-                            + LogFactory.class.getName() + "'");
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                    "Class '" + factoryClass + "' really does not extend '"
+                                    + LogFactory.class.getName() + "'");
+                        }
                         throw e;
                     }
                     // Ignore exception, continue
@@ -1068,16 +1102,19 @@ public abstract class LogFactory {
              */
             // Warning: must typecast here & allow exception
             // to be generated/caught & recast properly.
-            
-            logDiagnostic(
-                "Unable to load factory class via classloader " 
-                + objectId(classLoader)
-                + " - trying the classloader associated with this LogFactory.");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
+                    "Unable to load factory class via classloader " 
+                    + objectId(classLoader)
+                    + " - trying the classloader associated with this LogFactory.");
+            }
             logFactoryClass = Class.forName(factoryClass);
             return (LogFactory) logFactoryClass.newInstance();
         } catch (Exception e) {
             // Check to see if we've got a bad configuration
-            logDiagnostic("Unable to create LogFactory instance.");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Unable to create LogFactory instance.");
+            }
             if (logFactoryClass != null
                 && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
                 
@@ -1137,9 +1174,11 @@ public abstract class LogFactory {
                             return ClassLoader.getSystemResources(name);
                         }
                     } catch(IOException e) {
-                        logDiagnostic(
-                            "Exception while trying to find configuration file "
-                            + name + ":" + e.getMessage());
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                "Exception while trying to find configuration file "
+                                + name + ":" + e.getMessage());
+                        }
                         return null;
                     } catch(NoSuchMethodError e) {
                         // we must be running on a 1.1 JVM which doesn't support
@@ -1174,7 +1213,9 @@ public abstract class LogFactory {
                             return props;
                         }
                     } catch(IOException e) {
-                        logDiagnostic("Unable to read URL " + url);
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic("Unable to read URL " + url);
+                        }
                     }
 
                     return null;
@@ -1234,7 +1275,9 @@ public abstract class LogFactory {
                 }
             }
         } catch (SecurityException e) {
-            logDiagnostic("SecurityException thrown");
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("SecurityException thrown");
+            }
         }
         return props;
     }
@@ -1400,6 +1443,9 @@ public abstract class LogFactory {
      * @param classLoader
      */
     private static void logHierarchy(String prefix, ClassLoader classLoader) {
+        if (!isDiagnosticsEnabled()) {
+            return;
+        }
         ClassLoader systemClassLoader;
         if (classLoader != null) {
             final String classLoaderString = classLoader.toString();
@@ -1483,6 +1529,8 @@ public abstract class LogFactory {
         initDiagnostics();
         logClassLoaderEnvironment(LogFactory.class);
         factories = createFactoryStore();
-        logDiagnostic("BOOTSTRAP COMPLETED");
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("BOOTSTRAP COMPLETED");
+        }
     }
 }
