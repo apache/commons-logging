@@ -994,14 +994,14 @@ public abstract class LogFactory {
                     logFactoryClass = classLoader.loadClass(factoryClass);
                     if (LogFactory.class.isAssignableFrom(logFactoryClass)) {
                         logDiagnostic(
-                            "loaded class " + logFactoryClass.getName()
+                            "Loaded class " + logFactoryClass.getName()
                             + " from classloader " + objectId(classLoader));
                     } else {
                         logDiagnostic(
                             "Factory class " + logFactoryClass.getName()
                             + " loaded from classloader " + objectId(classLoader)
-                            + " does not extend " + LogFactory.class.getName()
-                            + " as loaded by this classloader.");
+                            + " does not extend '" + LogFactory.class.getName()
+                            + "' as loaded by this classloader.");
                     }
                     
                     return (LogFactory) logFactoryClass.newInstance();
