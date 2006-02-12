@@ -1022,8 +1022,8 @@ public abstract class LogFactory {
                     if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
                         logDiagnostic(
-                            "Unable to locate any class called " + factoryClass
-                            + " via classloader " + objectId(classLoader));
+                            "Unable to locate any class called '" + factoryClass
+                            + "' via classloader " + objectId(classLoader));
                         throw ex;
                     }
                     // ignore exception, continue
@@ -1031,9 +1031,9 @@ public abstract class LogFactory {
                     if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
                         logDiagnostic(
-                            "Class " + factoryClass + " cannot be loaded"
+                            "Class '" + factoryClass + "' cannot be loaded"
                             + " via classloader " + objectId(classLoader)
-                            + ": it depends on some other class that cannot"
+                            + " - it depends on some other class that cannot"
                             + " be found.");
                         throw e;
                     }
@@ -1044,8 +1044,8 @@ public abstract class LogFactory {
                         // the specified class *really* doesn't extend the 
                         // required LogFactory base class.
                         logDiagnostic(
-                            "Class " + factoryClass + " really does not extend "
-                            + LogFactory.class.getName());
+                            "Class '" + factoryClass + "' really does not extend '"
+                            + LogFactory.class.getName() + "'");
                         throw e;
                     }
                     // Ignore exception, continue
@@ -1072,12 +1072,12 @@ public abstract class LogFactory {
             logDiagnostic(
                 "Unable to load factory class via classloader " 
                 + objectId(classLoader)
-                + ": trying the classloader associated with this LogFactory.");
+                + " - trying the classloader associated with this LogFactory.");
             logFactoryClass = Class.forName(factoryClass);
             return (LogFactory) logFactoryClass.newInstance();
         } catch (Exception e) {
             // Check to see if we've got a bad configuration
-            logDiagnostic("Unable to create logfactory instance.");
+            logDiagnostic("Unable to create LogFactory instance.");
             if (logFactoryClass != null
                 && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
                 
