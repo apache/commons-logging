@@ -1188,7 +1188,7 @@ public class LogFactoryImpl extends LogFactory {
            if (allowFlawedContext) {   
               if (isDiagnosticsEnabled()) {
                    logDiagnostic(
-                           "Warning: the context classloader is not part of a"
+                           "[WARNING] the context classloader is not part of a"
                            + " parent-child relationship with the classloader that"
                            + " loaded LogFactoryImpl.");
               }
