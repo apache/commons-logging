@@ -722,8 +722,8 @@ public abstract class LogFactory {
         } catch(SecurityException ex) {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic(
-                        "Unable to get classloader for class " + clazz
-                        + " due to security restrictions.");
+                        "Unable to get classloader for class '" + clazz
+                        + "' due to security restrictions - " + ex.getMessage());
             }
             throw ex;
         }
