@@ -669,22 +669,22 @@ public class LogFactoryImpl extends LogFactory {
      * @return the value associated with the property, or null.
      */
     private String getConfigurationValue(String property) {
-        logDiagnostic("Trying to get configuration for item " + property);
+        logDiagnostic("[ENV] Trying to get configuration for item " + property);
     
-        logDiagnostic("Looking for attribute " + property);
+        logDiagnostic("[ENV] Looking for attribute " + property);
         Object valueObj =  getAttribute(property);
         if (valueObj != null) {
-            logDiagnostic("Found value [" + valueObj + "] for " + property);
+            logDiagnostic("[ENV] Found value [" + valueObj + "] for " + property);
             return valueObj.toString();
         }
         
-        logDiagnostic("Looking for system property " + property);
+        logDiagnostic("[ENV] Looking for system property " + property);
         try {
             String value = System.getProperty(property);
-            logDiagnostic("Found value [" + value + "] for " + property);
+            logDiagnostic("[ENV] Found value [" + value + "] for " + property);
             return value;
         } catch (SecurityException e) {
-            logDiagnostic("Security prevented reading system property.");
+            logDiagnostic("[ENV] Security prevented reading system property.");
         }
         
         return null;
