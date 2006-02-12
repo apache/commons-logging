@@ -396,7 +396,7 @@ public abstract class LogFactory {
         }
 
         logDiagnostic(
-            "LogFactory implementation requested for the first time for context classloader "
+            "[LOOKUP] LogFactory implementation requested for the first time for context classloader "
             + objectId(contextClassLoader));
 
         // Load properties file.
@@ -435,24 +435,24 @@ public abstract class LogFactory {
         // Determine which concrete LogFactory subclass to use.
         // First, try a global system property
         logDiagnostic(
-            "Looking for system property [" + FACTORY_PROPERTY 
-            + "] to define the LogFactory subclass to use..");
+            "[LOOKUP] Looking for system property [" + FACTORY_PROPERTY 
+            + "] to define the LogFactory subclass to use...");
 
         try {
             String factoryClass = System.getProperty(FACTORY_PROPERTY);
             if (factoryClass != null) {
                 logDiagnostic(
-                    "Creating an instance of LogFactory class " + factoryClass
-                    + " as specified by system property " + FACTORY_PROPERTY);
+                    "[LOOKUP] Creating an instance of LogFactory class '" + factoryClass
+                    + "' as specified by system property " + FACTORY_PROPERTY);
 
                 factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
             }
         } catch (SecurityException e) {
             logDiagnostic(
-                "A security exception occurred while trying to create an"
+                "[LOOKUP] A security exception occurred while trying to create an"
                 + " instance of the custom factory class"
                 + ": [" + e.getMessage().trim()
-                + "]. Trying alternative implementations..");
+                + "]. Trying alternative implementations...");
             ;  // ignore
         }
 
@@ -465,8 +465,8 @@ public abstract class LogFactory {
 
         if (factory == null) {
             logDiagnostic(
-                "Looking for a resource file of name [" + SERVICE_ID
-                + "] to define the LogFactory subclass to use..");
+                "[LOOKUP] Looking for a resource file of name [" + SERVICE_ID
+                + "] to define the LogFactory subclass to use...");
 
             try {
                 InputStream is = getResourceAsStream(contextClassLoader,
@@ -489,9 +489,9 @@ public abstract class LogFactory {
                         ! "".equals(factoryClassName)) {
 
                         logDiagnostic(
-                            "Creating an instance of LogFactory class " + factoryClassName
-                            + " as specified by file " + SERVICE_ID 
-                            + " which was present in the path of the context"
+                            "[LOOKUP]  Creating an instance of LogFactory class " + factoryClassName
+                            + " as specified by file '" + SERVICE_ID 
+                            + "' which was present in the path of the context"
                             + " classloader.");
 
                         factory = newFactory(factoryClassName, baseClassLoader, contextClassLoader );
@@ -499,10 +499,10 @@ public abstract class LogFactory {
                 }
             } catch( Exception ex ) {
                 logDiagnostic(
-                        "A security exception occurred while trying to create an"
+                        "[LOOKUP] A security exception occurred while trying to create an"
                         + " instance of the custom factory class"
                         + ": [" + ex.getMessage().trim()
-                        + "]. Trying alternative implementations..");
+                        + "]. Trying alternative implementations...");
 
                 ; // ignore
             }
@@ -519,14 +519,14 @@ public abstract class LogFactory {
 
         if (factory == null) {
             logDiagnostic(
-                "Looking for a properties file of name " + FACTORY_PROPERTIES
-                + " to define the LogFactory subclass to use..");
+                "[LOOKUP] Looking for a properties file of name '" + FACTORY_PROPERTIES
+                + "' to define the LogFactory subclass to use...");
 
             if (props != null) {
                 logDiagnostic(
-                        "Properties file found. Looking for property " 
+                        "[LOOKUP] Properties file found. Looking for property '" 
                         + FACTORY_PROPERTY
-                        + " to define the LogFactory subclass to use..");
+                        + "' to define the LogFactory subclass to use...");
 
                 String factoryClass = props.getProperty(FACTORY_PROPERTY);
                 if (factoryClass != null) {
@@ -542,8 +542,8 @@ public abstract class LogFactory {
 
         if (factory == null) {
             logDiagnostic(
-                "Loading the default LogFactory implementation " + FACTORY_DEFAULT
-                + " via the same classloader that loaded this LogFactory"
+                "[LOOKUP] Loading the default LogFactory implementation '" + FACTORY_DEFAULT
+                + "' via the same classloader that loaded this LogFactory"
                 + " class (ie not looking in the context classloader).");
             
             // Note: unlike the above code which can try to load custom LogFactory
