@@ -38,6 +38,8 @@
             href="/guide.html"/>
       <item name="Tech Guide"
             href="/tech.html"/>
+      <item name="Troubleshooting Guide"
+            href="/troubleshooting.html"/>
       <item name="Wiki"
             href="http://wiki.apache.org/jakarta-commons/Logging"/>
       <item name='JavaDoc'
