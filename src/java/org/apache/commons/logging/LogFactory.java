@@ -1349,7 +1349,7 @@ public abstract class LogFactory {
      * @param clazz is the class whose classloader + tree are to be
      * output.
      */
-    private static void logClassLoaderTree(Class clazz) {
+    private static void logClassLoaderEnvironment(Class clazz) {
         if (!isDiagnosticsEnabled()) {
             return;
         }
@@ -1454,7 +1454,7 @@ public abstract class LogFactory {
         // note: it's safe to call methods before initDiagnostics.
         thisClassLoader = getClassLoader(LogFactory.class);
         initDiagnostics();
-        logClassLoaderTree(LogFactory.class);
+        logClassLoaderEnvironment(LogFactory.class);
         factories = createFactoryStore();
         logDiagnostic("BOOTSTRAP COMPLETED");
     }
