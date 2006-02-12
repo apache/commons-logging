@@ -1355,10 +1355,10 @@ public abstract class LogFactory {
         }
         
         try {
-            logDiagnostic("Extension directories: " + System.getProperty("java.ext.dir"));
-            logDiagnostic("Application classpath: " + System.getProperty("java.class.path"));
+            logDiagnostic("[ENV] Extension directories: " + System.getProperty("java.ext.dir"));
+            logDiagnostic("[ENV] Application classpath: " + System.getProperty("java.class.path"));
         } catch(SecurityException ex) {
-            logDiagnostic("Security setting prevent interrogation of system classpaths.");
+            logDiagnostic("[ENV] Security setting prevent interrogation of system classpaths.");
         }
         
         String className = clazz.getName();
@@ -1370,24 +1370,24 @@ public abstract class LogFactory {
         } catch(SecurityException ex) {
             // not much useful diagnostics we can print here!
             logDiagnostic(
-                "Security forbids determining the classloader for " + className);
+                "[ENV] Security forbids determining the classloader for " + className);
             return;
         }
 
         logDiagnostic(
-            "Class " + className + " was loaded via classloader "
+            "[ENV] Class " + className + " was loaded via classloader "
             + objectId(classLoader));
             
         try {
             systemClassLoader = ClassLoader.getSystemClassLoader();
         } catch(SecurityException ex) {
             logDiagnostic(
-                "Security forbids determining the system classloader.");
+                "[ENV] Security forbids determining the system classloader.");
             return;
         }
 
         if (classLoader != null) {
-            StringBuffer buf = new StringBuffer("ClassLoader tree:");
+            StringBuffer buf = new StringBuffer("[ENV] ClassLoader tree:");
             for(;;) {
                 buf.append(objectId(classLoader));
                 if (classLoader == systemClassLoader) {
@@ -1456,6 +1456,6 @@ public abstract class LogFactory {
         initDiagnostics();
         logClassLoaderTree(LogFactory.class);
         factories = createFactoryStore();
-
+        logDiagnostic("BOOTSTRAP COMPLETED");
     }
 }
