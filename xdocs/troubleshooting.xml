@@ -75,7 +75,7 @@ LogFactoryImpl@1671711
 </pre></code>
       <p>
 OIDs are intended to be used to cross-reference. They allow particular instances of classloaders
-and JCL classes to be tracked in different context's. This plays a vital role in building
+and JCL classes to be tracked in different contexts. This plays a vital role in building
 up the understanding of the classloader environment required to diagnose JCL problems. 
       </p> 
     </subsection>
