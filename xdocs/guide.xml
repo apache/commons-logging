@@ -73,6 +73,8 @@
                         <li><a href='#Creating A LogFactory Implementation'>Creating A LogFactory Implementation</a></li>
                     </ol>
                 </li>
+                <li><a href='#A%20Quick%20Guide%20To%20Simple%20Log'>A Quick Guide To Simple Log</a>
+                </li>
                 <li><a href='#Frequently Asked Questions'>Frequently Asked Questions</a>
                 </li>
             </ol>
@@ -722,6 +724,66 @@ Review the Javadoc for the <code>LogFactoryImpl.java</code>
 for details.
         </p>
     </subsection>
+</section>
+<section name='A Quick Guide To Simple Log'>
+	<p>
+JCL is distributed with a very simple <code>Log</code> implementation named 
+<code>org.apache.commons.logging.impl.SimpleLog</code>. This is intended to be a minimal
+implementation and those requiring a fully functional open source logging system are 
+directed to <a href='http://logging.apache.org/log4j'>Log4J</a>.
+	</p>
+ 	<p>
+ 	<code>SimpleLog</code> sends all (enabled) log messages,
+ 	for all defined loggers, to <code>System.err</code>.  The following system properties
+  are supported to configure the behavior of this logger:</p>
+  <ul>
+  <li><strong>org.apache.commons.logging.simplelog.defaultlog</strong> -
+      Default logging detail level for all instances of SimpleLog.
+      Must be one of:
+      	<ul>
+      		<li><code>trace</code></li>
+      		<li><code>debug</code></li> 
+      		<li><code>info</code></li> 
+      		<li><code>warn</code></li> 
+      		<li><code>error</code></li>
+      		<li><code>fatal</code></li>
+      	 </ul>
+      If not specified, defaults to <code>info</code>. </li>
+  <li><strong>org.apache.commons.logging.simplelog.log.xxxxx</strong> -
+      Logging detail level for a SimpleLog instance named "xxxxx".
+      Must be one of:
+          <ul>
+      		<li><code>trace</code></li>
+      		<li><code>debug</code></li> 
+      		<li><code>info</code></li> 
+      		<li><code>warn</code></li> 
+      		<li><code>error</code></li>
+      		<li><code>fatal</code></li>
+      	 </ul>
+      If not specified, the default logging detail level is used.</li>
+  <li><strong>org.apache.commons.logging.simplelog.showlogname</strong> -
+      Set to <code>true</code> if you want the <code>Log</code> instance name to be
+      included in output messages. Defaults to <code>false</code>.</li>
+  <li><strong>org.apache.commons.logging.simplelog.showShortLogname</strong> -
+      Set to <code>true</code> if you want the last component of the name to be
+      included in output messages. Defaults to <code>true</code>.</li>
+  <li><strong>org.apache.commons.logging.simplelog.showdatetime</strong> -
+      Set to <code>true</code> if you want the current date and time
+      to be included in output messages. Default is <code>false</code>.</li>
+ <li><strong>org.apache.commons.logging.simplelog.dateTimeFormat</strong> -
+      The date and time format to be used in the output messages.
+      The pattern describing the date and time format is the same that is
+      used in <code>java.text.SimpleDateFormat</code>. If the format is not
+      specified or is invalid, the default format is used.
+      The default format is <code>yyyy/MM/dd HH:mm:ss:SSS zzz</code>.</li>
+  </ul>
+ 
+  <p>
+In addition to looking for system properties with the names specified
+above, this implementation also checks for a class loader resource named
+<code>"simplelog.properties"</code>, and includes any matching definitions
+from this resource (if it exists).
+  </p>
 </section>
     <section name='Frequently Asked Questions'>
 <p>
