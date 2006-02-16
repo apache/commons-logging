@@ -39,6 +39,11 @@ commons-logging. There are some incompatibilities with code that extends
 commons-logging, for example to implement custom logging adapters. See
 the compatibility section for details.
 
+All core classes were compiled with a 1.2.x JDK. JCL may work on some 
+augmented 1.1 series JREs but it is recommended that those wish to run
+on 1.1 JREs download the source and create a custom implementation by
+stripping out all the complex classloader management code.
+
 For further details, please see the Jakarta Commons Logging website:
   http://jakarta.apache.org/commons/logging.
 
