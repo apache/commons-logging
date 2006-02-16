@@ -462,7 +462,6 @@ This configuration is typically used to create a release only.
               todir="${build.home}/classes/META-INF"/>
 
     <jar jarfile="${build.home}/${core.jar.name}"
-         index="true"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/**" />
@@ -472,7 +471,6 @@ This configuration is typically used to create a release only.
     </jar>
 
     <jar jarfile="${build.home}/${api.jar.name}"
-        index="true"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/*.class" />
@@ -486,7 +484,6 @@ This configuration is typically used to create a release only.
     </jar>
 
     <jar jarfile="${build.home}/${adapters.jar.name}"
-        index="true"
          basedir="${build.home}/classes"
          manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/impl/**.class" />
@@ -558,7 +555,6 @@ This configuration is typically used to create a release only.
                  if="log4j12.present"/>
     </jar>
     <jar jarfile="${build.home}/commons-${component.name}-tests.jar"
-        index="true"
          basedir="${build.home}/tests"
         manifest="${build.home}/conf/MANIFEST.MF">
       <exclude name="org/apache/commons/logging/Wrapper.class"/>
@@ -566,7 +562,6 @@ This configuration is typically used to create a release only.
                  if="jdk.1.4.present"/>
     </jar>
     <jar jarfile="${build.home}/commons-${component.name}-wrapper.jar"
-        index="true"
          basedir="${build.home}/tests"
         manifest="${build.home}/conf/MANIFEST.MF">
       <include name="org/apache/commons/logging/Wrapper.class"/>
