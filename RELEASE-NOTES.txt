@@ -48,9 +48,9 @@ Jakarta Commons Logging wiki site:
 
 == New Features ==
 
-* Jarfiles now have release-numbers embedded in the names, for easier management.
+* Jar files now have release-numbers embedded in the names, for easier management.
 
-* New jarfile commons-logging-adapters-xxx.jar is now provided. This can be
+* New jar file commons-logging-adapters-xxx.jar is now provided. This can be
   used to resolve class cast conflicts where parts of commons-logging are
   deployed via different classloaders. It is not expected to be frequently
   used; it is only necessary in situations where a container has deployed
@@ -87,7 +87,7 @@ Jakarta Commons Logging wiki site:
   when a webapp was undeployed. An internal change fixes some situations where
   that occurs (by using weak references); this requires no action on the part of
   users of this library. In addition, a utility class ServletContextCleaner is
-  provided in the jarfile which is expected to resolve this problem in all
+  provided in the jar file which is expected to resolve this problem in all
   situations; however it is necessary for an application to define this class as
   a ServletContextListener in the web.xml in order for this to be invoked.
 
@@ -143,7 +143,7 @@ Java 1.2 and later are supported. It may be possible to use this release with
 java 1.1 but this has not been tested; the unit tests certainly don't run on
 that version.
 
-== Distributed jarfiles ==
+== Distributed Jar Files ==
 
 File commons-logging-nn.jar is the one most people will want. It provides the
 base implementation and adapters to a number of popular logging libraries.
@@ -151,19 +151,19 @@ base implementation and adapters to a number of popular logging libraries.
 File commons-logging-adapters-nn.jar includes only the adapters to various
 concrete logging libraries. When commons-logging-nn.jar or
 commons-logging-api-nn.jar is deployed in a container classpath, then this
-adapters-only jarfile should be deployed in the webapp, not the complete JCL
+adapters-only jar file should be deployed in the webapp, not the complete JCL
 distribution. This ensures that the core Log/LogFactory classes are only
 deployed via one classloader, thus avoiding "Log4JLogger does not implement Log"
 and similar problems.
 
 File commons-logging-api-nn.jar provides no adapters to external logging
 libraries, just the internally implemented SimpleLog and NoOpLog classes. This
-jarfile may be used as a declared dependency for projects that care about
-"transitive dependencies" and can't handle jarfiles such as commons-logging-nn.jar
+jar file may be used as a declared dependency for projects that care about
+"transitive dependencies" and can't handle jar files such as commons-logging-nn.jar
 which have "optional" dependencies depending on how they are used. In addition,
-this jarfile can be useful for "rebundlers" of JCL who recompile the source-code
+this jar file can be useful for "rebundlers" of JCL who recompile the source-code
 but who may not be able to recompile against the full set of supported adapters;
-such projects should be able to at least recreate an equivalent of this jarfile.
+such projects should be able to at least recreate an equivalent of this jar file.
 
 == General Notes ==
 
@@ -188,7 +188,7 @@ website for details (http://jakarta.apache.org/commons).
   deprecated for a long while. Replacement class Log4JLogger should be a completely
   transparent replacement for all commons-logging users.
 
-* package.html files are no longer present in the jarfiles, removing nuisance
+* package.html files are no longer present in the jar files, removing nuisance
   javadoc warnings when building javadoc for apps using jcl.
   
 * In several cases, LogConfigurationException objects were being wrapped in
