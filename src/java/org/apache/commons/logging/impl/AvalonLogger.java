@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2004,2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */ 
 
 package org.apache.commons.logging.impl;
-
-import java.io.Serializable;
 
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
@@ -41,14 +39,19 @@ import org.apache.commons.logging.Log;
  * </li>
  * </ul>
  * <p>
- * <strong>Note:</strong> <code>AvalonLogger</code> implements
- * <code>Serializable</code> for reasons of consistency and backwards compatibility. 
- * However, serializable is not recommended.
+ * <strong>Note:</strong> <code>AvalonLogger</code> does not implement Serializable
+ * because the constructors available for it make this impossible to achieve in all
+ * circumstances; there is no way to "reconnect" to an underlying Logger object on
+ * deserialization if one was just passed in to the constructor of the original
+ * object. This class <i>was</i> marked Serializable in the 1.0.4 release of
+ * commons-logging, but this never actually worked (a NullPointerException would 
+ * be thrown as soon as the deserialized object was used), so removing this marker
+ * is not considered to be an incompatible change.
  * </p>
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
  * @version $Revision$ $Date$
  */
-public class AvalonLogger implements Log, Serializable {
+public class AvalonLogger implements Log {
 
     /** Ancesteral avalon logger  */ 
     private static Logger defaultLogger = null;
