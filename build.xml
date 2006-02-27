@@ -62,7 +62,7 @@
   <!--
     - The names of the unit tests to run. By default all tests are run, but
     - this can be overridden from the command line by something like:
-    -   ant -Dtestmatch=**/FooTestCase.java testall
+    -   ant -Dtestmatch=**/FooTestCase test
     -->
   <property name="testmatch" value="**/*TestCase"/>
 
@@ -202,6 +202,7 @@
   <property name="test.sysprops.testclasses" value="${build.home}/tests"/>
   <property name="test.sysprops.log4j12" value="${log4j12.jar}"/>
   <property name="test.sysprops.log4j13" value="${log4j13.jar}"/>
+  <property name="test.sysprops.logkit" value="${logkit.jar}"/>
   <property name="test.sysprops.servletapi" value="${servletapi.jar}"/>
   <property name="test.sysprops.commons-logging" value="${build.home}/${core.jar.name}"/>
   <property name="test.sysprops.commons-logging-api" value="${build.home}/${api.jar.name}"/>
@@ -714,22 +715,27 @@ This configuration is typically used to create a release only.
       <!-- 
         - Provide a set of properties pointing to the logging libs for
         - the use of the PathableClassLoader class used by some unit tests.
-	-->
+        -->
       <syspropertyset refid="test-lib-props"/>
       <classpath refid="test.classpath"/>
 
       <!--
+        - Uncomment this to enable logging diagnostics for tests
+        - <jvmarg value="-Dorg.apache.commons.logging.diagnostics.dest=STDERR"/>
+        -->
+
+      <!--
         - Auto-detect the tests to run. Checking the ${build.home}/tests
-	- directory for .class files rather than the src/test directory
-	- for .java files means that when we run the tests on platforms
-	- where some components (eg jdk14 logging) is not available, 
-	- just ensuring the tests are skipped from the compile will
-	- also cause them to be skipped from the testing.
-	-
-	- This does introduce the danger that if tests accidentally
-	- fail to compile then we won't notice it here. However that
-	- should have been reported earlier anyway.
-	-->
+        - directory for .class files rather than the src/test directory
+        - for .java files means that when we run the tests on platforms
+        - where some components (eg jdk14 logging) is not available, 
+        - just ensuring the tests are skipped from the compile will
+        - also cause them to be skipped from the testing.
+        -
+        - This does introduce the danger that if tests accidentally
+        - fail to compile then we won't notice it here. However that
+        - should have been reported earlier anyway.
+        -->
       <batchtest todir="${build.home}/test-reports">
         <fileset dir="${build.home}/tests">
           <include name="${testmatch}.class"/>
