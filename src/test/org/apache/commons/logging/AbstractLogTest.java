@@ -17,14 +17,16 @@
  
 package org.apache.commons.logging;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 
 /**
-  *
+  * Generic tests that can be applied to any log adapter by
+  * subclassing this class and defining method getLogObject
+  * appropriately.
+  * 
   * @author Sean C. Sullivan
   * @version $Revision$
-  * 
   */
 public abstract class AbstractLogTest extends TestCase {
 
