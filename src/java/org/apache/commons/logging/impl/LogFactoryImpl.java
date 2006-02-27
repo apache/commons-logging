@@ -1230,6 +1230,7 @@ public class LogFactoryImpl extends LogFactory {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Could not instantiate Log '"
                       + logAdapterClassName + "' -- "
+                      + discoveryFlaw.getClass().getName() + ": "
                       + discoveryFlaw.getLocalizedMessage());       
         }
         
