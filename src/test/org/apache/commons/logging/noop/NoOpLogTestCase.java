@@ -14,34 +14,26 @@
  * limitations under the License.
  */ 
  
-package org.apache.commons.logging;
+package org.apache.commons.logging.noop;
 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.NoOpLog;
+import org.apache.commons.logging.AbstractLogTest;
 
 /**
- * 
- *
- * 
- * 
- * 
- * 
+ * Tests for NoOpLog logging adapter.
+ * <p>
+ * This simply applies the tests defined in AbstractLogTest to this class.
  */
 public class NoOpLogTestCase extends AbstractLogTest
 {
 
 	/**
-	 * 
-	 * 
-	 * 
+	 * Override the abstract method from the parent class so that the
+     * inherited tests can access the right Log object type. 
 	 */
 	public Log getLogObject()
 	{
 		return (Log) new NoOpLog(this.getClass().getName());
-	}
-
-	public static void main(String[] args)
-	{
-        String[] testCaseName = { NoOpLogTestCase.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);	
 	}
 }
