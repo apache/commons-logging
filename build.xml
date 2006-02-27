@@ -102,7 +102,7 @@
 
   <!-- The base directory for distribution targets -->
   <property name="dist.home"               value="dist"/>
-	
+
   <!-- The base directory for releases  -->
   <property name="artifacts.home"               value="artifacts"/>
 
@@ -117,7 +117,7 @@
   <property name="api.jar.name" value="commons-${component.name}-api-${component.version}.jar"/>
   <property name="adapters.jar.name" value="commons-${component.name}-adapters-${component.version}.jar"/>
   <property name="src.ide.name" value="commons-${component.name}-${component.version}-ide.zip"/>
-	
+
   <!-- dist names -->
   <property name="windows.dist.name" value="commons-${component.name}-${component.version}.zip"/>
   <property name="nix.dist.name" value="commons-${component.name}-${component.version}.tar.gz"/>
@@ -280,7 +280,7 @@
 
     <available file="${log4j12.jar}" property="log4j12.present"/>
     <available file="${log4j13.jar}" property="log4j13.present"/>
-	<available file="${build.home}/docs" property="maven.generated.docs.present"/>
+    <available file="${build.home}/docs" property="maven.generated.docs.present"/>
   </target>
 
   <target name="log4j12-warning" unless='log4j12.present' depends='init,discovery'>
@@ -370,38 +370,38 @@
                unless="avalon-framework.present"/>
     </javac>
   </target>
-	
-  <target name="compile-1.4" depends="prepare,discovery,compile-non-log4j" if='executable.javac1.4'>
-	    <!-- 
-Compiles those classes which require a 1.4+ JSDK.
-This target will only be executed when ant is running a pre-1.4 JVM
-and the home.jdk4 property is set.
-This configuration is typically used to create a release only.
-		-->
-  	    <echo  message=""/>
-  	    <echo  message="************************************************************"/>
-  		<echo  message="    Compiling 1.4 only classes using compiler@${executable.javac1.4}"/>
-     	<echo  message="************************************************************"/>
-	    <echo  message=""/>
-	    <javac srcdir="${source.home}"
-	           destdir="${build.home}/classes"
-	           debug="${compile.debug}"
-	           deprecation="${compile.deprecation}"
-	           optimize="${compile.optimize}"
-	           source="${source.version}"
-	           target="${target.version}"
-	    	   compiler='javac1.4'
-	    	   fork='yes'
-	    	   executable='${executable.javac1.4}'>
 
-	      <classpath refid="compile.classpath"/>
-	    
-	      <include name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
-	               unless="jdk.1.4.present"/>
-	      <include name="org/apache/commons/logging/impl/Jdk14Logger.java"
-	               unless="jdk.1.4.present"/>
-	    </javac>
-	  </target>
+  <target name="compile-1.4" depends="prepare,discovery,compile-non-log4j" if='executable.javac1.4'>
+    <!-- 
+      - Compiles those classes which require a 1.4+ JSDK.
+      - This target will only be executed when ant is running a pre-1.4 JVM
+      - and the home.jdk4 property is set.
+      - This configuration is typically used to create a release only.
+      -->
+    <echo  message=""/>
+    <echo  message="************************************************************"/>
+    <echo  message="    Compiling 1.4 only classes using compiler@${executable.javac1.4}"/>
+    <echo  message="************************************************************"/>
+    <echo  message=""/>
+    <javac srcdir="${source.home}"
+           destdir="${build.home}/classes"
+           debug="${compile.debug}"
+           deprecation="${compile.deprecation}"
+           optimize="${compile.optimize}"
+           source="${source.version}"
+           target="${target.version}"
+           compiler='javac1.4'
+           fork='yes'
+           executable='${executable.javac1.4}'>
+
+      <classpath refid="compile.classpath"/>
+    
+      <include name="org/apache/commons/logging/impl/Jdk13LumberjackLogger.java"
+               unless="jdk.1.4.present"/>
+      <include name="org/apache/commons/logging/impl/Jdk14Logger.java"
+               unless="jdk.1.4.present"/>
+    </javac>
+  </target>
 
   <target name="compile-log4j12" depends="prepare,discovery">
     <!-- compile the log4j1.2 support classes -->
@@ -415,10 +415,10 @@ This configuration is typically used to create a release only.
 
       <classpath refid="compile.classpath"/>
       <classpath>
-	<!--
+        <!--
         <pathelement refid="compile.classpath"/>
         <classpath refid="compile.classpath"/>
-	-->
+        -->
         <pathelement location="${log4j12.jar}"/> 
       </classpath>
 
@@ -573,14 +573,13 @@ This configuration is typically used to create a release only.
   </target>
 
 
-  <target name="clean"
-   description="Clean build and distribution directories">
-  	<mkdir dir='${build.home}'/>
+  <target name="clean" description="Clean build and distribution directories">
+    <mkdir dir='${build.home}'/>
     <delete includeemptydirs='yes'>
-    	<fileset dir="${build.home}" excludes='docs/**/*'/>
+      <fileset dir="${build.home}" excludes='docs/**/*'/>
     </delete>
     <delete    dir="${dist.home}"/>
-  	<delete    dir="${artifacts.home}"/>
+    <delete    dir="${artifacts.home}"/>
   </target>
 
 
@@ -597,17 +596,17 @@ This configuration is typically used to create a release only.
   
 
   <target name="dist" depends="all,maven-docs-warning"
-   description="Create binary distribution">
-  	
-  	<!--
-  	Maven is used to generate the documentation.
-  	However, we cannot assume that it has been run.
-  	So, create the appropriate directories.
-  	-->
-  	<mkdir dir='${build.home}'/>
-  	<mkdir dir='${build.home}/docs'/>
-  	<mkdir dir='${build.home}/docs/apidocs'/>
-  	
+     description="Create binary distribution">
+  
+    <!--
+      - Maven is used to generate the documentation.
+      - However, we cannot assume that it has been run.
+      - So, create the appropriate directories.
+      -->
+    <mkdir dir='${build.home}'/>
+    <mkdir dir='${build.home}/docs'/>
+    <mkdir dir='${build.home}/docs/apidocs'/>
+  
     <!--
       - Create a dist directory to hold all the files that go into a distribution.
       - Copy the needed files from the build directory to the dist directory.
@@ -625,15 +624,13 @@ This configuration is typically used to create a release only.
         <include name="${adapters.jar.name}"/>
       </fileset>
     </copy>
-  	
-  	<!--
-  	Copy documentation generated by maven
-  	-->
+  
+    <!-- Copy documentation generated by maven -->
     <mkdir dir="${dist.home}/docs"/>
     <copy todir="${dist.home}/docs">
       <fileset dir="${build.home}/docs"/>
     </copy>
-  	
+  
     <!--
       - And copy the source too; we don't have separate source and binary distributions
       - for logging; the source is so small there's little point.
@@ -642,28 +639,26 @@ This configuration is typically used to create a release only.
     <copy todir="${dist.home}/src" filtering="on">
       <fileset dir="${source.home}"/>
     </copy>
-  	<zip destfile='${dist.home}/${src.ide.name}'>
-  		<zipfileset dir='${dist.home}/src'/>
-  		<zipfileset dir='${dist.home}/docs/apidocs'/>
-  		<zipfileset dir='${dist.home}' prefix='META-INF'>
-  	        <include name="LICENSE.txt"/>
-  	        <include name="NOTICE.txt"/>
-  		</zipfileset>
-  	</zip>
-  	
-  	<!--
-  	Create release artifacts in the artifacts directory
-  	-->
-  	<mkdir dir="${artifacts.home}"/>
-  	<fixcrlf srcdir='${dist.home}' eol='dos' includes='**/*.txt,**/*.java,**/*.html'/>
-  	<zip destfile='${artifacts.home}/${windows.dist.name}'>
-  		<zipfileset dir='${dist.home}' prefix='commons-${component.name}-${component.version}'/>
-  	</zip>
-  	<fixcrlf srcdir='${dist.home}' eol='unix' includes='**/*.txt,**/*.java,**/*.html'/>
-  	<tar compression="gzip" destfile='${artifacts.home}/${nix.dist.name}' longfile='gnu'>
-  		<tarfileset dir='${dist.home}' prefix='commons-${component.name}-${component.version}'/>
+    <zip destfile='${dist.home}/${src.ide.name}'>
+      <zipfileset dir='${dist.home}/src'/>
+      <zipfileset dir='${dist.home}/docs/apidocs'/>
+      <zipfileset dir='${dist.home}' prefix='META-INF'>
+          <include name="LICENSE.txt"/>
+          <include name="NOTICE.txt"/>
+      </zipfileset>
+    </zip>
+  
+    <!-- Create release artifacts in the artifacts directory -->
+    <mkdir dir="${artifacts.home}"/>
+    <fixcrlf srcdir='${dist.home}' eol='dos' includes='**/*.txt,**/*.java,**/*.html'/>
+    <zip destfile='${artifacts.home}/${windows.dist.name}'>
+      <zipfileset dir='${dist.home}' prefix='commons-${component.name}-${component.version}'/>
+    </zip>
+    <fixcrlf srcdir='${dist.home}' eol='unix' includes='**/*.txt,**/*.java,**/*.html'/>
+    <tar compression="gzip" destfile='${artifacts.home}/${nix.dist.name}' longfile='gnu'>
+      <tarfileset dir='${dist.home}' prefix='commons-${component.name}-${component.version}'/>
     </tar>
-  	<copy todir="${artifacts.home}">
+    <copy todir="${artifacts.home}">
       <fileset dir="${build.home}">
         <include name="${core.jar.name}"/>
         <include name="${api.jar.name}"/>
