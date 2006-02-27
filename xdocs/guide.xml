@@ -41,7 +41,13 @@
                         </li>
                     </ol>
                 </li>
-                <li><a href='#Developing With JCL'>Developing With JCL</a></li>
+                <li><a href='#Developing With JCL'>Developing With JCL</a>
+                     <ol>
+                        <li><a href='#Obtaining a Log Object'>Obtaining a Log Object</a></li>
+                        <li><a href='#Logging a Message'>Logging a Message</a></li>
+                        <li><a href='#Serialization Issues'>Serialization Issues</a></li>
+                     </ol>
+                </li>
                 <li><a href='#Jars Included in the Standard Distribution'>Jars Included in the Standard Distribution</a>
                      <ol>
                         <li><a href='#commons-logging.jar'>commons-logging.jar</a></li>
@@ -246,6 +252,7 @@ while limiting console output to INFO (and higher).
     </subsection>
 </section>
     <section name='Developing With JCL'>
+    <subsection name="Obtaining a Log Object">
         <p>
 To use the JCL SPI from a Java class,
 include the following import statements:
@@ -287,6 +294,8 @@ may end up invoked with different thread-context-classloader values set then the
 member must <i>not</i> be declared static. The use of "static" should therefore
 be avoided in code within any "library" type project.
     </p>
+    </subsection>
+    <subsection name="Logging a Message">
         <p>
 Messages are logged to a <em>logger</em>, such as <code>log</code>
 by invoking a method corresponding to <em>priority</em>.
@@ -327,6 +336,27 @@ In addition to the logging methods, the following are provided for code guards:
     log.isTraceEnabled();
         </source>
     </ul>
+    </subsection>
+    <subsection name="Serialization Issues">
+    <p>Prior to release 1.0.4, none of the standard Log implementations were
+    Serializable. If you are using such a release and have a Serializable classe
+    with a member that is of type Log then it is necessary to declare
+    that member to be transient and to ensure that the value is restored on
+    deserialization. The recommended approach is to define a custom
+    readObject method on the class which reinitializes that member.</p>
+    <p>In release 1.0.4, all standard Log implementations are Serializable. This
+    means that class members of type Log do <i>not</i> need to be declared transient;
+    on deserialization the Log object will "rebind" to the same category for the
+    same logging library. Note that the same underlying logging library will be
+    used on deserialization as was used in the original object, even if the
+    application the object was deserialized into is using a different logging
+    library. There is one exception; LogKitLogger (adapter for the Avalon LogKit
+    library) is not Serializable for technical reasons.</p>
+    <p>Custom Log implementations not distributed with commons-logging may
+    or may not be Serializable. If you wish your code to be compatible with
+    any arbitrary log adapter then you should follow the advice given above
+    for pre-1.0.4 releases.</p>
+    </subsection>
 </section>
 <section name="Jars Included in the Standard Distribution">
     <subsection name="commons-logging.jar">
