@@ -30,12 +30,15 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.LogKitLogger;
+import org.apache.commons.logging.impl.NoOpLog;
+
+import org.apache.commons.logging.AbstractLogTest;
 
 /**
  * Basic tests for Avalon LogKit logger adapter.
  */
 
-public class StandardTestCase extends TestCase {
+public class StandardTestCase extends AbstractLogTest {
 
 
     // ----------------------------------------------------- Instance Variables
@@ -96,6 +99,15 @@ public class StandardTestCase extends TestCase {
     }
 
     // ----------------------------------------------------------- Test Methods
+
+    /**
+     * Override the abstract method from the parent class so that the
+     * inherited tests can access the right Log object type. 
+     */
+    public Log getLogObject()
+    {
+        return new LogKitLogger(this.getClass().getName());
+    }
 
     // Test pristine LogFactory instance
     public void testPristineFactory() {
