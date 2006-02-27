@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,13 @@
  
 package org.apache.commons.logging.noop;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.NoOpLog;
 import org.apache.commons.logging.AbstractLogTest;
 
@@ -27,8 +33,25 @@ import org.apache.commons.logging.AbstractLogTest;
  */
 public class NoOpLogTestCase extends AbstractLogTest
 {
+    /**
+     * Set up instance variables required by this test case.
+     */
+    public void setUp() throws Exception {
+        LogFactory.releaseAll();
 
-	/**
+        System.setProperty(
+                "org.apache.commons.logging.Log",
+                "org.apache.commons.logging.impl.NoOpLog");
+    }
+
+    /**
+     * Tear down instance variables required by this test case.
+     */
+    public void tearDown() {
+        LogFactory.releaseAll();
+    }
+    
+    /**
 	 * Override the abstract method from the parent class so that the
      * inherited tests can access the right Log object type. 
 	 */
@@ -36,4 +59,43 @@ public class NoOpLogTestCase extends AbstractLogTest
 	{
 		return (Log) new NoOpLog(this.getClass().getName());
 	}
+
+    // Test Serializability of standard instance
+    public void testSerializable() throws Exception {
+        Log log = LogFactory.getLog(this.getClass().getName());
+        checkLog(log);
+
+        // Serialize and deserialize the instance
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(log);
+        oos.close();
+        ByteArrayInputStream bais =
+            new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        log = (Log) ois.readObject();
+        ois.close();
+
+        checkLog(log);
+    }
+
+
+    // -------------------------------------------------------- Support Methods
+
+    private void checkLog(Log log) {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.NoOpLog",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        // Note that *everything* is permanently disabled for NoOpLog
+        assertFalse(log.isTraceEnabled());
+        assertFalse(log.isDebugEnabled());
+        assertFalse(log.isInfoEnabled());
+        assertFalse(log.isWarnEnabled());
+        assertFalse(log.isErrorEnabled());
+        assertFalse(log.isFatalEnabled());
+    }
 }
