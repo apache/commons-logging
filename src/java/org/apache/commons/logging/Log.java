@@ -71,6 +71,8 @@ public interface Log {
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatenation)
      * when the log level is more than debug. </p>
+     *
+     * @return true if debug is enabled in the underlying logger.
      */
     public boolean isDebugEnabled();
 
@@ -81,6 +83,8 @@ public interface Log {
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatenation)
      * when the log level is more than error. </p>
+     *
+     * @return true if error is enabled in the underlying logger.
      */
     public boolean isErrorEnabled();
 
@@ -91,6 +95,8 @@ public interface Log {
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatenation)
      * when the log level is more than fatal. </p>
+     *
+     * @return true if fatal is enabled in the underlying logger.
      */
     public boolean isFatalEnabled();
 
@@ -101,6 +107,8 @@ public interface Log {
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatenation)
      * when the log level is more than info. </p>
+     *
+     * @return true if info is enabled in the underlying logger.
      */
     public boolean isInfoEnabled();
 
@@ -111,6 +119,8 @@ public interface Log {
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatenation)
      * when the log level is more than trace. </p>
+     *
+     * @return true if trace is enabled in the underlying logger.
      */
     public boolean isTraceEnabled();
 
@@ -121,6 +131,8 @@ public interface Log {
      * <p> Call this method to prevent having to perform expensive operations
      * (for example, <code>String</code> concatenation)
      * when the log level is more than warn. </p>
+     *
+     * @return true if warn is enabled in the underlying logger.
      */
     public boolean isWarnEnabled();
 
