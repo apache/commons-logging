@@ -476,7 +476,7 @@ public class LogFactoryImpl extends LogFactory {
         } catch(SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
-        diagnosticPrefix = "[LogFactoryImpl@" + System.identityHashCode(this) + " -> " + classLoaderName + "] ";
+        diagnosticPrefix = "[LogFactoryImpl@" + System.identityHashCode(this) + " from " + classLoaderName + "] ";
     }
 
     
