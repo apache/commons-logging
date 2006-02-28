@@ -1037,7 +1037,7 @@ public abstract class LogFactory {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(
                                     "Factory class " + logFactoryClass.getName()
-                                + " loaded from classloader " + objectId(classLoader)
+                                + " loaded from classloader " + objectId(logFactoryClass.getClassLoader())
                                 + " does not extend '" + LogFactory.class.getName()
                                 + "' as loaded by this classloader.");
                             logHierarchy("[BAD CL TREE] ", classLoader);
@@ -1319,9 +1319,12 @@ public abstract class LogFactory {
         // In order to avoid confusion where multiple instances of JCL are
         // being used via different classloaders within the same app, we
         // ensure each logged message has a prefix of form
-        // [LogFactory --> classloader OID]
+        // [LogFactory from classloader OID]
+        //
         // Note that this prefix should be kept consistent with that 
-        // in LogFactoryImpl
+        // in LogFactoryImpl. However here we don't need to output info
+        // about the actual *instance* of LogFactory, as all methods that
+        // output diagnostics from this class are static.
         String classLoaderName;
         try {
             ClassLoader classLoader = thisClassLoader;
@@ -1333,7 +1336,7 @@ public abstract class LogFactory {
         } catch(SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
-        diagnosticPrefix = "[LogFactory -> " + classLoaderName + "] ";
+        diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";
     }
 
     /**
@@ -1411,8 +1414,8 @@ public abstract class LogFactory {
         }
         
         try {
-            logDiagnostic("[ENV] Extension directories: " + System.getProperty("java.ext.dir"));
-            logDiagnostic("[ENV] Application classpath: " + System.getProperty("java.class.path"));
+            logDiagnostic("[ENV] Extension directories (java.ext.dir): " + System.getProperty("java.ext.dir"));
+            logDiagnostic("[ENV] Application classpath (java.class.path): " + System.getProperty("java.class.path"));
         } catch(SecurityException ex) {
             logDiagnostic("[ENV] Security setting prevent interrogation of system classpaths.");
         }
@@ -1432,7 +1435,7 @@ public abstract class LogFactory {
         logDiagnostic(
             "[ENV] Class " + className + " was loaded via classloader "
             + objectId(classLoader));
-        logHierarchy("[ENV] ", classLoader);
+        logHierarchy("[ENV] Ancestry of classloader which loaded " + className + " is ", classLoader);
     }
 
     /**
