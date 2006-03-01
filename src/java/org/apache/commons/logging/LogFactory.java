@@ -1104,8 +1104,9 @@ public abstract class LogFactory {
                         String msg = 
                             "Class '" + factoryClass + "' cannot be converted to '"
                             + LogFactory.class.getName() + "'."
-                            + " Perhaps you have multiple copies of LogFactory in "
-                            + " the classpath?";
+                            + " Perhaps you have multiple copies of LogFactory in"
+                            + " the classpath? If so, consider using the"
+                            + " commons-logging-adapters.jar file.";
 
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(msg);
