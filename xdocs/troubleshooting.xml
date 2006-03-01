@@ -85,7 +85,7 @@ Each diagnostic message is prefixed with details of the class being logger in a 
 This takes the form:
     </p>
 <code><pre>
-[<em>class-identifier</em> -> <em>ClassLoader OID</em>]
+[<em>class-identifier</em> from <em>ClassLoader OID</em>]
 </pre></code>
     <p>
 <em>ClassLoader OID</em> is the <a href='#OIDs'>OID</a> of a classloader which loaded 
@@ -98,7 +98,7 @@ In the case of
     </p>
 <code><pre>
 [LogFactory 
-   -> sun.misc.Launcher$AppClassLoader@20120943] BOOTSTRAP COMPLETED
+   from sun.misc.Launcher$AppClassLoader@20120943] BOOTSTRAP COMPLETED
 </pre></code>
     <p>
 In the case of 
@@ -107,7 +107,7 @@ to discover the details of the TCCL used to manage this instance. For example (l
     </p>
 <code><pre>
 [LogFactoryImpl@1671711 
-   -> sun.misc.Launcher$AppClassLoader@20120943] Instance created.
+   from sun.misc.Launcher$AppClassLoader@20120943] Instance created.
 </pre></code>
     </subsection>
     <subsection name='ClassLoader Hierarchy Tree'>
@@ -179,12 +179,12 @@ and the <a href='#ClassLoader%20Hierarchy%20Tree'>classloader tree</a>. For exam
 following log snippet details the TCCL (lines split):
       </p>
 <code><pre>
-[LogFactory -> sun.misc.Launcher$AppClassLoader@20120943] 
+[LogFactory from sun.misc.Launcher$AppClassLoader@20120943] 
     [LOOKUP] LogFactory implementation requested for the first time for context 
         classloader java.net.URLClassLoader@3526198
-[LogFactory -> sun.misc.Launcher$AppClassLoader@20120943] 
+[LogFactory from sun.misc.Launcher$AppClassLoader@20120943] 
     [LOOKUP] java.net.URLClassLoader@3526198 == 'java.net.URLClassLoader@35ce36'
-[LogFactory -> sun.misc.Launcher$AppClassLoader@20120943] 
+[LogFactory from sun.misc.Launcher$AppClassLoader@20120943] 
     [LOOKUP] ClassLoader tree:java.net.URLClassLoader@3526198 
         --> sun.misc.Launcher$AppClassLoader@20120943 (SYSTEM)  
           --> sun.misc.Launcher$ExtClassLoader@11126876 
