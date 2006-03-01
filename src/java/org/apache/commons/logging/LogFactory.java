@@ -465,6 +465,20 @@ public abstract class LogFactory {
                         + "]. Trying alternative implementations...");
             }
             ;  // ignore
+        } catch(Exception e) {
+            // This is not consistent with the behaviour when a bad LogFactory class is
+            // specified in a services file.
+            //
+            // One possible exception that can occur here is a ClassCastException when
+            // the specified class wasn't castable to this LogFactory type.
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
+                        "[LOOKUP] An exception occurred while trying to create an"
+                        + " instance of the custom factory class"
+                        + ": [" + e.getMessage().trim()
+                        + "] as specified by a system property.");
+            }
+            throw e;
         }
 
 
@@ -510,6 +524,9 @@ public abstract class LogFactory {
                     }
                 }
             } catch( Exception ex ) {
+                // note: if the specified LogFactory class wasn't compatible with LogFactory
+                // for some reason, a ClassCastException will be caught here, and attempts will
+                // continue to find a compatible class.
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic(
                         "[LOOKUP] A security exception occurred while trying to create an"
@@ -950,6 +967,9 @@ public abstract class LogFactory {
                                            final ClassLoader contextClassLoader)
         throws LogConfigurationException
     {
+        // Note that any unchecked exceptions thrown by the createFactory
+        // method will propagate out of this method; in particular a
+        // ClassCastException can be thrown.
         Object result = AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
@@ -998,7 +1018,11 @@ public abstract class LogFactory {
      * Implements the operations described in the javadoc for newFactory.
      * 
      * @param factoryClass
-     * @param classLoader
+     * 
+     * @param classLoader used to load the specified factory class. This is
+     * expected to be either the TCCL or the classloader which loaded this
+     * class. Note that the classloader which loaded this class might be
+     * "null" (ie the bootloader) for embedded systems.
      * 
      * @return either a LogFactory object or a LogConfigurationException object.
      * @since 1.1
@@ -1082,7 +1106,19 @@ public abstract class LogFactory {
                         }
                         throw e;
                     }
-                    // Ignore exception, continue
+                    
+                    // Ignore exception, continue. Presumably the classloader was the
+                    // TCCL; the code below will try to load the class via thisClassLoader.
+                    // This will handle the case where the original calling class is in
+                    // a shared classpath but the TCCL has a copy of LogFactory and the
+                    // specified LogFactory implementation; we will fall back to using the
+                    // LogFactory implementation from the same classloader as this class.
+                    //
+                    // Issue: this doesn't handle the reverse case, where this LogFactory
+                    // is in the webapp, and the specified LogFactory implementation is
+                    // in a shared classpath. In that case:
+                    // (a) the class really does implement LogFactory (bad log msg above)
+                    // (b) the fallback code will result in exactly the same problem.
                 }
             }
 
