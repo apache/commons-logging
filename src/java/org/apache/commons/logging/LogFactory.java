@@ -465,7 +465,7 @@ public abstract class LogFactory {
                         + "]. Trying alternative implementations...");
             }
             ;  // ignore
-        } catch(Exception e) {
+        } catch(RuntimeException e) {
             // This is not consistent with the behaviour when a bad LogFactory class is
             // specified in a services file.
             //
@@ -1096,15 +1096,23 @@ public abstract class LogFactory {
                     // ignore exception, continue
                 } catch(ClassCastException e) {
                     if (classLoader == thisClassLoader) {
-                        // This cast exception is not due to classloader issues;
-                        // the specified class *really* doesn't extend the 
-                        // required LogFactory base class.
+                        // There's no point in falling through to the code below that
+                        // tries again with thisClassLoader, because we've just tried
+                        // loading with that loader (not the TCCL). Just throw an
+                        // appropriate exception here.
+
+                        String msg = 
+                            "Class '" + factoryClass + "' cannot be converted to '"
+                            + LogFactory.class.getName() + "'."
+                            + " Perhaps you have multiple copies of LogFactory in "
+                            + " the classpath?";
+
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic(
-                                    "Class '" + factoryClass + "' really does not extend '"
-                                    + LogFactory.class.getName() + "'");
+                            logDiagnostic(msg);
                         }
-                        throw e;
+                        
+                        ClassCastException ex = new ClassCastException(msg);
+                        throw ex;
                     }
                     
                     // Ignore exception, continue. Presumably the classloader was the
