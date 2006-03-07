@@ -1101,13 +1101,29 @@ public abstract class LogFactory {
                         // loading with that loader (not the TCCL). Just throw an
                         // appropriate exception here.
 
+                    	final boolean implementsLogFactory = implementsLogFactory(logFactoryClass);
+                        
+                        //
+                        // Construct a good message: users may not actual expect that a custom implementation 
+                        // has been specified. Several well known containers use this mechanism to adapt JCL 
+                        // to their native logging system. 
+                        // 
                         String msg = 
+                        	"The application has specified that a custom LogFactory implementation should be used but " +
                             "Class '" + factoryClass + "' cannot be converted to '"
-                            + LogFactory.class.getName() + "'."
-                            + " Perhaps you have multiple copies of LogFactory in"
-                            + " the classpath? If so, consider using the"
-                            + " commons-logging-adapters.jar file.";
-
+                            + LogFactory.class.getName() + "'. ";
+                        if (implementsLogFactory) {
+                            msg = msg + "The conflict is caused by the presence of multiple LogFactory classes in incompatible classloaders. " +
+                    		"Background can be found in http://jakarta.apache.org/commons/logging/tech.html. " +
+                    		"If you have not explicitly specified a custom LogFactory then it is likely that " +
+                    		"the container has set one without your knowledge. " +
+                    		"In this case, consider using the commons-logging-adapters.jar file or " +
+                    		"specifying the standard LogFactory from the command line. ";
+                        } else {
+                        	msg = msg + "Please check the custom implementation. ";
+                        }
+                        msg = msg + "Help can be found @http://jakarta.apache.org/commons/logging/troubleshooting.html.";
+                        
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(msg);
                         }
@@ -1171,6 +1187,70 @@ public abstract class LogFactory {
             return new LogConfigurationException(e);
         }
     }
+
+    /**
+     * Determines whether the given class actually implements <code>LogFactory</code>.
+     * Diagnostic information is also logged.
+     * <p>
+     * <strong>Usage:</strong> to diagnose whether a classloader conflict is the cause
+     * of incompatibility. The test used is whether the class is assignable from
+     * the <code>LogFactory</code> class loaded by the class's classloader.
+     * @param logFactoryClass <code>Class</code> which may implement <code>LogFactory</code>
+     * @return true if the <code>Class</code> is assignable from the 
+     */
+	private static boolean implementsLogFactory(Class logFactoryClass) {
+		boolean implementsLogFactory = false;
+		if (logFactoryClass != null) {
+			try {
+			    ClassLoader logFactoryClassLoader = logFactoryClass.getClassLoader();
+			    if (logFactoryClassLoader == null) {
+			        logDiagnostic("[CUSTOM LOG FACTORY] was loaded by the boot classloader");
+			    } else {
+			        logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
+			        Class factoryFromCustomLoader 
+			        	= Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
+			        implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
+			        if (implementsLogFactory) {
+			        	logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() 
+			        			+ " implements LogFactory but was loaded by an incompatible classloader.");
+			        } else {
+			        	logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() 
+			        			+ " does not implement LogFactory.");
+			        }
+			    }
+			} catch (SecurityException e) {
+				//
+				// The application is running within a hostile security environment.
+				// This will make it very hard to diagnose issues with JCL.
+				// Consider running less securely whilst debugging this issue.
+				//
+				logDiagnostic("[CUSTOM LOG FACTORY] SecurityException thrown whilst trying to determine whether " +
+						"the compatibility was caused by a classloader conflict: " 
+						+ e.getMessage());
+			} catch (LinkageError e) {
+				//
+				// This should be an unusual circumstance.
+				// LinkageError's usually indicate that a dependent class has incompatibly changed.
+				// Another possibility may be an exception thrown by an initializer.
+				// Time for a clean rebuild?
+				//
+				logDiagnostic("[CUSTOM LOG FACTORY] LinkageError thrown whilst trying to determine whether " +
+						"the compatibility was caused by a classloader conflict: " 
+						+ e.getMessage());
+			} catch (ClassNotFoundException e) {
+				//
+				// LogFactory cannot be loaded by the classloader which loaded the custom factory implementation.
+				// The custom implementation is not viable until this is corrected. 
+				// Ensure that the JCL jar and the custom class are available from the same classloader.
+				// Running with diagnostics on should give information about the classloaders used 
+				// to load the custom factory.
+				// 
+				logDiagnostic("[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by classloader which loaded the " +
+						"custom LogFactory implementation. Is the custom factory in the right classloader?");
+			}
+		}
+		return implementsLogFactory;
+	}
 
     /**
      * Applets may run in an environment where accessing resources of a loader is
