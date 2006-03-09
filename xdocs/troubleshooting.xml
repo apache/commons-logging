@@ -207,5 +207,109 @@ classloader used to load <code>LogFactory</code> and to the TCCL.
       </p>
     </subsection>
   </section>
+  <section name='Containers With Custom LogFactory Implementations'>
+  	<p>
+ Some containers use a custom <code>LogFactory</code> implementation to adapt JCL to their particular
+ logging system. This has some important consequences for deploying applications using JCL within these
+ containers.
+  	</p>
+  	<p>
+ Containers known to use this mechanism:
+  	</p>
+  	<ul>
+  		<li><a href='http://www.ibm.com/software/websphere/'>WebSphere Application Server</a> from 
+  		<a href='http://www.ibm.com/software/websphere/'>IBM</a> versions 5 and 6.</li>
+  	</ul>
+  	<p>
+ Containers suspected to use this mechanism:
+  	</p>
+  	  	<ul>
+  		<li><a href='http://www.macromedia.com/software/jrun/'>JRun</a> from 
+  		<a href='http://www.macromedia.com/'>Adobe Macromedia</a>.</li>
+  	</ul>
+  	<subsection name='The Incompatible LogFactory Issue'>
+  		<subsection name='Symptoms'>
+  			<p>
+  An exception is thrown by JCL with a message similar to:
+  			</p>
+  <code><pre>
+  The chosen LogFactory implementation does not extend LogFactory. Please check your configuration. 
+  (Caused by java.lang.ClassCastException: The application has specified that a custom LogFactory 
+  implementation should be used but Class 'com.ibm.ws.commons.logging.TrLogFactory' cannot be converted 
+  to 'org.apache.commons.logging.LogFactory'. The conflict is caused by the presence of multiple 
+  LogFactory classes in incompatible classloaders. Background can be found in 
+  http://jakarta.apache.org/commons/logging/tech.html. If you have not explicitly specified a custom 
+  LogFactory then it is likely that the container has set one without your knowledge. 
+  In this case, consider using the commons-logging-adapters.jar file or specifying the standard 
+  LogFactory from the command line. Help can be found @http://jakarta.apache.org/commons/logging.
+  </pre></code>
+  			<p>
+  This is a WebSphere example so the name of the custom LogFactory is 
+  <code>com.ibm.ws.commons.logging.TrLogFactory</code>. For other containers, this class name will
+  differ.
+  			</p>
+  		</subsection>
+  		<subsection name='Explanation'>
+  		<p>
+ A custom <code>LogFactory</code> implementation can only be used if the implementation class loaded 
+ dynamically at runtime can be cast to the <code>LogFactory</code> class that loaded it. There are 
+ several ways in which this cast can fail. The most obvious is that the source code may not actually 
+ extend <code>LogFactory</code>. The source may be compatible but if the <code>LogFactory</code> class
+ against which the source is compiled is not binary compatible then the cast will also fail.
+  		</p>
+  		<p>
+ There is also another more unusual way in which this cast can fail: even when the binary is compatible,
+ the implementation class loaded at runtime may be linked to a different instance of the 
+ <code>LogFactory</code> class. For more information, see the <a href='tech.html'>tech guide</a>.
+  		</p>
+  		<p>
+ This situation may be encountered in containers which use a custom <code>LogFactory</code> implementation.
+ The implementation will typically be provided in a shared, high level classloader together with JCL.
+ When an application classloader contains <code>LogFactory</code>, the implementation will be loaded 
+ from that higher level classloader. The implementation class will be linked to the <code>LogFactory</code>
+ class loaded by the higher level classloader. Even if the 
+ <code>LogFactory</code> implementations are binary compatible, since they are loaded by different classloaders
+ the two <code>LogFactory</code> Class instances are not equal and so the cast must fail.
+  		</p>
+  		<p>
+The policy adopted by JCL in this situation is to re-throw this exception. Addition information
+is included in the message to help diagnosis. The reasoning behind this choice is that a 
+particular <code>LogFactory</code> implementation has been actively specified and this
+choice should not be ignored. This policy has unfortunate consequences when running in
+containers which have custom implementations: the above runtime exception will be thrown.
+  		</p>
+  		</subsection>
+  		<subsection name='Fixes'>
+  			<p>
+ There are various ways to fix this problem. Which fix is right depends on the circumstances.
+  			</p>
+  			<p>
+ If you want to bypass the container adaption mechanism then set the appropriate system property 
+ to it's default value when the container is started:
+  			</p>
+ <code><pre>
+ -Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl
+ </pre></code>
+ 			<p>
+ If you want to continue to use the default container mechanism then:
+ 			</p>
+ 			<ul>
+ 				<li>
+ Find and replace the commons-logging implementation used by the container with
+ the most modern release				
+ 				</li>
+ 	 			<li>
+ Replace the commons-logging jar in the application with the commons-logging-adapter jar.
+ This will ensure that application classloader will delegate to it's parent when loading
+ <code>LogFactory</code>.
+ 				</li>			
+ 			</ul>
+ 			<p>
+ If you encounter difficulties when applying the fixes recommended, please turn on
+ <a href='#Using%20JCL%20Diagnostics'>diagnostics</a> and consult the logs.
+ 			</p>
+	  	</subsection>
+  	</subsection>
+  </section>
  </body>
 </document>
