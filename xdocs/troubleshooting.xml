@@ -26,6 +26,12 @@
  </properties>
 
  <body> 
+  <section name='Contents'>
+  	<ul>
+  		<li><a href='#Using%20JCL%20Diagnostics'>Using JCL Diagnostics</a></li>
+  		<li><a href='#Containers%20With%20Custom%20LogFactory%20Implementations'>Containers With Custom LogFactory Implementations</a></li>
+  	</ul>
+  </section>
   <section name='Using JCL Diagnostics'>
     <p>
 Diagnostics is a feature introduced in JCL 1.1 as an aid to debugging problems 
@@ -210,15 +216,15 @@ classloader used to load <code>LogFactory</code> and to the TCCL.
   <section name='Containers With Custom LogFactory Implementations'>
   	<p>
  Some containers use a custom <code>LogFactory</code> implementation to adapt JCL to their particular
- logging system. This has some important consequences for deploying applications using JCL within these
- containers.
+ logging system. This has some important consequences for the deployment of applications using JCL within 
+ these containers.
   	</p>
   	<p>
  Containers known to use this mechanism:
   	</p>
   	<ul>
   		<li><a href='http://www.ibm.com/software/websphere/'>WebSphere Application Server</a> from 
-  		<a href='http://www.ibm.com/software/websphere/'>IBM</a> versions 5 and 6.</li>
+  		<a href='http://www.ibm.com/software/websphere/'>IBM</a> (versions 5 and 6).</li>
   	</ul>
   	<p>
  Containers suspected to use this mechanism:
@@ -226,7 +232,12 @@ classloader used to load <code>LogFactory</code> and to the TCCL.
   	  	<ul>
   		<li><a href='http://www.macromedia.com/software/jrun/'>JRun</a> from 
   		<a href='http://www.macromedia.com/'>Adobe Macromedia</a>.</li>
-  	</ul>
+  		 <li>WebSphere Application Server (other versions).</li>
+  		</ul>
+  	<p>
+The Jakarta Commons team would be grateful if reports were posted to the development list
+of other containers using a custom implementation.
+  	</p>
   	<subsection name='The Incompatible LogFactory Issue'>
   		<subsection name='Symptoms'>
   			<p>
@@ -276,7 +287,9 @@ The policy adopted by JCL in this situation is to re-throw this exception. Addit
 is included in the message to help diagnosis. The reasoning behind this choice is that a 
 particular <code>LogFactory</code> implementation has been actively specified and this
 choice should not be ignored. This policy has unfortunate consequences when running in
-containers which have custom implementations: the above runtime exception will be thrown.
+containers which have custom implementations: the above runtime exception may be thrown
+under certain classloading policies without the user knowingly specifying a custom 
+implementation.
   		</p>
   		</subsection>
   		<subsection name='Fixes'>
@@ -284,8 +297,13 @@ containers which have custom implementations: the above runtime exception will b
  There are various ways to fix this problem. Which fix is right depends on the circumstances.
   			</p>
   			<p>
+ If you are happy using another classloading policy for the application, select a 
+ classloading policy which ensures that <code>LogFactory</code> will be loaded from the
+ shared classloader containing the custom implementation.
+  			</p>
+  			<p>
  If you want to bypass the container adaption mechanism then set the appropriate system property 
- to it's default value when the container is started:
+ to the default value when the container is started:
   			</p>
  <code><pre>
  -Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl
