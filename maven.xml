@@ -1,6 +1,6 @@
 <!--
 
- Copyright 2001-2004 The Apache Software Foundation.
+ Copyright 2001-2004, 2006 The Apache Software Foundation.
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -33,11 +33,6 @@
     ================================================================== -->
 
   <postGoal name="xdoc:copy-resources">  
-    <copy todir="${basedir}/target/docs/style/" failonerror="false">
-      <fileset dir="${basedir}/../commons-build/xdocs/style">
-      	<include name='**/*'/>
-      </fileset>
-    </copy>
     <copy todir="${basedir}/target/docs/" failonerror="false">
       <fileset dir="${basedir}">
       	<include name='RELEASE-NOTES.txt'/>
