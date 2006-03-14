@@ -46,6 +46,8 @@
             href='/apidocs/index.html'/>
       <item name="Release Notes"
             href="/RELEASE-NOTES.txt"/>
+      <item name="Building"
+            href="/building.html"/>
       <item name="Download"
             href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi"/>
     </menu>
