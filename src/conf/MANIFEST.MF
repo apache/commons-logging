@@ -5,4 +5,4 @@ Specification-Version: 1.0
 Implementation-Title: Jakarta Commons Logging
 Implementation-Vendor-Id: org.apache
 Implementation-Vendor: Apache Software Foundation
-Implementation-Version: 1.1-RC5
+Implementation-Version: 1.1-RC6
