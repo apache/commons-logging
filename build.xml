@@ -479,6 +479,7 @@
       <include name="org/apache/commons/logging/impl/WeakHashtable*.class" />
       <include name="org/apache/commons/logging/impl/SimpleLog*.class" />
       <include name="org/apache/commons/logging/impl/NoOpLog*.class" />
+      <include name="org/apache/commons/logging/impl/Jdk14Logger.class" />
       <include name="META-INF/LICENSE.txt"/>
       <include name="META-INF/NOTICE.txt"/>
       <exclude name="**/package.html"/>
