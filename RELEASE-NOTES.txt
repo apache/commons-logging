@@ -136,8 +136,11 @@ override those methods will not have their methods called. This is a pretty
 unusual thing to do, so it isn't expected that any apps will actually be
 affected by this.
 
+== Deprecation Note ==
+
 Previous releases of commons-logging-api.jar contained the Jdk14Logger class;
-this has now been removed. If your application needs this jar, then instead of
+this is now deprecated. It will be removed from the API jar in some future 
+release. If your application needs this jar, then instead of
 upgrading to commons-logging-api-1.1.jar, upgrade to commons-logging-1.1.jar.
 
 == Dependencies ==
