@@ -515,6 +515,14 @@
           optimize="${compile.optimize}">
       <classpath refid="test.classpath.log4j12"/>
         <include name='**/log4j/**'/>
+        <!-- NOTE -->
+        <!--
+        Pathable tests do not reference the Log4J Logger directly
+        but try to load them by reflection from particular loaders.
+        They will therefore fail unless this logger is available.
+        -->
+    	<include name='**/pathable/**'/>
+    	<!-- END NOTE -->
     </javac>
   </target>
 
@@ -529,7 +537,18 @@
         <include name='**/avalon/**'/>
     </javac>
   </target>
-
+  
+  <target name='compile.logkit.tests' if='logkit.present'>
+	 <javac  srcdir="${test.home}"
+	           destdir="${build.home}/tests"
+	             debug="${compile.debug}"
+	       deprecation="${compile.deprecation}"
+	          optimize="${compile.optimize}">
+	    <classpath refid="test.classpath"/>
+	    <include name='**/logkit/**'/>
+	 </javac>
+  </target>
+	
   <target name="compile.tests" depends="compile"
    description="Compile unit test cases">
     <javac  srcdir="${test.home}"
@@ -540,11 +559,21 @@
       <classpath refid="test.classpath"/>
       <exclude name='**/jdk14/**'/>
       <exclude name='**/log4j/**'/>
+      <!-- NOTE -->
+      <!--
+      Pathable tests do not reference the Log4J Logger directly
+      but try to load them by reflection from particular loaders.
+      They will therefore fail unless this logger is available.
+      -->
+      <exclude name='**/pathable/**'/>
+      <!-- END NOTE -->
       <exclude name='**/avalon/**'/>
+      <exclude name='**/logkit/**'/>
     </javac>
     <antcall target='compile.log4j.tests'/>
     <antcall target='compile.jdk1.4.tests'/>
     <antcall target='compile.avalon.tests'/>
+  	<antcall target='compile.logkit.tests'/>
     <copy    todir="${build.home}/tests" filtering="on">
       <fileset dir="${test.home}" excludes="**/*.java"/>
     </copy>
