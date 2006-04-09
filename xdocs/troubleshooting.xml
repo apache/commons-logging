@@ -228,6 +228,12 @@ classloader used to load <code>LogFactory</code> and to the TCCL.
   		<a href='http://www.ibm.com/software/websphere/'>IBM</a> (versions 5 and 6).</li>
   	</ul>
   	<p>
+ Containers suspected to use this mechanism:
+  	</p>
+  	  	<ul>
+  		 <li>WebSphere Application Server (other versions).</li>
+  		</ul>
+  	<p>
 The Jakarta Commons team would be grateful if reports were posted to the development list
 of other containers using a custom implementation.
   	</p>
