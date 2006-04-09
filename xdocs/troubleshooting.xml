@@ -28,8 +28,9 @@
  <body> 
   <section name='Contents'>
   	<ul>
-  		<li><a href='#Using%20JCL%20Diagnostics'>Using JCL Diagnostics</a></li>
-  		<li><a href='#Containers%20With%20Custom%20LogFactory%20Implementations'>Containers With Custom LogFactory Implementations</a></li>
+  	    <li>Contents</li>
+  		<li><a href='#Using JCL Diagnostics'>Using JCL Diagnostics</a></li>
+  		<li><a href='#Containers With Custom LogFactory Implementations'>Containers With Custom LogFactory Implementations</a></li>
   	</ul>
   </section>
   <section name='Using JCL Diagnostics'>
@@ -227,14 +228,6 @@ classloader used to load <code>LogFactory</code> and to the TCCL.
   		<a href='http://www.ibm.com/software/websphere/'>IBM</a> (versions 5 and 6).</li>
   	</ul>
   	<p>
- Containers suspected to use this mechanism:
-  	</p>
-  	  	<ul>
-  		<li><a href='http://www.macromedia.com/software/jrun/'>JRun</a> from 
-  		<a href='http://www.macromedia.com/'>Adobe Macromedia</a>.</li>
-  		 <li>WebSphere Application Server (other versions).</li>
-  		</ul>
-  	<p>
 The Jakarta Commons team would be grateful if reports were posted to the development list
 of other containers using a custom implementation.
   	</p>
@@ -324,7 +317,7 @@ implementation.
  			</ul>
  			<p>
  If you encounter difficulties when applying the fixes recommended, please turn on
- <a href='#Using%20JCL%20Diagnostics'>diagnostics</a> and consult the logs.
+ <a href='#Using JCL Diagnostics'>diagnostics</a> and consult the logs.
  			</p>
 	  	</subsection>
   	</subsection>
