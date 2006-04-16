@@ -1427,13 +1427,11 @@ public abstract class LogFactory {
 
                         if (newPriority > priority) {
                             if (isDiagnosticsEnabled()) {
-                                if (isDiagnosticsEnabled()) {
-                                    logDiagnostic(
-                                        "[LOOKUP] Properties file at '" + url + "'"
-                                        + " with priority " + newPriority 
-                                        + " overrides file at '" + propsUrl + "'"
-                                        + " with priority " + priority);
-                                }
+                                logDiagnostic(
+                                    "[LOOKUP] Properties file at '" + url + "'"
+                                    + " with priority " + newPriority 
+                                    + " overrides file at '" + propsUrl + "'"
+                                    + " with priority " + priority);
                             }
 
                             propsUrl = url; 
