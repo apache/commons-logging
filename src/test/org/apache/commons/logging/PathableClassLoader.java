@@ -21,8 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
-
-// TODO: use HashTable instead of HashMap for java1.1 support
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -232,6 +233,25 @@ public class PathableClassLoader extends URLClassLoader {
                 return local;
             }
             return super.getResource(name);
+        }
+    }
+    
+    /**
+     * Same as parent class method except that when parentFirst is false
+     * any resources in the local classpath are returned before resources
+     * in the parent.
+     */
+    public Enumeration getResources(String name) throws IOException {
+        if (parentFirst) {
+            return super.getResources(name);
+        } else {
+            Enumeration localUrls = super.findResources(name);
+            Enumeration parentUrls = getParent().getResources(name);
+
+            ArrayList localItems = Collections.list(localUrls);
+            ArrayList parentItems = Collections.list(parentUrls);
+            localItems.addAll(parentItems);
+            return Collections.enumeration(localItems);
         }
     }
     
