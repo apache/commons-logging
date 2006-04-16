@@ -246,7 +246,22 @@ public class PathableClassLoader extends URLClassLoader {
             return super.getResources(name);
         } else {
             Enumeration localUrls = super.findResources(name);
-            Enumeration parentUrls = getParent().getResources(name);
+            
+            ClassLoader parent = getParent();
+            if (parent == null) {
+                // Alas, there is no method to get matching resources
+                // from a null (BOOT) parent classloader. Calling
+                // ClassLoader.getSystemClassLoader isn't right. Maybe
+                // calling Class.class.getResources(name) would do?
+                //
+                // However for the purposes of unit tests, we can
+                // simply assume that no relevant resources are
+                // loadable from the parent; unit tests will never be
+                // putting any of their resources in a "boot" classloader
+                // path!
+                return localUrls;
+            }
+            Enumeration parentUrls = parent.getResources(name);
 
             ArrayList localItems = Collections.list(localUrls);
             ArrayList parentItems = Collections.list(parentUrls);
