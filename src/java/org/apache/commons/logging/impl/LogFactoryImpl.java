@@ -20,6 +20,7 @@ package org.apache.commons.logging.impl;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -682,32 +683,41 @@ public class LogFactoryImpl extends LogFactory {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("[ENV] Trying to get configuration for item " + property);
         }
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("[ENV] Looking for attribute " + property);
-        }
+
         Object valueObj =  getAttribute(property);
         if (valueObj != null) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("[ENV] Found value [" + valueObj + "] for " + property);
+                logDiagnostic("[ENV] Found LogFactory attribute [" + valueObj + "] for " + property);
             }
             return valueObj.toString();
         }
         
         if (isDiagnosticsEnabled()) {
-            logDiagnostic("[ENV] Looking for system property " + property);
+            logDiagnostic("[ENV] No LogFactory attribute found for " + property);
         }
+
         try {
             String value = System.getProperty(property);
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("[ENV] Found value [" + value + "] for " + property);
+            if (value != null) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("[ENV] Found system property [" + value + "] for " + property);
+                }
+                return value;
             }
-            return value;
+
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("[ENV] No system property found for property " + property);
+            }
         } catch (SecurityException e) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("[ENV] Security prevented reading system property.");
+                logDiagnostic("[ENV] Security prevented reading system property " + property);
             }
         }
-        
+
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("[ENV] No configuration defined for item " + property);
+        }
+
         return null;
     }
     
@@ -749,7 +759,7 @@ public class LogFactoryImpl extends LogFactory {
     throws LogConfigurationException
     {
         if (isDiagnosticsEnabled()) {
-            logDiagnostic("Attempting to discover a Log implementation...");
+            logDiagnostic("Discovering a Log implementation...");
         }
         
         initConfiguration();
@@ -760,6 +770,11 @@ public class LogFactoryImpl extends LogFactory {
         String specifiedLogClassName = findUserSpecifiedLogClassName();
 
         if (specifiedLogClassName != null) {
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Attempting to load user-specified log class '" + 
+                    specifiedLogClassName + "'...");
+            }
+            
             result = createLogFromClass(specifiedLogClassName,
                                         logCategory,
                                         true);
@@ -812,6 +827,11 @@ public class LogFactoryImpl extends LogFactory {
         // service file in META-INF to force use of that logging lib anyway,
         // rather than relying on discovery.
         
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic(
+                "No user-specified Log implementation; performing discovery" +
+            	" using the standard supported logging implementations...");
+        }
         for(int i=0; (i<classesToDiscover.length) && (result == null); ++i) {
             result = createLogFromClass(classesToDiscover[i], logCategory, true);
         }
@@ -946,6 +966,35 @@ public class LogFactoryImpl extends LogFactory {
                     + "' from classloader "
                     + objectId(currentCL));
             try {
+                if (isDiagnosticsEnabled()) {
+                    // show exactly where we are loading this class from.
+                    URL url;
+                    String resourceName = logAdapterClassName.replace('.', '/') + ".class";
+                    if (currentCL != null) {
+                        url = currentCL.getResource(resourceName );
+                    } else {
+                        url = ClassLoader.getSystemResource(resourceName + ".class");
+                    }
+
+                    if (url == null) {
+                        logDiagnostic("Class '" + logAdapterClassName + "' [" + resourceName + "] cannot be found.");
+                    } else {
+                        logDiagnostic("Class '" + logAdapterClassName + "' was found at '" + url + "'");
+                    }
+                }
+                
+                // hack
+                {
+                    String l4jCategory = "org.apache.log4j.Category";
+                    String l4jResource = l4jCategory.replace('.', '/') + ".class";
+                    URL l4jUrl = currentCL.getResource(l4jResource);
+                    if (l4jUrl == null) {
+                        logDiagnostic("log4j not found:" + l4jResource);
+                    } else {
+                        logDiagnostic("log4j found:" + l4jUrl);
+                    }
+                }
+
                 Class c = null;
                 try {
                     c = Class.forName(logAdapterClassName, true, currentCL);
