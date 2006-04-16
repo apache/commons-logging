@@ -1373,6 +1373,7 @@ public abstract class LogFactory {
 
         Properties props = null;
         double priority = 0.0;
+        URL propsUrl = null;
         try {
             Enumeration urls = getResources(classLoader, fileName);
 
@@ -1386,6 +1387,7 @@ public abstract class LogFactory {
                 Properties newProps = getProperties(url);
                 if (newProps != null) {
                     if (props == null) {
+                        propsUrl = url; 
                         props = newProps;
                         String priorityStr = props.getProperty(PRIORITY_KEY);
                         priority = 0.0;
@@ -1395,7 +1397,8 @@ public abstract class LogFactory {
 
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(
-                                "[LOOKUP] First properties file found at '" + url + "'");
+                                "[LOOKUP] Properties file found at '" + url + "'"
+                                + " with priority " + priority); 
                         }
                     } else {
                         String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
@@ -1405,18 +1408,27 @@ public abstract class LogFactory {
                         }
 
                         if (newPriority > priority) {
+                            if (isDiagnosticsEnabled()) {
+                                if (isDiagnosticsEnabled()) {
+                                    logDiagnostic(
+                                        "[LOOKUP] Properties file at '" + url + "'"
+                                        + " with priority " + newPriority 
+                                        + " overrides file at '" + propsUrl + "'"
+                                        + " with priority " + priority);
+                                }
+                            }
+
+                            propsUrl = url; 
                             props = newProps;
                             priority = newPriority;
-
+                        } else {
                             if (isDiagnosticsEnabled()) {
                                 logDiagnostic(
-                                    "[LOOKUP] New properties file found at '" + url + "'"
-                                    + " has higher priority than earlier file."); 
+                                    "[LOOKUP] Properties file at '" + url + "'"
+                                    + " with priority " + newPriority 
+                                    + " does not override file at '" + propsUrl + "'"
+                                    + " with priority " + priority);
                             }
-                        } else {
-                            logDiagnostic(
-                                "[LOOKUP] New properties file found at '" + url + "'"
-                                + " has less priority than earlier file -- ignoring.");
                         }
                     }
 
