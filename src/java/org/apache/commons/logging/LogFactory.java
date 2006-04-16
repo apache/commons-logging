@@ -455,6 +455,12 @@ public abstract class LogFactory {
                 }
                 
                 factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
+            } else {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(
+                            "[LOOKUP] No system property [" + FACTORY_PROPERTY 
+                            + "] defined.");
+                }
             }
         } catch (SecurityException e) {
             if (isDiagnosticsEnabled()) {
@@ -522,6 +528,13 @@ public abstract class LogFactory {
                         }
                         factory = newFactory(factoryClassName, baseClassLoader, contextClassLoader );
                     }
+                } else {
+                    // is == null
+                    if (isDiagnosticsEnabled()) {
+                        logDiagnostic(
+                            "[LOOKUP] No resource file with name '" + SERVICE_ID
+                            + "' found.");
+                    }
                 }
             } catch( Exception ex ) {
                 // note: if the specified LogFactory class wasn't compatible with LogFactory
@@ -539,32 +552,37 @@ public abstract class LogFactory {
         }
 
 
-        // Third try a properties file.
-        // If the properties file exists, it'll be read and the properties
-        // used. IMHO ( costin ) System property and JDK1.3 jar service
-        // should be enough for detecting the class name. The properties
-        // should be used to set the attributes ( which may be specific to
-        // the webapp, even if a default logger is set at JVM level by a
-        // system property )
+        // Third try looking into the properties file read earlier (if found)
 
         if (factory == null) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic(
-                        "[LOOKUP] Looking for a properties file of name '" + FACTORY_PROPERTIES
-                        + "' to define the LogFactory subclass to use...");
-            }
             if (props != null) {
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic(
-                        "[LOOKUP] Properties file found. Looking for property '" 
+                        "[LOOKUP] Looking in properties file for entry with key '" 
                         + FACTORY_PROPERTY
                         + "' to define the LogFactory subclass to use...");
                 }
                 String factoryClass = props.getProperty(FACTORY_PROPERTY);
                 if (factoryClass != null) {
+                    if (isDiagnosticsEnabled()) {
+                        logDiagnostic(
+                            "[LOOKUP] Properties file specifies LogFactory subclass '" 
+                            + factoryClass + "'");
+                    }
                     factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
                     
                     // what about handling an exception from newFactory??
+                } else {
+                    if (isDiagnosticsEnabled()) {
+                        logDiagnostic(
+                            "[LOOKUP] Properties file has no entry specifying LogFactory subclass.");
+                    }
+                }
+            } else {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic(
+                        "[LOOKUP] No properties file available to determine"
+                        + " LogFactory subclass from..");
                 }
             }
         }
@@ -1436,9 +1454,22 @@ public abstract class LogFactory {
             }
         } catch (SecurityException e) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("SecurityException thrown");
+                logDiagnostic("SecurityException thrown while trying to find/read config files.");
             }
         }
+
+        if (isDiagnosticsEnabled()) {
+            if (props == null) {
+                logDiagnostic(
+                    "[LOOKUP] No properties file of name '" + FACTORY_PROPERTIES
+                    + "' found.");
+            } else {
+                logDiagnostic(
+                    "[LOOKUP] Properties file of name '" + FACTORY_PROPERTIES
+                    + "' found at '" + propsUrl + '"');
+            }
+        }
+
         return props;
     }
 
