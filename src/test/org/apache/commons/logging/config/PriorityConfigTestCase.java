@@ -30,6 +30,15 @@ import org.apache.commons.logging.PathableTestSuite;
 /**
  * Tests that verify that the process of configuring logging on startup
  * works correctly by selecting the file with the highest priority.
+ * <p>
+ * This test sets up a classpath where:
+ * <ul>
+ * <li> first file (in parent loader) has priority=10 (parentFirst=true)
+ * <li> second file found has no priority set
+ * <li> third file found has priority=20
+ * <li> fourth file found also has priority=20
+ * </ul>
+ * The result should be that the third file is used.
  */
 
 public class PriorityConfigTestCase extends TestCase {
