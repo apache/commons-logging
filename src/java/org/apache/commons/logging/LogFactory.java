@@ -1387,16 +1387,39 @@ public abstract class LogFactory {
                 if (newProps != null) {
                     if (props == null) {
                         props = newProps;
+                        String priorityStr = props.getProperty(PRIORITY_KEY);
+                        priority = 0.0;
+                        if (priorityStr != null) {
+                            priority = Double.parseDouble(priorityStr);
+                        }
+
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic(
+                                "[LOOKUP] First properties file found at '" + url + "'");
+                        }
                     } else {
                         String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
+                        double newPriority = 0.0;
                         if (newPriorityStr != null) {
-                            double newPriority = Double.valueOf(newPriorityStr).doubleValue();
-                            if (newPriority > priority) {
-                                props = newProps;
-                                priority = newPriority;
+                            newPriority = Double.parseDouble(newPriorityStr);
+                        }
+
+                        if (newPriority > priority) {
+                            props = newProps;
+                            priority = newPriority;
+
+                            if (isDiagnosticsEnabled()) {
+                                logDiagnostic(
+                                    "[LOOKUP] New properties file found at '" + url + "'"
+                                    + " has higher priority than earlier file."); 
                             }
+                        } else {
+                            logDiagnostic(
+                                "[LOOKUP] New properties file found at '" + url + "'"
+                                + " has less priority than earlier file -- ignoring.");
                         }
                     }
+
                 }
             }
         } catch (SecurityException e) {
