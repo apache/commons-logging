@@ -98,6 +98,10 @@ public class PathableClassLoader extends URLClassLoader {
      * child-first lookup instead, to allow the components to override libs
      * which are visible in shared classloaders provided by the container.
      * <p>
+     * Note that the method getResources always behaves as if parentFirst=true,
+     * because of limitations in java 1.4; see the javadoc for method
+     * getResourcesInOrder for details.
+     * <p>
      * This value defaults to true.
      */
     public void setParentFirst(boolean state) {
@@ -237,11 +241,14 @@ public class PathableClassLoader extends URLClassLoader {
     }
     
     /**
-     * Same as parent class method except that when parentFirst is false
-     * any resources in the local classpath are returned before resources
-     * in the parent.
+     * Emulate a proper implementation of getResources which respects the
+     * setting for parentFirst.
+     * <p>
+     * Note that it's not possible to override the inherited getResources, as
+     * it's declared final in java1.4 (thought that's been removed for 1.5).
+     * The inherited implementation always behaves as if parentFirst=true.
      */
-    public Enumeration getResources(String name) throws IOException {
+    public Enumeration getResourcesInOrder(String name) throws IOException {
         if (parentFirst) {
             return super.getResources(name);
         } else {
