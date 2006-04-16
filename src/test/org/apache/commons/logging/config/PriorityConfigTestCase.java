@@ -39,6 +39,10 @@ import org.apache.commons.logging.PathableTestSuite;
  * <li> fourth file found also has priority=20
  * </ul>
  * The result should be that the third file is used.
+ * <p>
+ * Note that parentFirst=true is used in this test because method
+ * <code>PathableClassLoader.getResources</code> always behaves as if
+ * parentFirst=true; see the PathableClassLoader javadoc for details.
  */
 
 public class PriorityConfigTestCase extends TestCase {
