@@ -967,7 +967,10 @@ public class LogFactoryImpl extends LogFactory {
                     + objectId(currentCL));
             try {
                 if (isDiagnosticsEnabled()) {
-                    // show exactly where we are loading this class from.
+                    // Show the location of the first occurrence of the .class file
+                    // in the classpath. This is the location that ClassLoader.loadClass
+                    // will load the class from -- unless the classloader is doing
+                    // something weird. 
                     URL url;
                     String resourceName = logAdapterClassName.replace('.', '/') + ".class";
                     if (currentCL != null) {
@@ -980,18 +983,6 @@ public class LogFactoryImpl extends LogFactory {
                         logDiagnostic("Class '" + logAdapterClassName + "' [" + resourceName + "] cannot be found.");
                     } else {
                         logDiagnostic("Class '" + logAdapterClassName + "' was found at '" + url + "'");
-                    }
-                }
-                
-                // hack
-                {
-                    String l4jCategory = "org.apache.log4j.Category";
-                    String l4jResource = l4jCategory.replace('.', '/') + ".class";
-                    URL l4jUrl = currentCL.getResource(l4jResource);
-                    if (l4jUrl == null) {
-                        logDiagnostic("log4j not found:" + l4jResource);
-                    } else {
-                        logDiagnostic("log4j found:" + l4jUrl);
                     }
                 }
 
@@ -1030,6 +1021,7 @@ public class LogFactoryImpl extends LogFactory {
                         break;
                     }
                 }
+                
                 constructor = c.getConstructor(logConstructorSignature);
                 Object o = constructor.newInstance(params);
 
@@ -1042,7 +1034,6 @@ public class LogFactoryImpl extends LogFactory {
                     logAdapter = (Log) o;
                     break;
                 }
-            
                 
                 // Oops, we have a potential problem here. An adapter class
                 // has been found and its underlying lib is present too, but
@@ -1127,7 +1118,7 @@ public class LogFactoryImpl extends LogFactory {
             
             logDiagnostic(
                 "Log adapter '" + logAdapterClassName 
-                + "' from classloader " + objectId(currentCL)
+                + "' from classloader " + objectId(logAdapterClass.getClassLoader())
                 + " has been selected for use.");
         }
         
