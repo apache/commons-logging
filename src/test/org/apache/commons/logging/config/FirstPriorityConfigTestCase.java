@@ -34,11 +34,10 @@ import org.apache.commons.logging.PathableTestSuite;
  * This test sets up a classpath where:
  * <ul>
  * <li> first file found has priority=20
- * <li> second file (in parent path) has priority=10 (parentFirst=false)
+ * <li> second file found has priority=10
  * </ul>
  * The result should be that the first file is used.
  */
-
 public class FirstPriorityConfigTestCase extends TestCase {
 
     // ------------------------------------------- JUnit Infrastructure Methods
@@ -48,7 +47,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        Class thisClass = PriorityConfigTestCase.class;
+        Class thisClass = FirstPriorityConfigTestCase.class;
 
         // Determine the URL to this .class file, so that we can then
         // append the priority dirs to it. For tidiness, load this
@@ -73,15 +72,14 @@ public class FirstPriorityConfigTestCase extends TestCase {
         containerLoader.useSystemLoader("junit.");
         containerLoader.addLogicalLib("commons-logging");
         
-        URL pri10URL = new URL(baseUrl, "priority10/");
-        containerLoader.addURL(pri10URL);
-
         PathableClassLoader webappLoader = new PathableClassLoader(containerLoader);
-        webappLoader.setParentFirst(false);
         webappLoader.addLogicalLib("testclasses");
-        
+
         URL pri20URL = new URL(baseUrl, "priority20/");
         webappLoader.addURL(pri20URL);
+
+        URL pri10URL = new URL(baseUrl, "priority10/");
+        webappLoader.addURL(pri10URL);
         
         // load the test class via webapp loader, and use the webapp loader
         // as the tccl loader too.
@@ -113,7 +111,5 @@ public class FirstPriorityConfigTestCase extends TestCase {
         LogFactory instance = LogFactory.getFactory();
         String id = (String) instance.getAttribute("configId");
         assertEquals("Correct config file loaded", "priority20", id );
-        
-        fail("deliberate failure");
     }
 }
