@@ -77,6 +77,8 @@ public class LogFactoryImpl extends LogFactory {
     /** SimpleLog class name */
     private static final String LOGGING_IMPL_SIMPLE_LOGGER = "org.apache.commons.logging.impl.SimpleLog";
 
+    private static final String PKG_IMPL="org.apache.commons.logging.impl.";
+    private static final int PKG_LEN = PKG_IMPL.length();
     
     // ----------------------------------------------------------- Constructors
 
@@ -783,15 +785,13 @@ public class LogFactoryImpl extends LogFactory {
                 messageBuffer.append(specifiedLogClassName);
                 messageBuffer.append("' cannot be found or is not useable.");
                 
-                //
                 // Mistyping or misspelling names is a common fault.
                 // Construct a good error message, if we can
                 if (specifiedLogClassName != null) {
-                    final String trimmedName = specifiedLogClassName.trim();
-                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_LOG4J_LOGGER);
-                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_JDK14_LOGGER);
-                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_LUMBERJACK_LOGGER);
-                    informUponSimilarName(messageBuffer, trimmedName, LOGGING_IMPL_SIMPLE_LOGGER);
+                    informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_LOG4J_LOGGER);
+                    informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_JDK14_LOGGER);
+                    informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_LUMBERJACK_LOGGER);
+                    informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_SIMPLE_LOGGER);
                 }
                 throw new LogConfigurationException(messageBuffer.toString());
             }
@@ -845,19 +845,25 @@ public class LogFactoryImpl extends LogFactory {
     }
 
 
-    
     /**
      * Appends message if the given name is similar to the candidate.
      * @param messageBuffer <code>StringBuffer</code> the message should be appended to, 
      * not null
      * @param name the (trimmed) name to be test against the candidate, not null
-     * @param candidate the candidate name 
+     * @param candidate the candidate name (not null)
      */
     private void informUponSimilarName(final StringBuffer messageBuffer, final String name, 
             final String candidate) {
-        // this formular (first four letters of the name excluding package) 
-        // gives a reason guess
-        if (candidate.regionMatches(true, 0, name, 0, 38)) {
+        if (name.equals(candidate)) {
+            // Don't suggest a name that is exactly the same as the one the
+            // user tried...
+            return;
+        }
+
+        // If the user provides a name that is in the right package, and gets
+        // the first 4 characters of the adapter class right (ignoring case),
+        // then suggest the candidate adapter class name.
+        if (name.regionMatches(true, 0, candidate, 0, PKG_LEN + 4)) {
             messageBuffer.append(" Did you mean '");
             messageBuffer.append(candidate);
             messageBuffer.append("'?");
@@ -917,8 +923,14 @@ public class LogFactoryImpl extends LogFactory {
             }
         }
         
+        // Remove any whitespace; it's never valid in a classname so its
+        // presence just means a user mistake. As we know what they meant,
+        // we may as well strip the spaces.
+        if (specifiedClass != null) {
+            specifiedClass = specifiedClass.trim();
+        }
+
         return specifiedClass;
-        
     }
 
     
