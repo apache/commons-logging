@@ -861,9 +861,9 @@ public class LogFactoryImpl extends LogFactory {
         }
 
         // If the user provides a name that is in the right package, and gets
-        // the first 4 characters of the adapter class right (ignoring case),
+        // the first 5 characters of the adapter class right (ignoring case),
         // then suggest the candidate adapter class name.
-        if (name.regionMatches(true, 0, candidate, 0, PKG_LEN + 4)) {
+        if (name.regionMatches(true, 0, candidate, 0, PKG_LEN + 5)) {
             messageBuffer.append(" Did you mean '");
             messageBuffer.append(candidate);
             messageBuffer.append("'?");
