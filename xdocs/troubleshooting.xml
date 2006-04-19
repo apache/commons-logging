@@ -328,5 +328,73 @@ implementation.
 	  	</subsection>
   	</subsection>
   </section>
+  <section name='Containers With Custom ClassLoading Behaviour for Logging'>
+  	<p>
+ Because commons-logging is such a fundamental library, some containers modify the way
+ in which classloading behaves for commons-logging classes.
+   </p>
+   <subsection name="Apache Tomcat">
+   <p>
+ At the current date, Tomcat 5.5.16 is the current release. All releases from version
+ 4.1.x through 5.5.16 have a startup process that places jarfile 
+ ${tomcat.home}/bin/commons-logging-api.jar in the system classpath and then
+ prevents any webapp from overriding the classes in that jarfile. Effectively, all
+ webapps behave as if "parent-first" classloading were enabled for those classes.
+   </p>
+   <p>
+ This has some benefits; in particular it means that there are no problems in
+ these Tomcat versions with having multiple copies of the commons-logging Log
+ interface in the classpath (which avoids the "Log does not implement Log"
+ problem described elsewhere).
+   </p>
+   <p>
+ However it also means that no webapp can override the core commons-logging
+ classes by including an updated commons-logging jarfile in WEB-INF/lib; any
+ class already loaded via the container takes priority. In particular, as
+ Tomcat bundles logging 1.0.4 only, the new diagnostics and memory-leak-prevention
+ features of the 1.1 release will not be available unless the container's
+ library version is updated.
+   </p>
+   <p>
+ Because the commons-logging-api.jar in the container does not contain any
+ log-library-adapter classes, updated behaviour for these <i>will</i> be
+ seen when logging 1.1 is bundled in WEB-INF/lib. In particular, the 
+ support for log4j's TRACE level will take effect without having to update
+ the container.
+   </p>
+   <p>
+ If you do wish to update Tomcat's version of commons-logging, then you
+ <i>must</i> use the commons-logging-1.1-api jar only, not the full jar.
+ Classes in the webapp cannot override classes loaded from the system
+ classpath set up during Tomcat's startup process, and logging adapters
+ can only see their matching concrete logging library if that library is
+ available in the same classpath. Bundling the full commons-logging jarfile
+ (with adapters) into the system classpath therefore means that logging
+ libraries (eg log4j) within WEB-INF/lib are not accessable.
+   </p>
+   <p>
+ Note that the behaviour described here only applies if the standard Tomcat
+ startup process is run. When Tomcat is embedded in a larger
+ framework (eg run embedded within an IDE) this may not apply.
+   </p>
+   </subsection>
+   <subsection name="JBoss Application Server">
+   <p>
+   The JBoss Application Server can be configured to prevent deployed
+   code from overriding classes higher in the hierarchy, effectively
+   forcing "parent-first" behaviour for selected classes. By default,
+   commons-logging is in this list (at least for some JBoss versions
+   starting with 4.0.2), and therefore including an updated version
+   of commons-logging in WEB-INF/lib or similar will have no effect.
+   See the JBoss classloading documentation for more details.
+   </p>
+   </subsection>
+   <subsection name="Other Containers">
+   <p>
+   As more information becomes available on this topic, it may be added
+   to the commons-logging wiki site.
+   </p>
+   </subsection>
+  </section>
  </body>
 </document>

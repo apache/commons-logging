@@ -51,6 +51,12 @@ For the very latest news, hints, FAQs etc. please see the
 Jakarta Commons Logging wiki site:
   http://wiki.apache.org/jakarta-commons/Logging
 
+Note that some containers (some versions of Apache Tomcat and JBoss in
+particular) prevent webapps, ejbs, etc from overriding the commons-logging
+implementation provided by the container. This means that bundling this
+updated implementation with a deployed application may not have any effect.
+See the commons-logging site and/or the wiki for more information.
+
 == New Features ==
 
 * Jar files now have release-numbers embedded in the names, for easier management.
