@@ -24,7 +24,7 @@ limitations under the License.
 <section name="Overview">
 <p>
   Commons Logging uses <a href="http://ant.apache.org">Ant</a> as a build system
-  and <a href="http://maven.apache.org">Maven</a> for documentation only.
+  and <a href="http://maven.apache.org">Maven 1.x</a> for documentation only.
 </p>
 </section>
 <!-- ================================================== -->
