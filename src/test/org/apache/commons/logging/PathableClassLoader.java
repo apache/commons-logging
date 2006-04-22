@@ -270,11 +270,30 @@ public class PathableClassLoader extends URLClassLoader {
             }
             Enumeration parentUrls = parent.getResources(name);
 
-            ArrayList localItems = Collections.list(localUrls);
-            ArrayList parentItems = Collections.list(parentUrls);
+            ArrayList localItems = toList(localUrls);
+            ArrayList parentItems = toList(parentUrls);
             localItems.addAll(parentItems);
             return Collections.enumeration(localItems);
         }
+    }
+    
+    /**
+     * 
+     * Clean implementation of list function of 
+     * {@link java.utils.Collection} added in JDK 1.4 
+     * @param en <code>Enumeration</code>, possibly null
+     * @return <code>ArrayList</code> containing the enumerated
+     * elements in the enumerated order, not null
+     */
+    private ArrayList toList(Enumeration en) {
+        ArrayList results = new ArrayList();
+        if (en != null) {
+            while (en.hasMoreElements()){
+                Object element = en.nextElement();
+                results.add(element);
+            }
+        }
+        return results;
     }
     
     /**
