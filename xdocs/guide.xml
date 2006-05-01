@@ -344,7 +344,7 @@ In addition to the logging methods, the following are provided for code guards:
     </subsection>
     <subsection name="Serialization Issues">
     <p>Prior to release 1.0.4, none of the standard Log implementations were
-    Serializable. If you are using such a release and have a Serializable classe
+    Serializable. If you are using such a release and have a Serializable class
     with a member that is of type Log then it is necessary to declare
     that member to be transient and to ensure that the value is restored on
     deserialization. The recommended approach is to define a custom

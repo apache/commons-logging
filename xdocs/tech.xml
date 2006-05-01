@@ -173,12 +173,12 @@
 	This guide is aimed at describing the technologies that JCL developers and expert users 
 	(and users who need to become experts)
 	should be familiar with. The aim is to give an understanding whilst being precise but brief. 
-	Details which are not relevent for JCL have been suppressed.
+	Details which are not relevant for JCL have been suppressed.
 	References have been included.
 	 		</p>
 	 		<p>
-	These topics are a little difficult and it's easy for even experience developers to make
-	mistakea. We need you to help us get it right! Please submit corrections, comments, additional references 
+	These topics are a little difficult and it's easy for even experienced developers to make
+	mistakes. We need you to help us get it right! Please submit corrections, comments, additional references
 	and requests for clarification
 	by either:
 			</p>
@@ -356,7 +356,7 @@
 		<a href='http://java.sun.com/docs/books/vmspec/'>VMSpec</a> <em>The Java Virtual Machine Specification, Second Edition</em> 
 				</li>
 				<li>
-		<a href='http://java.sun.com/docs/books/jls/'>LangSpec</a> <em>The Java Language Specification Second Edition</em>
+		<a href='http://java.sun.com/docs/books/jls/'>LangSpec</a> <em>The Java Language Specification, Second Edition</em>
 				</li>
 			</ul>
     	</subsection>    	
@@ -387,7 +387,7 @@
 			<p>
    <strong>Note:</strong> the term child-first (though commonly used) is misleading.	
    A better term (and one which may be encountered on the mailing list) is parent-last.
-   This more accurately describes the actual process of classloader performed
+   This more accurately describes the actual process of classloading performed
    by such a classloader.		
 			</p>
 			<p>
@@ -448,14 +448,14 @@
 	<code>Thread.setContextClassLoader</code></a> emphasizes the setting of the 
 	context classloader as an aspect of thread creation.  However, in many 
 	applications the context classloader is not fixed at thread creation but 
-	rather is changed throughout the life of thread as thread execution moves 
+	rather is changed throughout the life of a thread as thread execution moves
 	from one context to another.  This usage of the context classloader is 
 	particularly important in container applications.	
 			</p>
 			<p>
 	For example, in a hypothetical servlet container, a pool of threads 
 	is created to handle HTTP requests.  When created these threads have their 
-	context classloader set to	a classloader that loads container classes.  
+	context classloader set to a classloader that loads container classes.  
 	After the thread is assigned to handle a request, container code parses 
 	the request and then determines which of the deployed web applications 
 	should handle it. Only when the container is about to call code associated 
