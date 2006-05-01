@@ -37,8 +37,8 @@
     <p>
 Diagnostics is a feature introduced in JCL 1.1 as an aid to debugging problems 
 with JCL configurations. When diagnostics are switched on, messages are logged 
-to a stream (specified by the user) by the two main class involved in discovery
-JCL (<code>LogFactory</code> and <code>LogFactoryImpl</code>).
+to a stream (specified by the user) by the two main classes involved in discovery
+in JCL (<code>LogFactory</code> and <code>LogFactoryImpl</code>).
     </p>
     <p>
 Diagnostics are intended to be used in conjunction with the source. The source
@@ -74,7 +74,7 @@ These are of the form:
 The <em>system identity hash code</em> is found by calling <code>System.identityHashCode()</code> 
 which should uniquely identify a particular instance. The classname is usually the fully qualified
 class name though in a few cases, <code>org.apache.commons.logging.impl.LogFactoryImpl</code> may be
-shorten to <code>LogFactoryImpl</code> to increase ease of reading. For example:
+shortened to <code>LogFactoryImpl</code> to increase ease of reading. For example:
       </p>
 <code><pre>
 sun.misc.Launcher$AppClassLoader@20120943
@@ -176,11 +176,11 @@ Before assigning a <code>Log</code> instance, <code>LogFactory</code> loads a
 for each diagnostic message logged by this process.
       </p> 
       <p>
-The implementation used can vary per Thread context classloader (TCCL). If this the first time 
+The implementation used can vary per Thread context classloader (TCCL). If this is the first time 
 that a Log has been requested for a particular TCCL a new instance will be created.
       </p>
       <p>
-Information of particular interest is logged at this stage. Details of the TCCL are logging
+Information of particular interest is logged at this stage. Details of the TCCL are logged
 allowing the <a href='#OIDs'>OID</a> later to be cross-referenced to the <code>toString</code> value 
 and the <a href='#ClassLoader%20Hierarchy%20Tree'>classloader tree</a>. For example, the 
 following log snippet details the TCCL (lines split):
@@ -282,7 +282,7 @@ of other containers using a custom implementation.
  the two <code>LogFactory</code> Class instances are not equal and so the cast must fail.
   		</p>
   		<p>
-The policy adopted by JCL in this situation is to re-throw this exception. Addition information
+The policy adopted by JCL in this situation is to re-throw this exception. Additional information
 is included in the message to help diagnosis. The reasoning behind this choice is that a 
 particular <code>LogFactory</code> implementation has been actively specified and this
 choice should not be ignored. This policy has unfortunate consequences when running in
@@ -316,7 +316,7 @@ implementation.
  the most modern release				
  				</li>
  	 			<li>
- Replace the commons-logging jar in the application with the commons-logging-adapter jar.
+ Replace the commons-logging jar in the application with the commons-logging-adapters jar.
  This will ensure that application classloader will delegate to it's parent when loading
  <code>LogFactory</code>.
  				</li>			
