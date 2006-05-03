@@ -1476,7 +1476,7 @@ public abstract class LogFactory {
     /**
      * Determines whether the user wants internal diagnostic output. If so,
      * returns an appropriate writer object. Users can enable diagnostic
-     * output by setting the system property named DIAGNOSTICS_DEST_PROPERTY to
+     * output by setting the system property named {@link #DIAGNOSTICS_DEST_PROPERTY} to
      * a filename, or the special values STDOUT or STDERR. 
      */
     private static void initDiagnostics() {
