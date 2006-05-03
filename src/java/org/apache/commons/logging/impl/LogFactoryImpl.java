@@ -118,7 +118,9 @@ public class LogFactoryImpl extends LogFactory {
      * The name (<code>org.apache.commons.logging.Log.allowFlawedContext</code>) 
      * of the system property which can be set true/false to
      * determine system behaviour when a bad context-classloader is encountered.
-     * When set to false
+     * When set to false, a LogConfigurationException is thrown if
+     * LogFactoryImpl is loaded via a child classloader of the TCCL (this
+     * should never happen in sane systems).
      * 
      * Default behaviour: true (tolerates bad context classloaders)
      * 
@@ -1248,8 +1250,7 @@ public class LogFactoryImpl extends LogFactory {
             current = current.getParent();
         }
        
-       // scan c2's ancestors to find c1
-        // scan c1's ancestors to find c2
+        // scan c2's ancestors to find c1
         current = c2;
         while (current != null) {
             if (current == c1)
