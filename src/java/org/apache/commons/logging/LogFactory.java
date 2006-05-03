@@ -139,7 +139,7 @@ public abstract class LogFactory {
      * <strong>Note:</strong> <code>LogFactory</code> will print:
      * <code><pre>
      * [ERROR] LogFactory: Load of custom hashtable failed</em>
-     * </code></pre>
+     * </pre></code>
      * to system error and then continue using a standard Hashtable.
      * </p>
      * <p>
@@ -328,16 +328,16 @@ public abstract class LogFactory {
         } catch (Throwable t) {
             // ignore
             if (!WEAK_HASHTABLE_CLASSNAME.equals(storeImplementationClass)) {
-        	    // if the user's trying to set up a custom implementation, give a clue
-        	    if (isDiagnosticsEnabled()) {
-        	        // use internal logging to issue the warning
-        	        logDiagnostic("[ERROR] LogFactory: Load of custom hashtable failed");
-        		} else {
-        		    // we *really* want this output, even if diagnostics weren't
+                // if the user's trying to set up a custom implementation, give a clue
+                if (isDiagnosticsEnabled()) {
+                    // use internal logging to issue the warning
+                    logDiagnostic("[ERROR] LogFactory: Load of custom hashtable failed");
+                } else {
+                    // we *really* want this output, even if diagnostics weren't
                     // explicitly enabled by the user.
-        		    System.err.println("[ERROR] LogFactory: Load of custom hashtable failed");
-        		}
-        	}
+                    System.err.println("[ERROR] LogFactory: Load of custom hashtable failed");
+                }
+            }
         }
         if (result == null) {
             result = new Hashtable();
@@ -571,7 +571,7 @@ public abstract class LogFactory {
                     }
                     factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
                     
-                    // what about handling an exception from newFactory??
+                    // TODO: think about whether we need to handle exceptions from newFactory
                 } else {
                     if (isDiagnosticsEnabled()) {
                         logDiagnostic(
@@ -1127,7 +1127,7 @@ public abstract class LogFactory {
                         // to their native logging system. 
                         // 
                         String msg = 
-                        	"The application has specified that a custom LogFactory implementation should be used but " +
+                            "The application has specified that a custom LogFactory implementation should be used but " +
                             "Class '" + factoryClass + "' cannot be converted to '"
                             + LogFactory.class.getName() + "'. ";
                         if (implementsLogFactory) {
@@ -1169,7 +1169,7 @@ public abstract class LogFactory {
              * classLoader was unable to load factoryClass.
              *
              * In either case, we call Class.forName, which is equivalent
-             * to LogFactory.class.getClassLoader.load(name), ie we ignore
+             * to LogFactory.class.getClassLoader().load(name), ie we ignore
              * the classloader parameter the caller passed, and fall back
              * to trying the classloader associated with this class. See the
              * javadoc for the newFactory method for more info on the 
@@ -1214,61 +1214,63 @@ public abstract class LogFactory {
      * of incompatibility. The test used is whether the class is assignable from
      * the <code>LogFactory</code> class loaded by the class's classloader.
      * @param logFactoryClass <code>Class</code> which may implement <code>LogFactory</code>
-     * @return true if the <code>Class</code> is assignable from the 
+     * @return true if the <code>logFactoryClass</code> does extend
+     * <code>LogFactory</code> when that class is loaded via the same
+     * classloader that loaded the <code>logFactoryClass</code>.
      */
-	private static boolean implementsLogFactory(Class logFactoryClass) {
-		boolean implementsLogFactory = false;
-		if (logFactoryClass != null) {
-			try {
-			    ClassLoader logFactoryClassLoader = logFactoryClass.getClassLoader();
-			    if (logFactoryClassLoader == null) {
-			        logDiagnostic("[CUSTOM LOG FACTORY] was loaded by the boot classloader");
-			    } else {
-			        logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
-			        Class factoryFromCustomLoader 
-			        	= Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
-			        implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
-			        if (implementsLogFactory) {
-			        	logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() 
-			        			+ " implements LogFactory but was loaded by an incompatible classloader.");
-			        } else {
-			        	logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() 
-			        			+ " does not implement LogFactory.");
-			        }
-			    }
-			} catch (SecurityException e) {
-				//
-				// The application is running within a hostile security environment.
-				// This will make it very hard to diagnose issues with JCL.
-				// Consider running less securely whilst debugging this issue.
-				//
-				logDiagnostic("[CUSTOM LOG FACTORY] SecurityException thrown whilst trying to determine whether " +
-						"the compatibility was caused by a classloader conflict: " 
-						+ e.getMessage());
-			} catch (LinkageError e) {
-				//
-				// This should be an unusual circumstance.
-				// LinkageError's usually indicate that a dependent class has incompatibly changed.
-				// Another possibility may be an exception thrown by an initializer.
-				// Time for a clean rebuild?
-				//
-				logDiagnostic("[CUSTOM LOG FACTORY] LinkageError thrown whilst trying to determine whether " +
-						"the compatibility was caused by a classloader conflict: " 
-						+ e.getMessage());
-			} catch (ClassNotFoundException e) {
-				//
-				// LogFactory cannot be loaded by the classloader which loaded the custom factory implementation.
-				// The custom implementation is not viable until this is corrected. 
-				// Ensure that the JCL jar and the custom class are available from the same classloader.
-				// Running with diagnostics on should give information about the classloaders used 
-				// to load the custom factory.
-				// 
-				logDiagnostic("[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by classloader which loaded the " +
-						"custom LogFactory implementation. Is the custom factory in the right classloader?");
-			}
-		}
-		return implementsLogFactory;
-	}
+    private static boolean implementsLogFactory(Class logFactoryClass) {
+        boolean implementsLogFactory = false;
+        if (logFactoryClass != null) {
+            try {
+                ClassLoader logFactoryClassLoader = logFactoryClass.getClassLoader();
+                if (logFactoryClassLoader == null) {
+                    logDiagnostic("[CUSTOM LOG FACTORY] was loaded by the boot classloader");
+                } else {
+                    logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
+                    Class factoryFromCustomLoader
+                        = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
+                    implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
+                    if (implementsLogFactory) {
+                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName()
+                                + " implements LogFactory but was loaded by an incompatible classloader.");
+                    } else {
+                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName()
+                                + " does not implement LogFactory.");
+                    }
+                }
+            } catch (SecurityException e) {
+                //
+                // The application is running within a hostile security environment.
+                // This will make it very hard to diagnose issues with JCL.
+                // Consider running less securely whilst debugging this issue.
+                //
+                logDiagnostic("[CUSTOM LOG FACTORY] SecurityException thrown whilst trying to determine whether " +
+                        "the compatibility was caused by a classloader conflict: "
+                        + e.getMessage());
+            } catch (LinkageError e) {
+                //
+                // This should be an unusual circumstance.
+                // LinkageError's usually indicate that a dependent class has incompatibly changed.
+                // Another possibility may be an exception thrown by an initializer.
+                // Time for a clean rebuild?
+                //
+                logDiagnostic("[CUSTOM LOG FACTORY] LinkageError thrown whilst trying to determine whether " +
+                        "the compatibility was caused by a classloader conflict: "
+                        + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                //
+                // LogFactory cannot be loaded by the classloader which loaded the custom factory implementation.
+                // The custom implementation is not viable until this is corrected.
+                // Ensure that the JCL jar and the custom class are available from the same classloader.
+                // Running with diagnostics on should give information about the classloaders used
+                // to load the custom factory.
+                //
+                logDiagnostic("[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by classloader which loaded the " +
+                        "custom LogFactory implementation. Is the custom factory in the right classloader?");
+            }
+        }
+        return implementsLogFactory;
+    }
 
     /**
      * Applets may run in an environment where accessing resources of a loader is
@@ -1474,7 +1476,7 @@ public abstract class LogFactory {
     /**
      * Determines whether the user wants internal diagnostic output. If so,
      * returns an appropriate writer object. Users can enable diagnostic
-     * output by setting the system property named OUTPUT_PROPERTY to
+     * output by setting the system property named DIAGNOSTICS_DEST_PROPERTY to
      * a filename, or the special values STDOUT or STDERR. 
      */
     private static void initDiagnostics() {
