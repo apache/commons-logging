@@ -395,7 +395,7 @@ public class SimpleLog implements Log, Serializable {
      * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
      *
      * @param message to log
-     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
+     * @see org.apache.commons.logging.Log#trace(Object)
      */
     public final void trace(Object message) {
 

@@ -248,7 +248,7 @@ public class AvalonLogger implements Log {
      * 
      * @param message to log.
      * @param t log this cause.
-     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
+     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
     public void trace(Object message, Throwable t) {
         if (getLogger().isDebugEnabled()) getLogger().debug(String.valueOf(message), t);
