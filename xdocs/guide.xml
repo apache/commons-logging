@@ -147,7 +147,7 @@ commonly set by placing a file named commons-logging.properties in the classpath
 When such a file exists, every entry in the properties file becomes an "attribute"
 of the LogFactory. When there is more than one such file in the classpath, releases
 of commons-logging prior to 1.1 simply use the first one found. From release 1.1,
-each file may define a <code>priority</code> key in each file, and the file with
+each file may define a <code>priority</code> key, and the file with
 the highest priority is used (no priority definition implies priority of zero).
 When multiple files have the same priority, the first one found is used.
 </p>

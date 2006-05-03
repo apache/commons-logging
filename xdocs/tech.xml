@@ -646,7 +646,7 @@ href='http://publib.boulder.ibm.com/infocenter/wasinfo/v6r0/index.jsp?topic=/com
 	This is the strategy adopted by JCL.
 			</p>
 			<p>
-	JCL uses the context classloader to use the <code>Log</code> implementation. 
+	JCL uses the context classloader to load the <code>Log</code> implementation. 
 			</p>
     	</subsection>
 	</section>

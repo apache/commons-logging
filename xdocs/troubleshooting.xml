@@ -88,7 +88,7 @@ up the understanding of the classloader environment required to diagnose JCL pro
     </subsection>
     <subsection name='Diagnostic Message Prefix'>
       <p>
-Each diagnostic message is prefixed with details of the class being logger in a standard format.
+Each diagnostic message is prefixed with details of the relevant class in a standard format.
 This takes the form:
     </p>
 <code><pre>
