@@ -1461,11 +1461,11 @@ public abstract class LogFactory {
         if (isDiagnosticsEnabled()) {
             if (props == null) {
                 logDiagnostic(
-                    "[LOOKUP] No properties file of name '" + FACTORY_PROPERTIES
+                    "[LOOKUP] No properties file of name '" + fileName
                     + "' found.");
             } else {
                 logDiagnostic(
-                    "[LOOKUP] Properties file of name '" + FACTORY_PROPERTIES
+                    "[LOOKUP] Properties file of name '" + fileName
                     + "' found at '" + propsUrl + '"');
             }
         }
