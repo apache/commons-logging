@@ -26,13 +26,90 @@
  </properties>
 
  <body> 
-  <section name='Contents'>
-  	<ul>
-  	    <li>Contents</li>
-  		<li><a href='#Using JCL Diagnostics'>Using JCL Diagnostics</a></li>
-  		<li><a href='#Containers With Custom LogFactory Implementations'>Containers With Custom LogFactory Implementations</a></li>
-  	</ul>
-  </section>
+<section name="Contents">
+<ul>
+<li>
+<a href="#Contents">Contents</a>
+<ul/>
+</li>
+<li>
+<a href="#Using JCL Diagnostics">Using JCL Diagnostics</a>
+<ul>
+<li>
+<a href="#When To Use Diagnostic Logging">When To Use Diagnostic Logging</a>
+<ul/>
+</li>
+<li>
+<a href="#How To Use Diagnostic logging">How To Use Diagnostic logging</a>
+<ul/>
+</li>
+<li>
+<a href="#OIDs">OIDs</a>
+<ul/>
+</li>
+<li>
+<a href="#Diagnostic Message Prefix">Diagnostic Message Prefix</a>
+<ul/>
+</li>
+<li>
+<a href="#ClassLoader Hierarchy Tree">ClassLoader Hierarchy Tree</a>
+<ul/>
+</li>
+<li>
+<a href="#LogFactory Class Bootstrap">LogFactory Class Bootstrap</a>
+<ul/>
+</li>
+<li>
+<a href="#Construction Of LogFactoryImpl Instances">Construction Of LogFactoryImpl Instances</a>
+<ul/>
+</li>
+<li>
+<a href="#Log Discovery Diagnostics">Log Discovery Diagnostics</a>
+<ul/>
+</li>
+</ul>
+</li>
+<li>
+<a href="#Containers With Custom LogFactory Implementations">Containers With Custom LogFactory Implementations</a>
+<ul>
+<li>
+<a href="#The Incompatible LogFactory Issue">The Incompatible LogFactory Issue</a>
+<ul>
+<li>
+<a href="#Symptoms">Symptoms</a>
+<ul/>
+</li>
+<li>
+<a href="#Explanation">Explanation</a>
+<ul/>
+</li>
+<li>
+<a href="#Fixes">Fixes</a>
+<ul/>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#Containers With Custom ClassLoading Behaviour for Logging">Containers With Custom ClassLoading Behaviour for Logging</a>
+<ul>
+<li>
+<a href="#Apache Tomcat">Apache Tomcat</a>
+<ul/>
+</li>
+<li>
+<a href="#JBoss Application Server">JBoss Application Server</a>
+<ul/>
+</li>
+<li>
+<a href="#Other Containers">Other Containers</a>
+<ul/>
+</li>
+</ul>
+</li>
+</ul>
+</section>
   <section name='Using JCL Diagnostics'>
     <p>
 Diagnostics is a feature introduced in JCL 1.1 as an aid to debugging problems 
