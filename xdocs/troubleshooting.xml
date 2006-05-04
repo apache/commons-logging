@@ -30,7 +30,6 @@
 <ul>
 <li>
 <a href="#Contents">Contents</a>
-<ul/>
 </li>
 <li>
 <a href="#Using JCL Diagnostics">Using JCL Diagnostics</a>
@@ -41,31 +40,24 @@
 </li>
 <li>
 <a href="#How To Use Diagnostic logging">How To Use Diagnostic logging</a>
-<ul/>
 </li>
 <li>
 <a href="#OIDs">OIDs</a>
-<ul/>
 </li>
 <li>
 <a href="#Diagnostic Message Prefix">Diagnostic Message Prefix</a>
-<ul/>
 </li>
 <li>
 <a href="#ClassLoader Hierarchy Tree">ClassLoader Hierarchy Tree</a>
-<ul/>
 </li>
 <li>
 <a href="#LogFactory Class Bootstrap">LogFactory Class Bootstrap</a>
-<ul/>
 </li>
 <li>
 <a href="#Construction Of LogFactoryImpl Instances">Construction Of LogFactoryImpl Instances</a>
-<ul/>
 </li>
 <li>
 <a href="#Log Discovery Diagnostics">Log Discovery Diagnostics</a>
-<ul/>
 </li>
 </ul>
 </li>
@@ -77,15 +69,12 @@
 <ul>
 <li>
 <a href="#Symptoms">Symptoms</a>
-<ul/>
 </li>
 <li>
 <a href="#Explanation">Explanation</a>
-<ul/>
 </li>
 <li>
 <a href="#Fixes">Fixes</a>
-<ul/>
 </li>
 </ul>
 </li>
