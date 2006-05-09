@@ -81,6 +81,11 @@
           <name>1.0.4</name>
           <tag>LOGGING_1_0_4</tag>
       </version>
+      <version>
+          <id>1.1</id>
+          <name>1.1</name>
+          <tag>LOGGING_1_1_0</tag>
+      </version>
   </versions>
   
   <mailingLists>
