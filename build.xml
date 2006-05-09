@@ -92,7 +92,7 @@
   <property name="component.title"         value="Logging Wrapper Library"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="1.1-RC11"/>
+  <property name="component.version"       value="1.1"/>
 
   <!-- The base directory for compilation targets -->
   <property name="build.home"              value="${basedir}/target"/>

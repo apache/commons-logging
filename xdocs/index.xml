@@ -42,8 +42,9 @@ reasonably simple task.</p>
 <p>Applications (rather than libraries) may also choose to use commons-logging.
 While logging-implementation independence is not as important for applications
 as it is for libraries, using commons-logging does allow the application to
-change to a different logging implementation without recompiling code. Note
-that commons-logging does not attempt to initialise or terminate the underlying
+change to a different logging implementation without recompiling code. 
+</p><p>
+Note that commons-logging does not attempt to initialise or terminate the underlying
 logging implementation that is used at runtime; that is the responsibility of
 the application. However many popular logging implementations do automatically
 initialise themselves; in this case an application may be able to avoid
@@ -54,7 +55,7 @@ containing any code that is specific to the logging implementation used.</p>
 
 <section name="Documentation">
 
-<p>The <a href="http://jakarta.apache.org/commons/logging/RELEASE-NOTES.txt">
+<p>The <a href="RELEASE-NOTES.txt">
 Release Notes</a> document the new features and bug fixes that have been
 included in the latest release.</p>
 
@@ -66,7 +67,6 @@ package. In addition, there is a (short)
 
 <p>The <a href="http://wiki.apache.org/jakarta-commons/Logging">Wiki site</a> has
 the latest updates, an FAQ and much other useful information.</p>
-
 <p>
 Users needing to become experts or wanting to help develop JCL should
 (in addition) consult the <a href='tech.html'>Tech Guide</a>.
@@ -80,7 +80,7 @@ This gives short introductions to topics such as advanced class loading.
 Binary and source distributions are available
        <a href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi">here</a>.
     </p>
-    <subsection name='1.1 Release'>
+    <subsection name='1.1 Release - 10 May 2006'>
       <p>This release makes several changes that are intended to resolve issues that
       have been encountered when using commons-logging in servlet containers or j2ee
       containers where complex classpaths are present and multiple copies of
