@@ -14,7 +14,7 @@
  * limitations under the License.
  */ 
 
-package org.apache.commons.logging.log4j.log4j12;
+package org.apache.commons.logging.servlet;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
