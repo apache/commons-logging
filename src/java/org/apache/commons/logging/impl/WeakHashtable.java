@@ -237,7 +237,6 @@ public final class WeakHashtable extends Hashtable {
             purgeOne();
         }
         
-        Object result = null;
         Referenced keyRef = new Referenced(key, queue);
         return super.put(keyRef, value);
     }
