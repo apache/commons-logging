@@ -190,7 +190,9 @@
       <properties>
         <comment>
 Runtime Optional. 
-1.2.12 required for compilation but 1.2.6 onwards supported at runtime.</comment>
+1.2.12 required for compilation but 1.2.6 onwards supported at runtime.
+        </comment>
+        <optional>true</optional>
       </properties>
     </dependency>
     
@@ -201,6 +203,7 @@ Runtime Optional.
       <url>http://avalon.apache.org/logkit/</url>
       <properties>
         <comment>Runtime Optional</comment>
+        <optional>true</optional>
       </properties>
     </dependency>
 
@@ -212,6 +215,7 @@ Runtime Optional.
       <properties>
         <comment>Used for testing only.</comment>
         <scope>test</scope>
+        <optional>true</optional>
       </properties>
     </dependency>
     
@@ -222,6 +226,7 @@ Runtime Optional.
       <url>http://avalon.apache.org/</url>
       <properties>
         <comment>Runtime Optional</comment>
+        <optional>true</optional>
       </properties>
     </dependency>
     
@@ -232,6 +237,7 @@ Runtime Optional.
       <url>http://java.sun.com/products/servlet/</url>
       <properties>
         <comment>Used only by servlet filter. Not used by core logging implementation.</comment>
+        <optional>true</optional>
       </properties>
     </dependency>
     
@@ -245,6 +251,7 @@ Runtime Optional.
           <comment>
               &lt;strong&gt;Site Only&lt;/strong&gt; - v1.9.2 (minimum)
           </comment>
+          <optional>true</optional>
       </properties>
     </dependency>
   </dependencies>
