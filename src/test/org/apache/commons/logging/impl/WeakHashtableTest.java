@@ -56,7 +56,7 @@ public class WeakHashtableTest extends TestCase {
         weakHashtable.put(keyThree, valueThree);
     }
 
-    /** Tests public boolean contains(Object value) */
+    /** Tests public boolean contains(Object value) */
     public void testContains() throws Exception {
         assertFalse(weakHashtable.contains(new Long(1)));
         assertFalse(weakHashtable.contains(new Long(2)));
@@ -67,7 +67,7 @@ public class WeakHashtableTest extends TestCase {
         assertFalse(weakHashtable.contains(new Long(400)));
     }
     
-    /** Tests public boolean containsKey(Object key) */
+    /** Tests public boolean containsKey(Object key) */
     public void testContainsKey() throws Exception {
         assertTrue(weakHashtable.containsKey(new Long(1)));
         assertTrue(weakHashtable.containsKey(new Long(2)));
@@ -78,7 +78,7 @@ public class WeakHashtableTest extends TestCase {
         assertFalse(weakHashtable.containsKey(new Long(400)));    
     }
     
-    /** Tests public boolean containsValue(Object value) */
+    /** Tests public boolean containsValue(Object value) */
     public void testContainsValue() throws Exception {
         assertFalse(weakHashtable.containsValue(new Long(1)));
         assertFalse(weakHashtable.containsValue(new Long(2)));
@@ -119,7 +119,7 @@ public class WeakHashtableTest extends TestCase {
         }
     }
     
-    /** Tests public Object get(Object key) */
+    /** Tests public Object get(ObjectÔøΩkey) */
     public void testGet() throws Exception {
         assertEquals(valueOne, weakHashtable.get(keyOne));
         assertEquals(valueTwo, weakHashtable.get(keyTwo));
@@ -148,7 +148,7 @@ public class WeakHashtableTest extends TestCase {
         assertTrue(keySet.contains(keyThree));
     }
     
-    /** Tests public Object put(Object key, Object value) */
+    /** Tests public Object put(Object key, Object value) */
     public void testPut() throws Exception {
         Long anotherKey = new Long(2004);
         weakHashtable.put(anotherKey, new Long(1066));
@@ -174,7 +174,7 @@ public class WeakHashtableTest extends TestCase {
         assertNotNull("did not throw an exception adding a null value", caught);
     }
     
-    /** Tests public void putAll(Map t) */
+    /** Tests public void putAll(Map t) */
     public void testPutAll() throws Exception {
         Map newValues = new HashMap();
         Long newKey = new Long(1066);
@@ -190,7 +190,7 @@ public class WeakHashtableTest extends TestCase {
         assertEquals(anotherNewValue, weakHashtable.get(anotherNewKey));
     }
     
-    /** Tests public Object remove(Object key) */
+    /** Tests public Object remove(ObjectÔøΩkey) */
     public void testRemove() throws Exception {
         weakHashtable.remove(keyOne);
         assertEquals(2, weakHashtable.size());
