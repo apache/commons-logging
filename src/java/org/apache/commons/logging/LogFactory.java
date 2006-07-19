@@ -316,8 +316,15 @@ public abstract class LogFactory {
      */
     private static final Hashtable createFactoryStore() {
         Hashtable result = null;
-        String storeImplementationClass 
-            = System.getProperty(HASHTABLE_IMPLEMENTATION_PROPERTY);
+        String storeImplementationClass;
+        try {
+            storeImplementationClass = System.getProperty(HASHTABLE_IMPLEMENTATION_PROPERTY);
+        } catch(SecurityException ex) {
+            // Permissions don't allow this to be accessed. Default to the "modern"
+            // weak hashtable implementation if it is available.
+            storeImplementationClass = null;
+        }
+
         if (storeImplementationClass == null) {
             storeImplementationClass = WEAK_HASHTABLE_CLASSNAME;
         }
@@ -1698,6 +1705,19 @@ public abstract class LogFactory {
         }
     }
 
+    // called from static class initialiser, ie when class is loaded
+    private static void initClass() {
+        // note: it's safe to call methods before initDiagnostics (though
+        // diagnostic output gets discarded).
+        thisClassLoader = getClassLoader(LogFactory.class);
+        initDiagnostics();
+        logClassLoaderEnvironment(LogFactory.class);
+        factories = createFactoryStore();
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("BOOTSTRAP COMPLETED");
+        }
+    }
+
     // ----------------------------------------------------------------------
     // Static initialiser block to perform initialisation at class load time.
     //
@@ -1718,13 +1738,12 @@ public abstract class LogFactory {
     // ----------------------------------------------------------------------
 
     static {
-        // note: it's safe to call methods before initDiagnostics.
-        thisClassLoader = getClassLoader(LogFactory.class);
-        initDiagnostics();
-        logClassLoaderEnvironment(LogFactory.class);
-        factories = createFactoryStore();
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("BOOTSTRAP COMPLETED");
-        }
+        AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                    initClass();
+                    return null;
+                }
+            });
     }
 }
