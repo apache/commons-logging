@@ -20,6 +20,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.security.AllPermission;
 import java.util.Hashtable;
 
 import junit.framework.Test;
@@ -31,11 +32,7 @@ import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
 /**
- * Tests for logging with a security policy that forbids JCL access to anything.
- * <p>
- * Performing tests with security permissions disabled is tricky, as building error
- * messages on failure requires certain security permissions. If the security manager
- * blocks these, then the test can fail without the error messages being output.
+ * Tests for logging with a security policy that allows JCL access to everything.
  * <p>
  * This class has only one unit test, as we are (in part) checking behaviour in
  * the static block of the LogFactory class. As that class cannot be unloaded after
@@ -43,7 +40,7 @@ import org.apache.commons.logging.PathableTestSuite;
  * PathableClassLoader approach to ensure each test is run in its own
  * classloader, and use a separate testcase class for each test.
  */
-public class SecurityTestCaseForbidden extends TestCase
+public class SecurityAllowedTestCase extends TestCase
 {
     private SecurityManager oldSecMgr;
 
@@ -62,7 +59,7 @@ public class SecurityTestCaseForbidden extends TestCase
         parent.addLogicalLib("testclasses");
 
         Class testClass = parent.loadClass(
-            "org.apache.commons.logging.security.SecurityTestCaseForbidden");
+            "org.apache.commons.logging.security.SecurityAllowedTestCase");
         return new PathableTestSuite(testClass, parent);
     }
 
@@ -78,15 +75,15 @@ public class SecurityTestCaseForbidden extends TestCase
     }
 
     /**
-     * Test what happens when JCL is run with absolutely no security
-     * priveleges at all, including reading system properties. Everything
-     * should fall back to the built-in defaults.
+     * Test what happens when JCL is run with all permissions enabled. Custom
+     * overrides should take effect.
      */
-    public void testAllForbidden() {
+    public void testAllAllowed() {
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
         MockSecurityManager mySecurityManager = new MockSecurityManager();
+        mySecurityManager.addPermission(new AllPermission());
         System.setSecurityManager(mySecurityManager);
 
         try {
@@ -96,23 +93,31 @@ public class SecurityTestCaseForbidden extends TestCase
                     "org.apache.commons.logging.LogFactory");
             Method m = c.getMethod("getLog", new Class[] {Class.class});
             Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
+
+            // Check whether we had any security exceptions so far (which were
+            // caught by the code). We should not, as every secure operation
+            // should be wrapped in an AccessController. Any security exceptions
+            // indicate a path that is missing an appropriate AccessController.
+            //
+            // We don't wait until after the log.info call to get this count
+            // because java.util.logging tries to load a resource bundle, which
+            // requires permission accessClassInPackage. JCL explicitly does not
+            // wrap calls to log methods in AccessControllers because writes to
+            // a log file *should* only be permitted if the original caller is
+            // trusted to access that file. 
+            int untrustedCodeCount = mySecurityManager.getUntrustedCodeCount();
             log.info("testing");
             
             // check that the default map implementation was loaded, as JCL was
             // forbidden from reading the HASHTABLE_IMPLEMENTATION_PROPERTY property.
-            //
-            // The default is either the java Hashtable class (java < 1.2) or the
-            // JCL WeakHashtable (java >= 1.3).
-            System.setSecurityManager(oldSecMgr);
+            System.setSecurityManager(null);
             Field factoryField = c.getDeclaredField("factories");
             factoryField.setAccessible(true);
             Object factoryTable = factoryField.get(null); 
             assertNotNull(factoryTable);
-            String ftClassName = factoryTable.getClass().getName();
-            assertTrue("Custom hashtable unexpectedly used", 
-                    !CustomHashtable.class.getName().equals(ftClassName));
-
-            assertEquals(0, mySecurityManager.getUntrustedCodeCount());
+            assertEquals(CustomHashtable.class.getName(), factoryTable.getClass().getName());
+            
+            assertEquals(0, untrustedCodeCount);
         } catch(Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
