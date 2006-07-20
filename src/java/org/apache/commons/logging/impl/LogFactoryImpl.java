@@ -21,6 +21,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -639,6 +641,53 @@ public class LogFactoryImpl extends LogFactory {
     //  ------------------------------------------------------ Private Methods
     
     /**
+     * Calls LogFactory.directGetContextClassLoader under the control of an
+     * AccessController class. This means that java code running under a
+     * security manager that forbids access to ClassLoaders will still work
+     * if this class is given appropriate privileges, even when the caller
+     * doesn't have such privileges. Without using an AccessController, the
+     * the entire call stack must have the privilege before the call is
+     * allowed.
+     *  
+     * @return the context classloader associated with the current thread,
+     * or null if security doesn't allow it.
+     * 
+     * @throws LogConfigurationException if there was some weird error while
+     * attempting to get the context classloader.
+     * 
+     * @throws SecurityException if the current java security policy doesn't
+     * allow this class to access the context classloader.
+     */
+    private static ClassLoader getContextClassLoaderInternal()
+    throws LogConfigurationException {
+        return (ClassLoader)AccessController.doPrivileged(
+            new PrivilegedAction() {
+                public Object run() {
+                    return LogFactory.directGetContextClassLoader();
+                }
+            });
+    }
+
+    /**
+     * Read the specified system property, using an AccessController so that 
+     * the property can be read if JCL has been granted the appropriate
+     * security rights even if the calling code has not.
+     * <p>
+     * Take care not to expose the value returned by this method to the
+     * calling application in any way; otherwise the calling app can use that
+     * info to access data that should not be available to it.
+     */
+    private static String getSystemProperty(final String key, final String def)
+    throws SecurityException {
+        return (String) AccessController.doPrivileged(
+                new PrivilegedAction() {
+                    public Object run() {
+                        return System.getProperty(key, def);
+                    }
+                });
+    }
+
+    /**
      * Utility method to check whether a particular logging library is
      * present and available for use. Note that this does <i>not</i>
      * affect the future behaviour of this class.
@@ -701,7 +750,11 @@ public class LogFactoryImpl extends LogFactory {
         }
 
         try {
-            String value = System.getProperty(property);
+            // warning: minor security hole here, in that we potentially read a system
+            // property that the caller cannot, then output it in readable form as a
+            // diagnostic message. However it's only ever JCL-specific properties
+            // involved here, so the harm is truly trivial. 
+            String value = getSystemProperty(property, null);
             if (value != null) {
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic("[ENV] Found system property [" + value + "] for " + property);
@@ -901,7 +954,7 @@ public class LogFactoryImpl extends LogFactory {
                           LOG_PROPERTY + "'");
             }
             try {
-                specifiedClass = System.getProperty(LOG_PROPERTY);
+                specifiedClass = getSystemProperty(LOG_PROPERTY, null);
             } catch (SecurityException e) {
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic("No access allowed to system property '" + 
@@ -916,7 +969,7 @@ public class LogFactoryImpl extends LogFactory {
                           LOG_PROPERTY_OLD + "'");
             }
             try {
-                specifiedClass = System.getProperty(LOG_PROPERTY_OLD);
+                specifiedClass = getSystemProperty(LOG_PROPERTY_OLD, null);
             } catch (SecurityException e) {
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic("No access allowed to system property '" + 
@@ -1165,7 +1218,7 @@ public class LogFactoryImpl extends LogFactory {
             return thisClassLoader;
         }
 
-        ClassLoader contextClassLoader = getContextClassLoader();
+        ClassLoader contextClassLoader = getContextClassLoaderInternal();
 
         ClassLoader baseClassLoader = getLowestClassLoader(
                 contextClassLoader, thisClassLoader);
