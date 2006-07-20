@@ -93,6 +93,19 @@ public class SecurityTestCaseAllowed extends TestCase
                     "org.apache.commons.logging.LogFactory");
             Method m = c.getMethod("getLog", new Class[] {Class.class});
             Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
+
+            // Check whether we had any security exceptions so far (which were
+            // caught by the code). We should not, as every secure operation
+            // should be wrapped in an AccessController. Any security exceptions
+            // indicate a path that is missing an appropriate AccessController.
+            //
+            // We don't wait until after the log.info call to get this count
+            // because java.util.logging tries to load a resource bundle, which
+            // requires permission accessClassInPackage. JCL explicitly does not
+            // wrap calls to log methods in AccessControllers because writes to
+            // a log file *should* only be permitted if the original caller is
+            // trusted to access that file. 
+            int untrustedCodeCount = mySecurityManager.getUntrustedCodeCount();
             log.info("testing");
             
             // check that the default map implementation was loaded, as JCL was
@@ -104,7 +117,7 @@ public class SecurityTestCaseAllowed extends TestCase
             assertNotNull(factoryTable);
             assertEquals(CustomHashtable.class.getName(), factoryTable.getClass().getName());
             
-            assertEquals(0, mySecurityManager.getUntrustedCodeCount());
+            assertEquals(0, untrustedCodeCount);
         } catch(Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
