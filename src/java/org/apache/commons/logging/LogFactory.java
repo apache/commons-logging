@@ -49,6 +49,30 @@ import java.util.Properties;
  */
 
 public abstract class LogFactory {
+    // Implementation note re AccessController usage
+    //
+    // It is important to keep code invoked via an AccessController to small
+    // auditable blocks. Such code must carefully evaluate all user input
+    // (parameters, system properties, config file contents, etc). As an 
+    // example, a Log implementation should not write to its logfile
+    // with an AccessController anywhere in the call stack, otherwise an
+    // insecure application could configure the log implementation to write
+    // to a protected file using the privileges granted to JCL rather than
+    // to the calling application.
+    //
+    // Under no circumstance should a non-private method return data that is
+    // retrieved via an AccessController. That would allow an insecure app
+    // to invoke that method and obtain data that it is not permitted to have.
+    //
+    // Invoking user-supplied code with an AccessController set is not a major
+    // issue (eg invoking the constructor of the class specified by 
+    // HASHTABLE_IMPLEMENTATION_PROPERTY). That class will be in a different
+    // trust domain, and therefore must have permissions to do whatever it
+    // is trying to do regardless of the permissions granted to JCL. There is
+    // a slight issue in that untrusted code may point that environment var
+    // to another trusted library, in which case the code runs if both that
+    // lib and JCL have the necessary permissions even when the untrusted
+    // caller does not. That's a pretty hard route to exploit though.
 
 
     // ----------------------------------------------------- Manifest Constants
@@ -318,7 +342,7 @@ public abstract class LogFactory {
         Hashtable result = null;
         String storeImplementationClass;
         try {
-            storeImplementationClass = System.getProperty(HASHTABLE_IMPLEMENTATION_PROPERTY);
+            storeImplementationClass = getSystemProperty(HASHTABLE_IMPLEMENTATION_PROPERTY, null);
         } catch(SecurityException ex) {
             // Permissions don't allow this to be accessed. Default to the "modern"
             // weak hashtable implementation if it is available.
@@ -387,7 +411,7 @@ public abstract class LogFactory {
      */
     public static LogFactory getFactory() throws LogConfigurationException {
         // Identify the class loader we will be using
-        ClassLoader contextClassLoader = getContextClassLoader();
+        ClassLoader contextClassLoader = getContextClassLoaderInternal();
 
         if (contextClassLoader == null) {
             // This is an odd enough situation to report about. This
@@ -453,7 +477,7 @@ public abstract class LogFactory {
         }
         
         try {
-            String factoryClass = System.getProperty(FACTORY_PROPERTY);
+            String factoryClass = getSystemProperty(FACTORY_PROPERTY, null);
             if (factoryClass != null) {
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic(
@@ -755,6 +779,11 @@ public abstract class LogFactory {
      * from starting up. Maybe it would be good to detect this situation and
      * just disable all commons-logging? Not high priority though - as stated
      * above, security policies that prevent classloader access aren't common.
+     * <p>
+     * Note that returning an object fetched via an AccessController would
+     * technically be a security flaw anyway; untrusted code that has access
+     * to a trusted JCL library could use it to fetch the classloader for
+     * a class even when forbidden to do so directly.
      * 
      * @since 1.1
      */
@@ -769,6 +798,33 @@ public abstract class LogFactory {
             }
             throw ex;
         }
+    }
+
+    /**
+     * Returns the current context classloader.
+     * <p>
+     * In versions prior to 1.1, this method did not use an AccessController.
+     * In version 1.1, an AccessController wrapper was incorrectly added to
+     * this method, causing a minor security flaw.
+     * <p>
+     * In version 1.1.1 this change was reverted; this method no longer uses
+     * an AccessController. User code wishing to obtain the context classloader
+     * must invoke this method via AccessController.doPrivileged if it needs
+     * support for that.
+     *  
+     * @return the context classloader associated with the current thread,
+     * or null if security doesn't allow it.
+     * 
+     * @throws LogConfigurationException if there was some weird error while
+     * attempting to get the context classloader.
+     * 
+     * @throws SecurityException if the current java security policy doesn't
+     * allow this class to access the context classloader.
+     */
+    protected static ClassLoader getContextClassLoader()
+        throws LogConfigurationException {
+
+        return directGetContextClassLoader();
     }
 
     /**
@@ -789,9 +845,8 @@ public abstract class LogFactory {
      * @throws SecurityException if the current java security policy doesn't
      * allow this class to access the context classloader.
      */
-    protected static ClassLoader getContextClassLoader()
-        throws LogConfigurationException {
-
+    private static ClassLoader getContextClassLoaderInternal()
+    throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
@@ -804,8 +859,8 @@ public abstract class LogFactory {
      * Return the thread context class loader if available; otherwise return 
      * null. 
      * <p>
-     * Most/all code should call getContextClassLoader rather than calling
-     * this method directly.
+     * Most/all code should call getContextClassLoaderInternal rather than
+     * calling this method directly.
      * <p>
      * The thread context class loader is available for JDK 1.2
      * or later, if certain security conditions are met.
@@ -1481,6 +1536,25 @@ public abstract class LogFactory {
     }
 
     /**
+     * Read the specified system property, using an AccessController so that 
+     * the property can be read if JCL has been granted the appropriate
+     * security rights even if the calling code has not.
+     * <p>
+     * Take care not to expose the value returned by this method to the
+     * calling application in any way; otherwise the calling app can use that
+     * info to access data that should not be available to it.
+     */
+    private static String getSystemProperty(final String key, final String def)
+    throws SecurityException {
+        return (String) AccessController.doPrivileged(
+                new PrivilegedAction() {
+                    public Object run() {
+                        return System.getProperty(key, def);
+                    }
+                });
+    }
+
+    /**
      * Determines whether the user wants internal diagnostic output. If so,
      * returns an appropriate writer object. Users can enable diagnostic
      * output by setting the system property named {@link #DIAGNOSTICS_DEST_PROPERTY} to
@@ -1489,7 +1563,7 @@ public abstract class LogFactory {
     private static void initDiagnostics() {
         String dest;
     	try {
-    	    dest = System.getProperty(DIAGNOSTICS_DEST_PROPERTY);
+    	    dest = getSystemProperty(DIAGNOSTICS_DEST_PROPERTY, null);
     	    if (dest == null) {
     	        return;
     	    }
@@ -1612,6 +1686,9 @@ public abstract class LogFactory {
         }
         
         try {
+            // Deliberately use System.getProperty here instead of getSystemProperty; if
+            // the overall security policy for the calling application forbids access to
+            // these variables then we do not want to output them to the diagnostic stream. 
             logDiagnostic("[ENV] Extension directories (java.ext.dir): " + System.getProperty("java.ext.dir"));
             logDiagnostic("[ENV] Application classpath (java.class.path): " + System.getProperty("java.class.path"));
         } catch(SecurityException ex) {
@@ -1705,19 +1782,6 @@ public abstract class LogFactory {
         }
     }
 
-    // called from static class initialiser, ie when class is loaded
-    private static void initClass() {
-        // note: it's safe to call methods before initDiagnostics (though
-        // diagnostic output gets discarded).
-        thisClassLoader = getClassLoader(LogFactory.class);
-        initDiagnostics();
-        logClassLoaderEnvironment(LogFactory.class);
-        factories = createFactoryStore();
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("BOOTSTRAP COMPLETED");
-        }
-    }
-
     // ----------------------------------------------------------------------
     // Static initialiser block to perform initialisation at class load time.
     //
@@ -1738,12 +1802,14 @@ public abstract class LogFactory {
     // ----------------------------------------------------------------------
 
     static {
-        AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    initClass();
-                    return null;
-                }
-            });
+        // note: it's safe to call methods before initDiagnostics (though
+        // diagnostic output gets discarded).
+        thisClassLoader = getClassLoader(LogFactory.class);
+        initDiagnostics();
+        logClassLoaderEnvironment(LogFactory.class);
+        factories = createFactoryStore();
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("BOOTSTRAP COMPLETED");
+        }
     }
 }
