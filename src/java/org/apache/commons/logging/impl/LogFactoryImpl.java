@@ -689,6 +689,28 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
+     * Fetch the parent classloader of a specified classloader.
+     * <p>
+     * If a SecurityException occurs, null is returned.
+     * <p>
+     * Note that this method is non-static merely so logDiagnostic is available.
+     */
+    private ClassLoader getParentClassLoader(final ClassLoader cl) {
+        try {
+            return (ClassLoader)AccessController.doPrivileged(
+                    new PrivilegedAction() {
+                        public Object run() {
+                            return cl.getParent();
+                        }
+                    });
+        } catch(SecurityException ex) {
+            logDiagnostic("[SECURITY] Unable to obtain parent classloader");
+            return null;
+        }
+        
+    }
+
+    /**
      * Utility method to check whether a particular logging library is
      * present and available for use. Note that this does <i>not</i>
      * affect the future behaviour of this class.
@@ -1161,7 +1183,8 @@ public class LogFactoryImpl extends LogFactory {
             }
             
             // try the parent classloader
-            currentCL = currentCL.getParent();
+            // currentCL = currentCL.getParent();
+            currentCL = getParentClassLoader(currentCL);
         }
 
         if ((logAdapter != null) && affectState) {
