@@ -35,7 +35,7 @@ public class ChildClasspathStandardTestCase {
      */
     public static Test suite() throws Exception {
         PathableClassLoader parent = new PathableClassLoader(null);
-        parent.useSystemLoader("junit.");
+        parent.useExplicitLoader("junit.", Test.class.getClassLoader());
 
         PathableClassLoader child = new PathableClassLoader(parent);
         child.addLogicalLib("testclasses");

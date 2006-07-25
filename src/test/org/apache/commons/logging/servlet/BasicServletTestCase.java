@@ -44,7 +44,7 @@ public class BasicServletTestCase extends TestCase {
         // that class is deployed via a shared classloader.
 
         PathableClassLoader parent = new PathableClassLoader(null);
-        parent.useSystemLoader("junit.");
+        parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("servletapi");
 

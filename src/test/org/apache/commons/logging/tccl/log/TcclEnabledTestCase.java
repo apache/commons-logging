@@ -55,7 +55,7 @@ public class TcclEnabledTestCase extends TestCase {
         // class through a dummy loader though this is not absolutely
         // necessary...
         PathableClassLoader dummy = new PathableClassLoader(null);
-        dummy.useSystemLoader("junit.");
+        dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
         
@@ -71,7 +71,7 @@ public class TcclEnabledTestCase extends TestCase {
         PathableClassLoader emptyLoader = new PathableClassLoader(null);
         
         PathableClassLoader parentLoader = new PathableClassLoader(null);
-        parentLoader.useSystemLoader("junit.");
+        parentLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         parentLoader.addLogicalLib("commons-logging");
         parentLoader.addLogicalLib("testclasses");
         // hack to ensure that the testcase classloader can't see

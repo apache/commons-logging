@@ -34,7 +34,7 @@ public class AppClasspathStandardTestCase {
      */
     public static Test suite() throws Exception {
         PathableClassLoader loader = new PathableClassLoader(null);
-        loader.useSystemLoader("junit.");
+        loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("log4j12");
         loader.addLogicalLib("commons-logging");

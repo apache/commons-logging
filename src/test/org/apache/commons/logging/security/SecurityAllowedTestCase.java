@@ -57,7 +57,7 @@ public class SecurityAllowedTestCase extends TestCase
      */
     public static Test suite() throws Exception {
         PathableClassLoader parent = new PathableClassLoader(null);
-        parent.useSystemLoader("junit.");
+        parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
 

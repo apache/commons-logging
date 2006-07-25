@@ -67,7 +67,7 @@ public class StandardTestCase extends AbstractLogTest {
         Class thisClass = StandardTestCase.class;
 
         PathableClassLoader loader = new PathableClassLoader(null);
-        loader.useSystemLoader("junit.");
+        loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
         loader.addLogicalLib("logkit");

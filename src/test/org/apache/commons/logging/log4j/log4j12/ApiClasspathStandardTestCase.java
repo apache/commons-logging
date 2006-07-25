@@ -36,7 +36,7 @@ public class ApiClasspathStandardTestCase {
      */
     public static Test suite() throws Exception {
         PathableClassLoader parent = new PathableClassLoader(null);
-        parent.useSystemLoader("junit.");
+        parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging-api");
 
         PathableClassLoader child = new PathableClassLoader(parent);
