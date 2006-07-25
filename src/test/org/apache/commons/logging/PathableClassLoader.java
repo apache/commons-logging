@@ -72,9 +72,27 @@ public class PathableClassLoader extends URLClassLoader {
      * See setParentFirst.
      */
     private boolean parentFirst = true;
-    
+
     /**
      * Constructor.
+     * <p>
+     * Often, null is passed as the parent, ie the parent of the new
+     * instance is the bootloader. This ensures that the classpath is
+     * totally clean; nothing but the standard java library will be
+     * present.
+     * <p>
+     * When using a null parent classloader with a junit testcase, it *is*
+     * necessary for the junit library to also be visible. In this case, it
+     * is recommended that the following code be used:
+     * <pre>
+     * pathableLoader.useExplicitLoader(
+     *   "junit.",
+     *   junit.framework.Test.class.getClassLoader());
+     * </pre>
+     * Note that this works regardless of whether junit is on the system
+     * classpath, or whether it has been loaded by some test framework that
+     * creates its own classloader to run unit tests in (eg maven2's
+     * Surefire plugin).
      */
     public PathableClassLoader(ClassLoader parent) {
         super(NO_URLS, parent);
@@ -125,6 +143,28 @@ public class PathableClassLoader extends URLClassLoader {
 
     /**
      * Specify a classloader to use for specific java packages.
+     * <p>
+     * The specified classloader is normally a loader that is NOT
+     * an ancestor of this classloader. In particular, this loader
+     * may have the bootloader as its parent, but be configured to 
+     * see specific other classes (eg the junit library loaded
+     * via the system classloader).
+     * <p>
+     * The differences between using this method, and using
+     * addLogicalLib are:
+     * <ul>
+     * <li>If code calls getClassLoader on a class loaded via
+     * "lookaside", then traces up its inheritance chain, it
+     * will see the "real" classloaders. When the class is remapped
+     * into this classloader via addLogicalLib, the classloader
+     * chain seen is this object plus ancestors.
+     * <li>If two different jars contain classes in the same
+     * package, then it is not possible to load both jars into
+     * the same "lookaside" classloader (eg the system classloader)
+     * then map one of those subsets from here. Of course they could
+     * be loaded into two different "lookaside" classloaders and
+     * then a prefix used to map from here to one of those classloaders.
+     * </ul>
      */
     public void useExplicitLoader(String prefix, ClassLoader loader) {
         if (lookasides == null) {
