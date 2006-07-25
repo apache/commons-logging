@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>commons-logging</groupId>
+  <artifactId>commons-logging</artifactId>
+  <name>Logging</name>
+  <version>1.1.1</version>
+  <description>Commons Logging is a thin adapter allowing configurable bridging to other,
+    well known logging systems.</description>
+  <url>http://jakarta.apache.org/commons/logging</url>
+
+  <issueManagement>
+    <url>http://issues.apache.org/jira/</url>
+  </issueManagement>
+
+  <ciManagement>
+    <notifiers>
+      <notifier>
+        <configuration>
+          <address>commons-dev@jakarta.apache.org</address>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+
+  <inceptionYear>2001</inceptionYear>
+
+  <mailingLists>
+    <mailingList>
+      <name>Commons Dev List</name>
+      <subscribe>commons-dev-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>commons-dev-unsubscribe@jakarta.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-commons-dev/</archive>
+      <otherArchives>
+        <archive>http://www.mail-archive.com/commons-dev%40jakarta.apache.org/</archive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>Commons User List</name>
+      <subscribe>commons-user-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>commons-user-unsubscribe@jakarta.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-commons-user/</archive>
+      <otherArchives>
+        <archive>http://www.mail-archive.com/commons-user%40jakarta.apache.org/</archive>
+      </otherArchives>
+    </mailingList>
+  </mailingLists>
+  <developers>
+    <developer>
+      <id>morgand</id>
+      <name>Morgan Delagrange</name>
+      <email>morgand at apache dot org</email>
+      <organization>Apache</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>rwaldhoff</id>
+      <name>Rodney Waldhoff</name>
+      <email>rwaldhoff at apache org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>craigmcc</id>
+      <name>Craig McClanahan</name>
+      <email>craigmcc at apache org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>sanders</id>
+      <name>Scott Sanders</name>
+      <email>sanders at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>rdonkin</id>
+      <name>Robert Burrell Donkin</name>
+      <email>rdonkin at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>donaldp</id>
+      <name>Peter Donald</name>
+      <email>donaldp at apache dot org</email>
+      <organization></organization>
+    </developer>
+    <developer>
+      <id>costin</id>
+      <name>Costin Manolache</name>
+      <email>costin at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>rsitze</id>
+      <name>Richard Sitze</name>
+      <email>rsitze at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>baliuka</id>
+      <name>Juozas Baliuka</name>
+      <email>baliuka@apache.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>skitching</id>
+      <name>Simon Kitching</name>
+      <email>skitching@apache.org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>dennisl</id>
+      <name>Dennis Lundberg</name>
+      <email>dennisl@apache.org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>bstansberry</id>
+      <name>Brian Stansberry</name>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>/LICENSE.txt</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</connection>
+    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</url>
+  </scm>
+
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>http://jakarta.apache.org</url>
+  </organization>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+
+    <plugins>
+      <plugin>
+        <!--
+          - We want to create three jarfiles here; normal, -api and -adapters.
+          - The default jar:jar target is used to create the normal one, and
+          - two additional executions are defined to build the others.
+          -
+          - The custom test framework also requires the unit test code to be
+          - in a jarfile so it can control its place in the classpath.
+          -->
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>apijar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <jarName>${project.artifactId}-api-${project.version}</jarName>
+              <excludes>
+                <exclude>org/apache/commons/logging/impl/Log4JLogger.class</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>adaptersjar</id>
+            <phase>package</phase>
+            <configuration>
+              <jarName>${project.artifactId}-adapters-${project.version}</jarName>
+              <excludes>
+                <exclude>org/apache/commons/logging/Log.class</exclude>
+                <exclude>org/apache/commons/logging/LogFactory.class</exclude>
+                <exclude>org/apache/commons/logging/impl/LogFactoryImpl.class</exclude>
+                <exclude>org/apache/commons/logging/impl/WeakHashtable.class</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>testjar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+            <configuration>
+              <jarName>commons-logging</jarName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!--
+          - Many of JCL's tests use tricky techniques to place the generated
+          - JCL jarfiles on the classpath in various configurations. This means
+          - that the tests must be run *after* the "package" build phase. The
+          - normal test phase is therefore disabled here, and the test plugin
+          - rebound to the "integration-test" phase instead.
+          -->
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/AvalonLoggerTestCase.java</include>
+          </includes>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**/*TestCase.java</include>
+              </includes>
+              <systemProperties>
+                <property>
+                  <name>commons-logging</name>
+                  <value>target/${project.build.finalName}.jar</value>
+                </property>
+                <property>
+                  <name>commons-logging-api</name>
+                  <value>target/${project.artifactId}-api-${project.version}.jar</value>
+                </property>
+                <property>
+                  <name>commons-logging-adapters</name>
+                  <value>target/${project.artifactId}-adapters-${project.version}.jar</value>
+                </property>
+                <property>
+                  <name>testclasses</name>
+                  <value>target/commons-logging-tests.jar</value>
+                </property>
+              </systemProperties>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptor>src/maven/assembly/bin-distro.xml</descriptor>
+        </configuration>
+      </plugin>
+
+          <!--
+      <plugin>
+        <artifactId>maven-xdoc-plugin</artifactId>
+        <version>1.9.2</version>
+        <configuration>
+          <comment>&lt;strong>Site Only&lt;/strong> - v1.9.2 (minimum)</comment>
+        </configuration>
+      </plugin>
+      -->
+    </plugins>
+  </build>
+  
+  <profiles>
+    <profile>
+      <id>build</id>
+      <activation>
+        <file>
+          <exists>commons-logging-README.txt</exists>
+        </file>
+      </activation>
+
+	  <dependencies>
+	    <dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	      <version>3.8.1</version>
+	      <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>log4j</groupId>
+	      <artifactId>log4j</artifactId>
+	      <version>1.2.12</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>logkit</groupId>
+	      <artifactId>logkit</artifactId>
+	      <version>1.0.1</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>avalon-framework</groupId>
+	      <artifactId>avalon-framework</artifactId>
+	      <version>4.1.3</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>javax.servlet</groupId>
+	      <artifactId>servlet-api</artifactId>
+	      <version>2.3</version>
+	    </dependency>
+	  </dependencies>
+    </profile>
+
+    <profile>
+      <id>use</id>
+      <activation>
+        <file>
+          <missing>commons-logging-README.txt</missing>
+        </file>
+      </activation>
+
+	  <dependencies>
+	    <dependency>
+	      <groupId>junit</groupId>
+	      <artifactId>junit</artifactId>
+	      <version>3.8.1</version>
+	      <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>log4j</groupId>
+	      <artifactId>log4j</artifactId>
+	      <version>1.2.12</version>
+          <scope>optional</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>logkit</groupId>
+	      <artifactId>logkit</artifactId>
+	      <version>1.0.1</version>
+	      <scope>optional</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>avalon-framework</groupId>
+	      <artifactId>avalon-framework</artifactId>
+	      <version>4.1.3</version>
+	      <scope>optional</scope>
+	    </dependency>
+	    <dependency>
+	      <groupId>javax.servlet</groupId>
+	      <artifactId>servlet-api</artifactId>
+	      <version>2.3</version>
+	      <scope>optional</scope>
+	    </dependency>
+	  </dependencies>
+    </profile>
+  </profiles>
+
+
+  <distributionManagement>
+    <repository>
+      <id>default</id>
+      <name>Default Repository</name>
+      <url>file:///www/jakarta.apache.org/builds/jakarta-commons/logging/</url>
+    </repository>
+    <site>
+      <id>default</id>
+      <name>Default Site</name>
+      <url>scp://cvs.apache.org//www/jakarta.apache.org/commons/logging/</url>
+    </site>
+  </distributionManagement>
+</project>
