@@ -32,8 +32,8 @@
   </description>
   <logo>/images/logo.png</logo>
   
-  <url>http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</url>
-  <package>org.apache.commons.${pom.artifactId.substring(8)}</package>
+  <url>http://jakarta.apache.org/commons/logging</url>
+  <package>org.apache.commons.logging</package>
 
   <organization>
     <name>The Apache Software Foundation</name>
@@ -52,13 +52,12 @@
   <gumpRepositoryId>jakarta</gumpRepositoryId>
   <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</siteDirectory>
-  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/${pom.artifactId.substring(8)}/</distributionDirectory>
+  <siteDirectory>/www/jakarta.apache.org/commons/logging/</siteDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/logging</distributionDirectory>
   
   <repository>
-    <!--<connection>scm:cvs:${logging.cvs}:jakarta-commons/logging/</connection>-->
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/${pom.artifactId.substring(8)}/trunk</connection>
-    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/${pom.artifactId.substring(8)}/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</connection>
+    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</url>
   </repository>
   
   <versions>
