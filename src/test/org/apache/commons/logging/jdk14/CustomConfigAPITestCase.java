@@ -41,7 +41,8 @@ public class CustomConfigAPITestCase extends CustomConfigTestCase {
      */
     public static Test suite() throws Exception {
         PathableClassLoader parent = new PathableClassLoader(null);
-        parent.useSystemLoader("junit.");
+        parent.useExplicitLoader("junit.", Test.class.getClassLoader());
+
         // the TestHandler class must be accessable from the System classloader
         // in order for java.util.logging.LogManager.readConfiguration to
         // be able to instantiate it. And this test case must see the same

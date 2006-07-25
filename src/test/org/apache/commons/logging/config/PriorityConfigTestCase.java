@@ -62,7 +62,7 @@ public class PriorityConfigTestCase extends TestCase {
         // class through a dummy loader though this is not absolutely
         // necessary...
         PathableClassLoader dummy = new PathableClassLoader(null);
-        dummy.useSystemLoader("junit.");
+        dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
         
@@ -77,7 +77,7 @@ public class PriorityConfigTestCase extends TestCase {
         // so we can check that the first one in the classpath is
         // used.
         PathableClassLoader containerLoader = new PathableClassLoader(null);
-        containerLoader.useSystemLoader("junit.");
+        containerLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         containerLoader.addLogicalLib("commons-logging");
         
         URL pri10URL = new URL(baseUrl, "priority10/");
