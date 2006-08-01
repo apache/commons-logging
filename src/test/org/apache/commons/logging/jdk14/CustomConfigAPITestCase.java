@@ -19,8 +19,8 @@ package org.apache.commons.logging.jdk14;
 
 import junit.framework.Test;
 
-import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.PathableClassLoader;
+import org.apache.commons.logging.PathableTestSuite;
 
 
 /**
@@ -30,11 +30,9 @@ import org.apache.commons.logging.PathableClassLoader;
 
 public class CustomConfigAPITestCase extends CustomConfigTestCase {
 
-
     public CustomConfigAPITestCase(String name) {
         super(name);
     }
-
 
     /**
      * Return the tests included in this test suite.
@@ -48,7 +46,9 @@ public class CustomConfigAPITestCase extends CustomConfigTestCase {
         // be able to instantiate it. And this test case must see the same
         // class in order to be able to access its data. Yes this is ugly
         // but the whole jdk14 API is a ******* mess anyway.
-        parent.useSystemLoader("org.apache.commons.logging.jdk14.TestHandler");
+        ClassLoader scl = ClassLoader.getSystemClassLoader();
+        loadTestHandler(HANDLER_NAME, scl);
+        parent.useExplicitLoader(HANDLER_NAME, scl);
         parent.addLogicalLib("commons-logging-api");
 
         PathableClassLoader child = new PathableClassLoader(parent);

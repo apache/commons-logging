@@ -49,7 +49,9 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
         // be able to instantiate it. And this test case must see the same
         // class in order to be able to access its data. Yes this is ugly
         // but the whole jdk14 API is a ******* mess anyway.
-        parent.useSystemLoader("org.apache.commons.logging.jdk14.TestHandler");
+        ClassLoader scl = ClassLoader.getSystemClassLoader();
+        loadTestHandler(HANDLER_NAME, scl);
+        parent.useExplicitLoader(HANDLER_NAME, scl);
         parent.addLogicalLib("commons-logging");
 
         PathableClassLoader child = new PathableClassLoader(parent);
