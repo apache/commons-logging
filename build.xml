@@ -204,7 +204,7 @@
   <property name="test.sysprops.log4j12" value="${log4j12.jar}"/>
   <property name="test.sysprops.log4j13" value="${log4j13.jar}"/>
   <property name="test.sysprops.logkit" value="${logkit.jar}"/>
-  <property name="test.sysprops.servletapi" value="${servletapi.jar}"/>
+  <property name="test.sysprops.servlet-api" value="${servletapi.jar}"/>
   <property name="test.sysprops.commons-logging" value="${build.home}/${core.jar.name}"/>
   <property name="test.sysprops.commons-logging-api" value="${build.home}/${api.jar.name}"/>
   <property name="test.sysprops.commons-logging-adapters" value="${build.home}/${adapters.jar.name}"/>
