@@ -245,6 +245,11 @@ public class PathableClassLoader extends URLClassLoader {
      * jarfile in the path whose name starts with the logicalLib string is
      * considered a match. For example, passing "foo" will match a url
      * of <code>file:///some/where/foo-2.7.jar</code>.
+     * <p>
+     * When multiple classpath entries match the specified logicalLib string,
+     * the one with the shortest filename component is returned. This means that
+     * if "foo-1.1.jar" and "foobar-1.1.jar" are in the path, then a logicalLib
+     * name of "foo" will match the first entry above.
      */
     private URL libFromClasspath(String logicalLib) {
         ClassLoader cl = this.getClass().getClassLoader();
@@ -254,6 +259,8 @@ public class PathableClassLoader extends URLClassLoader {
         
         URLClassLoader ucl = (URLClassLoader) cl;
         URL[] path = ucl.getURLs();
+        URL shortestMatch = null;
+        int shortestMatchLen = Integer.MAX_VALUE;
         for(int i=0; i<path.length; ++i) {
             URL u = path[i];
             
@@ -270,16 +277,17 @@ public class PathableClassLoader extends URLClassLoader {
             }
             
             if (filename.startsWith(logicalLib)) {
-                System.out.println("found lib " + logicalLib + " at url " + u);
-                return u;
-            } else {
-                System.out.println("lib " + logicalLib + " does not match [" + filename + "] at url " + u);
+                // ok, this is a candidate
+                if (filename.length() < shortestMatchLen) {
+                    shortestMatch = u;
+                    shortestMatchLen = filename.length();
+                }
             }
         }
         
-        return null;
-        
+        return shortestMatch;
     }
+
     /**
      * Override ClassLoader method.
      * <p>
