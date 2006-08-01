@@ -135,6 +135,9 @@ public class PathableClassLoader extends URLClassLoader {
      * <pre>
      * useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
      * </pre>
+     * <p>
+     * Of course, this assumes that the classes of interest are already
+     * in the classpath of the system classloader.
      */
     public void useSystemLoader(String prefix) {
         useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
@@ -192,6 +195,12 @@ public class PathableClassLoader extends URLClassLoader {
      * be found. Typically this is the name of a jar file, or a directory
      * containing class files.
      * <p>
+     * If there is no system property, but the classloader that loaded
+     * this class is a URLClassLoader then the set of URLs that the
+     * classloader uses for its classpath is scanned; any jar in the
+     * URL set whose name starts with the specified string is added to
+     * the classpath managed by this instance. 
+     * <p>
      * Using logical library names allows the calling code to specify its
      * desired classpath without knowing the exact location of the necessary
      * classes. 
@@ -223,6 +232,20 @@ public class PathableClassLoader extends URLClassLoader {
             + " as a System property.");
     }
 
+    /**
+     * If the classloader that loaded this class has this logical lib in its
+     * path, then return the matching URL otherwise return null.
+     * <p>
+     * This only works when the classloader loading this class is an instance
+     * of URLClassLoader and thus has a getURLs method that returns the classpath
+     * it uses when loading classes. However in practice, the vast majority of the
+     * time this type is the classloader used.
+     * <p>
+     * The classpath of the classloader for this instance is scanned, and any
+     * jarfile in the path whose name starts with the logicalLib string is
+     * considered a match. For example, passing "foo" will match a url
+     * of <code>file:///some/where/foo-2.7.jar</code>.
+     */
     private URL libFromClasspath(String logicalLib) {
         ClassLoader cl = this.getClass().getClassLoader();
         if (cl instanceof URLClassLoader == false) {
