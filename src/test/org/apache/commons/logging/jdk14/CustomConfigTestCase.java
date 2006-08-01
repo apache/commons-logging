@@ -18,7 +18,9 @@
 package org.apache.commons.logging.jdk14;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -27,7 +29,9 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
+
+import org.apache.commons.logging.PathableClassLoader;
+import org.apache.commons.logging.PathableTestSuite;
 
 
 /**
@@ -41,6 +45,8 @@ import junit.framework.TestSuite;
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 
+    protected static final String HANDLER_NAME 
+        = "org.apache.commons.logging.jdk14.TestHandler";
 
     // ----------------------------------------------------------- Constructors
 
@@ -100,6 +106,65 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     /**
+     * Given the name of a class that is somewhere in the classpath of the provided
+     * classloader, return the contents of the corresponding .class file.
+     */
+    protected static byte[] readClass(String name, ClassLoader srcCL) throws Exception {
+        String resName = name.replace('.', '/') + ".class";
+        System.err.println("Trying to load resource [" + resName + "]");
+        InputStream is = srcCL.getResourceAsStream(resName);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        System.err.println("Reading resource [" + resName + "]");
+        byte[] buf = new byte[1000];
+        for(;;) {
+            int read = is.read(buf);
+            if (read <= 0) {
+                break;
+            }
+            baos.write(buf, 0, read);
+        }
+        is.close();
+        return baos.toByteArray();
+    }
+
+    /**
+     * Make a class available in the system classloader even when its classfile is
+     * not present in the classpath configured for that classloader. This only
+     * works for classes for which all dependencies are already loaded in
+     * that classloader.
+     */
+    protected static void loadTestHandler(String className, ClassLoader targetCL) {
+        try {
+            targetCL.loadClass(className);
+            // fail("Class already in target classloader");
+            return;
+        } catch(ClassNotFoundException ex) {
+            // ok, go ahead and load it
+        }
+
+        try {
+            ClassLoader srcCL = CustomConfigAPITestCase.class.getClassLoader();
+            byte[] classData = readClass(className, srcCL);
+
+            Class[] params = new Class[] {
+                String.class, classData.getClass(), 
+                Integer.TYPE, Integer.TYPE};
+            Method m = ClassLoader.class.getDeclaredMethod("defineClass", params);
+
+            Object[] args = new Object[4];
+            args[0] = className;
+            args[1] = classData;
+            args[2] = new Integer(0);
+            args[3] = new Integer(classData.length);
+            m.setAccessible(true);
+            m.invoke(targetCL, args);
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("Unable to load class " + className);
+        }
+    }
+
+    /**
      * Set up instance variables required by this test case.
      */
     public void setUp() throws Exception {
@@ -116,18 +181,22 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        /*
-        PathableClassLoader loader = new PathableClassLoader(null);
-        loader.useSystemLoader("junit.");
+        PathableClassLoader cl = new PathableClassLoader(null);
+        cl.useExplicitLoader("junit.", Test.class.getClassLoader());
 
-        PathableClassLoader child = new PathableClassLoader(parent);
-        child.addLogicalLib("testclasses");
-        child.addLogicalLib("commons-logging");
+        // the TestHandler class must be accessable from the System classloader
+        // in order for java.util.logging.LogManager.readConfiguration to
+        // be able to instantiate it. And this test case must see the same
+        // class in order to be able to access its data. Yes this is ugly
+        // but the whole jdk14 API is a ******* mess anyway.
+        ClassLoader scl = ClassLoader.getSystemClassLoader();
+        loadTestHandler(HANDLER_NAME, scl);
+        cl.useExplicitLoader(HANDLER_NAME, scl);
+        cl.addLogicalLib("commons-logging");
+        cl.addLogicalLib("testclasses");
         
-        Class testClass = child.loadClass(CustomConfigTestCase.class.getName());
-        return new PathableTestSuite(testClass, child);
-        */
-        return new TestSuite(CustomConfigTestCase.class);
+        Class testClass = cl.loadClass(CustomConfigTestCase.class.getName());
+        return new PathableTestSuite(testClass, cl);
     }
 
     /**
