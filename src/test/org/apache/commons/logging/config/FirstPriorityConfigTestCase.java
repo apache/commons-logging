@@ -62,13 +62,9 @@ public class FirstPriorityConfigTestCase extends TestCase {
         String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         URL baseUrl = dummy.findResource(thisClassPath);
 
-        // Now set up the desired classloader hierarchy. We'll put a config
-        // file of priority=10 in the container path, and ones of both
-        // "no priority" and priority=20 in the webapp path.
-        //
-        // A second properties file with priority=20 is also added,
-        // so we can check that the first one in the classpath is
-        // used.
+        // Now set up the desired classloader hierarchy. We'll put JCL
+        // in the container path, the testcase in a webapp path, and
+        // both config files into the webapp path too.
         PathableClassLoader containerLoader = new PathableClassLoader(null);
         containerLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         containerLoader.addLogicalLib("commons-logging");
@@ -110,6 +106,19 @@ public class FirstPriorityConfigTestCase extends TestCase {
      */
     public void testPriority() throws Exception {
         LogFactory instance = LogFactory.getFactory();
+
+        ClassLoader thisClassLoader = this.getClass().getClassLoader();
+        ClassLoader lfClassLoader = instance.getClass().getClassLoader();
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+
+        // context classloader should be thisClassLoader
+        assertEquals(thisClassLoader, contextClassLoader);
+        
+        // lfClassLoader should be parent of this classloader
+        assertEquals(lfClassLoader, thisClassLoader.getParent());
+        assertEquals(PathableClassLoader.class.getName(),
+                lfClassLoader.getClass().getName());
+
         String id = (String) instance.getAttribute("configId");
         assertEquals("Correct config file loaded", "priority20", id );
     }
