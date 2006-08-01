@@ -144,18 +144,29 @@
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
 
+    <testResources>
+      <testResource>
+        <directory>src/test</directory>
+        <filtering>false</filtering>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </testResource>
+    </testResources>
+
     <plugins>
-        <!--
-          - The custom test framework requires the unit test code to be
-          - in a jarfile so it can control its place in the classpath.
-          -->
+
+      <!--
+        - The custom test framework requires the unit test code to be
+        - in a jarfile so it can control its place in the classpath.
+        -->
       <plugin>      
         <artifactId>maven-jar-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>testjar</id>
-              <phase>package</phase>
-              <goals>
+        <executions>
+          <execution>
+            <id>testjar</id>
+            <phase>package</phase>
+            <goals>
               <goal>test-jar</goal>
             </goals>
             <configuration>
@@ -260,6 +271,12 @@
                 <include>**/*TestCase.java</include>
               </includes>
               <systemProperties>
+                <!--
+                <property>
+                  <name>org.apache.commons.logging.diagnostics.dest</name>
+                  <value>STDOUT</value>
+                </property>
+                -->
                 <property>
                   <name>commons-logging</name>
                   <value>target/${project.build.finalName}.jar</value>
