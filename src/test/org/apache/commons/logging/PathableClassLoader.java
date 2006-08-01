@@ -197,22 +197,66 @@ public class PathableClassLoader extends URLClassLoader {
      * classes. 
      */
     public void addLogicalLib(String logicalLib) {
+        // first, check the system properties
         String filename = System.getProperty(logicalLib);
-        if (filename == null) {
-            throw new UnknownError(
-                "Logical lib [" + logicalLib + "] is not defined"
-                + " as a System property.");
+        if (filename != null) {
+            try {
+                URL libUrl = new File(filename).toURL();
+                addURL(libUrl);
+                return;
+            } catch(java.net.MalformedURLException e) {
+                throw new UnknownError(
+                    "Invalid file [" + filename + "] for logical lib [" + logicalLib + "]");
+            }
         }
 
-        try {
-            URL url = new File(filename).toURL();
-            addURL(url);
-        } catch(java.net.MalformedURLException e) {
-            throw new UnknownError(
-                "Invalid file [" + filename + "] for logical lib [" + logicalLib + "]");
+        // now check the classpath for a similar-named lib
+        URL libUrl = libFromClasspath(logicalLib);
+        if (libUrl != null) {
+            addURL(libUrl);
+            return;
         }
+
+        // lib not found
+        throw new UnknownError(
+            "Logical lib [" + logicalLib + "] is not defined"
+            + " as a System property.");
     }
-    
+
+    private URL libFromClasspath(String logicalLib) {
+        ClassLoader cl = this.getClass().getClassLoader();
+        if (cl instanceof URLClassLoader == false) {
+            return null;
+        }
+        
+        URLClassLoader ucl = (URLClassLoader) cl;
+        URL[] path = ucl.getURLs();
+        for(int i=0; i<path.length; ++i) {
+            URL u = path[i];
+            
+            // extract the filename bit on the end of the url
+            String filename = u.toString();
+            if (!filename.endsWith(".jar")) {
+                // not a jarfile, ignore it
+                continue;
+            }
+
+            int lastSlash = filename.lastIndexOf('/');
+            if (lastSlash >= 0) {
+                filename = filename.substring(lastSlash+1);
+            }
+            
+            if (filename.startsWith(logicalLib)) {
+                System.out.println("found lib " + logicalLib + " at url " + u);
+                return u;
+            } else {
+                System.out.println("lib " + logicalLib + " does not match [" + filename + "] at url " + u);
+            }
+        }
+        
+        return null;
+        
+    }
     /**
      * Override ClassLoader method.
      * <p>
