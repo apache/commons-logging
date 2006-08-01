@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -87,7 +89,22 @@ public class ChildFirstTestCase extends TestCase {
         // and return our custom TestSuite class
         return new PathableTestSuite(testClass, context);
     }
-    
+
+    /**
+     * Utility method to return the set of all classloaders in the
+     * parent chain starting from the one that loaded the class for
+     * this object instance.
+     */
+    private Set getAncestorCLs() {
+        Set s = new HashSet();
+        ClassLoader cl = this.getClass().getClassLoader();
+        while (cl != null) {
+            s.add(cl);
+            cl = cl.getParent();
+        }
+        return s;
+    }
+
     /**
      * Test that the classloader hierarchy is as expected, and that
      * calling loadClass() on various classloaders works as expected.
@@ -133,11 +150,13 @@ public class ChildFirstTestCase extends TestCase {
                 PathableClassLoader.class.getName().equals(
                         systemLoader.getClass().getName()));
 
-        // junit classes should be visible; their classloader is system.
-        // this will of course throw an exception if not found.
+        // junit classes should be visible; their classloader is not
+        // in the hierarchy of parent classloaders for this class,
+        // though it is accessable due to trickery in the PathableClassLoader.
         Class junitTest = contextLoader.loadClass("junit.framework.Test");
-        assertSame("Junit not loaded via systemloader",
-                systemLoader, junitTest.getClassLoader());
+        Set ancestorCLs = getAncestorCLs();
+        assertFalse("Junit not loaded by ancestor classloader", 
+                ancestorCLs.contains(junitTest.getClassLoader()));
 
         // jcl api classes should be visible only via the parent
         Class logClass = contextLoader.loadClass("org.apache.commons.logging.Log");
