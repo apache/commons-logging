@@ -270,7 +270,7 @@ Runtime Optional.
     <unitTest>
       <!--
 At the moment there are problems running the unit tests under maven.
-the unit tests run by custom ant target which perform configuration
+The unit tests are run by custom ant targets which perform configuration
 before the tests are run.
 There is no easy way to run these under maven at the moment.
       -->
