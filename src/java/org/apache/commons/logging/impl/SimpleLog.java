@@ -100,7 +100,15 @@ public class SimpleLog implements Log, Serializable {
     static protected boolean showDateTime = false;
     /** The date and time format to use in the log message */
     static protected String dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
-    /** Used to format times */
+
+    /**
+     * Used to format times.
+     * <p>
+     * Any code that accesses this object should first obtain a lock on it,
+     * ie use synchronized(dateFormatter); this requirement was introduced
+     * in 1.1.1 to fix an existing thread safety bug (SimpleDateFormat.format
+     * is not thread-safe).
+     */
     static protected DateFormat dateFormatter = null;
 
     // ---------------------------------------------------- Log Level Constants
@@ -178,7 +186,6 @@ public class SimpleLog implements Log, Serializable {
             }
         }
     }
-
 
     // ------------------------------------------------------------- Attributes
 
@@ -281,7 +288,12 @@ public class SimpleLog implements Log, Serializable {
 
         // Append date-time if so configured
         if(showDateTime) {
-            buf.append(dateFormatter.format(new Date()));
+            Date now = new Date();
+            String dateText;
+            synchronized(dateFormatter) {
+                dateText = dateFormatter.format(now);
+            }
+            buf.append(dateText);
             buf.append(" ");
         }
 
