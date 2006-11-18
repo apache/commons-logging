@@ -310,10 +310,27 @@
     </plugins>
   </build>
   
+  <!--
+    - Special dependency handling follows. What we really want for JCL is to declare
+    - dependencies that are required when compiling but optional at runtime.
+    - Unfortunately Maven2 doesn't support this directly; if we use normal dependency
+    - declarations then *users* of JCL will get all the supported logging libs 
+    - pulled into their project by default, but if we declare them optional then
+    - when JCL is *compiled* we get none of them in the classpath.
+    - A workaround is used here where two profiles are declared; one is active only
+    - when compiling and has "normal" dependencies while the other is active when
+    - other apps declare a dependency on this pom and as "optional" dependencies.
+    -->
   <profiles>
     <profile>
       <id>build</id>
       <activation>
+        <!--
+          - If this file is present in the current directory, then assume that
+          - someone has checked out the JCL source code and is building it. In
+          - this case declare "normal" dependencies so the logging adapters
+          - can be compiled.
+          -->
         <file>
           <exists>commons-logging-README.txt</exists>
         </file>
@@ -352,6 +369,13 @@
     <profile>
       <id>use</id>
       <activation>
+        <!--
+          - If this file is not in the current directory, then assume that
+          - this pom is being processed because it is referenced as a
+          - dependency of some other project. In this case, don't pull in
+          - any particular logging library; the using project needs to declare
+          - a dependency on whatever lib they really want present.
+          -->
         <file>
           <missing>commons-logging-README.txt</missing>
         </file>
