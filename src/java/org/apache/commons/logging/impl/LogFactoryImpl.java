@@ -908,7 +908,7 @@ public class LogFactoryImpl extends LogFactory {
         if (isDiagnosticsEnabled()) {
             logDiagnostic(
                 "No user-specified Log implementation; performing discovery" +
-            	" using the standard supported logging implementations...");
+                " using the standard supported logging implementations...");
         }
         for(int i=0; (i<classesToDiscover.length) && (result == null); ++i) {
             result = createLogFromClass(classesToDiscover[i], logCategory, true);
@@ -1362,6 +1362,29 @@ public class LogFactoryImpl extends LogFactory {
                       + logAdapterClassName + "' -- "
                       + discoveryFlaw.getClass().getName() + ": "
                       + discoveryFlaw.getLocalizedMessage());       
+
+            if (discoveryFlaw instanceof InvocationTargetException ) {
+		// Ok, the lib is there but while trying to create a real underlying
+		// logger something failed in the underlying lib; display info about
+		// that if possible.
+                InvocationTargetException ite = (InvocationTargetException)discoveryFlaw;
+                Throwable cause = ite.getTargetException();
+                if (cause != null) {
+                    logDiagnostic("... InvocationTargetException: " +
+                        cause.getClass().getName() + ": " +
+                        cause.getLocalizedMessage());
+
+                    if (cause instanceof ExceptionInInitializerError) {
+                        ExceptionInInitializerError eiie = (ExceptionInInitializerError)cause;
+                        Throwable cause2 = eiie.getException();
+                        if (cause2 != null) {
+                            logDiagnostic("... ExceptionInInitializerError: " +
+                                cause2.getClass().getName() + ": " +
+                                cause2.getLocalizedMessage());
+                        }
+                    }
+                }
+            }
         }
         
         if (!allowFlawedDiscovery) {
