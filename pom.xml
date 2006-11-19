@@ -14,7 +14,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+
 <project>
+  <!--
+    - Note that due to the special requirements of logging unit-tests, most
+    - tests are executed in the "integration-test" phase rather than the
+    - "test" phase. Please run "mvn integration-test" to run the full suite of
+    - available unit tests.
+    -->
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
