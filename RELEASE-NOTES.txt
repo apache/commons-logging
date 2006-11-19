@@ -111,8 +111,8 @@ Software Foundation licensing rules. The terms and conditions are unaltered;
 this merely affects how those are presented in the source files. See
   http://www.apache.org/legal/src-headers.html
 
-This release can be built/tested with maven 2.0.4. Maven 1.x and Ant continue
-to be supported.
+This release can be built/tested with maven 2.0.4 as well as Ant. Note that
+building with Maven 1.x is NOT supported (except for building the website).
 
 == Bugs Fixed ==
 
