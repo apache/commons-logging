@@ -109,9 +109,14 @@ public class Log4JLogger implements Log, Serializable {
         this.logger = getLogger();
     }
 
-    /** For use with a log4j factory.
+    /** 
+     * For use with a log4j factory.
      */
     public Log4JLogger(Logger logger ) {
+        if (logger == null) {
+            throw new IllegalArgumentException(
+                "Warning - null logger in constructor; possible log4j misconfiguration.");
+        }
         this.name = logger.getName();
         this.logger=logger;
     }
