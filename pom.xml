@@ -158,6 +158,11 @@
         -->
       <plugin>      
         <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>src/conf/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
         <executions>
           <execution>
             <id>testjar</id>
@@ -197,7 +202,8 @@
                   dest="${workdir}"/>
                 <jar
                   basedir="${workdir}"
-                  destfile="${project.build.directory}/${target}.jar">
+                  destfile="${project.build.directory}/${target}.jar"
+                  manifest="${basedir}/src/conf/MANIFEST.MF">
                   <exclude name="org/apache/commons/logging/impl/Log4J*"/>
                   <exclude name="org/apache/commons/logging/impl/Avalon*"/>
                   <exclude name="org/apache/commons/logging/impl/Jdk13*"/>
@@ -226,7 +232,8 @@
                   dest="${workdir}"/>
                 <jar
                   basedir="${workdir}"
-                  destfile="${project.build.directory}/${target}.jar">
+                  destfile="${project.build.directory}/${target}.jar"
+                  manifest="${basedir}/src/conf/MANIFEST.MF">
                   <exclude name="org/apache/commons/logging/*"/>
                   <exclude name="org/apache/commons/logging/impl/WeakHashtable*"/>
                   <exclude name="org/apache/commons/logging/impl/LogFactoryImpl*"/>
