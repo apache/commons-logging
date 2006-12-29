@@ -50,7 +50,7 @@
   </licenses>
   
   <gumpRepositoryId>jakarta</gumpRepositoryId>
-  <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.apache.org/jira/browse/LOGGING</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/commons/logging/</siteDirectory>
   <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/logging/</distributionDirectory>
