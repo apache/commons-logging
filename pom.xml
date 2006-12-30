@@ -311,15 +311,6 @@
         -->
       </plugin>
 
-          <!--
-      <plugin>
-        <artifactId>maven-xdoc-plugin</artifactId>
-        <version>1.9.2</version>
-        <configuration>
-          <comment>&lt;strong>Site Only&lt;/strong> - v1.9.2 (minimum)</comment>
-        </configuration>
-      </plugin>
-      -->
     </plugins>
   </build>
   
@@ -356,6 +347,36 @@
     </dependency>
   </dependencies>
 
+  <reporting>
+    <plugins>
+      <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>2.0-beta-1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 
   <distributionManagement>
     <repository>
