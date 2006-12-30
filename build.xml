@@ -502,7 +502,9 @@
            destdir="${build.home}/tests"
              debug="${compile.debug}"
        deprecation="${compile.deprecation}"
-          optimize="${compile.optimize}">
+          optimize="${compile.optimize}"
+            source="${source.version}"
+            target="${target.version}">
       <classpath refid="test.classpath"/>
         <include name='**/jdk14/**'/>
     </javac>
@@ -513,7 +515,9 @@
            destdir="${build.home}/tests"
              debug="${compile.debug}"
        deprecation="${compile.deprecation}"
-          optimize="${compile.optimize}">
+          optimize="${compile.optimize}"
+            source="${source.version}"
+            target="${target.version}">
       <classpath refid="test.classpath.log4j12"/>
         <include name='**/log4j/**'/>
         <!-- NOTE -->
@@ -533,7 +537,9 @@
            destdir="${build.home}/tests"
              debug="${compile.debug}"
        deprecation="${compile.deprecation}"
-          optimize="${compile.optimize}">
+          optimize="${compile.optimize}"
+            source="${source.version}"
+            target="${target.version}">
       <classpath refid="test.classpath"/>
         <include name='**/avalon/**'/>
     </javac>
@@ -544,7 +550,9 @@
 	           destdir="${build.home}/tests"
 	             debug="${compile.debug}"
 	       deprecation="${compile.deprecation}"
-	          optimize="${compile.optimize}">
+            optimize="${compile.optimize}"
+              source="${source.version}"
+              target="${target.version}">
 	    <classpath refid="test.classpath"/>
 	    <include name='**/logkit/**'/>
 	 </javac>
@@ -556,7 +564,9 @@
            destdir="${build.home}/tests"
              debug="${compile.debug}"
        deprecation="${compile.deprecation}"
-          optimize="${compile.optimize}">
+          optimize="${compile.optimize}"
+            source="${source.version}"
+            target="${target.version}">
       <classpath refid="test.classpath"/>
       <exclude name='**/jdk14/**'/>
       <exclude name='**/log4j/**'/>
