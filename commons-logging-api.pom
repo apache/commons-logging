@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
- Copyright 2001-2006 The Apache Software Foundation.
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
  
       http://www.apache.org/licenses/LICENSE-2.0
  
@@ -22,7 +23,7 @@
   <name>Logging</name>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging-api</artifactId>
-  <currentVersion>1.1</currentVersion>
+  <currentVersion>1.1.1-SNAPSHOT</currentVersion>
   <inceptionYear>2001</inceptionYear>
   <shortDescription>Commons Logging</shortDescription>
   <description>
@@ -31,8 +32,8 @@
   </description>
   <logo>/images/logo.png</logo>
   
-  <url>http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</url>
-  <package>org.apache.commons.${pom.artifactId.substring(8)}</package>
+  <url>http://jakarta.apache.org/commons/logging/</url>
+  <package>org.apache.commons.logging</package>
 
   <organization>
     <name>The Apache Software Foundation</name>
@@ -41,23 +42,22 @@
   </organization>
 
   <licenses>
-	<license>
-    	<name>The Apache Software License, Version 2.0</name>
-    	<url>/LICENSE.txt</url>
-    	<distribution>repo</distribution>
-	</license>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
   </licenses>
   
   <gumpRepositoryId>jakarta</gumpRepositoryId>
-  <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.apache.org/jira/browse/LOGGING</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/commons/${pom.artifactId.substring(8)}/</siteDirectory>
-  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/${pom.artifactId.substring(8)}/</distributionDirectory>
+  <siteDirectory>/www/jakarta.apache.org/commons/logging/</siteDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/logging/</distributionDirectory>
   
   <repository>
-    <!--<connection>scm:cvs:${logging.cvs}:jakarta-commons/logging/</connection>-->
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/${pom.artifactId.substring(8)}/trunk</connection>
-    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/${pom.artifactId.substring(8)}/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk/</connection>
+    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk/</url>
   </repository>
   
   <versions>
@@ -190,6 +190,7 @@
       <properties>
         <comment>Used for testing only.</comment>
         <scope>test</scope>
+        <optional>true</optional>
       </properties>
     </dependency>
     
@@ -200,16 +201,17 @@
       <url>http://maven.apache.org/maven-1.x/reference/plugins/xdoc/</url>
       <type>plugin</type>
       <properties>
-          <comment>
-              &lt;strong&gt;Site Only&lt;/strong&gt; - v1.9.2 (minimum)
-          </comment>
+        <comment>
+          &lt;strong&gt;Site Only&lt;/strong&gt; - v1.9.2 (minimum)
+        </comment>
+        <optional>true</optional>
       </properties>
     </dependency>
-
   </dependencies>
   <build>
     <nagEmailAddress>commons-dev@jakarta.apache.org</nagEmailAddress>
     <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <sourceModifications>
       <sourceModification>
         <className>java.util.logging.Logger</className>
@@ -219,12 +221,12 @@
       </sourceModification>
     </sourceModifications>
     <unitTest>
-        <!--
+      <!--
 At the moment there are problems running the unit tests under maven.
 The unit tests are run by custom ant targets which perform configuration
 before the tests are run.
 There is no easy way to run these under maven at the moment.
-        -->
+      -->
     </unitTest>
   </build>
 
