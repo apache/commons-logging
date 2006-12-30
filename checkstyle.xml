@@ -23,20 +23,18 @@
     "-//Puppy Crawl//DTD Check Configuration 1.1//EN"
     "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
 
-<!-- commons codec customization of default Checkstyle behavior -->
+<!-- commons logging customization of default Checkstyle behavior -->
 <module name="Checker">
-  <property name="basedir" value="src/checkstyle"/>
   <property name="localeLanguage" value="en"/>
 
   <module name="TreeWalker">
     <!-- Verify that EVERY source file has the appropriate license -->
     <module name="Header">
-      <property name="headerFile" value="LICENSE.txt"/>
-      <property name="ignoreLines" value="2,3,4,10"/>
+      <property name="headerFile" value="license-header.txt"/>
     </module>
 
     <module name="OperatorWrap">
-      <property name="option" value="eol"/>
+      <property name="option" value="nl"/>
     </module>
   </module>
 </module>
