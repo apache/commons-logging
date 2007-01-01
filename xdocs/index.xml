@@ -81,6 +81,13 @@ This gives short introductions to topics such as advanced class loading.
 Binary and source distributions are available
        <a href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi">here</a>.
     </p>
+    <subsection name='1.1.1 Release - Jan 2007'>
+      <p>
+       This release is a minor update to the 1.1 release that fixes a number of bugs, and 
+       resolves packaging issues for maven 1.x and maven 2.x users.
+      </p>
+      <p>For the full details, see the release notes for this version.</p> 
+    </subsection>
     <subsection name='1.1 Release - 10 May 2006'>
       <p>This release makes several changes that are intended to resolve issues that
       have been encountered when using commons-logging in servlet containers or j2ee
