@@ -129,5 +129,11 @@ The 1.0.1 release is a packaging of bug fixes and minor enhancements since relea
     	</p>
     </subsection>
 </section>
+<section name="Development Builds">
+  <p>
+Regular builds of the current SVN HEAD code are made available. See the 
+<a href="http://wiki.apache.org/jakarta-commons/Logging">wiki</a> for details.
+  </p>
+</section>
 </body>
 </document>
