@@ -304,11 +304,12 @@
 
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <!--
         <configuration>
-          <descriptor>src/maven/assembly/bin-distro.xml</descriptor>
+          <descriptors>
+            <descriptor>src/assembly/assembly.xml</descriptor>
+          </descriptors>
+          <tarLongFileMode>gnu</tarLongFileMode>
         </configuration>
-        -->
       </plugin>
 
     </plugins>
