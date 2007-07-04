@@ -219,7 +219,7 @@
   <!--
     - Running this target will download all the necessary dependencies into the "lib" subdirectory.
     -->
-  <property name="getlibs.base" value="http://www.ibiblio.org/maven"/>
+  <property name="getlibs.base" value="http://repo1.maven.org/maven"/>
   <target name="getlibs">
     <mkdir dir="lib"/>
     <get dest="lib/junit-3.8.1.jar" src="${getlibs.base}/junit/jars/junit-3.8.1.jar"/>
