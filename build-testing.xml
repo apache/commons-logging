@@ -38,7 +38,7 @@
   - Note when running these test before a JCL release it is strongly
   - recommended that a 1.2 JVM is used.
   -
-  - $Id: build.xml 491210 2006-12-30 11:15:59Z dennisl $
+  - $Id$
   -->
 
 <project name="Logging" default="all" basedir=".">
