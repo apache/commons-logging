@@ -24,7 +24,15 @@
   -  * mvn package
   -  * ant getlibs
   -  * cp build.properties.sample build.properties
+  -  * Depending on which platform you are on, do either
+  -      set JAVA_COMPILER=NONE
+  -    or
+  -      setenv JAVA_COMPILER NONE
   -  * ant -lib lib/junit-3.8.1.jar -f build-testing.xml test
+  -
+  - Note that we have to run Ant without the JIT compiler to get around bugs in
+  - the 1.2 JVM. That's why we need to set JAVA_COMPILER to NONE.
+  - See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4240622
   -
   - Note that this build file uses the optional <junit> task. While the
   - task "adapter" class comes by default with ant 1.6+, the junit libraries
