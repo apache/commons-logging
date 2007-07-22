@@ -324,6 +324,12 @@
             - a jvm < 1.4
             -->
           <exclude name="org/apache/commons/logging/jdk14/*"/>
+          <!--
+            - Exclude the security tests because they rely on the
+            - MockSecurityManager that uses code that was first introduced in
+            - Java 1.4
+            -->
+          <exclude name="org/apache/commons/logging/security/*"/>
         </fileset>
       </batchtest>
     </junit>
