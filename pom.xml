@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>3-SNAPSHOT</version>
+    <version>3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-logging</groupId>
@@ -235,6 +235,31 @@
               <goal>run</goal>
             </goals>
           </execution>
+          <execution>
+            <id>site.resources</id>
+            <phase>site</phase>
+            <configuration>
+              <tasks>
+                <copy todir="${project.reporting.outputDirectory}">
+                  <fileset dir="${basedir}">
+                    <include name="RELEASE-NOTES.txt" />
+                  </fileset>
+                  <!--
+                    - The logo should be moved to
+                    - ${basedir}/src/site/resources/images
+                    - once we can drop support for the Maven 1 site.
+                    - When that is done this section can be removed.
+                    -->
+                  <fileset dir="${basedir}/xdocs">
+                    <include name="images/logo.png" />
+                  </fileset>
+                </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin> 
 
@@ -335,6 +360,7 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <version>2.3</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
   </dependencies>
@@ -350,23 +376,22 @@
         </configuration>
       </plugin>
       -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>2.0-beta-1</version>
+      </plugin>
     </plugins>
   </reporting>
 
   <distributionManagement>
-    <repository>
-      <id>default</id>
-      <name>Default Repository</name>
-      <url>file:///www/jakarta.apache.org/builds/jakarta-commons/logging/</url>
-    </repository>
     <site>
-      <id>default</id>
-      <name>Default Site</name>
-      <url>scp://cvs.apache.org//www/jakarta.apache.org/commons/logging/</url>
+      <id>apache.website</id>
+      <url>${commons.deployment.protocol}://people.apache.org//www/jakarta.apache.org/commons/logging/</url>
     </site>
   </distributionManagement>
   <properties>
     <maven.compile.source>1.2</maven.compile.source>
-    <maven.compile.target>1.2</maven.compile.target>
+    <maven.compile.target>1.1</maven.compile.target>
   </properties>
 </project>
