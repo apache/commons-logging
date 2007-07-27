@@ -34,7 +34,7 @@
   <version>1.1.1-SNAPSHOT</version>
   <description>Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
-  <url>http://jakarta.apache.org/commons/logging</url>
+  <url>http://commons.apache.org/logging</url>
 
   <issueManagement>
     <url>http://issues.apache.org/jira/browse/LOGGING</url>
@@ -122,9 +122,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/logging/trunk</developerConnection>
+    <url>http://svn.apache.org/repos/asf/commons/proper/logging/trunk</url>
   </scm>
 
   <build>
@@ -387,7 +387,7 @@
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>${commons.deployment.protocol}://people.apache.org//www/jakarta.apache.org/commons/logging/</url>
+      <url>${commons.deployment.protocol}://people.apache.org//www/commons.apache.org/logging/</url>
     </site>
   </distributionManagement>
   <properties>
