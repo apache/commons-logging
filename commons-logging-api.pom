@@ -32,7 +32,7 @@
   </description>
   <logo>/images/logo.png</logo>
   
-  <url>http://jakarta.apache.org/commons/logging/</url>
+  <url>http://commons.apache.org/logging/</url>
   <package>org.apache.commons.logging</package>
 
   <organization>
@@ -49,15 +49,15 @@
     </license>
   </licenses>
   
-  <gumpRepositoryId>jakarta</gumpRepositoryId>
+  <gumpRepositoryId>commons</gumpRepositoryId>
   <issueTrackingUrl>http://issues.apache.org/jira/browse/LOGGING</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/commons/logging/</siteDirectory>
+  <siteDirectory>/www/commons.apache.org/logging/</siteDirectory>
   <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-commons/logging/</distributionDirectory>
   
   <repository>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk/</connection>
-    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/trunk/</connection>
+    <url>http://svn.apache.org/repos/asf/commons/proper/logging/trunk/</url>
   </repository>
   
   <versions>
@@ -91,15 +91,15 @@
   <mailingLists>
     <mailingList>
       <name>Commons Dev List</name>
-      <subscribe>commons-dev-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>commons-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-commons-dev/</archive>
+      <subscribe>dev-subscribe@commons.apache.org</subscribe>
+      <unsubscribe>dev-unsubscribe@commons.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/commons-dev/</archive>
     </mailingList>
     <mailingList>
       <name>Commons User List</name>
-      <subscribe>commons-user-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>commons-user-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-commons-user/</archive>
+      <subscribe>user-subscribe@commons.apache.org</subscribe>
+      <unsubscribe>user-unsubscribe@commons.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/commons-user/</archive>
     </mailingList>
   </mailingLists>
 

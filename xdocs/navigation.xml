@@ -18,18 +18,18 @@
  limitations under the License.
 
 -->
-<!DOCTYPE org.apache.commons.menus SYSTEM 'http://jakarta.apache.org/commons/build/maven-build.dtd'>
+<!DOCTYPE org.apache.commons.menus SYSTEM 'http://commons.apache.org/build/maven-build.dtd'>
 <project name="Logging">
 
   <title>Logging</title>
-  <organizationLogo href="/images/jakarta-logo.gif">
-   Jakarta
+  <organizationLogo href="/images/logo.png">
+   Apache Commons
   </organizationLogo>
 
   <body>
     <links>
-      <item name="Jakarta Commons"
-            href="http://jakarta.apache.org/commons/"/>
+      <item name="Apache Commons"
+            href="http://commons.apache.org/"/>
     </links>
 
     <menu name="Commons Logging">
@@ -54,37 +54,37 @@
     </menu>
     <menu name="1.1 Release">
       <item name="Overview"
-            href="http://jakarta.apache.org/commons/logging/commons-logging-1.1/index.html"/>
+            href="http://commons.apache.org/logging/commons-logging-1.1/index.html"/>
       <item name="User Guide"
-            href="http://jakarta.apache.org/commons/logging/commons-logging-1.1/guide.html"/>
+            href="http://commons.apache.org/logging/commons-logging-1.1/guide.html"/>
       <item name="Tech Guide"
-            href="http://jakarta.apache.org/commons/logging/commons-logging-1.1/tech.html"/>
+            href="http://commons.apache.org/logging/commons-logging-1.1/tech.html"/>
       <item name="Troubleshooting Guide"
-            href="http://jakarta.apache.org/commons/logging/commons-logging-1.1/troubleshooting.html"/>
+            href="http://commons.apache.org/logging/commons-logging-1.1/troubleshooting.html"/>
       <item name='JavaDoc'
-            href='http://jakarta.apache.org/commons/logging/commons-logging-1.1/apidocs/index.html'/>
+            href='http://commons.apache.org/logging/commons-logging-1.1/apidocs/index.html'/>
       <item name="Release Notes"
-            href="http://jakarta.apache.org/commons/logging/commons-logging-1.1/RELEASE-NOTES.txt"/>
+            href="http://commons.apache.org/logging/commons-logging-1.1/RELEASE-NOTES.txt"/>
     </menu>
     <menu name='1.0.4 Release'>
       <item   name='Documentation'
-              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/'/>
+              href='http://commons.apache.org/logging/commons-logging-1.0.4/docs/'/>
       <item   name='JavaDoc'
-              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/'/>
+              href='http://commons.apache.org/logging/commons-logging-1.0.4/docs/apidocs/'/>
       <item   name='Release Notes'
-              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/RELEASE-NOTES.txt'/>
+              href='http://commons.apache.org/logging/commons-logging-1.0.4/RELEASE-NOTES.txt'/>
     </menu>
     <menu name='1.0.3 Release'>
       <item   name='User Guide'
-              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.3/usersguide.html'/>
+              href='http://commons.apache.org/logging/commons-logging-1.0.3/usersguide.html'/>
       <item   name='JavaDoc'
-              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.3/docs/api/'/>
+              href='http://commons.apache.org/logging/commons-logging-1.0.3/docs/api/'/>
       <item   name='Release Notes'
-              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.3/RELEASE-NOTES.txt'/>
+              href='http://commons.apache.org/logging/commons-logging-1.0.3/RELEASE-NOTES.txt'/>
     </menu>
     <menu name='1.0.2 Release'>
       <item   name='JavaDoc'
-              href='http://jakarta.apache.org/commons/logging/commons-logging-1.0.2/docs/api/'/>
+              href='http://commons.apache.org/logging/commons-logging-1.0.2/docs/api/'/>
     </menu>
 
     &commons;
