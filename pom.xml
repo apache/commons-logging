@@ -34,7 +34,7 @@
   <version>1.1.1-SNAPSHOT</version>
   <description>Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
-  <url>http://jakarta.apache.org/commons/logging</url>
+  <url>http://commons.apache.org/logging</url>
 
   <issueManagement>
     <url>http://issues.apache.org/jira/browse/LOGGING</url>
@@ -122,9 +122,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/jakarta/commons/proper/logging/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/logging/trunk</developerConnection>
+    <url>http://svn.apache.org/repos/asf/commons/proper/logging/trunk</url>
   </scm>
 
   <build>
@@ -265,6 +265,39 @@
 
       <plugin>
         <!--
+          - Attach the adapters and api jars to the normal artifact. This way
+          - they will be deployed when the normal artifact is deployed.
+          -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.directory}/${project.artifactId}-adapters-${project.version}.jar</file>
+                  <type>jar</type>
+                  <classifier>adapters</classifier>
+                </artifact>
+                <artifact>
+                  <file>${project.build.directory}/${project.artifactId}-api-${project.version}.jar</file>
+                  <type>jar</type>
+                  <classifier>api</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!--
           - Many of JCL's tests use tricky techniques to place the generated
           - JCL jarfiles on the classpath in various configurations. This means
           - that the tests must be run *after* the "package" build phase. The
@@ -387,7 +420,7 @@
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>${commons.deployment.protocol}://people.apache.org//www/jakarta.apache.org/commons/logging/</url>
+      <url>${commons.deployment.protocol}://people.apache.org//www/commons.apache.org/logging/</url>
     </site>
   </distributionManagement>
   <properties>
