@@ -22,7 +22,7 @@
 <document>
 
  <properties>
-  <title>Users Guide : Jakarta Commons Logging</title>
+  <title>Users Guide : Apache Commons Logging</title>
   <author email="dev@commons.apache.org">Commons Documentation Team</author>
  </properties>
 
@@ -89,7 +89,7 @@
     </section>
     <section name="Introduction">
         <p>
-The Jakarta Commons Logging (JCL) provides a <code>Log</code> interface that
+The Apache Commons Logging (JCL) provides a <code>Log</code> interface that
 is intended to be both light-weight and an independent abstraction of other logging toolkits.
 It provides the middleware/tooling developer with a simple
 logging abstraction, that allows the user (application developer) to plug in
@@ -166,16 +166,16 @@ compatibility to pre-1.0 versions of this API, a system property
                 <li>
 If the Log4J logging system is available in the application
 class path, use the corresponding wrapper class
-(<a href="http://jakarta.apache.org/commons/logging/apidocs/org/apache/commons/logging/impl/Log4JLogger.html">Log4JLogger</a>).
+(<a href="http://commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Log4JLogger.html">Log4JLogger</a>).
             </li>
                 <li>
 If the application is executing on a JDK 1.4 system, use
 the corresponding wrapper class
-(<a href="http://jakarta.apache.org/commons/logging/apidocs/org/apache/commons/logging/impl/Jdk14Logger.html">Jdk14Logger</a>).
+(<a href="http://commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Jdk14Logger.html">Jdk14Logger</a>).
             </li>
                 <li>
 Fall back to the default simple logging wrapper
-(<a href="http://jakarta.apache.org/commons/logging/apidocs/org/apache/commons/logging/impl/SimpleLog.html">SimpleLog</a>).
+(<a href="http://commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/SimpleLog.html">SimpleLog</a>).
             </li>
         </ol>
             <p>
@@ -239,7 +239,7 @@ and
 Likewise, setting
 <code>log4j.logger.org.apache.component=DEBUG</code>
 will enable debug message for all 'component' classes,
-but not for other Jakarta projects.
+but not for other Apache projects.
                 </li>
                     <li>
 <strong>log4j.appender.<i>appender</i>.Threshold=<i>priority</i></strong>

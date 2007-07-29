@@ -26,7 +26,7 @@ limitations under the License.
     <!-- ================================================== -->
     <section name="Summary">
       <p>
-        The Jakarta Commons Logging test cases make extensive use of
+        The Apache Commons Logging test cases make extensive use of
         sophisticated classloader configurations in order to simulate the
         behaviour of various containers. It is difficult to run these tests
         under Maven (which is used to generate the website). Once JCL is

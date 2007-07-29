@@ -26,7 +26,7 @@ $Id$
 INTRODUCTION:
 ============
 
-This release of Jakarta Commons Logging (JCL) is a maintenance release, with
+This release of Apache Commons Logging (JCL) is a maintenance release, with
 just a couple of fixes for using JCL under restrictive security policies.
 
 All core classes were compiled with a 1.2.x JDK. JCL may work on some 
@@ -34,11 +34,11 @@ augmented 1.1 series JREs but it is recommended that those wish to run
 on 1.1 JREs download the source and create a custom implementation by
 stripping out all the complex classloader management code.
 
-For further details, please see the Jakarta Commons Logging website:
-  http://jakarta.apache.org/commons/logging.
+For further details, please see the Apache Commons Logging website:
+  http://commons.apache.org/logging/
 
 For the very latest news, hints, FAQs etc. please see the
-Jakarta Commons Logging wiki site:
+Apache Commons Logging wiki site:
   http://wiki.apache.org/jakarta-commons/Logging
 
 Note that some containers (some versions of Apache Tomcat and JBoss in
@@ -97,13 +97,13 @@ recreate an equivalent of this jar file.
 
 == General Notes ==
 
-The jakarta commons project has migrated to the Subversion version control system
+The Apache Commons project has migrated to the Subversion version control system
 (previously, CVS was used). There should be no effect on users of the JCL
 library, but obviously the process of examining the latest source code, and of
-creating patches for JCL has now changed. Please see the jakarta commons
-website for details (http://jakarta.apache.org/commons).
+creating patches for JCL has now changed. Please see the Apache Commons
+website for details (http://commons.apache.org/).
 
-The jakarta commons project has now moved to using the Apache JIRA installation
+The Apache Commons project has now moved to using the Apache JIRA installation
 as its bugtracking system (formerly, the Apache Bugzilla installation was used).
 
 All source files for this release have been updated to reflect the new Apache
