@@ -50,7 +50,7 @@
       <item name="Building"
             href="/building.html"/>
       <item name="Download"
-            href="http://jakarta.apache.org/site/downloads/downloads_commons-logging.cgi"/>
+            href="http://commons.apache.org/downloads/download_logging.cgi"/>
     </menu>
     <menu name="1.1 Release">
       <item name="Overview"
