@@ -823,7 +823,7 @@ from this resource (if it exists).
 </section>
     <section name='Frequently Asked Questions'>
 <p>
-See the <a href="http://wiki.apache.org/jakarta-commons/Logging/FrequentlyAskedQuestions">FAQ document</a>
+See the <a href="http://wiki.apache.org/commons/Logging/FrequentlyAskedQuestions">FAQ document</a>
 on the commons-logging wiki site
 </p>
 </section>
