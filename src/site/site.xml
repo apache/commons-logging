@@ -16,7 +16,7 @@
       <item name="Troubleshooting Guide"
             href="/troubleshooting.html"/>
       <item name="Wiki"
-            href="http://wiki.apache.org/jakarta-commons/Logging"/>
+            href="http://wiki.apache.org/commons/Logging"/>
       <item name='JavaDoc'
             href='/apidocs/index.html'/>
       <item name="Release Notes"
