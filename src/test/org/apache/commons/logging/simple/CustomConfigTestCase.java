@@ -24,6 +24,7 @@ import java.util.List;
 
 import junit.framework.Test;
 
+import org.apache.commons.logging.DummyException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
@@ -234,7 +235,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     protected void logExceptionMessages() {
 
         // Generate log records
-        Throwable t = new IndexOutOfBoundsException();
+        Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
         log.debug("debug", t);
         log.info("info", t);

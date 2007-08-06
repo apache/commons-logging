@@ -27,6 +27,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.logging.DummyException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -204,7 +205,7 @@ public abstract class StandardTests extends TestCase {
      * Log messages with exceptions
      */
     private void logExceptionMessages(Log log) {
-        Throwable t = new IndexOutOfBoundsException();
+        Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
         log.debug("debug", t); // Should not actually get logged
         log.info("info", t);
