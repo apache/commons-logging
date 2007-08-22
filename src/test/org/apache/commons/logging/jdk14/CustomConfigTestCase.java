@@ -317,7 +317,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             if (thrown) {
                 assertNotNull("LogRecord thrown", record.getThrown());
                 assertTrue("LogRecord thrown type",
-                           record.getThrown() instanceof IndexOutOfBoundsException);
+                           record.getThrown() instanceof DummyException);
             } else {
                 assertNull("LogRecord thrown",
                            record.getThrown());
