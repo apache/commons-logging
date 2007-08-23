@@ -24,20 +24,25 @@ limitations under the License.
 <!-- ================================================== -->
 <section name="Overview">
 <p>
-  Commons Logging uses <a href="http://ant.apache.org">Ant</a> as a build system
-  and <a href="http://maven.apache.org">Maven 1.x</a> for documentation only.
+  Commons Logging uses <a href="http://maven.apache.org">Maven 2.0.x</a> as its
+  primary build system. <a href="http://ant.apache.org">Ant</a> can also be used.
 </p>
 </section>
 <!-- ================================================== -->
 <section name="Maven Goals">
   <p>
-    To build the full website, run "maven site".
-    The result will be in "target/docs".
-	You must be online and using JDK 1.4 or higher to successfully complete this target.
+    To build the full website, run "mvn site".
+    The result will be in "target/site".
+    You must be online and using JDK 1.4 or higher to successfully complete this target.
   </p>
   <p>
-	Further details can be found in the
-	<a href="http://commons.apache.org/building.html">commons build instructions</a>.
+    To build the jar files, run "mvn package".
+    The result will be in the "target" folder.
+    You must use JDK 1.4 or higher to successfully complete this target.
+  </p>
+  <p>
+    Further details can be found in the
+    <a href="http://commons.apache.org/building.html">commons build instructions</a>.
   </p>
 </section>
 <!-- ================================================== -->
