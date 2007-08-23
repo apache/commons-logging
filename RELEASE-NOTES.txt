@@ -29,7 +29,8 @@ INTRODUCTION:
 This release of Apache Commons Logging (JCL) is a maintenance release, with
 just a couple of fixes for using JCL under restrictive security policies.
 
-All core classes were compiled with a 1.2.x JDK. JCL may work on some 
+All core classes were compiled with Maven using a 1.4.x JDK, with target set
+to 1.1 and source set to 1.2. Commons Logging may work on some
 augmented 1.1 series JREs but it is recommended that those wish to run
 on 1.1 JREs download the source and create a custom implementation by
 stripping out all the complex classloader management code.
@@ -111,8 +112,9 @@ Software Foundation licensing rules. The terms and conditions are unaltered;
 this merely affects how those are presented in the source files. See
   http://www.apache.org/legal/src-headers.html
 
-This release can be built/tested with maven 2.0.4 as well as Ant. Note that
-building with Maven 1.x is NOT supported (except for building the website).
+This release can be built/tested with Maven 2.0.x as well as Ant. Note that
+building with Maven 1.x is no longer supported. The files used to build Commons
+Logging with Maven 1.x will be removed in a future version of Commons Logging.
 
 == Bugs Fixed ==
 
@@ -126,6 +128,11 @@ building with Maven 1.x is NOT supported (except for building the website).
   calls to ClassLoader.getParent. Signing/authorising the JCL library was not
   sufficient as an AccessController was not used. This has been fixed by catching
   SecurityException and using an AccessController.
+
+* LOGGING-111: Show the contents of chained exceptions, to make debugging easier,
+  in particular when using Commons Logging together with Log4J.
+
+* LOGGING-113: pom.xml in maven repository does not list dependencies as optional.
 
 * MEV-392 (http://jira.codehaus.org/browse/MEV-392)
   As JCL didn't provide a Maven2 pom.xml file, one was helpfully created by people
