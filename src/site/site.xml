@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Commons Logging">
+<project>
   <bannerRight>
     <name>Commons Logging</name>
     <src>http://commons.apache.org/logging/images/logo.png</src>
