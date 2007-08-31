@@ -176,6 +176,7 @@
           - in version 2.0, so antrun is used to create the other ones.
           -->
         <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.1</version>
         <executions>
           <execution>
             <id>apijar</id>
@@ -353,6 +354,7 @@
 
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.1</version>
         <configuration>
           <descriptors>
             <descriptor>src/assembly/assembly.xml</descriptor>
