@@ -526,8 +526,8 @@
         but try to load them by reflection from particular loaders.
         They will therefore fail unless this logger is available.
         -->
-    	<include name='**/pathable/**'/>
-    	<!-- END NOTE -->
+        <include name='**/pathable/**'/>
+        <!-- END NOTE -->
     </javac>
   </target>
 
@@ -541,23 +541,23 @@
             source="${source.version}"
             target="${target.version}">
       <classpath refid="test.classpath"/>
-        <include name='**/avalon/**'/>
+      <include name='**/avalon/**'/>
     </javac>
   </target>
   
   <target name='compile.logkit.tests' if='logkit.present'>
-	 <javac  srcdir="${test.home}"
-	           destdir="${build.home}/tests"
-	             debug="${compile.debug}"
-	       deprecation="${compile.deprecation}"
-            optimize="${compile.optimize}"
-              source="${source.version}"
-              target="${target.version}">
-	    <classpath refid="test.classpath"/>
-	    <include name='**/logkit/**'/>
-	 </javac>
+    <javac  srcdir="${test.home}"
+           destdir="${build.home}/tests"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}"
+            source="${source.version}"
+            target="${target.version}">
+      <classpath refid="test.classpath"/>
+      <include name='**/logkit/**'/>
+    </javac>
   </target>
-	
+
   <target name="compile.tests" depends="compile"
    description="Compile unit test cases">
     <javac  srcdir="${test.home}"
@@ -584,7 +584,7 @@
     <antcall target='compile.log4j.tests'/>
     <antcall target='compile.jdk1.4.tests'/>
     <antcall target='compile.avalon.tests'/>
-  	<antcall target='compile.logkit.tests'/>
+    <antcall target='compile.logkit.tests'/>
     <copy    todir="${build.home}/tests" filtering="on">
       <fileset dir="${test.home}" excludes="**/*.java"/>
     </copy>

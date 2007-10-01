@@ -1092,7 +1092,7 @@ public abstract class LogFactory {
      */
     protected static LogFactory newFactory(final String factoryClass,
                                            final ClassLoader classLoader) {
-	    return newFactory(factoryClass, classLoader, null);
+        return newFactory(factoryClass, classLoader, null);
     }
 
     /**
@@ -1182,7 +1182,7 @@ public abstract class LogFactory {
                         // loading with that loader (not the TCCL). Just throw an
                         // appropriate exception here.
 
-                    	final boolean implementsLogFactory = implementsLogFactory(logFactoryClass);
+                        final boolean implementsLogFactory = implementsLogFactory(logFactoryClass);
                         
                         //
                         // Construct a good message: users may not actual expect that a custom implementation 
@@ -1195,13 +1195,13 @@ public abstract class LogFactory {
                             + LogFactory.class.getName() + "'. ";
                         if (implementsLogFactory) {
                             msg = msg + "The conflict is caused by the presence of multiple LogFactory classes in incompatible classloaders. " +
-                    		"Background can be found in http://commons.apache.org/logging/tech.html. " +
-                    		"If you have not explicitly specified a custom LogFactory then it is likely that " +
-                    		"the container has set one without your knowledge. " +
-                    		"In this case, consider using the commons-logging-adapters.jar file or " +
-                    		"specifying the standard LogFactory from the command line. ";
+                            "Background can be found in http://commons.apache.org/logging/tech.html. " +
+                            "If you have not explicitly specified a custom LogFactory then it is likely that " +
+                            "the container has set one without your knowledge. " +
+                            "In this case, consider using the commons-logging-adapters.jar file or " +
+                            "specifying the standard LogFactory from the command line. ";
                         } else {
-                        	msg = msg + "Please check the custom implementation. ";
+                            msg = msg + "Please check the custom implementation. ";
                         }
                         msg = msg + "Help can be found @http://commons.apache.org/logging/troubleshooting.html.";
                         
@@ -1563,31 +1563,31 @@ public abstract class LogFactory {
      */
     private static void initDiagnostics() {
         String dest;
-    	try {
-    	    dest = getSystemProperty(DIAGNOSTICS_DEST_PROPERTY, null);
-    	    if (dest == null) {
-    	        return;
-    	    }
-    	} catch(SecurityException ex) {
-    	    // We must be running in some very secure environment.
-    	    // We just have to assume output is not wanted..
-    	    return;
-    	}
-    	
-    	if (dest.equals("STDOUT")) {
-    	    diagnosticsStream = System.out;
-    	} else if (dest.equals("STDERR")) {
-    	    diagnosticsStream = System.err;
-    	} else {
-    	    try {
+        try {
+            dest = getSystemProperty(DIAGNOSTICS_DEST_PROPERTY, null);
+            if (dest == null) {
+                return;
+            }
+        } catch(SecurityException ex) {
+            // We must be running in some very secure environment.
+            // We just have to assume output is not wanted..
+            return;
+        }
+
+        if (dest.equals("STDOUT")) {
+            diagnosticsStream = System.out;
+        } else if (dest.equals("STDERR")) {
+            diagnosticsStream = System.err;
+        } else {
+            try {
                 // open the file in append mode
-    	        FileOutputStream fos = new FileOutputStream(dest, true);
-    	        diagnosticsStream = new PrintStream(fos);
-    	    } catch(IOException ex) {
-    	        // We should report this to the user - but how?
-    	        return;
-    	    }
-    	}
+                FileOutputStream fos = new FileOutputStream(dest, true);
+                diagnosticsStream = new PrintStream(fos);
+            } catch(IOException ex) {
+                // We should report this to the user - but how?
+                return;
+            }
+        }
 
         // In order to avoid confusion where multiple instances of JCL are
         // being used via different classloaders within the same app, we

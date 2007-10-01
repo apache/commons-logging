@@ -36,7 +36,7 @@
   <postGoal name="xdoc:copy-resources">  
     <copy todir="${basedir}/target/docs/" failonerror="false">
       <fileset dir="${basedir}">
-      	<include name='RELEASE-NOTES.txt'/>
+        <include name='RELEASE-NOTES.txt'/>
       </fileset>
     </copy>
   </postGoal>

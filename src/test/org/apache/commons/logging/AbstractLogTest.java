@@ -33,64 +33,64 @@ public abstract class AbstractLogTest extends TestCase {
 
     public abstract Log getLogObject();
 
-	public void testLoggingWithNullParameters()
-	{
-		Log log = this.getLogObject();
-		
-		assertNotNull(log);
-		
+    public void testLoggingWithNullParameters()
+    {
+        Log log = this.getLogObject();
 
-		log.debug(null);
-		
-		log.debug(null, null);
-		
-		log.debug(log.getClass().getName() + ": debug statement");
-		
-		log.debug(log.getClass().getName() + ": debug statement w/ null exception", new RuntimeException());
-		
+        assertNotNull(log);
 
-		log.error(null);
-		
-		log.error(null, null);
-		
-		log.error(log.getClass().getName() + ": error statement");
-		
-		log.error(log.getClass().getName() + ": error statement w/ null exception", new RuntimeException());
-		
 
-		log.fatal(null);
-		
-		log.fatal(null, null);
-		
-		log.fatal(log.getClass().getName() + ": fatal statement");
-		
-		log.fatal(log.getClass().getName() + ": fatal statement w/ null exception", new RuntimeException());
-		
+        log.debug(null);
 
-		log.info(null);
-		
-		log.info(null, null);
-		
-		log.info(log.getClass().getName() + ": info statement");
-		
-		log.info(log.getClass().getName() + ": info statement w/ null exception", new RuntimeException());
-		
+        log.debug(null, null);
 
-		log.trace(null);
-		
-		log.trace(null, null);
-		
-		log.trace(log.getClass().getName() + ": trace statement");
-		
-		log.trace(log.getClass().getName() + ": trace statement w/ null exception", new RuntimeException());
-		
+        log.debug(log.getClass().getName() + ": debug statement");
 
-		log.warn(null);
-		
-		log.warn(null, null);
-		
-		log.warn(log.getClass().getName() + ": warn statement");
-		
-		log.warn(log.getClass().getName() + ": warn statement w/ null exception", new RuntimeException());
-	}    
+        log.debug(log.getClass().getName() + ": debug statement w/ null exception", new RuntimeException());
+
+
+        log.error(null);
+
+        log.error(null, null);
+
+        log.error(log.getClass().getName() + ": error statement");
+
+        log.error(log.getClass().getName() + ": error statement w/ null exception", new RuntimeException());
+
+
+        log.fatal(null);
+
+        log.fatal(null, null);
+
+        log.fatal(log.getClass().getName() + ": fatal statement");
+
+        log.fatal(log.getClass().getName() + ": fatal statement w/ null exception", new RuntimeException());
+
+
+        log.info(null);
+
+        log.info(null, null);
+
+        log.info(log.getClass().getName() + ": info statement");
+
+        log.info(log.getClass().getName() + ": info statement w/ null exception", new RuntimeException());
+
+
+        log.trace(null);
+
+        log.trace(null, null);
+
+        log.trace(log.getClass().getName() + ": trace statement");
+
+        log.trace(log.getClass().getName() + ": trace statement w/ null exception", new RuntimeException());
+
+
+        log.warn(null);
+
+        log.warn(null, null);
+
+        log.warn(log.getClass().getName() + ": warn statement");
+
+        log.warn(log.getClass().getName() + ": warn statement w/ null exception", new RuntimeException());
+    }    
 }
