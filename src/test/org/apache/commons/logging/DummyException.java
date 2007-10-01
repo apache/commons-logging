@@ -22,8 +22,8 @@ package org.apache.commons.logging;
  * logging of an Exception object.
  */
 public class DummyException extends Exception {
-	private static final long serialVersionUID = 1L; 
-	public DummyException() {
-		// super("Dummy Exception for unit testing");
-	}
+    private static final long serialVersionUID = 1L;
+    public DummyException() {
+        // super("Dummy Exception for unit testing");
+    }
 }
