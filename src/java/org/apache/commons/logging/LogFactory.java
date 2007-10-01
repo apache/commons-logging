@@ -1195,11 +1195,11 @@ public abstract class LogFactory {
                             + LogFactory.class.getName() + "'. ";
                         if (implementsLogFactory) {
                             msg = msg + "The conflict is caused by the presence of multiple LogFactory classes in incompatible classloaders. " +
-                            "Background can be found in http://commons.apache.org/logging/tech.html. " +
-                            "If you have not explicitly specified a custom LogFactory then it is likely that " +
-                            "the container has set one without your knowledge. " +
-                            "In this case, consider using the commons-logging-adapters.jar file or " +
-                            "specifying the standard LogFactory from the command line. ";
+                                "Background can be found in http://commons.apache.org/logging/tech.html. " +
+                                "If you have not explicitly specified a custom LogFactory then it is likely that " +
+                                "the container has set one without your knowledge. " +
+                                "In this case, consider using the commons-logging-adapters.jar file or " +
+                                "specifying the standard LogFactory from the command line. ";
                         } else {
                             msg = msg + "Please check the custom implementation. ";
                         }
