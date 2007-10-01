@@ -29,11 +29,11 @@ import org.apache.commons.logging.impl.SimpleLog;
  */
 public class SimpleLogTestCase extends AbstractLogTest
 {
-	/**
-	 * 
-	 * 
-	 * 
-	 */
+    /**
+     *
+     *
+     *
+     */
     public Log getLogObject()
     {
         return (Log) new SimpleLog(this.getClass().getName());
@@ -41,6 +41,6 @@ public class SimpleLogTestCase extends AbstractLogTest
 
     public static void main(String[] args) {
         String[] testCaseName = { SimpleLogTestCase.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);	
+        junit.textui.TestRunner.main(testCaseName);
     }
 }

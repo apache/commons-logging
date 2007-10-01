@@ -32,7 +32,7 @@ public class AvalonLoggerTestCase extends AbstractLogTest {
 
     public static void main(String[] args) {
         String[] testCaseName = { AvalonLoggerTestCase.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);	
+        junit.textui.TestRunner.main(testCaseName);
     }
 
     public static Test suite() {
@@ -43,6 +43,6 @@ public class AvalonLoggerTestCase extends AbstractLogTest {
 
     public Log getLogObject() {
         Log log = new AvalonLogger(new ConsoleLogger());
-		return log;
-	}
+        return log;
+    }
 }
