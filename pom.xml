@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <!--
     - Note that due to the special requirements of logging unit-tests, most
     - tests are executed in the "integration-test" phase rather than the
@@ -80,7 +80,6 @@
       <id>donaldp</id>
       <name>Peter Donald</name>
       <email>donaldp at apache dot org</email>
-      <organization></organization>
     </developer>
     <developer>
       <id>costin</id>
@@ -98,7 +97,6 @@
       <id>baliuka</id>
       <name>Juozas Baliuka</name>
       <email>baliuka@apache.org</email>
-      <organization></organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -189,13 +187,8 @@
                 <delete dir="${workdir}" failonerror="false"/>
                 <mkdir dir="${workdir}"/>
 
-                <unjar
-                  src="${project.build.directory}/${project.build.finalName}.jar"
-                  dest="${workdir}"/>
-                <jar
-                  basedir="${workdir}"
-                  destfile="${project.build.directory}/${target}.jar"
-                  manifest="${basedir}/src/conf/MANIFEST.MF">
+                <unjar src="${project.build.directory}/${project.build.finalName}.jar" dest="${workdir}"/>
+                <jar basedir="${workdir}" destfile="${project.build.directory}/${target}.jar" manifest="${basedir}/src/conf/MANIFEST.MF">
                   <exclude name="org/apache/commons/logging/impl/Log4J*"/>
                   <exclude name="org/apache/commons/logging/impl/Avalon*"/>
                   <exclude name="org/apache/commons/logging/impl/Jdk13*"/>
@@ -219,13 +212,8 @@
                 <delete dir="${workdir}" failonerror="false"/>
                 <mkdir dir="${workdir}"/>
 
-                <unjar
-                  src="${project.build.directory}/${project.build.finalName}.jar"
-                  dest="${workdir}"/>
-                <jar
-                  basedir="${workdir}"
-                  destfile="${project.build.directory}/${target}.jar"
-                  manifest="${basedir}/src/conf/MANIFEST.MF">
+                <unjar src="${project.build.directory}/${project.build.finalName}.jar" dest="${workdir}"/>
+                <jar basedir="${workdir}" destfile="${project.build.directory}/${target}.jar" manifest="${basedir}/src/conf/MANIFEST.MF">
                   <exclude name="org/apache/commons/logging/*"/>
                   <exclude name="org/apache/commons/logging/impl/WeakHashtable*"/>
                   <exclude name="org/apache/commons/logging/impl/LogFactoryImpl*"/>
