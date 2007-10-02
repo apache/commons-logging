@@ -115,7 +115,7 @@ In most cases, including the (full) <code>commons-logging.jar</code> in the clas
 should result in JCL configuring itself in a reasonable manner.
 There's a good chance that it'll guess your preferred logging system and you won't
 need to do any configuration at all! 
-		</p><p>
+    </p><p>
 Note, however, that if you have a particular preference then providing a simple
 <code>commons-logging.properties</code> file which specifies the concrete logging library to be
 used is recommended, since (in this case) JCL will log only to that system
@@ -762,40 +762,40 @@ for details.
     </subsection>
 </section>
 <section name='A Quick Guide To Simple Log'>
-	<p>
+  <p>
 JCL is distributed with a very simple <code>Log</code> implementation named 
 <code>org.apache.commons.logging.impl.SimpleLog</code>. This is intended to be a minimal
 implementation and those requiring a fully functional open source logging system are 
 directed to <a href='http://logging.apache.org/log4j'>Log4J</a>.
-	</p>
- 	<p>
- 	<code>SimpleLog</code> sends all (enabled) log messages,
- 	for all defined loggers, to <code>System.err</code>.  The following system properties
+  </p>
+  <p>
+  <code>SimpleLog</code> sends all (enabled) log messages,
+  for all defined loggers, to <code>System.err</code>.  The following system properties
   are supported to configure the behavior of this logger:</p>
   <ul>
   <li><strong>org.apache.commons.logging.simplelog.defaultlog</strong> -
       Default logging detail level for all instances of SimpleLog.
       Must be one of:
-      	<ul>
-      		<li><code>trace</code></li>
-      		<li><code>debug</code></li> 
-      		<li><code>info</code></li> 
-      		<li><code>warn</code></li> 
-      		<li><code>error</code></li>
-      		<li><code>fatal</code></li>
-      	 </ul>
+      <ul>
+          <li><code>trace</code></li>
+          <li><code>debug</code></li>
+          <li><code>info</code></li>
+          <li><code>warn</code></li>
+          <li><code>error</code></li>
+          <li><code>fatal</code></li>
+      </ul>
       If not specified, defaults to <code>info</code>. </li>
   <li><strong>org.apache.commons.logging.simplelog.log.xxxxx</strong> -
       Logging detail level for a SimpleLog instance named "xxxxx".
       Must be one of:
-          <ul>
-      		<li><code>trace</code></li>
-      		<li><code>debug</code></li> 
-      		<li><code>info</code></li> 
-      		<li><code>warn</code></li> 
-      		<li><code>error</code></li>
-      		<li><code>fatal</code></li>
-      	 </ul>
+      <ul>
+          <li><code>trace</code></li>
+          <li><code>debug</code></li>
+          <li><code>info</code></li>
+          <li><code>warn</code></li>
+          <li><code>error</code></li>
+          <li><code>fatal</code></li>
+      </ul>
       If not specified, the default logging detail level is used.</li>
   <li><strong>org.apache.commons.logging.simplelog.showlogname</strong> -
       Set to <code>true</code> if you want the <code>Log</code> instance name to be

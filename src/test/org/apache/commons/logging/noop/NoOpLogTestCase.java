@@ -53,13 +53,13 @@ public class NoOpLogTestCase extends AbstractLogTest
     }
     
     /**
-	 * Override the abstract method from the parent class so that the
+     * Override the abstract method from the parent class so that the
      * inherited tests can access the right Log object type. 
-	 */
-	public Log getLogObject()
-	{
-		return (Log) new NoOpLog(this.getClass().getName());
-	}
+     */
+    public Log getLogObject()
+    {
+        return (Log) new NoOpLog(this.getClass().getName());
+    }
 
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {

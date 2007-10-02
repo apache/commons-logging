@@ -1364,9 +1364,9 @@ public class LogFactoryImpl extends LogFactory {
                       + discoveryFlaw.getLocalizedMessage());       
 
             if (discoveryFlaw instanceof InvocationTargetException ) {
-		// Ok, the lib is there but while trying to create a real underlying
-		// logger something failed in the underlying lib; display info about
-		// that if possible.
+                // Ok, the lib is there but while trying to create a real underlying
+                // logger something failed in the underlying lib; display info about
+                // that if possible.
                 InvocationTargetException ite = (InvocationTargetException)discoveryFlaw;
                 Throwable cause = ite.getTargetException();
                 if (cause != null) {

@@ -23,21 +23,35 @@ limitations under the License.
 <body>
 <!-- ================================================== -->
 <section name="Overview">
-<p>
-  Commons Logging uses <a href="http://maven.apache.org">Maven 2.0.x</a> as its
-  primary build system. <a href="http://ant.apache.org">Ant</a> can also be used.
-</p>
+  <p>
+    Commons Logging uses <a href="http://maven.apache.org">Maven 2.0.x</a> as its
+    primary build system. <a href="http://ant.apache.org">Ant</a> can also be used.
+  </p>
 </section>
 <!-- ================================================== -->
-<section name="Maven Goals">
+<section name="Maven">
   <p>
-    To build the full website, run "mvn site".
-    The result will be in "target/site".
+    To build the full website, run
+  </p>
+  <source>mvn site</source>
+  <p>
+    The result will be in the <code>target/site</code> folder.
     You must be online and using JDK 1.4 or higher to successfully complete this target.
   </p>
   <p>
-    To build the jar files, run "mvn package".
-    The result will be in the "target" folder.
+    To build the jar files, run
+  </p>
+  <source>mvn package</source>
+  <p>
+    The resulting 4 jar files will be in the <code>target</code> folder.
+    You must use JDK 1.4 or higher to successfully complete this target.
+  </p>
+  <p>
+    To create a full distribution, run
+  </p>
+  <source>mvn clean site assembly:assembly</source>
+  <p>
+    The resulting .zip and .tar.gz files will be in the <code>target</code> folder.
     You must use JDK 1.4 or higher to successfully complete this target.
   </p>
   <p>
@@ -46,12 +60,13 @@ limitations under the License.
   </p>
 </section>
 <!-- ================================================== -->
-<section name="Ant Goals">
+<section name="Ant">
   <p>
-The complete release distribution is created by the <code>dist</code> target.
-Note that both a 1.2 JRE and a 1.4 JRE are needed to create the release
-distribution as well as all optional dependencies. 
-See <code>build.properties.sample</code> for more details. 
+    We still use Ant to test the artifacts built my Maven.
+    Please follow the instructions in the file <code>build-testing.xml</code>.
+  </p>
+  <p>
+    <b>Note:</b> A 1.2 JDK is needed to run the tests.
   </p>
 </section>
 <!-- ================================================== -->

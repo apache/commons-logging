@@ -137,11 +137,11 @@ public class SimpleLog implements Log, Serializable {
 
     private static String getStringProperty(String name) {
         String prop = null;
-	try {
-	    prop = System.getProperty(name);
-	} catch (SecurityException e) {
-	    ; // Ignore
-	}
+        try {
+            prop = System.getProperty(name);
+        } catch (SecurityException e) {
+            ; // Ignore
+        }
         return (prop == null) ? simpleLogProps.getProperty(name) : prop;
     }
 
@@ -308,7 +308,7 @@ public class SimpleLog implements Log, Serializable {
         }
 
         // Append the name of the log instance if so configured
- 	if( showShortName) {
+        if( showShortName) {
             if( shortLogName==null ) {
                 // Cut all but the last component of the name for both styles
                 shortLogName = logName.substring(logName.lastIndexOf(".") + 1);

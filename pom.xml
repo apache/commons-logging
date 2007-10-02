@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <!--
     - Note that due to the special requirements of logging unit-tests, most
     - tests are executed in the "integration-test" phase rather than the
@@ -31,7 +31,7 @@
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
   <name>Commons Logging</name>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.1</version>
   <description>Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
   <url>http://commons.apache.org/logging</url>
@@ -80,7 +80,6 @@
       <id>donaldp</id>
       <name>Peter Donald</name>
       <email>donaldp at apache dot org</email>
-      <organization></organization>
     </developer>
     <developer>
       <id>costin</id>
@@ -98,7 +97,6 @@
       <id>baliuka</id>
       <name>Juozas Baliuka</name>
       <email>baliuka@apache.org</email>
-      <organization></organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -122,9 +120,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/logging/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/commons/proper/logging/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/tags/commons-logging-1.1.1</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/logging/tags/commons-logging-1.1.1</developerConnection>
+    <url>http://svn.apache.org/repos/asf/commons/proper/logging/tags/commons-logging-1.1.1</url>
   </scm>
 
   <build>
@@ -183,24 +181,19 @@
             <phase>package</phase>
             <configuration>
               <tasks>
-                <property name="workdir" value="${project.build.directory}/rejar"/>
-                <property name="target" value="${project.artifactId}-api-${project.version}"/>
+                <property name="workdir" value="${project.build.directory}/rejar" />
+                <property name="target" value="${project.artifactId}-api-${project.version}" />
 
-                <delete dir="${workdir}" failonerror="false"/>
-                <mkdir dir="${workdir}"/>
+                <delete dir="${workdir}" failonerror="false" />
+                <mkdir dir="${workdir}" />
 
-                <unjar
-                  src="${project.build.directory}/${project.build.finalName}.jar"
-                  dest="${workdir}"/>
-                <jar
-                  basedir="${workdir}"
-                  destfile="${project.build.directory}/${target}.jar"
-                  manifest="${basedir}/src/conf/MANIFEST.MF">
-                  <exclude name="org/apache/commons/logging/impl/Log4J*"/>
-                  <exclude name="org/apache/commons/logging/impl/Avalon*"/>
-                  <exclude name="org/apache/commons/logging/impl/Jdk13*"/>
-                  <exclude name="org/apache/commons/logging/impl/LogKit*"/>
-                  <exclude name="org/apache/commons/logging/impl/Servlet*"/>
+                <unjar src="${project.build.directory}/${project.build.finalName}.jar" dest="${workdir}" />
+                <jar basedir="${workdir}" destfile="${project.build.directory}/${target}.jar" manifest="${basedir}/src/conf/MANIFEST.MF">
+                  <exclude name="org/apache/commons/logging/impl/Log4J*" />
+                  <exclude name="org/apache/commons/logging/impl/Avalon*" />
+                  <exclude name="org/apache/commons/logging/impl/Jdk13*" />
+                  <exclude name="org/apache/commons/logging/impl/LogKit*" />
+                  <exclude name="org/apache/commons/logging/impl/Servlet*" />
                 </jar>
               </tasks>
             </configuration>
@@ -213,22 +206,17 @@
             <phase>package</phase>
             <configuration>
               <tasks>
-                <property name="workdir" value="${project.build.directory}/rejar"/>
-                <property name="target" value="${project.artifactId}-adapters-${project.version}"/>
+                <property name="workdir" value="${project.build.directory}/rejar" />
+                <property name="target" value="${project.artifactId}-adapters-${project.version}" />
 
-                <delete dir="${workdir}" failonerror="false"/>
-                <mkdir dir="${workdir}"/>
+                <delete dir="${workdir}" failonerror="false" />
+                <mkdir dir="${workdir}" />
 
-                <unjar
-                  src="${project.build.directory}/${project.build.finalName}.jar"
-                  dest="${workdir}"/>
-                <jar
-                  basedir="${workdir}"
-                  destfile="${project.build.directory}/${target}.jar"
-                  manifest="${basedir}/src/conf/MANIFEST.MF">
-                  <exclude name="org/apache/commons/logging/*"/>
-                  <exclude name="org/apache/commons/logging/impl/WeakHashtable*"/>
-                  <exclude name="org/apache/commons/logging/impl/LogFactoryImpl*"/>
+                <unjar src="${project.build.directory}/${project.build.finalName}.jar" dest="${workdir}" />
+                <jar basedir="${workdir}" destfile="${project.build.directory}/${target}.jar" manifest="${basedir}/src/conf/MANIFEST.MF">
+                  <exclude name="org/apache/commons/logging/*" />
+                  <exclude name="org/apache/commons/logging/impl/WeakHashtable*" />
+                  <exclude name="org/apache/commons/logging/impl/LogFactoryImpl*" />
                 </jar>
               </tasks>
             </configuration>
@@ -363,6 +351,12 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.0-beta-5</version>
+      </plugin>
+
     </plugins>
   </build>
   
@@ -411,6 +405,11 @@
         </configuration>
       </plugin>
       -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>clirr-maven-plugin</artifactId>
+        <version>2.1.1</version>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jdepend-maven-plugin</artifactId>
