@@ -288,6 +288,32 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <!-- Pick up this configuration from settings.xml. -->
+          <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
+          <updateReleaseInfo>true</updateReleaseInfo>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-6</version>
+        <configuration>
+          <!--
+            - The site needs to be built prior to deploy,
+            - because it is included in the assembly.
+            -->
+          <goals>site deploy</goals>
+          <!-- Pass these arguments to the deploy plugin. -->
+          <arguments>-Prelease</arguments>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <!--
           - Many of JCL's tests use tricky techniques to place the generated
           - JCL jarfiles on the classpath in various configurations. This means
@@ -346,9 +372,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.1</version>
+        <version>2.2-beta-1</version>
         <configuration>
           <appendAssemblyId>false</appendAssemblyId>
+          <!-- Do not deploy the assemblies to the repository. -->
+          <attach>false</attach>
           <descriptors>
             <descriptor>src/assembly/assembly.xml</descriptor>
           </descriptors>
@@ -365,6 +393,29 @@
     </plugins>
   </build>
   
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- Create the assemblies automatically during release. -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
