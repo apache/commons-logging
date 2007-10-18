@@ -31,7 +31,7 @@
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
   <name>Commons Logging</name>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.1</version>
   <description>Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
   <url>http://commons.apache.org/logging</url>
@@ -120,9 +120,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/logging/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/commons/proper/logging/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/tags/commons-logging-1.1.1</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/logging/tags/commons-logging-1.1.1</developerConnection>
+    <url>http://svn.apache.org/repos/asf/commons/proper/logging/tags/commons-logging-1.1.1</url>
   </scm>
 
   <build>
