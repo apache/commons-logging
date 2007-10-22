@@ -59,6 +59,7 @@
   <!-- The directories corresponding to your necessary dependencies -->
   <property name="junit.home"              value="/usr/local/junit3.5"/>
   <property name="jakarta.home"            value="../.."/>
+  <property name="commons.home"            value="../.."/>
 
   <!--
     - The names of the unit tests to run. By default all tests are run, but
