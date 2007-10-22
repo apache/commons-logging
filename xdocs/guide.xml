@@ -113,13 +113,21 @@ Familiarity with high-level details of the relevant Logging implementations is p
 As far as possible, JCL tries to be as unobtrusive as possible.
 In most cases, including the (full) <code>commons-logging.jar</code> in the classpath
 should result in JCL configuring itself in a reasonable manner.
-There's a good chance that it'll guess your preferred logging system and you won't
-need to do any configuration at all! 
+There's a good chance that it'll guess (discover) your preferred logging system and you won't
+need to do any configuration of JCL at all! 
     </p><p>
 Note, however, that if you have a particular preference then providing a simple
 <code>commons-logging.properties</code> file which specifies the concrete logging library to be
 used is recommended, since (in this case) JCL will log only to that system
 and will report any configuration problems that prevent that system being used.
+    </p>
+    <p>
+When no particular logging library is specified then JCL will silently ignore any logging library
+that it finds but cannot initialise and continue to look for other alternatives. This is a deliberate
+design decision; no application should fail to run because a "guessed" logging library cannot be
+used. To ensure an exception is reported when a particular logging library cannot be used, use one
+of the available JCL configuration mechanisms to force that library to be selected (ie disable
+JCL's discovery process).
     </p>
         <subsection name='Configuration'>
             <p>
@@ -194,6 +202,16 @@ sort of configuration API for the underlying logging system.
             <p>
 Configuration of the behavior of the JCL ultimately depends upon the
 logging toolkit being used. Please consult the documentation for the chosen logging system.
+        </p>
+        <p>
+JCL is NOT responsible for initialisation, configuration or shutdown of the underlying logging library.
+In many cases logging libraries will automatically initialise/configure themselves when first used, and
+need no explicit shutdown process. In these situations an application can simply use JCL and not depend
+directly on the API of the underlying logging system in any way. However if the logging library being used
+requires special initialisation, configuration or shutdown then some logging-library-specific code will
+be required in the application. JCL simply forwards logging method calls to the correct underlying
+implementation. When writing library code this issue is of course not relevant as the calling application
+is responsible for handling such issues.
         </p>
             <subsection name='Configuring Log4J'>
                 <p>
