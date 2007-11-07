@@ -25,13 +25,13 @@
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>4</version>
+    <version>5-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
   <name>Commons Logging</name>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.1.1-SNAPSHOT</version>
   <description>Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
   <url>http://commons.apache.org/logging</url>
@@ -492,9 +492,10 @@
   <distributionManagement>
     <site>
       <id>apache.website</id>
-      <url>${commons.deployment.protocol}://people.apache.org//www/commons.apache.org/logging/</url>
+      <url>${commons.deployment.protocol}://people.apache.org/www/commons.apache.org/logging/</url>
     </site>
   </distributionManagement>
+
   <properties>
     <maven.compile.source>1.2</maven.compile.source>
     <maven.compile.target>1.1</maven.compile.target>
