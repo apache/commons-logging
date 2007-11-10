@@ -37,6 +37,7 @@
   <url>http://commons.apache.org/logging</url>
 
   <issueManagement>
+    <system>JIRA</system>
     <url>http://issues.apache.org/jira/browse/LOGGING</url>
   </issueManagement>
 
