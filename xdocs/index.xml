@@ -81,7 +81,7 @@ This gives short introductions to topics such as advanced class loading.
 Binary and source distributions are available
        <a href="http://commons.apache.org/downloads/download_logging.cgi">here</a>.
     </p>
-    <subsection name='1.1.1 Release - October 2007'>
+    <subsection name='1.1.1 Release - November 2007'>
       <p>
        This release is a minor update to the 1.1 release that fixes a number of bugs, and 
        resolves packaging issues for maven 1.x and maven 2.x users.
