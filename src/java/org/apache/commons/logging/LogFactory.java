@@ -380,6 +380,14 @@ public abstract class LogFactory {
 
     // --------------------------------------------------------- Static Methods
 
+    /** Utility method to safely trim a string. */
+    private static String trim(String src) {
+    	if (src == null) {
+    		return null;
+    	}
+    	return src.trim();
+    }
+
     /**
      * <p>Construct (if necessary) and return a <code>LogFactory</code>
      * instance, using the following ordered lookup procedure to determine
@@ -499,7 +507,7 @@ public abstract class LogFactory {
                 logDiagnostic(
                         "[LOOKUP] A security exception occurred while trying to create an"
                         + " instance of the custom factory class"
-                        + ": [" + e.getMessage().trim()
+                        + ": [" + trim(e.getMessage())
                         + "]. Trying alternative implementations...");
             }
             ;  // ignore
@@ -513,7 +521,7 @@ public abstract class LogFactory {
                 logDiagnostic(
                         "[LOOKUP] An exception occurred while trying to create an"
                         + " instance of the custom factory class"
-                        + ": [" + e.getMessage().trim()
+                        + ": [" + trim(e.getMessage())
                         + "] as specified by a system property.");
             }
             throw e;
@@ -576,7 +584,7 @@ public abstract class LogFactory {
                     logDiagnostic(
                         "[LOOKUP] A security exception occurred while trying to create an"
                         + " instance of the custom factory class"
-                        + ": [" + ex.getMessage().trim()
+                        + ": [" + trim(ex.getMessage())
                         + "]. Trying alternative implementations...");
                 }
                 ; // ignore
