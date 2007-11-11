@@ -50,6 +50,7 @@ public class NoOpLogTestCase extends AbstractLogTest
      */
     public void tearDown() {
         LogFactory.releaseAll();
+        System.getProperties().remove("org.apache.commons.logging.Log");
     }
     
     /**
