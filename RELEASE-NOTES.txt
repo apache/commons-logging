@@ -130,10 +130,14 @@ Logging with Maven 1.x will be removed in a future version of Commons Logging.
   Commons Logging library was not sufficient as an AccessController was not used.
   This has been fixed by catching SecurityException and using an AccessController.
 
-* LOGGING-111: Show the contents of chained exceptions, to make debugging easier,
-  in particular when using Commons Logging together with Log4J.
+* LOGGING-111, LOGGING-114: Show the contents of chained exceptions, to make
+  debugging easier, in particular when using Commons Logging together with Log4J.
 
 * LOGGING-113: pom.xml in maven repository does not list dependencies as optional.
+
+* LOGGING-115: NPE thrown due to exception message logging.
+
+* LOGGING-117: Unit tests fail on linux with java16.
 
 * MEV-392 (http://jira.codehaus.org/browse/MEV-392)
   As Commons Logging didn't provide a Maven2 pom.xml file, one was helpfully
