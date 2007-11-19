@@ -152,6 +152,13 @@
         <configuration>
           <archive>
             <manifestFile>src/conf/MANIFEST.MF</manifestFile>
+            <!--
+              - Copied from commons-parent-5, because X-Compile-Target-JDK is
+              - wrong there. Can be removed when we update to commons-parent-6.
+              -->
+            <manifestEntries>
+              <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+            </manifestEntries>
           </archive>
         </configuration>
         <executions>
@@ -197,6 +204,11 @@
                   <exclude name="org/apache/commons/logging/impl/Jdk13*" />
                   <exclude name="org/apache/commons/logging/impl/LogKit*" />
                   <exclude name="org/apache/commons/logging/impl/Servlet*" />
+                  <manifest>
+                    <attribute name="Built-By" value="${user.name}"/>
+                    <attribute name="X-Compile-Source-JDK" value="${maven.compile.source}"/>
+                    <attribute name="X-Compile-Target-JDK" value="${maven.compile.target}"/>
+                  </manifest>
                 </jar>
               </tasks>
             </configuration>
@@ -220,6 +232,11 @@
                   <exclude name="org/apache/commons/logging/*" />
                   <exclude name="org/apache/commons/logging/impl/WeakHashtable*" />
                   <exclude name="org/apache/commons/logging/impl/LogFactoryImpl*" />
+                  <manifest>
+                    <attribute name="Built-By" value="${user.name}"/>
+                    <attribute name="X-Compile-Source-JDK" value="${maven.compile.source}"/>
+                    <attribute name="X-Compile-Target-JDK" value="${maven.compile.target}"/>
+                  </manifest>
                 </jar>
               </tasks>
             </configuration>
