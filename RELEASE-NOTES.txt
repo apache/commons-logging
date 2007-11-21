@@ -139,6 +139,8 @@ Logging with Maven 1.x will be removed in a future version of Commons Logging.
 
 * LOGGING-117: Unit tests fail on linux with java16.
 
+* LOGGING-118: Generate source and binary archives.
+
 * MEV-392 (http://jira.codehaus.org/browse/MEV-392)
   As Commons Logging didn't provide a Maven2 pom.xml file, one was helpfully
   created by people not involved with the commons-logging project and published
