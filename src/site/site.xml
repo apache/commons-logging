@@ -46,6 +46,20 @@ under the License.
       <item name="Download"
             href="http://commons.apache.org/downloads/download_logging.cgi"/>
     </menu>
+    <menu name="1.1.1 Release">
+      <item name="Overview"
+            href="http://commons.apache.org/logging/commons-logging-1.1.1/index.html"/>
+      <item name="User Guide"
+            href="http://commons.apache.org/logging/commons-logging-1.1.1/guide.html"/>
+      <item name="Tech Guide"
+            href="http://commons.apache.org/logging/commons-logging-1.1.1/tech.html"/>
+      <item name="Troubleshooting Guide"
+            href="http://commons.apache.org/logging/commons-logging-1.1.1/troubleshooting.html"/>
+      <item name='JavaDoc'
+            href='http://commons.apache.org/logging/commons-logging-1.1.1/apidocs/index.html'/>
+      <item name="Release Notes"
+            href="http://commons.apache.org/logging/commons-logging-1.1.1/RELEASE-NOTES.txt"/>
+    </menu>
     <menu name="1.1 Release">
       <item name="Overview"
             href="http://commons.apache.org/logging/commons-logging-1.1/index.html"/>
