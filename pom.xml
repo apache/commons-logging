@@ -141,6 +141,15 @@ under the License.
       </testResource>
     </testResources>
 
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.3</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
 
       <!--
@@ -153,13 +162,6 @@ under the License.
         <configuration>
           <archive>
             <manifestFile>src/conf/MANIFEST.MF</manifestFile>
-            <!--
-              - Copied from commons-parent-5, because X-Compile-Target-JDK is
-              - wrong there. Can be removed when we update to commons-parent-6.
-              -->
-            <manifestEntries>
-              <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
-            </manifestEntries>
           </archive>
         </configuration>
         <executions>
