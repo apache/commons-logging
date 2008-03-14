@@ -23,7 +23,7 @@ under the License.
     <format>tar.gz</format>
     <format>zip</format>
   </formats>
-  <baseDirectory>${artifactId}-${version}-src</baseDirectory>
+  <baseDirectory>${project.artifactId}-${project.version}-src</baseDirectory>
   <fileSets>
     <fileSet>
       <directory>.</directory>
