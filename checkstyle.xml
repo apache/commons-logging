@@ -30,7 +30,7 @@
   <module name="TreeWalker">
     <!-- Verify that EVERY source file has the appropriate license -->
     <module name="Header">
-      <property name="headerFile" value="license-header.txt"/>
+      <property name="headerFile" value="${basedir}/LICENSE-header.txt"/>
     </module>
 
     <module name="OperatorWrap">
