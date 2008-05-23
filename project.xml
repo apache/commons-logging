@@ -281,9 +281,7 @@ There is no easy way to run these under maven at the moment.
   </build>
 
   <reports>
-    <!--
     <report>maven-checkstyle-plugin</report>
-    -->
     <report>maven-javadoc-plugin</report>
     <report>maven-jdepend-plugin</report>
     <report>maven-junit-report-plugin</report>
