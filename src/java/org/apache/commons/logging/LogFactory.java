@@ -27,6 +27,7 @@ import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Enumeration;
@@ -1420,17 +1421,35 @@ public abstract class LogFactory {
         PrivilegedAction action = 
             new PrivilegedAction() {
                 public Object run() {
+                    InputStream stream = null;
                     try {
-                        InputStream stream = url.openStream();
+                        // We must ensure that useCaches is set to false, as the
+                        // default behaviour of java is to cache file handles, and
+                        // this "locks" files, preventing hot-redeploy on windows.
+                        URLConnection connection = url.openConnection();
+                        connection.setDefaultUseCaches(false);
+                        stream = connection.getInputStream();
                         if (stream != null) {
                             Properties props = new Properties();
                             props.load(stream);
                             stream.close();
+                            stream = null;
                             return props;
                         }
                     } catch(IOException e) {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Unable to read URL " + url);
+                        }
+                    } finally {
+                        if (stream != null) {
+                            try {
+                                stream.close();
+                            } catch(Throwable t) {
+                                // ignore exception; this should not happen
+                                if (isDiagnosticsEnabled()) {
+                                    logDiagnostic("Unable to close stream for URL " + url);
+                                }
+                            }
                         }
                     }
 
