@@ -1427,7 +1427,7 @@ public abstract class LogFactory {
                         // default behaviour of java is to cache file handles, and
                         // this "locks" files, preventing hot-redeploy on windows.
                         URLConnection connection = url.openConnection();
-                        connection.setDefaultUseCaches(false);
+                        connection.setUseCaches(false);
                         stream = connection.getInputStream();
                         if (stream != null) {
                             Properties props = new Properties();
