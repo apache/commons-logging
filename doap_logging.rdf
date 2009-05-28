@@ -24,17 +24,17 @@
       <Version>
         <name>commons-logging</name>
         <created>2007-11-26</created>
-        <revision>1.1.1</version>
+        <revision>1.1.1</revision>
       </Version>
       <Version>
         <name>commons-logging</name>
         <created>2006-05-10</created>
-        <revision>1.1</version>
+        <revision>1.1</revision>
       </Version>
       <Version>
         <name>commons-logging</name>
         <created>2004-06-15</created>
-        <revision>1.0.4</version>
+        <revision>1.0.4</revision>
       </Version>
     </release>
     <mailing-list rdf:resource="http://commons.apache.org/mail-lists.html"/>
