@@ -21,21 +21,21 @@
       </SVNRepository>
     </repository>
     <release>
-      <revision>
+      <Version>
         <name>commons-logging</name>
         <created>2007-11-26</created>
-        <version>1.1.1</version>
-      </revision>
-      <revision>
+        <revision>1.1.1</version>
+      </Version>
+      <Version>
         <name>commons-logging</name>
         <created>2006-05-10</created>
-        <version>1.1</version>
-      </revision>
-      <revision>
+        <revision>1.1</version>
+      </Version>
+      <Version>
         <name>commons-logging</name>
         <created>2004-06-15</created>
-        <version>1.0.4</version>
-      </revision>
+        <revision>1.0.4</version>
+      </Version>
     </release>
     <mailing-list rdf:resource="http://commons.apache.org/mail-lists.html"/>
   </Project>
