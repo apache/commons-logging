@@ -22,7 +22,7 @@ under the License.
 <project>
   <bannerRight>
     <name>Commons Logging</name>
-    <src>http://commons.apache.org/logging/images/logo.png</src>
+    <src>/images/logo.png</src>
     <href>http://commons.apache.org/logging/</href>
   </bannerRight>
   <body>
