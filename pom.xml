@@ -257,15 +257,6 @@ under the License.
                   <fileset dir="${basedir}">
                     <include name="RELEASE-NOTES.txt" />
                   </fileset>
-                  <!--
-                    - The logo should be moved to
-                    - ${basedir}/src/site/resources/images
-                    - once we can drop support for the Maven 1 site.
-                    - When that is done this section can be removed.
-                    -->
-                  <fileset dir="${basedir}/xdocs">
-                    <include name="images/logo.png" />
-                  </fileset>
                 </copy>
               </tasks>
             </configuration>
