@@ -390,22 +390,6 @@ under the License.
   </build>
   
   <profiles>
-    <!-- This profile can be removed when we update to commons-parent-5 -->
-    <profile>
-      <id>ci</id>
-      <distributionManagement>
-        <repository>
-          <id>apache.snapshots</id>
-          <name>Apache Development Snapshot Repository</name>
-          <url>${commons.deployment.protocol}://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
-        </repository>
-        <snapshotRepository>
-          <id>apache.snapshots</id>
-          <name>Apache Development Snapshot Repository</name>
-          <url>${commons.deployment.protocol}://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
     <profile>
       <id>release</id>
       <build>
