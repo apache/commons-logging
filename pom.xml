@@ -342,30 +342,15 @@ under the License.
               <includes>
                 <include>**/*TestCase.java</include>
               </includes>
-              <systemProperties>
+              <systemPropertyVariables>
                 <!--
-                <property>
-                  <name>org.apache.commons.logging.diagnostics.dest</name>
-                  <value>STDOUT</value>
-                </property>
+                  <org.apache.commons.logging.diagnostics.dest>STDOUT</org.apache.commons.logging.diagnostics.dest>
                 -->
-                <property>
-                  <name>commons-logging</name>
-                  <value>target/${project.build.finalName}.jar</value>
-                </property>
-                <property>
-                  <name>commons-logging-api</name>
-                  <value>target/${project.artifactId}-api-${project.version}.jar</value>
-                </property>
-                <property>
-                  <name>commons-logging-adapters</name>
-                  <value>target/${project.artifactId}-adapters-${project.version}.jar</value>
-                </property>
-                <property>
-                  <name>testclasses</name>
-                  <value>target/commons-logging-tests.jar</value>
-                </property>
-              </systemProperties>
+                  <commons-logging>target/${project.build.finalName}.jar</commons-logging>
+                  <commons-logging-api>target/${project.artifactId}-api-${project.version}.jar</commons-logging-api>
+                  <commons-logging-adapters>target/${project.artifactId}-adapters-${project.version}.jar</commons-logging-adapters>
+                  <testclasses>target/commons-logging-tests.jar</testclasses>
+              </systemPropertyVariables>
             </configuration>
           </execution>
         </executions>
