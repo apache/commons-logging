@@ -328,6 +328,7 @@ under the License.
         <configuration>
           <includes>
             <include>**/AvalonLoggerTestCase.java</include>
+            <include>**/WeakHashTableTestCase.java</include>
           </includes>
         </configuration>
 
