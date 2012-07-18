@@ -650,48 +650,46 @@ public class SimpleLog implements Log, Serializable {
     {
         ClassLoader classLoader = null;
 
-        if (classLoader == null) {
-            try {
-                // Are we running on a JDK 1.2 or later system?
-                Method method = Thread.class.getMethod("getContextClassLoader",
-                        (Class[]) null);
+        try {
+            // Are we running on a JDK 1.2 or later system?
+            Method method = Thread.class.getMethod("getContextClassLoader",
+                    (Class[]) null);
 
-                // Get the thread context class loader (if there is one)
-                try {
-                    classLoader = (ClassLoader)method.invoke(Thread.currentThread(), 
-                            (Class[]) null);
-                } catch (IllegalAccessException e) {
-                    // ignore
-                } catch (InvocationTargetException e) {
-                    /**
-                     * InvocationTargetException is thrown by 'invoke' when
-                     * the method being invoked (getContextClassLoader) throws
-                     * an exception.
-                     *
-                     * getContextClassLoader() throws SecurityException when
-                     * the context class loader isn't an ancestor of the
-                     * calling class's class loader, or if security
-                     * permissions are restricted.
-                     *
-                     * In the first case (not related), we want to ignore and
-                     * keep going.  We cannot help but also ignore the second
-                     * with the logic below, but other calls elsewhere (to
-                     * obtain a class loader) will trigger this exception where
-                     * we can make a distinction.
-                     */
-                    if (e.getTargetException() instanceof SecurityException) {
-                        // ignore
-                    } else {
-                        // Capture 'e.getTargetException()' exception for details
-                        // alternate: log 'e.getTargetException()', and pass back 'e'.
-                        throw new LogConfigurationException
-                            ("Unexpected InvocationTargetException", e.getTargetException());
-                    }
-                }
-            } catch (NoSuchMethodException e) {
-                // Assume we are running on JDK 1.1
+            // Get the thread context class loader (if there is one)
+            try {
+                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), 
+                        (Class[]) null);
+            } catch (IllegalAccessException e) {
                 // ignore
+            } catch (InvocationTargetException e) {
+                /**
+                 * InvocationTargetException is thrown by 'invoke' when
+                 * the method being invoked (getContextClassLoader) throws
+                 * an exception.
+                 *
+                 * getContextClassLoader() throws SecurityException when
+                 * the context class loader isn't an ancestor of the
+                 * calling class's class loader, or if security
+                 * permissions are restricted.
+                 *
+                 * In the first case (not related), we want to ignore and
+                 * keep going.  We cannot help but also ignore the second
+                 * with the logic below, but other calls elsewhere (to
+                 * obtain a class loader) will trigger this exception where
+                 * we can make a distinction.
+                 */
+                if (e.getTargetException() instanceof SecurityException) {
+                    // ignore
+                } else {
+                    // Capture 'e.getTargetException()' exception for details
+                    // alternate: log 'e.getTargetException()', and pass back 'e'.
+                    throw new LogConfigurationException
+                        ("Unexpected InvocationTargetException", e.getTargetException());
+                }
             }
+        } catch (NoSuchMethodException e) {
+            // Assume we are running on JDK 1.1
+            // ignore
         }
 
         if (classLoader == null) {
