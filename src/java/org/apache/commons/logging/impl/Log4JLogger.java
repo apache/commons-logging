@@ -60,7 +60,7 @@ public class Log4JLogger implements Log, Serializable {
     /** Logger name */
     private String name = null;
 
-    private static Priority traceLevel;
+    private static final Priority traceLevel;
     
     // ------------------------------------------------------------
     // Static Initializer.
@@ -86,12 +86,14 @@ public class Log4JLogger implements Log, Serializable {
         // versions do not. If TRACE is not available, then we have to map
         // calls to Log.trace(...) onto the DEBUG level.
         
+        Priority _traceLevel;
         try {
-            traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
+            _traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
         } catch(Exception ex) {
             // ok, trace not available
-            traceLevel = Level.DEBUG;
+            _traceLevel = Level.DEBUG;
         }
+        traceLevel = _traceLevel;
     }
 
     

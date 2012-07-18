@@ -24,9 +24,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
@@ -281,18 +279,7 @@ public class LogFactoryImpl extends LogFactory {
      * length array is returned.
      */
     public String[] getAttributeNames() {
-
-        Vector names = new Vector();
-        Enumeration keys = attributes.keys();
-        while (keys.hasMoreElements()) {
-            names.addElement((String) keys.nextElement());
-        }
-        String results[] = new String[names.size()];
-        for (int i = 0; i < results.length; i++) {
-            results[i] = (String) names.elementAt(i);
-        }
-        return (results);
-
+        return (String[]) attributes.keySet().toArray(new String[attributes.size()]);
     }
 
 
@@ -598,7 +585,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Log newInstance(String name) throws LogConfigurationException {
 
-        Log instance = null;
+        Log instance;
         try {
             if (logConstructor == null) {
                 instance = discoverLogImplementation(name);
@@ -626,11 +613,7 @@ public class LogFactoryImpl extends LogFactory {
             // A problem occurred invoking the Constructor or Method 
             // previously discovered
             Throwable c = e.getTargetException();
-            if (c != null) {
-                throw new LogConfigurationException(c);
-            } else {
-                throw new LogConfigurationException(e);
-            }
+            throw new LogConfigurationException(c == null ? e : c);
         } catch (Throwable t) {
             // A problem occurred invoking the Constructor or Method 
             // previously discovered
@@ -1074,14 +1057,14 @@ public class LogFactoryImpl extends LogFactory {
                     }
                 }
 
-                Class c = null;
+                Class c;
                 try {
                     c = Class.forName(logAdapterClassName, true, currentCL);
                 } catch (ClassNotFoundException originalClassNotFoundException) {
                     // The current classloader was unable to find the log adapter 
                     // in this or any ancestor classloader. There's no point in
                     // trying higher up in the hierarchy in this case..
-                    String msg = "" + originalClassNotFoundException.getMessage();
+                    String msg = originalClassNotFoundException.getMessage();
                     logDiagnostic(
                         "The log adapter '"
                         + logAdapterClassName
@@ -1100,7 +1083,7 @@ public class LogFactoryImpl extends LogFactory {
                         c = Class.forName(logAdapterClassName);
                     } catch (ClassNotFoundException secondaryClassNotFoundException) {
                         // no point continuing: this adapter isn't available
-                        msg = "" + secondaryClassNotFoundException.getMessage();
+                        msg = secondaryClassNotFoundException.getMessage();
                         logDiagnostic(
                             "The log adapter '"
                             + logAdapterClassName
@@ -1140,7 +1123,7 @@ public class LogFactoryImpl extends LogFactory {
                 // the underlying logger library is not present in this or any
                 // ancestor classloader. There's no point in trying higher up
                 // in the hierarchy in this case..
-                String msg = "" + e.getMessage();
+                String msg = e.getMessage();
                 logDiagnostic(
                     "The log adapter '"
                     + logAdapterClassName
@@ -1156,7 +1139,7 @@ public class LogFactoryImpl extends LogFactory {
                 //
                 // We treat this as meaning the adapter's underlying logging
                 // library could not be found.
-                String msg = "" + e.getMessage();
+                String msg = e.getMessage();
                 logDiagnostic(
                     "The log adapter '"
                     + logAdapterClassName
@@ -1236,7 +1219,7 @@ public class LogFactoryImpl extends LogFactory {
     private ClassLoader getBaseClassLoader() throws LogConfigurationException {
         ClassLoader thisClassLoader = getClassLoader(LogFactoryImpl.class);
         
-        if (useTCCL == false) {
+        if (!useTCCL) {
             return thisClassLoader;
         }
 
@@ -1354,7 +1337,7 @@ public class LogFactoryImpl extends LogFactory {
      * @throws LogConfigurationException    ALWAYS
      */
     private void handleFlawedDiscovery(String logAdapterClassName,
-                                       ClassLoader classLoader,
+                                       ClassLoader classLoader, // USED?
                                        Throwable discoveryFlaw) {
         
         if (isDiagnosticsEnabled()) {

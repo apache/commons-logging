@@ -129,7 +129,7 @@ public final class WeakHashtable extends Hashtable {
     private static final int PARTIAL_PURGE_COUNT     = 10;
     
     /* ReferenceQueue we check for gc'd keys */
-    private ReferenceQueue queue = new ReferenceQueue();
+    private final ReferenceQueue queue = new ReferenceQueue();
     /* Counter used to control how often we purge gc'd entries */
     private int changeCount = 0;
     
@@ -444,9 +444,7 @@ public final class WeakHashtable extends Hashtable {
                     // objects could test equal but have different hashcodes.
                     // We can reduce (not eliminate) the chance of this
                     // happening by comparing hashcodes.
-                    if (result == true) {
-                        result = (this.hashCode() == otherKey.hashCode());
-                    }
+                    result = result && (this.hashCode() == otherKey.hashCode());
                     // In any case, as our c'tor does not allow null referants
                     // and Hashtable does not do equality checks between 
                     // existing keys, normal hashtable operations should never 

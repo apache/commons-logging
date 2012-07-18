@@ -51,7 +51,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class ServletContextCleaner implements ServletContextListener {
 
-    private Class[] RELEASE_SIGNATURE = {ClassLoader.class};
+    private static final Class[] RELEASE_SIGNATURE = {ClassLoader.class};
     
     /**
      * Invoked when a webapp is undeployed, this tells the LogFactory

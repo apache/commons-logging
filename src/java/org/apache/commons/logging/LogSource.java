@@ -77,23 +77,15 @@ public class LogSource {
 
         // Is Log4J Available?
         try {
-            if (null != Class.forName("org.apache.log4j.Logger")) {
-                log4jIsAvailable = true;
-            } else {
-                log4jIsAvailable = false;
-            }
+            log4jIsAvailable = null != Class.forName("org.apache.log4j.Logger");
         } catch (Throwable t) {
             log4jIsAvailable = false;
         }
 
         // Is JDK 1.4 Logging Available?
         try {
-            if ((null != Class.forName("java.util.logging.Logger")) &&
-                (null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger"))) {
-                jdk14IsAvailable = true;
-            } else {
-                jdk14IsAvailable = false;
-            }
+            jdk14IsAvailable = (null != Class.forName("java.util.logging.Logger")) &&
+                    (null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger"));
         } catch (Throwable t) {
             jdk14IsAvailable = false;
         }
@@ -162,7 +154,7 @@ public class LogSource {
      * of the log).
      */
     static public void setLogImplementation(String classname) throws
-            LinkageError, ExceptionInInitializerError,
+            LinkageError,
             NoSuchMethodException, SecurityException,
             ClassNotFoundException {
         try {
@@ -234,10 +226,9 @@ public class LogSource {
      */
     static public Log makeNewLogInstance(String name) {
 
-        Log log = null;
+        Log log;
         try {
-            Object[] args = new Object[1];
-            args[0] = name;
+            Object[] args = { name };
             log = (Log) (logImplctor.newInstance(args));
         } catch (Throwable t) {
             log = null;

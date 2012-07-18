@@ -204,7 +204,7 @@ public abstract class LogFactory {
      * AccessControllers etc. It's more efficient to compute it once and
      * cache it here.
      */
-    private static ClassLoader thisClassLoader;
+    private static final ClassLoader thisClassLoader;
     
     // ----------------------------------------------------------- Constructors
 
@@ -720,6 +720,8 @@ public abstract class LogFactory {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Releasing factory for classloader " + objectId(classLoader));
         }
+        // factories is not final and could be replaced in this block.
+        final Hashtable factories = LogFactory.factories;
         synchronized (factories) {
             if (classLoader == null) {
                 if (nullClassLoaderFactory != null) {
@@ -751,6 +753,8 @@ public abstract class LogFactory {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Releasing factory for all classloaders.");
         }
+        // factories is not final and could be replaced in this block.
+        final Hashtable factories = LogFactory.factories;
         synchronized (factories) {
             Enumeration elements = factories.elements();
             while (elements.hasMoreElements()) {
@@ -968,19 +972,15 @@ public abstract class LogFactory {
      */
     private static LogFactory getCachedFactory(ClassLoader contextClassLoader)
     {
-        LogFactory factory = null;
-
         if (contextClassLoader == null) {
             // We have to handle this specially, as factories is a Hashtable
             // and those don't accept null as a key value.
             //
             // nb: nullClassLoaderFactory might be null. That's ok.
-            factory = nullClassLoaderFactory;
+            return nullClassLoaderFactory;
         } else {
-            factory = (LogFactory) factories.get(contextClassLoader);
+            return (LogFactory) factories.get(contextClassLoader);
         }
-
-        return factory;
     }
 
     /**
@@ -1218,8 +1218,7 @@ public abstract class LogFactory {
                             logDiagnostic(msg);
                         }
                         
-                        ClassCastException ex = new ClassCastException(msg);
-                        throw ex;
+                        throw new ClassCastException(msg);
                     }
                     
                     // Ignore exception, continue. Presumably the classloader was the
