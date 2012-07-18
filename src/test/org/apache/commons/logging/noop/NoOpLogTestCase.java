@@ -59,7 +59,7 @@ public class NoOpLogTestCase extends AbstractLogTest
      */
     public Log getLogObject()
     {
-        return (Log) new NoOpLog(this.getClass().getName());
+        return new NoOpLog(this.getClass().getName());
     }
 
     // Test Serializability of standard instance

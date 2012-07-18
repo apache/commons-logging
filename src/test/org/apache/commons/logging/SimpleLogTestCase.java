@@ -19,24 +19,11 @@ package org.apache.commons.logging;
 
 import org.apache.commons.logging.impl.SimpleLog;
 
-/**
- * 
- *
- * 
- * 
- * 
- * 
- */
 public class SimpleLogTestCase extends AbstractLogTest
 {
-    /**
-     *
-     *
-     *
-     */
     public Log getLogObject()
     {
-        return (Log) new SimpleLog(this.getClass().getName());
+        return new SimpleLog(this.getClass().getName());
     }
 
     public static void main(String[] args) {

@@ -30,6 +30,6 @@ public class BadHashtablePropertyTestCase extends TestCase {
     }
     
     public void testPutCalled() throws Exception {
-        Log log = LogFactory.getLog(BadHashtablePropertyTestCase.class);
+        LogFactory.getLog(BadHashtablePropertyTestCase.class);
     }
 }
