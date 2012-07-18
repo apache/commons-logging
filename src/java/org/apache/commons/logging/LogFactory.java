@@ -153,7 +153,7 @@ public abstract class LogFactory {
      * logDiagnostic method, so that users can clearly see which
      * LogFactory class is generating the output.
      */
-    private static String diagnosticPrefix;
+    private static final String diagnosticPrefix;
     
     /**
      * <p>Setting this system property 
@@ -1587,55 +1587,33 @@ public abstract class LogFactory {
      * output by setting the system property named {@link #DIAGNOSTICS_DEST_PROPERTY} to
      * a filename, or the special values STDOUT or STDERR. 
      */
-    private static void initDiagnostics() {
+    private static PrintStream initDiagnostics() {
         String dest;
         try {
             dest = getSystemProperty(DIAGNOSTICS_DEST_PROPERTY, null);
             if (dest == null) {
-                return;
+                return null;
             }
         } catch(SecurityException ex) {
             // We must be running in some very secure environment.
             // We just have to assume output is not wanted..
-            return;
+            return null;
         }
 
         if (dest.equals("STDOUT")) {
-            diagnosticsStream = System.out;
+            return System.out;
         } else if (dest.equals("STDERR")) {
-            diagnosticsStream = System.err;
+            return System.err;
         } else {
             try {
                 // open the file in append mode
                 FileOutputStream fos = new FileOutputStream(dest, true);
-                diagnosticsStream = new PrintStream(fos);
+                return new PrintStream(fos);
             } catch(IOException ex) {
                 // We should report this to the user - but how?
-                return;
+                return null;
             }
         }
-
-        // In order to avoid confusion where multiple instances of JCL are
-        // being used via different classloaders within the same app, we
-        // ensure each logged message has a prefix of form
-        // [LogFactory from classloader OID]
-        //
-        // Note that this prefix should be kept consistent with that 
-        // in LogFactoryImpl. However here we don't need to output info
-        // about the actual *instance* of LogFactory, as all methods that
-        // output diagnostics from this class are static.
-        String classLoaderName;
-        try {
-            ClassLoader classLoader = thisClassLoader;
-            if (thisClassLoader == null) {
-                classLoaderName = "BOOTLOADER";
-            } else {
-                classLoaderName = objectId(classLoader);
-            }
-        } catch(SecurityException e) {
-            classLoaderName = "UNKNOWN";
-        }
-        diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";
     }
 
     /**
@@ -1832,7 +1810,28 @@ public abstract class LogFactory {
         // note: it's safe to call methods before initDiagnostics (though
         // diagnostic output gets discarded).
         thisClassLoader = getClassLoader(LogFactory.class);
-        initDiagnostics();
+        // In order to avoid confusion where multiple instances of JCL are
+        // being used via different classloaders within the same app, we
+        // ensure each logged message has a prefix of form
+        // [LogFactory from classloader OID]
+        //
+        // Note that this prefix should be kept consistent with that 
+        // in LogFactoryImpl. However here we don't need to output info
+        // about the actual *instance* of LogFactory, as all methods that
+        // output diagnostics from this class are static.
+        String classLoaderName;
+        try {
+            ClassLoader classLoader = thisClassLoader;
+            if (thisClassLoader == null) {
+                classLoaderName = "BOOTLOADER";
+            } else {
+                classLoaderName = objectId(classLoader);
+            }
+        } catch(SecurityException e) {
+            classLoaderName = "UNKNOWN";
+        }
+        diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";
+        diagnosticsStream = initDiagnostics();
         logClassLoaderEnvironment(LogFactory.class);
         factories = createFactoryStore();
         if (isDiagnosticsEnabled()) {
