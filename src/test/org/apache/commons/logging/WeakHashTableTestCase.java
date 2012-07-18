@@ -25,7 +25,7 @@ public class WeakHashTableTestCase  extends TestCase {
 
     private static final int WAIT_FOR_THREAD_COMPLETION = 5000; // 5 seconds
     private static final int RUN_LOOPS = 1500;
-    private static final int OUTER_LOOP = 100;
+    private static final int OUTER_LOOP = 200;
     private static final int THREAD_COUNT = 10;
     
     private static WeakHashtable hashtable;
