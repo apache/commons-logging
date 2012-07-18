@@ -17,7 +17,8 @@
 
 package org.apache.commons.logging;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Test the ability to force the LogFactory class to use some

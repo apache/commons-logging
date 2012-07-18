@@ -18,9 +18,17 @@
 
 package org.apache.commons.logging.impl;
 
-import java.lang.ref.*;
-import junit.framework.*;
-import java.util.*;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import junit.framework.TestCase;
 
 public class WeakHashtableTest extends TestCase {
 

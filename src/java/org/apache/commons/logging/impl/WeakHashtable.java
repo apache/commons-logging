@@ -20,7 +20,13 @@ package org.apache.commons.logging.impl;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>Implementation of <code>Hashtable</code> that uses <code>WeakReference</code>'s

@@ -17,7 +17,7 @@
 
 package org.apache.commons.logging;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 import java.util.Hashtable;
 
 /**
