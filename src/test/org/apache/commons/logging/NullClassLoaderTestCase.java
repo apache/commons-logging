@@ -26,16 +26,6 @@ import junit.framework.TestCase;
  */
 public class NullClassLoaderTestCase extends TestCase {
 
-    //---------------------- Main ---------------------------------    
-
-    /**
-     * Main method so this test case can be run direct from the command line.
-     */
-    public static void main(String[] args){
-        String[] testCaseName = { NullClassLoaderTestCase.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-
     //---------------------- unit tests ---------------------------------    
     
     /**

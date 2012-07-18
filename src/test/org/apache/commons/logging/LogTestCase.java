@@ -18,22 +18,9 @@
 package org.apache.commons.logging;
 
 
-/**
- * 
- *
- * 
- * 
- * 
- * 
- */
 public class LogTestCase extends AbstractLogTest
 {
 
-    /**
-     * 
-     * 
-     * 
-     */
     public Log getLogObject()
     {
         /**
@@ -42,9 +29,4 @@ public class LogTestCase extends AbstractLogTest
         return LogFactory.getLog(this.getClass().getName());
     }
 
-    public static void main(String[] args)
-    {
-            String[] testCaseName = { LogTestCase.class.getName() };
-            junit.textui.TestRunner.main(testCaseName);    
-    }
 }

@@ -30,11 +30,6 @@ import junit.framework.TestSuite;
  */
 public class AvalonLoggerTestCase extends AbstractLogTest {
 
-    public static void main(String[] args) {
-        String[] testCaseName = { AvalonLoggerTestCase.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(AvalonLoggerTestCase.class);

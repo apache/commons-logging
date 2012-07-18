@@ -25,9 +25,4 @@ public class SimpleLogTestCase extends AbstractLogTest
     {
         return new SimpleLog(this.getClass().getName());
     }
-
-    public static void main(String[] args) {
-        String[] testCaseName = { SimpleLogTestCase.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);
-    }
 }

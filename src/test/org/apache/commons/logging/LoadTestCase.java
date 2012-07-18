@@ -211,12 +211,6 @@ public class LoadTestCase extends TestCase{
         
     }
     
-    
-    public static void main(String[] args){
-        String[] testCaseName = { LoadTestCase.class.getName() };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-    
     public void setUp() {
         // save state before test starts so we can restore it when test ends
         origContextClassLoader = Thread.currentThread().getContextClassLoader();
