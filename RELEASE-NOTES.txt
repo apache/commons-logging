@@ -20,6 +20,7 @@
 TODO - rework notes to incorporate: Changes since 1.1.1
 LOGGING-130 - Potential missing privileged block for class loader
 LOGGING-145 - LogFactoryImpl.setAttribute - possible NPE
+LOGGING-142 - Log4JLogger uses deprecated static members of Priority such as INFO
 
 $Id$
 
