@@ -122,24 +122,6 @@ public class Log4JLogger implements Log, Serializable {
     }
 
 
-    // --------------------------------------------------------- 
-    // Implementation
-    //
-    // Note that in the methods below the Priority class is used to define
-    // levels even though the Level class is supported in 1.2. This is done
-    // so that at compile time the call definitely resolves to a call to
-    // a method that takes a Priority rather than one that takes a Level.
-    // 
-    // The Category class (and hence its subclass Logger) in version 1.2 only
-    // has methods that take Priority objects. The Category class (and hence
-    // Logger class) in version 1.3 has methods that take both Priority and
-    // Level objects. This means that if we use Level here, and compile
-    // against log4j 1.3 then calls would be bound to the versions of
-    // methods taking Level objects and then would fail to run against
-    // version 1.2 of log4j.
-    // --------------------------------------------------------- 
-
-
     /**
      * Logs a message with <code>org.apache.log4j.Priority.TRACE</code>.
      * When using a log4j version that does not support the <code>TRACE</code>
