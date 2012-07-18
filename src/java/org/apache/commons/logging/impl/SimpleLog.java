@@ -311,9 +311,8 @@ public class SimpleLog implements Log, Serializable {
         if( showShortName) {
             if( shortLogName==null ) {
                 // Cut all but the last component of the name for both styles
-                shortLogName = logName.substring(logName.lastIndexOf(".") + 1);
-                shortLogName =
-                    shortLogName.substring(shortLogName.lastIndexOf("/") + 1);
+                String slName = logName.substring(logName.lastIndexOf(".") + 1);
+                shortLogName = slName.substring(slName.lastIndexOf("/") + 1);
             }
             buf.append(String.valueOf(shortLogName)).append(" - ");
         } else if(showLogName) {

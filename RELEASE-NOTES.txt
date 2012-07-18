@@ -22,6 +22,7 @@ LOGGING-130 - Potential missing privileged block for class loader
 LOGGING-145 - LogFactoryImpl.setAttribute - possible NPE
 LOGGING-142 - Log4JLogger uses deprecated static members of Priority such as INFO
 LOGGING-128 - Static analysis suggests a number of potential improvements
+LOGGING-147 - SimpleLog.log - unsafe update of shortLogName
 
 $Id$
 
