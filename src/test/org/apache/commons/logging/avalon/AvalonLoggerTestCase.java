@@ -16,7 +16,7 @@
  */ 
 package org.apache.commons.logging.avalon;
 
-import org.apache.avalon.framework.logger.ConsoleLogger;
+import org.apache.avalon.framework.logger.NullLogger;
 import org.apache.commons.logging.impl.AvalonLogger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.AbstractLogTest;
@@ -42,7 +42,8 @@ public class AvalonLoggerTestCase extends AbstractLogTest {
     }
 
     public Log getLogObject() {
-        Log log = new AvalonLogger(new ConsoleLogger());
+        // Output does not seem to be used, so don't display it.
+        Log log = new AvalonLogger(new NullLogger());
         return log;
     }
 }
