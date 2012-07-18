@@ -54,7 +54,7 @@ import org.apache.commons.logging.Log;
  */
 public class AvalonLogger implements Log {
 
-    /** Ancesteral avalon logger  */ 
+    /** Ancestral Avalon logger  */ 
     private static Logger defaultLogger = null;
     /** Avalon logger used to perform log */
     private final transient Logger logger;
@@ -62,7 +62,7 @@ public class AvalonLogger implements Log {
     /**
      * Constructs an <code>AvalonLogger</code> that outputs to the given
      * <code>Logger</code> instance.
-     * @param logger the avalon logger implementation to delegate to
+     * @param logger the Avalon logger implementation to delegate to
      */
     public AvalonLogger(Logger logger) {
         this.logger = logger;
