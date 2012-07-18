@@ -620,7 +620,7 @@ public class LogFactoryImpl extends LogFactory {
             // this type of exception means there was a problem in discovery
             // and we've already output diagnostics about the issue, etc.; 
             // just pass it on
-            throw (LogConfigurationException) lce;
+            throw lce;
             
         } catch (InvocationTargetException e) {
             // A problem occurred invoking the Constructor or Method 
