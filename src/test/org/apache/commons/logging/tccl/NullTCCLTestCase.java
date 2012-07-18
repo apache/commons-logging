@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  */
 public class NullTCCLTestCase extends TestCase {
 
-    public static Test suite() throws Exception {;
+    public static Test suite() throws Exception {
         PathableTestSuite suite = new PathableTestSuite(NullTCCLTestCase.class, null);
         return suite;
     }

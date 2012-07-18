@@ -115,7 +115,7 @@ public class LogSource {
                     setLogImplementation
                             ("org.apache.commons.logging.impl.NoOpLog");
                 } catch (Throwable u) {
-                    ;
+                    // ignored
                 }
             }
         } else {
@@ -135,7 +135,7 @@ public class LogSource {
                     setLogImplementation
                             ("org.apache.commons.logging.impl.NoOpLog");
                 } catch (Throwable u) {
-                    ;
+                    // ignored
                 }
             }
         }

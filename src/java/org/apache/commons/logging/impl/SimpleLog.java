@@ -140,7 +140,7 @@ public class SimpleLog implements Log, Serializable {
         try {
             prop = System.getProperty(name);
         } catch (SecurityException e) {
-            ; // Ignore
+            // Ignore
         }
         return (prop == null) ? simpleLogProps.getProperty(name) : prop;
     }
@@ -661,7 +661,7 @@ public class SimpleLog implements Log, Serializable {
                     classLoader = (ClassLoader)method.invoke(Thread.currentThread(), 
                             (Class[]) null);
                 } catch (IllegalAccessException e) {
-                    ;  // ignore
+                    // ignore
                 } catch (InvocationTargetException e) {
                     /**
                      * InvocationTargetException is thrown by 'invoke' when
@@ -680,7 +680,7 @@ public class SimpleLog implements Log, Serializable {
                      * we can make a distinction.
                      */
                     if (e.getTargetException() instanceof SecurityException) {
-                        ;  // ignore
+                        // ignore
                     } else {
                         // Capture 'e.getTargetException()' exception for details
                         // alternate: log 'e.getTargetException()', and pass back 'e'.
@@ -690,7 +690,7 @@ public class SimpleLog implements Log, Serializable {
                 }
             } catch (NoSuchMethodException e) {
                 // Assume we are running on JDK 1.1
-                ;  // ignore
+                // ignore
             }
         }
 

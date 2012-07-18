@@ -511,7 +511,7 @@ public abstract class LogFactory {
                         + ": [" + trim(e.getMessage())
                         + "]. Trying alternative implementations...");
             }
-            ;  // ignore
+            // ignore
         } catch(RuntimeException e) {
             // This is not consistent with the behaviour when a bad LogFactory class is
             // specified in a services file.
@@ -588,7 +588,7 @@ public abstract class LogFactory {
                         + ": [" + trim(ex.getMessage())
                         + "]. Trying alternative implementations...");
                 }
-                ; // ignore
+                // ignore
             }
         }
 
@@ -922,7 +922,7 @@ public abstract class LogFactory {
                  * we can make a distinction.
                  */
                 if (e.getTargetException() instanceof SecurityException) {
-                    ;  // ignore
+                    // ignore
                 } else {
                     // Capture 'e.getTargetException()' exception for details
                     // alternate: log 'e.getTargetException()', and pass back 'e'.
