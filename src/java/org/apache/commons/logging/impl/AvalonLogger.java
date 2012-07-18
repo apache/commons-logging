@@ -57,7 +57,7 @@ public class AvalonLogger implements Log {
     /** Ancesteral avalon logger  */ 
     private static Logger defaultLogger = null;
     /** Avalon logger used to perform log */
-    private transient Logger logger = null;
+    private final transient Logger logger;
 
     /**
      * Constructs an <code>AvalonLogger</code> that outputs to the given

@@ -58,7 +58,7 @@ public class Log4JLogger implements Log, Serializable {
     private transient Logger logger = null;
 
     /** Logger name */
-    private String name = null;
+    private final String name;
 
     private static final Priority traceLevel;
     
@@ -100,6 +100,7 @@ public class Log4JLogger implements Log, Serializable {
     // ------------------------------------------------------------ Constructor
 
     public Log4JLogger() {
+        name = null;
     }
 
 
