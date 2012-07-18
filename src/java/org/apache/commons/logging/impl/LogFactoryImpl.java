@@ -406,7 +406,7 @@ public class LogFactoryImpl extends LogFactory {
         }
         
         if (name.equals(TCCL_KEY)) {
-            useTCCL = Boolean.valueOf(value.toString()).booleanValue();
+            useTCCL = value != null && Boolean.valueOf(value.toString()).booleanValue();
         }
 
     }
