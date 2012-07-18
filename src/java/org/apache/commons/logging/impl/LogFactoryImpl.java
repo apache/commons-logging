@@ -1322,7 +1322,8 @@ public class LogFactoryImpl extends LogFactory {
         while (current != null) {
             if (current == c2)
                 return c1;
-            current = current.getParent();
+            // current = current.getParent();
+            current = getParentClassLoader(current);
         }
        
         // scan c2's ancestors to find c1
@@ -1330,7 +1331,8 @@ public class LogFactoryImpl extends LogFactory {
         while (current != null) {
             if (current == c1)
                 return c2;
-            current = current.getParent();
+            // current = current.getParent();
+            current = getParentClassLoader(current);
         }
 
         return null;

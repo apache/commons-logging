@@ -17,6 +17,9 @@
 
 -->
 
+TODO - rework notes to incorporate: Changes since 1.1.1
+LOGGING-130 - Potential missing privileged block for class loader
+
 $Id$
 
                            Commons Logging Package
