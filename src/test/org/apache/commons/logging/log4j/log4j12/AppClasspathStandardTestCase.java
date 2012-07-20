@@ -18,6 +18,7 @@
 package org.apache.commons.logging.log4j.log4j12;
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
@@ -27,7 +28,7 @@ import org.apache.commons.logging.PathableTestSuite;
  * is in it, as would be the situation for a standalone application.
  */
 
-public class AppClasspathStandardTestCase {
+public class AppClasspathStandardTestCase extends TestCase {
 
     /**
      * Return the tests included in this test suite.

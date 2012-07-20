@@ -18,6 +18,7 @@
 package org.apache.commons.logging.log4j.log4j12;
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
@@ -29,7 +30,7 @@ import org.apache.commons.logging.PathableTestSuite;
  * the parent classpath and commons-logging.jar is in the child.
  */
 
-public class ApiClasspathStandardTestCase {
+public class ApiClasspathStandardTestCase extends TestCase {
 
     /**
      * Return the tests included in this test suite.
