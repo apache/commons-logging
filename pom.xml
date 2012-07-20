@@ -343,10 +343,16 @@ under the License.
               <includes>
                 <include>**/*TestCase.java</include>
               </includes>
+              <excludes>
+                <exclude>**/WeakHashTableTestCase.java</exclude>
+              </excludes>
               <systemPropertyVariables>
                 <!--
                   <org.apache.commons.logging.diagnostics.dest>STDOUT</org.apache.commons.logging.diagnostics.dest>
                 -->
+                  <log4j12>${log4j:log4j:jar}</log4j12>
+                  <logkit>${logkit:logkit:jar}</logkit>
+                  <servlet-api>${javax.servlet:servlet-api:jar}</servlet-api>
                   <commons-logging>target/${project.build.finalName}.jar</commons-logging>
                   <commons-logging-api>target/${project.artifactId}-api-${project.version}.jar</commons-logging-api>
                   <commons-logging-adapters>target/${project.artifactId}-adapters-${project.version}.jar</commons-logging-adapters>
@@ -370,6 +376,19 @@ under the License.
           </descriptors>
           <tarLongFileMode>gnu</tarLongFileMode>
         </configuration>
+      </plugin>
+      <!-- Define properties for referencing dependencies -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>
