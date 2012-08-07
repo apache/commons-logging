@@ -356,9 +356,6 @@ under the License.
               <includes>
                 <include>**/*TestCase.java</include>
               </includes>
-              <excludes>
-                <exclude>**/WeakHashTableTestCase.java</exclude>
-              </excludes>
               <systemPropertyVariables>
                 <!--
                   <org.apache.commons.logging.diagnostics.dest>STDOUT</org.apache.commons.logging.diagnostics.dest>
