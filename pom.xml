@@ -156,7 +156,7 @@ under the License.
         - The custom test framework requires the unit test code to be
         - in a jarfile so it can control its place in the classpath.
         -->
-      <plugin>      
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
@@ -265,7 +265,7 @@ under the License.
             </goals>
           </execution>
         </executions>
-      </plugin> 
+      </plugin>
 
       <plugin>
         <!--
@@ -319,25 +319,38 @@ under the License.
         <!--
           - Many of JCL's tests use tricky techniques to place the generated
           - JCL jarfiles on the classpath in various configurations. This means
-          - that the tests must be run *after* the "package" build phase. The
-          - normal test phase is therefore disabled here, and the test plugin
-          - rebound to the "integration-test" phase instead.
+          - that those tests must be run *after* the "package" build phase.
+          -
+          - In order to not mess with the Ant build we "disable" the normal test
+          - phase. This is done by only running a single test, one that does not
+          - need to be run after the "package" phase.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <includes>
             <include>**/AvalonLoggerTestCase.java</include>
-            <include>**/WeakHashTableTestCase.java</include>
           </includes>
         </configuration>
+      </plugin>
 
+      <plugin>
+        <!--
+          - Many of JCL's tests use tricky techniques to place the generated
+          - JCL jarfiles on the classpath in various configurations. This means
+          - that those tests must be run *after* the "package" build phase.
+          -
+          - For this we use the failsafe plugin which is bound to the
+          - "integration-test" phase by default.
+          -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
         <executions>
           <execution>
             <id>integration-test</id>
-            <phase>integration-test</phase>
             <goals>
-              <goal>test</goal>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
             </goals>
             <configuration>
               <includes>
@@ -393,7 +406,7 @@ under the License.
 
     </plugins>
   </build>
-  
+
   <profiles>
     <profile>
       <id>release</id>
