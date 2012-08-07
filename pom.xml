@@ -345,6 +345,7 @@ under the License.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${commons.surefire.version}</version>
         <executions>
           <execution>
             <id>integration-test</id>
@@ -511,5 +512,6 @@ under the License.
     <commons.binary.suffix>-bin</commons.binary.suffix>
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
+    <commons.surefire.version>2.12</commons.surefire.version>
   </properties>
 </project>
