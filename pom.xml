@@ -153,8 +153,11 @@ under the License.
     <plugins>
 
       <!--
-        - The custom test framework requires the unit test code to be
-        - in a jarfile so it can control its place in the classpath.
+        - We want to create four jarfiles from this project: normal, tests, api
+        - and adapters. The first two are handled by the normal jar:jar and
+        - jar:test-jar targets.
+        - The jar plugin with some includes/excludes is used to create the other
+        - ones.
         -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -166,6 +169,10 @@ under the License.
         </configuration>
         <executions>
           <execution>
+            <!--
+              - The custom test framework requires the unit test code to be
+              - in a jarfile so it can control its place in the classpath.
+              -->
             <id>testjar</id>
             <phase>package</phase>
             <goals>
@@ -175,79 +182,58 @@ under the License.
               <jarName>commons-logging</jarName>
             </configuration>
           </execution>
+
+          <execution>
+            <id>apijar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <jarName>${project.artifactId}-api-${project.version}</jarName>
+              <includes>
+                <include>org/apache/commons/logging/*.class</include>
+                <include>org/apache/commons/logging/impl/LogFactoryImpl*.class</include>
+                <include>org/apache/commons/logging/impl/WeakHashtable*.class</include>
+                <include>org/apache/commons/logging/impl/SimpleLog*.class</include>
+                <include>org/apache/commons/logging/impl/NoOpLog*.class</include>
+                <include>org/apache/commons/logging/impl/Jdk14Logger.class</include>
+                <include>META-INF/LICENSE.txt</include>
+                <include>META-INF/NOTICE.txt</include>
+              </includes>
+              <excludes>
+                <exclude>**/package.html</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>adaptersjar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <jarName>${project.artifactId}-adapters-${project.version}</jarName>
+              <includes>
+                <include>org/apache/commons/logging/impl/**.class</include>
+                <include>META-INF/LICENSE.txt</include>
+                <include>META-INF/NOTICE.txt</include>
+              </includes>
+              <excludes>
+                <exclude>org/apache/commons/logging/impl/WeakHashtable*.class</exclude>
+                <exclude>org/apache/commons/logging/impl/LogFactoryImpl*.class</exclude>
+              </excludes>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
       <plugin>
-        <!--
-          - We want to create four jarfiles from this project: normal, tests, api
-          - and adapters. The first two are handled by the normal jar:jar target.
-          - Alas, the standard jar plugin doesn't have includes/excludes support
-          - in version 2.0, so antrun is used to create the other ones.
-          -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.1</version>
         <executions>
-          <execution>
-            <id>apijar</id>
-            <phase>package</phase>
-            <configuration>
-              <tasks>
-                <property name="workdir" value="${project.build.directory}/rejar" />
-                <property name="target" value="${project.artifactId}-api-${project.version}" />
-
-                <delete dir="${workdir}" failonerror="false" />
-                <mkdir dir="${workdir}" />
-
-                <unjar src="${project.build.directory}/${project.build.finalName}.jar" dest="${workdir}" />
-                <jar basedir="${workdir}" destfile="${project.build.directory}/${target}.jar" manifest="${basedir}/src/conf/MANIFEST.MF">
-                  <exclude name="org/apache/commons/logging/impl/Log4J*" />
-                  <exclude name="org/apache/commons/logging/impl/Avalon*" />
-                  <exclude name="org/apache/commons/logging/impl/Jdk13*" />
-                  <exclude name="org/apache/commons/logging/impl/LogKit*" />
-                  <exclude name="org/apache/commons/logging/impl/Servlet*" />
-                  <manifest>
-                    <attribute name="Built-By" value="${user.name}" />
-                    <attribute name="X-Compile-Source-JDK" value="${maven.compile.source}" />
-                    <attribute name="X-Compile-Target-JDK" value="${maven.compile.target}" />
-                  </manifest>
-                </jar>
-              </tasks>
-
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>adaptersjar</id>
-            <phase>package</phase>
-            <configuration>
-              <tasks>
-                <property name="workdir" value="${project.build.directory}/rejar" />
-                <property name="target" value="${project.artifactId}-adapters-${project.version}" />
-
-                <delete dir="${workdir}" failonerror="false" />
-                <mkdir dir="${workdir}" />
-
-                <unjar src="${project.build.directory}/${project.build.finalName}.jar" dest="${workdir}" />
-                <jar basedir="${workdir}" destfile="${project.build.directory}/${target}.jar" manifest="${basedir}/src/conf/MANIFEST.MF">
-                  <exclude name="org/apache/commons/logging/*" />
-                  <exclude name="org/apache/commons/logging/impl/WeakHashtable*" />
-                  <exclude name="org/apache/commons/logging/impl/LogFactoryImpl*" />
-                  <manifest>
-                    <attribute name="Built-By" value="${user.name}" />
-                    <attribute name="X-Compile-Source-JDK" value="${maven.compile.source}" />
-                    <attribute name="X-Compile-Target-JDK" value="${maven.compile.target}" />
-                  </manifest>
-                </jar>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
           <execution>
             <id>site.resources</id>
             <phase>site</phase>
