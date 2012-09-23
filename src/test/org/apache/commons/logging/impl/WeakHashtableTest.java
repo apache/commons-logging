@@ -32,7 +32,13 @@ import junit.framework.TestCase;
 
 public class WeakHashtableTest extends TestCase {
 
-    
+    private static final int WAIT_FOR_THREAD_COMPLETION = 5000; // 5 seconds
+    private static final int RUN_LOOPS = 3000;
+    private static final int OUTER_LOOP = 400;
+    private static final int THREAD_COUNT = 10;
+
+    private static WeakHashtable hashtable;
+
     /** Maximum number of iterations before our test fails */
     private static final int MAX_GC_ITERATIONS = 50;
 
@@ -254,5 +260,48 @@ public class WeakHashtableTest extends TestCase {
         
         // Test that the released objects are not taking space in the table
         assertEquals("underlying table not emptied", 0, weakHashtable.size());
+    }
+
+    public static class StupidThread extends Thread {
+
+        public StupidThread(String name) {
+            super(name);
+        }
+
+        public void run() {
+            for (int i = 0; i < RUN_LOOPS; i++) {
+                hashtable.put("key" + ":" + (i%10), Boolean.TRUE);
+                if(i%50 == 0) {
+                    yield();
+                }
+            }
+        }
+    }
+
+    public void testLOGGING_119() throws Exception {
+        Thread [] t = new Thread[THREAD_COUNT];
+        for (int j=1; j <= OUTER_LOOP; j++) {
+            hashtable = new WeakHashtable();
+            for (int i = 0; i < t.length; i++) {
+                t[i] = new StupidThread("Thread:" + i);
+                t[i].setDaemon(true); // Otherwise we cannot exit
+                t[i].start();
+            }
+            for (int i = 0; i < t.length; i++) {
+                t[i].join(WAIT_FOR_THREAD_COMPLETION);
+                if (t[i].isAlive()) {
+                    break; // at least one thread is stuck
+                }
+            }
+            int active=0;
+            for (int i = 0; i < t.length; i++) {
+                if (t[i].isAlive()) {
+                    active++;
+                }
+            }
+            if (active > 0) {
+                fail("Attempt: " + j + " Stuck threads: " + active);
+            }
+        }
     }
 }
