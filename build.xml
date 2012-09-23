@@ -737,7 +737,7 @@
     <delete dir="${build.home}/test-reports"/>
     <mkdir dir="${build.home}/test-reports"/>
 
-      <echo message="executing tests [${testmatch}.java]"/>
+    <echo message="executing tests [${testmatch}.java]"/>
     <!--
       - Note that the fork/forkmode settings define default behaviour for tests. 
       - The <test> and <batchtest> tags can override these settings if needed.
