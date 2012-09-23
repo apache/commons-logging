@@ -26,7 +26,7 @@ under the License.
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>15</version>
+    <version>26</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-logging</groupId>
@@ -35,7 +35,7 @@ under the License.
   <version>1.1.2-SNAPSHOT</version>
   <description>Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
-  <url>http://commons.apache.org/logging</url>
+  <url>http://commons.apache.org/logging/</url>
 
   <issueManagement>
     <system>JIRA</system>
@@ -141,15 +141,6 @@ under the License.
       </testResource>
     </testResources>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.9</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
 
       <!--
@@ -232,19 +223,18 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.1</version>
         <executions>
           <execution>
             <id>site.resources</id>
             <phase>site</phase>
             <configuration>
-              <tasks>
+              <target>
                 <copy todir="${project.reporting.outputDirectory}">
                   <fileset dir="${basedir}">
                     <include name="RELEASE-NOTES.txt" />
                   </fileset>
                 </copy>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>
@@ -289,15 +279,12 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.0-beta-6</version>
         <configuration>
           <!--
             - The site needs to be built prior to deploy,
             - because it is included in the assembly.
             -->
           <goals>site deploy</goals>
-          <!-- Pass these arguments to the deploy plugin. -->
-          <arguments>-Prelease</arguments>
         </configuration>
       </plugin>
 
@@ -363,7 +350,6 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2-beta-1</version>
         <configuration>
           <!-- Do not deploy the assemblies to the repository. -->
           <attach>false</attach>
@@ -412,7 +398,6 @@ under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
-            <version>2.3</version>
             <configuration>
               <!-- Pick up this configuration from settings.xml. -->
               <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
