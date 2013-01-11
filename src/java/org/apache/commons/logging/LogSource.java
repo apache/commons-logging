@@ -84,8 +84,8 @@ public class LogSource {
 
         // Is JDK 1.4 Logging Available?
         try {
-            jdk14IsAvailable = (null != Class.forName("java.util.logging.Logger")) &&
-                    (null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger"));
+            jdk14IsAvailable = null != Class.forName("java.util.logging.Logger") &&
+                    null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
         } catch (Throwable t) {
             jdk14IsAvailable = false;
         }
@@ -185,7 +185,7 @@ public class LogSource {
 
     /** Get a <code>Log</code> instance by class name */
     static public Log getInstance(String name) {
-        Log log = (Log) (logs.get(name));
+        Log log = (Log) logs.get(name);
         if (null == log) {
             log = makeNewLogInstance(name);
             logs.put(name, log);
@@ -229,7 +229,7 @@ public class LogSource {
         Log log;
         try {
             Object[] args = { name };
-            log = (Log) (logImplctor.newInstance(args));
+            log = (Log) logImplctor.newInstance(args);
         } catch (Throwable t) {
             log = null;
         }
@@ -246,7 +246,7 @@ public class LogSource {
      * all logs known to me.
      */
     static public String[] getLogNames() {
-        return (String[]) (logs.keySet().toArray(new String[logs.size()]));
+        return (String[]) logs.keySet().toArray(new String[logs.size()]);
     }
 
 

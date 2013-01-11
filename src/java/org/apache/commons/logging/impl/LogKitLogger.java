@@ -77,7 +77,7 @@ public class LogKitLogger implements Log, Serializable {
         if (logger == null) {
             logger = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
         }
-        return (logger);
+        return logger;
 
     }
 

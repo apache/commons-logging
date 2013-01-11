@@ -46,7 +46,7 @@ public class TestHandler extends Handler {
 
 
     public Iterator records() {
-        return (records.iterator());
+        return records.iterator();
     }
 
 

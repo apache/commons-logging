@@ -273,7 +273,7 @@ public class Log4JLogger implements Log, Serializable {
         if (logger == null) {
             logger = Logger.getLogger(name);
         }
-        return (this.logger);
+        return this.logger;
     }
 
 

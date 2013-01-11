@@ -128,10 +128,10 @@ public class SimpleLog implements Log, Serializable {
     public static final int LOG_LEVEL_FATAL  = 6;
 
     /** Enable all logging levels */
-    public static final int LOG_LEVEL_ALL    = (LOG_LEVEL_TRACE - 1);
+    public static final int LOG_LEVEL_ALL    = LOG_LEVEL_TRACE - 1;
 
     /** Enable no logging levels */
-    public static final int LOG_LEVEL_OFF    = (LOG_LEVEL_FATAL + 1);
+    public static final int LOG_LEVEL_OFF    = LOG_LEVEL_FATAL + 1;
 
     // ------------------------------------------------------------ Initializer
 
@@ -142,17 +142,17 @@ public class SimpleLog implements Log, Serializable {
         } catch (SecurityException e) {
             // Ignore
         }
-        return (prop == null) ? simpleLogProps.getProperty(name) : prop;
+        return prop == null ? simpleLogProps.getProperty(name) : prop;
     }
 
     private static String getStringProperty(String name, String dephault) {
         String prop = getStringProperty(name);
-        return (prop == null) ? dephault : prop;
+        return prop == null ? dephault : prop;
     }
 
     private static boolean getBooleanProperty(String name, boolean dephault) {
         String prop = getStringProperty(name);
-        return (prop == null) ? dephault : "true".equalsIgnoreCase(prop);
+        return prop == null ? dephault : "true".equalsIgnoreCase(prop);
     }
 
     // Initialize class attributes.
@@ -364,7 +364,7 @@ public class SimpleLog implements Log, Serializable {
     protected boolean isLevelEnabled(int logLevel) {
         // log level are numerically ordered so can use simple numeric
         // comparison
-        return (logLevel >= currentLogLevel);
+        return logLevel >= currentLogLevel;
     }
 
 

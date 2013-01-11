@@ -268,7 +268,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     public Object getAttribute(String name) {
 
-        return (attributes.get(name));
+        return attributes.get(name);
 
     }
 
@@ -294,7 +294,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     public Log getInstance(Class clazz) throws LogConfigurationException {
 
-        return (getInstance(clazz.getName()));
+        return getInstance(clazz.getName());
 
     }
 
@@ -323,7 +323,7 @@ public class LogFactoryImpl extends LogFactory {
             instance = newInstance(name);
             instances.put(name, instance);
         }
-        return (instance);
+        return instance;
 
     }
 
@@ -600,7 +600,7 @@ public class LogFactoryImpl extends LogFactory {
                 logMethod.invoke(instance, params);
             }
             
-            return (instance);
+            return instance;
             
         } catch (LogConfigurationException lce) {
             
@@ -891,7 +891,7 @@ public class LogFactoryImpl extends LogFactory {
                 "No user-specified Log implementation; performing discovery" +
                 " using the standard supported logging implementations...");
         }
-        for(int i=0; (i<classesToDiscover.length) && (result == null); ++i) {
+        for(int i=0; i<classesToDiscover.length && result == null; ++i) {
             result = createLogFromClass(classesToDiscover[i], logCategory, true);
         }
         
@@ -1168,7 +1168,7 @@ public class LogFactoryImpl extends LogFactory {
             currentCL = getParentClassLoader(currentCL);
         }
 
-        if ((logAdapter != null) && affectState) {
+        if (logAdapter != null && affectState) {
             // We've succeeded, so set instance fields
             this.logClassName   = logAdapterClassName;
             this.logConstructor = constructor;

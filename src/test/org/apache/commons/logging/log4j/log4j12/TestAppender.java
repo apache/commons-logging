@@ -73,7 +73,7 @@ public class TestAppender extends AppenderSkeleton {
 
 
     public boolean requiresLayout() {
-        return (false);
+        return false;
     }
 
 

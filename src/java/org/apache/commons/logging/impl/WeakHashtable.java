@@ -240,7 +240,7 @@ public final class WeakHashtable extends Hashtable {
             changeCount = 0;
         }
         // do a partial purge more often
-        else if ((changeCount % PARTIAL_PURGE_COUNT) == 0) {
+        else if (changeCount % PARTIAL_PURGE_COUNT == 0) {
             purgeOne();
         }
         
@@ -280,7 +280,7 @@ public final class WeakHashtable extends Hashtable {
             changeCount = 0;
         }
         // do a partial purge more often
-        else if ((changeCount % PARTIAL_PURGE_COUNT) == 0) {
+        else if (changeCount % PARTIAL_PURGE_COUNT == 0) {
             purgeOne();
         }
         return super.remove(new Referenced(key));
@@ -436,7 +436,7 @@ public final class WeakHashtable extends Hashtable {
                 Object thisKeyValue = getValue();
                 Object otherKeyValue = otherKey.getValue();
                 if (thisKeyValue == null) {                     
-                    result = (otherKeyValue == null);
+                    result = otherKeyValue == null;
                     
                     // Since our hashcode was calculated from the original
                     // non-null referant, the above check breaks the 
@@ -444,7 +444,7 @@ public final class WeakHashtable extends Hashtable {
                     // objects could test equal but have different hashcodes.
                     // We can reduce (not eliminate) the chance of this
                     // happening by comparing hashcodes.
-                    result = result && (this.hashCode() == otherKey.hashCode());
+                    result = result && this.hashCode() == otherKey.hashCode();
                     // In any case, as our c'tor does not allow null referants
                     // and Hashtable does not do equality checks between 
                     // existing keys, normal hashtable operations should never 

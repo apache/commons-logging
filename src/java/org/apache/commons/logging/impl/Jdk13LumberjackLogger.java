@@ -211,7 +211,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         if (logger == null) {
             logger = Logger.getLogger(name);
         }
-        return (logger);
+        return logger;
     }
 
 
@@ -242,7 +242,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * Is debug logging currently enabled?
      */
     public boolean isDebugEnabled() {
-        return (getLogger().isLoggable(Level.FINE));
+        return getLogger().isLoggable(Level.FINE);
     }
 
 
@@ -250,7 +250,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * Is error logging currently enabled?
      */
     public boolean isErrorEnabled() {
-        return (getLogger().isLoggable(Level.SEVERE));
+        return getLogger().isLoggable(Level.SEVERE);
     }
 
 
@@ -258,7 +258,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * Is fatal logging currently enabled?
      */
     public boolean isFatalEnabled() {
-        return (getLogger().isLoggable(Level.SEVERE));
+        return getLogger().isLoggable(Level.SEVERE);
     }
 
 
@@ -266,7 +266,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * Is info logging currently enabled?
      */
     public boolean isInfoEnabled() {
-        return (getLogger().isLoggable(Level.INFO));
+        return getLogger().isLoggable(Level.INFO);
     }
 
 
@@ -274,7 +274,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * Is trace logging currently enabled?
      */
     public boolean isTraceEnabled() {
-        return (getLogger().isLoggable(Level.FINEST));
+        return getLogger().isLoggable(Level.FINEST);
     }
 
 
@@ -282,7 +282,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * Is warn logging currently enabled?
      */
     public boolean isWarnEnabled() {
-        return (getLogger().isLoggable(Level.WARNING));
+        return getLogger().isLoggable(Level.WARNING);
     }
 
 

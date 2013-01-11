@@ -43,27 +43,27 @@ public class DecoratedSimpleLog extends SimpleLog {
     // ------------------------------------------------------------- Properties
 
     public DateFormat getDateTimeFormatter() {
-        return (dateFormatter);
+        return dateFormatter;
     }
 
 
     public String getDateTimeFormat() {
-        return (dateTimeFormat);
+        return dateTimeFormat;
     }
 
 
     public String getLogName() {
-        return (logName);
+        return logName;
     }
 
 
     public boolean getShowDateTime() {
-        return (showDateTime);
+        return showDateTime;
     }
 
 
     public boolean getShowShortName() {
-        return (showShortName);
+        return showShortName;
     }
 
 
@@ -94,7 +94,7 @@ public class DecoratedSimpleLog extends SimpleLog {
 
     // Return cache
     public List getCache() {
-        return (this.cache);
+        return this.cache;
     }
 
 

@@ -60,7 +60,7 @@ public class LogConfigurationException extends RuntimeException {
      */
     public LogConfigurationException(Throwable cause) {
 
-        this((cause == null) ? null : cause.toString(), cause);
+        this(cause == null ? null : cause.toString(), cause);
 
     }
 
@@ -90,7 +90,7 @@ public class LogConfigurationException extends RuntimeException {
      */
     public Throwable getCause() {
 
-        return (this.cause);
+        return this.cause;
 
     }
 

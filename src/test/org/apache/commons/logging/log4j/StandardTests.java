@@ -170,22 +170,22 @@ public abstract class StandardTests extends TestCase {
         ev = (LogEvent) logEvents.get(0);
         assertEquals("Info message expected", "info", ev.msg);
         assertEquals("Info level expected", "INFO", ev.level);
-        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
+        assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
         
         ev = (LogEvent) logEvents.get(1);
         assertEquals("Warn message expected", "warn", ev.msg);
         assertEquals("Warn level expected", "WARN", ev.level);
-        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
+        assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
         
         ev = (LogEvent) logEvents.get(2);
         assertEquals("Error message expected", "error", ev.msg);
         assertEquals("Error level expected", "ERROR", ev.level);
-        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
+        assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
         
         ev = (LogEvent) logEvents.get(3);
         assertEquals("Fatal message expected", "fatal", ev.msg);
         assertEquals("Fatal level expected", "FATAL", ev.level);
-        assertEquals("Exception data incorrect", (ev.throwable!=null), thrown);
+        assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
     }
 
 
