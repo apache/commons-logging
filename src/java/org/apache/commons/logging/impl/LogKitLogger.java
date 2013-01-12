@@ -37,7 +37,6 @@ import org.apache.commons.logging.Log;
  * @author Robert Burrell Donkin
  * @version $Id$
  */
-
 public class LogKitLogger implements Log, Serializable {
 
 

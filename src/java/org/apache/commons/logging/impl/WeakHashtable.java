@@ -112,6 +112,7 @@ import java.util.Set;
  *
  * @author Brian Stansberry
  * 
+ * @version $Id$
  * @since 1.1
  */
 public final class WeakHashtable extends Hashtable {

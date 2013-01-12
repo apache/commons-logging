@@ -50,7 +50,7 @@ import org.apache.commons.logging.Log;
  * is not considered to be an incompatible change.
  * </p>
  * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision$ $Date$
+ * @version $Id$
  */
 public class AvalonLogger implements Log {
 

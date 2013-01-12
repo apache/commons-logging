@@ -39,10 +39,9 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
  * @author <a href="mailto:vince256@comcast.net">Vince Eagen</a>
- * @version $Revision$ $Date$
+ * @version $Id$
  * @since 1.1
  */
-
 public class Jdk13LumberjackLogger implements Log, Serializable {
 
 

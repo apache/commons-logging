@@ -47,9 +47,8 @@ import java.util.Properties;
  * @author Craig R. McClanahan
  * @author Costin Manolache
  * @author Richard A. Sitze
- * @version $Revision$ $Date$
+ * @version $Id$
  */
-
 public abstract class LogFactory {
     // Implementation note re AccessController usage
     //

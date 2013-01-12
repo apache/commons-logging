@@ -34,9 +34,8 @@ import org.apache.commons.logging.Log;
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
  * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @version $Revision$ $Date$
+ * @version $Id$
  */
-
 public class Jdk14Logger implements Log, Serializable {
 
     /**

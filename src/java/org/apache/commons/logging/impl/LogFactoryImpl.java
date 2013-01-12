@@ -63,9 +63,8 @@ import org.apache.commons.logging.LogFactory;
  * @author Craig R. McClanahan
  * @author Richard A. Sitze
  * @author Brian Stansberry
- * @version $Revision$ $Date$
+ * @version $Id$
  */
-
 public class LogFactoryImpl extends LogFactory {
 
 

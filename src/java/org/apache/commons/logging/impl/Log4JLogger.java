@@ -46,7 +46,6 @@ import org.apache.log4j.Level;
  * @author Robert Burrell Donkin
  * @version $Id$
  */
-
 public class Log4JLogger implements Log, Serializable {
 
     // ------------------------------------------------------------- Attributes
