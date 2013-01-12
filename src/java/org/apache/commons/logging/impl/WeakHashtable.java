@@ -117,6 +117,9 @@ import java.util.Set;
  */
 public final class WeakHashtable extends Hashtable {
 
+    /** Serializable version identifier. */
+    private static final long serialVersionUID = -1546036869799732453L;
+
     /** 
      * The maximum number of times put() or remove() can be called before
      * the map will be purged of all cleared entries.

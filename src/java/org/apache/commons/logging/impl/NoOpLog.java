@@ -30,6 +30,9 @@ import org.apache.commons.logging.Log;
  */
 public class NoOpLog implements Log, Serializable {
 
+    /** Serializable version identifier. */
+    private static final long serialVersionUID = 561423906191706148L;
+
     /** Convenience constructor */
     public NoOpLog() { }
     /** Base constructor */

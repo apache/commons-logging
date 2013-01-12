@@ -27,6 +27,9 @@ package org.apache.commons.logging;
  */
 public class LogConfigurationException extends RuntimeException {
 
+    /** Serializable version identifier. */
+    private static final long serialVersionUID = 8486587136871052495L;
+
     /**
      * Construct a new exception with <code>null</code> as its detail message.
      */

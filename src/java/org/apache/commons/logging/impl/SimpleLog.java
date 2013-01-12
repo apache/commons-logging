@@ -74,6 +74,9 @@ import org.apache.commons.logging.LogConfigurationException;
  */
 public class SimpleLog implements Log, Serializable {
 
+    /** Serializable version identifier. */
+    private static final long serialVersionUID = 136942970684951178L;
+
     // ------------------------------------------------------- Class Attributes
 
     /** All system properties used by <code>SimpleLog</code> start with this */

@@ -37,6 +37,9 @@ import org.apache.commons.logging.Log;
  */
 public class LogKitLogger implements Log, Serializable {
 
+    /** Serializable version identifier. */
+    private static final long serialVersionUID = 3768538055836059519L;
+
     // ------------------------------------------------------------- Attributes
 
     /** Logging goes to this <code>LogKit</code> logger */

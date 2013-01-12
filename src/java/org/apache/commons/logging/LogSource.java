@@ -23,12 +23,12 @@ import java.util.Hashtable;
 import org.apache.commons.logging.impl.NoOpLog;
 
 /**
- * <p>Factory for creating {@link Log} instances.  Applications should call
+ * Factory for creating {@link Log} instances.  Applications should call
  * the <code>makeNewLogInstance()</code> method to instantiate new instances
- * of the configured {@link Log} implementation class.</p>
- *
- * <p>By default, calling <code>getInstance()</code> will use the following
- * algorithm:</p>
+ * of the configured {@link Log} implementation class.
+ * <p>
+ * By default, calling <code>getInstance()</code> will use the following
+ * algorithm:
  * <ul>
  * <li>If Log4J is available, return an instance of
  *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
@@ -37,8 +37,8 @@ import org.apache.commons.logging.impl.NoOpLog;
  * <li>Otherwise, return an instance of
  *     <code>org.apache.commons.logging.impl.NoOpLog</code>.</li>
  * </ul>
- *
- * <p>You can change the default behavior in one of two ways:</p>
+ * <p>
+ * You can change the default behavior in one of two ways:
  * <ul>
  * <li>On the startup command line, set the system property
  *     <code>org.apache.commons.logging.log</code> to the name of the

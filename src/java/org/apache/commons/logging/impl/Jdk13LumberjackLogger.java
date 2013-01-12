@@ -41,6 +41,9 @@ import org.apache.commons.logging.Log;
  */
 public class Jdk13LumberjackLogger implements Log, Serializable {
 
+    /** Serializable version identifier. */
+    private static final long serialVersionUID = -8649807923527610591L;
+
     // ----------------------------------------------------- Instance Variables
 
     /**

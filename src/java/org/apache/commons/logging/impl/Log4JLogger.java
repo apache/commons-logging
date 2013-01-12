@@ -47,6 +47,9 @@ import org.apache.log4j.Level;
  */
 public class Log4JLogger implements Log, Serializable {
 
+    /** Serializable version identifier. */
+    private static final long serialVersionUID = 5160705895411730424L;
+
     // ------------------------------------------------------------- Attributes
 
     /** The fully qualified name of the Log4JLogger class. */
