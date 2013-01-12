@@ -15,7 +15,6 @@
  * limitations under the License.
  */ 
 
-
 package org.apache.commons.logging.impl;
 
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +24,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.logging.LogFactory;
-
 
 /**
  * This class is capable of receiving notifications about the undeployment of

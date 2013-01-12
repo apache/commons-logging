@@ -15,9 +15,7 @@
  * limitations under the License.
  */ 
 
-
 package org.apache.commons.logging.impl;
-
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -25,11 +23,10 @@ import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 
-
 /**
- * <p>Implementation of the <code>org.apache.commons.logging.Log</code>
+ * Implementation of the <code>org.apache.commons.logging.Log</code>
  * interface that wraps the standard JDK logging mechanisms that were
- * introduced in the Merlin release (JDK 1.4).</p>
+ * introduced in the Merlin release (JDK 1.4).
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
@@ -48,39 +45,31 @@ public class Jdk14Logger implements Log, Serializable {
 
     // ----------------------------------------------------------- Constructors
 
-
     /**
      * Construct a named instance of this Logger.
      *
      * @param name Name of the logger to be constructed
      */
     public Jdk14Logger(String name) {
-
         this.name = name;
         logger = getLogger();
-
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The underlying Logger implementation we are using.
      */
     protected transient Logger logger = null;
 
-
     /**
      * The name of the logger we are wrapping.
      */
     protected String name = null;
 
-
     // --------------------------------------------------------- Public Methods
 
     private void log( Level level, String msg, Throwable ex ) {
-
         Logger logger = getLogger();
         if (logger.isLoggable(level)) {
             // Hack (?) to get the stack trace.
@@ -100,7 +89,6 @@ public class Jdk14Logger implements Log, Serializable {
                 logger.logp( level, cname, method, msg, ex );
             }
         }
-
     }
 
     /**
@@ -113,7 +101,6 @@ public class Jdk14Logger implements Log, Serializable {
         log(Level.FINE, String.valueOf(message), null);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.FINE</code>.
      *
@@ -125,7 +112,6 @@ public class Jdk14Logger implements Log, Serializable {
         log(Level.FINE, String.valueOf(message), exception);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
      *
@@ -135,7 +121,6 @@ public class Jdk14Logger implements Log, Serializable {
     public void error(Object message) {
         log(Level.SEVERE, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
@@ -148,7 +133,6 @@ public class Jdk14Logger implements Log, Serializable {
         log(Level.SEVERE, String.valueOf(message), exception);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
      *
@@ -158,7 +142,6 @@ public class Jdk14Logger implements Log, Serializable {
     public void fatal(Object message) {
         log(Level.SEVERE, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
@@ -171,7 +154,6 @@ public class Jdk14Logger implements Log, Serializable {
         log(Level.SEVERE, String.valueOf(message), exception);
     }
 
-
     /**
      * Return the native Logger instance we are using.
      */
@@ -182,7 +164,6 @@ public class Jdk14Logger implements Log, Serializable {
         return logger;
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.INFO</code>.
      *
@@ -192,7 +173,6 @@ public class Jdk14Logger implements Log, Serializable {
     public void info(Object message) {
         log(Level.INFO, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.INFO</code>.
@@ -205,14 +185,12 @@ public class Jdk14Logger implements Log, Serializable {
         log(Level.INFO, String.valueOf(message), exception);
     }
 
-
     /**
      * Is debug logging currently enabled?
      */
     public boolean isDebugEnabled() {
         return getLogger().isLoggable(Level.FINE);
     }
-
 
     /**
      * Is error logging currently enabled?
@@ -221,14 +199,12 @@ public class Jdk14Logger implements Log, Serializable {
         return getLogger().isLoggable(Level.SEVERE);
     }
 
-
     /**
      * Is fatal logging currently enabled?
      */
     public boolean isFatalEnabled() {
         return getLogger().isLoggable(Level.SEVERE);
     }
-
 
     /**
      * Is info logging currently enabled?
@@ -237,7 +213,6 @@ public class Jdk14Logger implements Log, Serializable {
         return getLogger().isLoggable(Level.INFO);
     }
 
-
     /**
      * Is trace logging currently enabled?
      */
@@ -245,14 +220,12 @@ public class Jdk14Logger implements Log, Serializable {
         return getLogger().isLoggable(Level.FINEST);
     }
 
-
     /**
      * Is warn logging currently enabled?
      */
     public boolean isWarnEnabled() {
         return getLogger().isLoggable(Level.WARNING);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.FINEST</code>.
@@ -263,7 +236,6 @@ public class Jdk14Logger implements Log, Serializable {
     public void trace(Object message) {
         log(Level.FINEST, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.FINEST</code>.
@@ -276,7 +248,6 @@ public class Jdk14Logger implements Log, Serializable {
         log(Level.FINEST, String.valueOf(message), exception);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.WARNING</code>.
      *
@@ -286,7 +257,6 @@ public class Jdk14Logger implements Log, Serializable {
     public void warn(Object message) {
         log(Level.WARNING, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.WARNING</code>.
@@ -298,6 +268,4 @@ public class Jdk14Logger implements Log, Serializable {
     public void warn(Object message, Throwable exception) {
         log(Level.WARNING, String.valueOf(message), exception);
     }
-
-
 }

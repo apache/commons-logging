@@ -15,7 +15,6 @@
  * limitations under the License.
  */ 
 
-
 package org.apache.commons.logging.impl;
 
 import java.io.InputStream;
@@ -75,29 +74,29 @@ import org.apache.commons.logging.LogConfigurationException;
  */
 public class SimpleLog implements Log, Serializable {
 
-
     // ------------------------------------------------------- Class Attributes
 
     /** All system properties used by <code>SimpleLog</code> start with this */
-    static protected final String systemPrefix =
-        "org.apache.commons.logging.simplelog.";
+    static protected final String systemPrefix = "org.apache.commons.logging.simplelog.";
 
     /** Properties loaded from simplelog.properties */
     static protected final Properties simpleLogProps = new Properties();
 
     /** The default format to use when formating dates */
-    static protected final String DEFAULT_DATE_TIME_FORMAT =
-        "yyyy/MM/dd HH:mm:ss:SSS zzz";
+    static protected final String DEFAULT_DATE_TIME_FORMAT = "yyyy/MM/dd HH:mm:ss:SSS zzz";
 
     /** Include the instance name in the log message? */
     static protected boolean showLogName = false;
+
     /** Include the short name ( last component ) of the logger in the log
      *  message. Defaults to true - otherwise we'll be lost in a flood of
      *  messages without knowing who sends them.
      */
     static protected boolean showShortName = true;
+
     /** Include the current time in the log message */
     static protected boolean showDateTime = false;
+
     /** The date and time format to use in the log message */
     static protected String dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
 
@@ -112,7 +111,6 @@ public class SimpleLog implements Log, Serializable {
     static protected DateFormat dateFormatter = null;
 
     // ---------------------------------------------------- Log Level Constants
-
 
     /** "Trace" level logging. */
     public static final int LOG_LEVEL_TRACE  = 1;
@@ -196,7 +194,6 @@ public class SimpleLog implements Log, Serializable {
     /** The short name of this simple log instance */
     private String shortLogName = null;
 
-
     // ------------------------------------------------------------ Constructor
 
     /**
@@ -246,7 +243,6 @@ public class SimpleLog implements Log, Serializable {
 
     }
 
-
     // -------------------------------------------------------- Properties
 
     /**
@@ -260,23 +256,20 @@ public class SimpleLog implements Log, Serializable {
 
     }
 
-
     /**
-     * <p> Get logging level. </p>
+     * Get logging level.
      */
     public int getLevel() {
-
         return currentLogLevel;
     }
 
-
     // -------------------------------------------------------- Logging Methods
 
-
     /**
-     * <p> Do the actual logging.
-     * This method assembles the message
-     * and then calls <code>write()</code> to cause it to be written.</p>
+     * Do the actual logging.
+     * <p>
+     * This method assembles the message and then calls <code>write()</code>
+     * to cause it to be written.
      *
      * @param type One of the LOG_LEVEL_XXX constants defining the log level
      * @param message The message itself (typically a String)
@@ -337,9 +330,7 @@ public class SimpleLog implements Log, Serializable {
 
         // Print to the appropriate destination
         write(buf);
-
     }
-
 
     /**
      * <p>Write the content of the message accumulated in the specified
@@ -350,11 +341,8 @@ public class SimpleLog implements Log, Serializable {
      *  text to be logged
      */
     protected void write(StringBuffer buffer) {
-
         System.err.println(buffer.toString());
-
     }
-
 
     /**
      * Is the given log level currently enabled?
@@ -367,9 +355,7 @@ public class SimpleLog implements Log, Serializable {
         return logLevel >= currentLogLevel;
     }
 
-
     // -------------------------------------------------------- Log Implementation
-
 
     /**
      * Logs a message with 
@@ -379,12 +365,10 @@ public class SimpleLog implements Log, Serializable {
      * @see org.apache.commons.logging.Log#debug(Object)
      */
     public final void debug(Object message) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, null);
         }
     }
-
 
     /**
      * Logs a message with 
@@ -395,245 +379,201 @@ public class SimpleLog implements Log, Serializable {
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
     public final void debug(Object message, Throwable t) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, t);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
     public final void trace(Object message) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
             log(SimpleLog.LOG_LEVEL_TRACE, message, null);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
      *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
     public final void trace(Object message, Throwable t) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
             log(SimpleLog.LOG_LEVEL_TRACE, message, t);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
     public final void info(Object message) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO,message,null);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
      *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
     public final void info(Object message, Throwable t) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO, message, t);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
     public final void warn(Object message) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, null);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
      *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
     public final void warn(Object message, Throwable t) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, t);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
     public final void error(Object message) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, null);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
      *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
     public final void error(Object message, Throwable t) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, t);
         }
     }
 
-
     /**
-     * Log a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
+     * Log a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
     public final void fatal(Object message) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, null);
         }
     }
 
-
     /**
-     * Logs a message with 
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
+     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
      *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
     public final void fatal(Object message, Throwable t) {
-
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, t);
         }
     }
 
-
     /**
-     * <p> Are debug messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code>
+     * Are debug messages currently enabled?
+     * <p>
+     * This allows expensive operations such as <code>String</code>
      * concatenation to be avoided when the message will be ignored by the
-     * logger. </p>
+     * logger.
      */
     public final boolean isDebugEnabled() {
-
         return isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG);
     }
 
-
     /**
-     * <p> Are error messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code>
+     * Are error messages currently enabled?
+     * <p>
+     * This allows expensive operations such as <code>String</code>
      * concatenation to be avoided when the message will be ignored by the
-     * logger. </p>
+     * logger.
      */
     public final boolean isErrorEnabled() {
-
         return isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR);
     }
 
-
     /**
-     * <p> Are fatal messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code>
+     * Are fatal messages currently enabled?
+     * <p>
+     * This allows expensive operations such as <code>String</code>
      * concatenation to be avoided when the message will be ignored by the
-     * logger. </p>
+     * logger.
      */
     public final boolean isFatalEnabled() {
-
         return isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL);
     }
 
-
     /**
-     * <p> Are info messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code>
+     * Are info messages currently enabled?
+     * <p>
+     * This allows expensive operations such as <code>String</code>
      * concatenation to be avoided when the message will be ignored by the
-     * logger. </p>
+     * logger.
      */
     public final boolean isInfoEnabled() {
-
         return isLevelEnabled(SimpleLog.LOG_LEVEL_INFO);
     }
 
-
     /**
-     * <p> Are trace messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code>
+     * Are trace messages currently enabled?
+     * <p>
+     * This allows expensive operations such as <code>String</code>
      * concatenation to be avoided when the message will be ignored by the
-     * logger. </p>
+     * logger.
      */
     public final boolean isTraceEnabled() {
-
         return isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE);
     }
 
-
     /**
-     * <p> Are warn messages currently enabled? </p>
-     *
-     * <p> This allows expensive operations such as <code>String</code>
+     * Are warn messages currently enabled?
+     * <p>
+     * This allows expensive operations such as <code>String</code>
      * concatenation to be avoided when the message will be ignored by the
-     * logger. </p>
+     * logger.
      */
     public final boolean isWarnEnabled() {
-
         return isLevelEnabled(SimpleLog.LOG_LEVEL_WARN);
     }
-
 
     /**
      * Return the thread context class loader if available.
@@ -645,8 +585,7 @@ public class SimpleLog implements Log, Serializable {
      * @exception LogConfigurationException if a suitable class loader
      * cannot be identified.
      */
-    private static ClassLoader getContextClassLoader()
-    {
+    private static ClassLoader getContextClassLoader() {
         ClassLoader classLoader = null;
 
         try {
@@ -699,8 +638,7 @@ public class SimpleLog implements Log, Serializable {
         return classLoader;
     }
 
-    private static InputStream getResourceAsStream(final String name)
-    {
+    private static InputStream getResourceAsStream(final String name) {
         return (InputStream)AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {

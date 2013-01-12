@@ -15,9 +15,7 @@
  * limitations under the License.
  */ 
 
-
 package org.apache.commons.logging.impl;
-
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -28,7 +26,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.apache.commons.logging.Log;
-
 
 /**
  * <p>Implementation of the <code>org.apache.commons.logging.Log</code>
@@ -44,9 +41,7 @@ import org.apache.commons.logging.Log;
  */
 public class Jdk13LumberjackLogger implements Log, Serializable {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The underlying Logger implementation we are using.
@@ -56,7 +51,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     private String sourceClassName = "unknown";
     private String sourceMethodName = "unknown";
     private boolean classAndMethodFound = false;
-
 
     /**
      * This member variable simply ensures that any attempt to initialise
@@ -68,22 +62,17 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
 
     // ----------------------------------------------------------- Constructors
 
-
     /**
      * Construct a named instance of this Logger.
      *
      * @param name Name of the logger to be constructed
      */
     public Jdk13LumberjackLogger(String name) {
-
         this.name = name;
         logger = getLogger();
-
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     private void log( Level level, String msg, Throwable ex ) {
         if( getLogger().isLoggable(level) ) {
@@ -101,8 +90,8 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * <p>Gets the class and method by looking at the stack trace for the
-     * first entry that is not this class.</p>
+     * Gets the class and method by looking at the stack trace for the
+     * first entry that is not this class.
      */
     private void getClassAndMethod() {
         try {
@@ -144,7 +133,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         log(Level.FINE, String.valueOf(message), null);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.FINE</code>.
      *
@@ -156,7 +144,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         log(Level.FINE, String.valueOf(message), exception);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
      *
@@ -166,7 +153,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     public void error(Object message) {
         log(Level.SEVERE, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
@@ -179,7 +165,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         log(Level.SEVERE, String.valueOf(message), exception);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
      *
@@ -189,7 +174,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     public void fatal(Object message) {
         log(Level.SEVERE, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
@@ -202,7 +186,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         log(Level.SEVERE, String.valueOf(message), exception);
     }
 
-
     /**
      * Return the native Logger instance we are using.
      */
@@ -213,7 +196,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         return logger;
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.INFO</code>.
      *
@@ -223,7 +205,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     public void info(Object message) {
         log(Level.INFO, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.INFO</code>.
@@ -236,14 +217,12 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         log(Level.INFO, String.valueOf(message), exception);
     }
 
-
     /**
      * Is debug logging currently enabled?
      */
     public boolean isDebugEnabled() {
         return getLogger().isLoggable(Level.FINE);
     }
-
 
     /**
      * Is error logging currently enabled?
@@ -252,14 +231,12 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         return getLogger().isLoggable(Level.SEVERE);
     }
 
-
     /**
      * Is fatal logging currently enabled?
      */
     public boolean isFatalEnabled() {
         return getLogger().isLoggable(Level.SEVERE);
     }
-
 
     /**
      * Is info logging currently enabled?
@@ -268,7 +245,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         return getLogger().isLoggable(Level.INFO);
     }
 
-
     /**
      * Is trace logging currently enabled?
      */
@@ -276,14 +252,12 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         return getLogger().isLoggable(Level.FINEST);
     }
 
-
     /**
      * Is warn logging currently enabled?
      */
     public boolean isWarnEnabled() {
         return getLogger().isLoggable(Level.WARNING);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.FINEST</code>.
@@ -294,7 +268,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     public void trace(Object message) {
         log(Level.FINEST, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.FINEST</code>.
@@ -307,7 +280,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         log(Level.FINEST, String.valueOf(message), exception);
     }
 
-
     /**
      * Logs a message with <code>java.util.logging.Level.WARNING</code>.
      *
@@ -317,7 +289,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     public void warn(Object message) {
         log(Level.WARNING, String.valueOf(message), null);
     }
-
 
     /**
      * Logs a message with <code>java.util.logging.Level.WARNING</code>.
@@ -329,6 +300,4 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     public void warn(Object message, Throwable exception) {
         log(Level.WARNING, String.valueOf(message), exception);
     }
-
-
 }

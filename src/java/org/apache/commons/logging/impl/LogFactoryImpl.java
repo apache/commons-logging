@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.impl;
 
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,7 +28,6 @@ import java.util.Hashtable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
-
 
 /**
  * <p>Concrete subclass of {@link LogFactory} that implements the
@@ -67,7 +65,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class LogFactoryImpl extends LogFactory {
 
-
     /** Log4JLogger class name */
     private static final String LOGGING_IMPL_LOG4J_LOGGER = "org.apache.commons.logging.impl.Log4JLogger";
     /** Jdk14Logger class name */
@@ -82,8 +79,6 @@ public class LogFactoryImpl extends LogFactory {
     
     // ----------------------------------------------------------- Constructors
 
-   
-
     /**
      * Public no-arguments constructor required by the lookup mechanism.
      */
@@ -95,24 +90,19 @@ public class LogFactoryImpl extends LogFactory {
         }
     }
 
-
     // ----------------------------------------------------- Manifest Constants
-
 
     /**
      * The name (<code>org.apache.commons.logging.Log</code>) of the system 
      * property identifying our {@link Log} implementation class.
      */
-    public static final String LOG_PROPERTY =
-        "org.apache.commons.logging.Log";
-
+    public static final String LOG_PROPERTY = "org.apache.commons.logging.Log";
 
     /**
      * The deprecated system property used for backwards compatibility with
      * old versions of JCL.
      */
-    protected static final String LOG_PROPERTY_OLD =
-        "org.apache.commons.logging.log";
+    protected static final String LOG_PROPERTY_OLD = "org.apache.commons.logging.log";
 
     /**
      * The name (<code>org.apache.commons.logging.Log.allowFlawedContext</code>) 
@@ -161,7 +151,6 @@ public class LogFactoryImpl extends LogFactory {
     public static final String ALLOW_FLAWED_HIERARCHY_PROPERTY = 
         "org.apache.commons.logging.Log.allowFlawedHierarchy";
 
-
     /**
      * The names of classes that will be tried (in order) as logging
      * adapters. Each class is expected to implement the Log interface,
@@ -177,7 +166,6 @@ public class LogFactoryImpl extends LogFactory {
             "org.apache.commons.logging.impl.SimpleLog"
     };
     
-
     // ----------------------------------------------------- Instance Variables
 
     /**
@@ -191,12 +179,10 @@ public class LogFactoryImpl extends LogFactory {
      */
     private String diagnosticPrefix;
 
-
     /**
      * Configuration attributes.
      */
     protected Hashtable attributes = new Hashtable();
-
 
     /**
      * The {@link org.apache.commons.logging.Log} instances that have
@@ -204,12 +190,10 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Hashtable instances = new Hashtable();
 
-
     /**
      * Name of the class implementing the Log interface.
      */
     private String logClassName;
-
 
     /**
      * The one-argument constructor of the
@@ -220,13 +204,10 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Constructor logConstructor = null;
 
-
     /**
      * The signature of the Constructor to be used.
      */
-    protected Class logConstructorSignature[] =
-    { java.lang.String.class };
-
+    protected Class logConstructorSignature[] = { java.lang.String.class };
 
     /**
      * The one-argument <code>setLogFactory</code> method of the selected
@@ -234,12 +215,10 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Method logMethod = null;
 
-
     /**
      * The signature of the <code>setLogFactory</code> method to be used.
      */
-    protected Class logMethodSignature[] =
-    { LogFactory.class };
+    protected Class logMethodSignature[] = { LogFactory.class };
 
     /**
      * See getBaseClassLoader and initConfiguration.
@@ -258,7 +237,6 @@ public class LogFactoryImpl extends LogFactory {
     
     // --------------------------------------------------------- Public Methods
 
-
     /**
      * Return the configuration attribute with the specified name (if any),
      * or <code>null</code> if there is no such attribute.
@@ -266,11 +244,8 @@ public class LogFactoryImpl extends LogFactory {
      * @param name Name of the attribute to return
      */
     public Object getAttribute(String name) {
-
         return attributes.get(name);
-
     }
-
 
     /**
      * Return an array containing the names of all currently defined
@@ -280,7 +255,6 @@ public class LogFactoryImpl extends LogFactory {
     public String[] getAttributeNames() {
         return (String[]) attributes.keySet().toArray(new String[attributes.size()]);
     }
-
 
     /**
      * Convenience method to derive a name from the specified class and
@@ -292,11 +266,8 @@ public class LogFactoryImpl extends LogFactory {
      *  instance cannot be returned
      */
     public Log getInstance(Class clazz) throws LogConfigurationException {
-
         return getInstance(clazz.getName());
-
     }
-
 
     /**
      * <p>Construct (if necessary) and return a <code>Log</code> instance,
@@ -316,16 +287,13 @@ public class LogFactoryImpl extends LogFactory {
      *  instance cannot be returned
      */
     public Log getInstance(String name) throws LogConfigurationException {
-
         Log instance = (Log) instances.get(name);
         if (instance == null) {
             instance = newInstance(name);
             instances.put(name, instance);
         }
         return instance;
-
     }
-
 
     /**
      * Release any internal references to previously created
@@ -341,7 +309,6 @@ public class LogFactoryImpl extends LogFactory {
         instances.clear();
     }
 
-
     /**
      * Remove any configuration attribute associated with the specified name.
      * If there is no such attribute, no action is taken.
@@ -349,11 +316,8 @@ public class LogFactoryImpl extends LogFactory {
      * @param name Name of the attribute to remove
      */
     public void removeAttribute(String name) {
-
         attributes.remove(name);
-
     }
-
 
     /**
      * Set the configuration attribute with the specified name.  Calling
@@ -380,7 +344,6 @@ public class LogFactoryImpl extends LogFactory {
      *  to remove any setting for this attribute
      */
     public void setAttribute(String name, Object value) {
-
         if (logConstructor != null) {
             logDiagnostic("setAttribute: call too late; configuration already performed.");
         }
@@ -394,9 +357,7 @@ public class LogFactoryImpl extends LogFactory {
         if (name.equals(TCCL_KEY)) {
             useTCCL = value != null && Boolean.valueOf(value.toString()).booleanValue();
         }
-
     }
-
 
     // ------------------------------------------------------ 
     // Static Methods
@@ -413,7 +374,6 @@ public class LogFactoryImpl extends LogFactory {
     protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
         return LogFactory.getContextClassLoader();
     }
-
     
     /**
      * Workaround for bug in Java1.2; in theory this method is not needed.
@@ -422,7 +382,6 @@ public class LogFactoryImpl extends LogFactory {
     protected static boolean isDiagnosticsEnabled() {
         return LogFactory.isDiagnosticsEnabled();
     }
-
     
     /**
      * Workaround for bug in Java1.2; in theory this method is not needed.
@@ -432,7 +391,6 @@ public class LogFactoryImpl extends LogFactory {
     protected static ClassLoader getClassLoader(Class clazz) {
         return LogFactory.getClassLoader(clazz);
     }
-
 
     // ------------------------------------------------------ Protected Methods
 
@@ -472,7 +430,6 @@ public class LogFactoryImpl extends LogFactory {
         }
         diagnosticPrefix = "[LogFactoryImpl@" + System.identityHashCode(this) + " from " + classLoaderName + "] ";
     }
-
     
     /**
      * Output a diagnostic message to a user-specified destination (if the
@@ -495,7 +452,6 @@ public class LogFactoryImpl extends LogFactory {
      *              it will be.
      */
     protected String getLogClassName() {
-
         if (logClassName == null) {
             discoverLogImplementation(getClass().getName());
         }
@@ -529,7 +485,6 @@ public class LogFactoryImpl extends LogFactory {
 
         return logConstructor;
     }
-    
 
     /**
      * Is <em>JDK 1.3 with Lumberjack</em> logging available?   
@@ -542,7 +497,6 @@ public class LogFactoryImpl extends LogFactory {
                 "Jdk13Lumberjack",
                 "org.apache.commons.logging.impl.Jdk13LumberjackLogger");
     }
-
 
     /**
      * <p>Return <code>true</code> if <em>JDK 1.4 or later</em> logging
@@ -559,7 +513,6 @@ public class LogFactoryImpl extends LogFactory {
                 "org.apache.commons.logging.impl.Jdk14Logger");
     }
 
-
     /**
      * Is a <em>Log4J</em> implementation available? 
      * 
@@ -572,7 +525,6 @@ public class LogFactoryImpl extends LogFactory {
                 LOGGING_IMPL_LOG4J_LOGGER);
     }
 
-
     /**
      * Create and return a new {@link org.apache.commons.logging.Log}
      * instance for the specified name.
@@ -583,7 +535,6 @@ public class LogFactoryImpl extends LogFactory {
      *  be created
      */
     protected Log newInstance(String name) throws LogConfigurationException {
-
         Log instance;
         try {
             if (logConstructor == null) {
@@ -619,7 +570,6 @@ public class LogFactoryImpl extends LogFactory {
             throw new LogConfigurationException(t);
         }
     }
-    
 
     //  ------------------------------------------------------ Private Methods
     
@@ -642,7 +592,7 @@ public class LogFactoryImpl extends LogFactory {
      * allow this class to access the context classloader.
      */
     private static ClassLoader getContextClassLoaderInternal()
-    throws LogConfigurationException {
+        throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
@@ -661,7 +611,7 @@ public class LogFactoryImpl extends LogFactory {
      * info to access data that should not be available to it.
      */
     private static String getSystemProperty(final String key, final String def)
-    throws SecurityException {
+        throws SecurityException {
         return (String) AccessController.doPrivileged(
                 new PrivilegedAction() {
                     public Object run() {
@@ -806,7 +756,6 @@ public class LogFactoryImpl extends LogFactory {
         allowFlawedDiscovery = getBooleanConfiguration(ALLOW_FLAWED_DISCOVERY_PROPERTY, true);
         allowFlawedHierarchy = getBooleanConfiguration(ALLOW_FLAWED_HIERARCHY_PROPERTY, true);
     }
-  
 
     /**
      * Attempts to create a Log instance for the given category name.
@@ -818,8 +767,7 @@ public class LogFactoryImpl extends LogFactory {
      * or if no adapter at all can be instantiated
      */
     private Log discoverLogImplementation(String logCategory)
-    throws LogConfigurationException
-    {
+        throws LogConfigurationException {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Discovering a Log implementation...");
         }
@@ -902,7 +850,6 @@ public class LogFactoryImpl extends LogFactory {
         return result;        
     }
 
-
     /**
      * Appends message if the given name is similar to the candidate.
      * @param messageBuffer <code>StringBuffer</code> the message should be appended to, 
@@ -928,7 +875,6 @@ public class LogFactoryImpl extends LogFactory {
         }
     }
     
-    
     /**
      * Checks system properties and the attribute map for 
      * a Log implementation specified by the user under the 
@@ -936,8 +882,7 @@ public class LogFactoryImpl extends LogFactory {
      * 
      * @return classname specified by the user, or <code>null</code>
      */
-    private String findUserSpecifiedLogClassName()
-    {
+    private String findUserSpecifiedLogClassName() {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Trying to get log class from attribute '" + LOG_PROPERTY + "'");
         }
@@ -990,7 +935,6 @@ public class LogFactoryImpl extends LogFactory {
 
         return specifiedClass;
     }
-
     
     /**
      * Attempts to load the given class, find a suitable constructor,
@@ -1014,7 +958,7 @@ public class LogFactoryImpl extends LogFactory {
     private Log createLogFromClass(String logAdapterClassName,
                                    String logCategory,
                                    boolean affectState) 
-            throws LogConfigurationException {       
+        throws LogConfigurationException {       
 
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Attempting to instantiate '" + logAdapterClassName + "'");
@@ -1196,7 +1140,6 @@ public class LogFactoryImpl extends LogFactory {
         return logAdapter;
     }
     
-    
     /**
      * Return the classloader from which we should try to load the logging
      * adapter classes.
@@ -1373,7 +1316,6 @@ public class LogFactoryImpl extends LogFactory {
             throw new LogConfigurationException(discoveryFlaw);
         }
     }
-
     
     /**
      * Report a problem loading the log adapter, then either return 
@@ -1402,7 +1344,7 @@ public class LogFactoryImpl extends LogFactory {
      * should not be recovered from.
      */
     private void handleFlawedHierarchy(ClassLoader badClassLoader, Class badClass)
-    throws LogConfigurationException {
+        throws LogConfigurationException {
 
         boolean implementsLog = false;
         String logInterfaceName = Log.class.getName();

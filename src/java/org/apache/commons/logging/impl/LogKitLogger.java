@@ -15,7 +15,6 @@
  * limitations under the License.
  */ 
 
-
 package org.apache.commons.logging.impl;
 
 import java.io.Serializable;
@@ -24,14 +23,13 @@ import org.apache.log.Hierarchy;
 import org.apache.commons.logging.Log;
 
 /**
- * <p>Implementation of <code>org.apache.commons.logging.Log</code>
+ * Implementation of <code>org.apache.commons.logging.Log</code>
  * that wraps the <a href="http://avalon.apache.org/logkit/">avalon-logkit</a>
  * logging system. Configuration of <code>LogKit</code> is left to the user.
- * </p>
- *
- * <p><code>LogKit</code> accepts only <code>String</code> messages.
+ * <p>
+ * <code>LogKit</code> accepts only <code>String</code> messages.
  * Therefore, this implementation converts object messages into strings
- * by called their <code>toString()</code> method before logging them.</p>
+ * by called their <code>toString()</code> method before logging them.
  *
  * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
  * @author Robert Burrell Donkin
@@ -39,9 +37,7 @@ import org.apache.commons.logging.Log;
  */
 public class LogKitLogger implements Log, Serializable {
 
-
     // ------------------------------------------------------------- Attributes
-
 
     /** Logging goes to this <code>LogKit</code> logger */
     protected transient Logger logger = null;
@@ -49,9 +45,7 @@ public class LogKitLogger implements Log, Serializable {
     /** Name of this logger */
     protected String name = null;
 
-
     // ------------------------------------------------------------ Constructor
-
 
     /**
      * Construct <code>LogKitLogger</code> which wraps the <code>LogKit</code>
@@ -64,12 +58,10 @@ public class LogKitLogger implements Log, Serializable {
         this.logger = getLogger();
     }
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * <p>Return the underlying Logger we are using.</p>
+     * Return the underlying Logger we are using.
      */
     public Logger getLogger() {
 
@@ -80,9 +72,7 @@ public class LogKitLogger implements Log, Serializable {
 
     }
 
-
     // ----------------------------------------------------- Log Implementation
-
 
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
@@ -93,7 +83,6 @@ public class LogKitLogger implements Log, Serializable {
     public void trace(Object message) {
         debug(message);
     }
-
 
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
@@ -106,7 +95,6 @@ public class LogKitLogger implements Log, Serializable {
         debug(message, t);
     }
 
-
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
      * 
@@ -118,7 +106,6 @@ public class LogKitLogger implements Log, Serializable {
             getLogger().debug(String.valueOf(message));
         }
     }
-
 
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
@@ -133,7 +120,6 @@ public class LogKitLogger implements Log, Serializable {
         }
     }
 
-
     /**
      * Logs a message with <code>org.apache.log.Priority.INFO</code>.
      * 
@@ -145,7 +131,6 @@ public class LogKitLogger implements Log, Serializable {
             getLogger().info(String.valueOf(message));
         }
     }
-
 
     /**
      * Logs a message with <code>org.apache.log.Priority.INFO</code>.
@@ -160,7 +145,6 @@ public class LogKitLogger implements Log, Serializable {
         }
     }
 
-
     /**
      * Logs a message with <code>org.apache.log.Priority.WARN</code>.
      * 
@@ -172,7 +156,6 @@ public class LogKitLogger implements Log, Serializable {
             getLogger().warn(String.valueOf(message));
         }
     }
-
 
     /**
      * Logs a message with <code>org.apache.log.Priority.WARN</code>.
@@ -187,7 +170,6 @@ public class LogKitLogger implements Log, Serializable {
         }
     }
 
-
     /**
      * Logs a message with <code>org.apache.log.Priority.ERROR</code>.
      * 
@@ -199,7 +181,6 @@ public class LogKitLogger implements Log, Serializable {
             getLogger().error(String.valueOf(message));
         }
     }
-
 
     /**
      * Logs a message with <code>org.apache.log.Priority.ERROR</code>.
@@ -214,7 +195,6 @@ public class LogKitLogger implements Log, Serializable {
         }
     }
 
-
     /**
      * Logs a message with <code>org.apache.log.Priority.FATAL_ERROR</code>.
      * 
@@ -226,7 +206,6 @@ public class LogKitLogger implements Log, Serializable {
             getLogger().fatalError(String.valueOf(message));
         }
     }
-
 
     /**
      * Logs a message with <code>org.apache.log.Priority.FATAL_ERROR</code>.
@@ -241,14 +220,12 @@ public class LogKitLogger implements Log, Serializable {
         }
     }
 
-
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
     public boolean isDebugEnabled() {
         return getLogger().isDebugEnabled();
     }
-
 
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
@@ -257,14 +234,12 @@ public class LogKitLogger implements Log, Serializable {
         return getLogger().isErrorEnabled();
     }
 
-
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
      */
     public boolean isFatalEnabled() {
         return getLogger().isFatalErrorEnabled();
     }
-
 
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
@@ -273,7 +248,6 @@ public class LogKitLogger implements Log, Serializable {
         return getLogger().isInfoEnabled();
     }
 
-
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
@@ -281,13 +255,10 @@ public class LogKitLogger implements Log, Serializable {
         return getLogger().isDebugEnabled();
     }
 
-
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
      */
     public boolean isWarnEnabled() {
         return getLogger().isWarnEnabled();
     }
-
-
 }
