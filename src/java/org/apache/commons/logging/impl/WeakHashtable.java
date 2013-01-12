@@ -33,7 +33,7 @@ import java.util.Set;
  * to hold its keys thus allowing them to be reclaimed by the garbage collector.
  * The associated values are retained using strong references.</p>
  *
- * <p>This class follows the symantics of <code>Hashtable</code> as closely as
+ * <p>This class follows the semantics of <code>Hashtable</code> as closely as
  * possible. It therefore does not accept null values or keys.</p>
  *
  * <p><strong>Note:</strong>
@@ -45,7 +45,7 @@ import java.util.Set;
  * </p>
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement 
- * for the <code>Hashtable</code> used in <code>LogFactory</code> for J2EE enviroments
+ * for the <code>Hashtable</code> used in <code>LogFactory</code> for J2EE environments
  * running 1.3+ JVMs. Use of this class <i>in most cases</i> (see below) will
  * allow classloaders to be collected by the garbage collector without the need 
  * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
@@ -53,7 +53,7 @@ import java.util.Set;
  *
  * <p><code>org.apache.commons.logging.LogFactory</code> checks whether this class
  * can be supported by the current JVM, and if so then uses it to store
- * references to the <code>LogFactory</code> implementationd it loads 
+ * references to the <code>LogFactory</code> implementation it loads 
  * (rather than using a standard Hashtable instance). 
  * Having this class used instead of <code>Hashtable</code> solves
  * certain issues related to dynamic reloading of applications in J2EE-style
@@ -225,7 +225,7 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */    
     public Object put(Object key, Object value) {
-        // check for nulls, ensuring symantics match superclass
+        // check for nulls, ensuring semantics match superclass
         if (key == null) {
             throw new NullPointerException("Null keys are not allowed");
         }

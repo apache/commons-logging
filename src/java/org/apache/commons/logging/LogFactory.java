@@ -310,7 +310,7 @@ public abstract class LogFactory {
     protected static Hashtable factories = null;
     
     /**
-     * Prevously constructed <code>LogFactory</code> instance as in the
+     * Previously constructed <code>LogFactory</code> instance as in the
      * <code>factories</code> map, but for the case where
      * <code>getClassLoader</code> returns <code>null</code>.
      * This can happen when:
@@ -411,7 +411,7 @@ public abstract class LogFactory {
      * properties defined in this file will be set as configuration attributes
      * on the corresponding <code>LogFactory</code> instance.</p>
      * 
-     * <p><em>NOTE</em> - In a multithreaded environment it is possible 
+     * <p><em>NOTE</em> - In a multi-threaded environment it is possible 
      * that two different instances will be returned for the same 
      * classloader environment. 
      * </p>
@@ -464,7 +464,7 @@ public abstract class LogFactory {
             String useTCCLStr = props.getProperty(TCCL_KEY);
             if (useTCCLStr != null) {
                 // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
-                // is required for Java 1.2 compatability.
+                // is required for Java 1.2 compatibility.
                 if (Boolean.valueOf(useTCCLStr).booleanValue() == false) {
                     // Don't use current context classloader when locating any
                     // LogFactory or Log classes, just use the class that loaded

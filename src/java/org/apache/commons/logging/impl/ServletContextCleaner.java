@@ -43,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
  * <p>
  * To use this class, configure the webapp deployment descriptor to call
  * this class on webapp undeploy; the contextDestroyed method will tell
- * every accessable LogFactory class that the entry in its map for the
+ * every accessible LogFactory class that the entry in its map for the
  * current webapp's context classloader should be cleared.
  * 
  * @since 1.1
@@ -96,8 +96,8 @@ public class ServletContextCleaner implements ServletContextListener {
         // clear any problem references.
         ClassLoader loader = tccl;
         while (loader != null) {
-            // Load via the current loader. Note that if the class is not accessable
-            // via this loader, but is accessable via some ancestor then that class
+            // Load via the current loader. Note that if the class is not accessible
+            // via this loader, but is accessible via some ancestor then that class
             // will be returned.
             try {
                 Class logFactoryClass = loader.loadClass("org.apache.commons.logging.LogFactory");
@@ -113,7 +113,7 @@ public class ServletContextCleaner implements ServletContextListener {
                 System.err.println("LogFactory instance found which does not support release method!");
                 loader = null;
             } catch(IllegalAccessException ex) {
-                // This is not expected; every ancestor class should be accessable
+                // This is not expected; every ancestor class should be accessible
                 System.err.println("LogFactory instance found which is not accessable!");
                 loader = null;
             } catch(InvocationTargetException ex) {
