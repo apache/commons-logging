@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging;
 
-
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,15 +33,14 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
 
-
 /**
- * <p>Factory for creating {@link Log} instances, with discovery and
+ * Factory for creating {@link Log} instances, with discovery and
  * configuration features similar to that employed by standard Java APIs
- * such as JAXP.</p>
- * 
- * <p><strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
+ * such as JAXP.
+ * <p>
+ * <strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
- * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.</p>
+ * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.
  *
  * @author Craig R. McClanahan
  * @author Costin Manolache
@@ -75,7 +73,6 @@ public abstract class LogFactory {
     // lib and JCL have the necessary permissions even when the untrusted
     // caller does not. That's a pretty hard route to exploit though.
 
-
     // ----------------------------------------------------- Manifest Constants
 
     /**
@@ -98,26 +95,22 @@ public abstract class LogFactory {
      * class name. This can be used as a system property, or as an entry in a
      * configuration properties file.
      */
-    public static final String FACTORY_PROPERTY =
-        "org.apache.commons.logging.LogFactory";
+    public static final String FACTORY_PROPERTY = "org.apache.commons.logging.LogFactory";
 
     /**
      * The fully qualified class name of the fallback <code>LogFactory</code>
      * implementation class to use, if no other can be found.
      */
-    public static final String FACTORY_DEFAULT =
-        "org.apache.commons.logging.impl.LogFactoryImpl";
+    public static final String FACTORY_DEFAULT = "org.apache.commons.logging.impl.LogFactoryImpl";
 
     /**
      * The name (<code>commons-logging.properties</code>) of the properties file to search for.
      */
-    public static final String FACTORY_PROPERTIES =
-        "commons-logging.properties";
+    public static final String FACTORY_PROPERTIES = "commons-logging.properties";
 
     /**
      * JDK1.3+ <a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
      * 'Service Provider' specification</a>.
-     * 
      */
     protected static final String SERVICE_ID =
         "META-INF/services/org.apache.commons.logging.LogFactory";
@@ -192,6 +185,7 @@ public abstract class LogFactory {
      */
     public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
         "org.apache.commons.logging.LogFactory.HashtableImpl";
+
     /** Name used to load the weak hashtable implementation by names */
     private static final String WEAK_HASHTABLE_CLASSNAME = 
         "org.apache.commons.logging.impl.WeakHashtable";
@@ -207,7 +201,6 @@ public abstract class LogFactory {
     
     // ----------------------------------------------------------- Constructors
 
-
     /**
      * Protected constructor that is not available for public use.
      */
@@ -215,7 +208,6 @@ public abstract class LogFactory {
     }
     
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return the configuration attribute with the specified name (if any),
@@ -225,7 +217,6 @@ public abstract class LogFactory {
      */
     public abstract Object getAttribute(String name);
 
-
     /**
      * Return an array containing the names of all currently defined
      * configuration attributes.  If there are no such attributes, a zero
@@ -233,40 +224,37 @@ public abstract class LogFactory {
      */
     public abstract String[] getAttributeNames();
 
-
     /**
      * Convenience method to derive a name from the specified class and
      * call <code>getInstance(String)</code> with it.
      *
      * @param clazz Class for which a suitable Log name will be derived
      *
-     * @exception LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
     public abstract Log getInstance(Class clazz)
         throws LogConfigurationException;
 
-
     /**
-     * <p>Construct (if necessary) and return a <code>Log</code> instance,
-     * using the factory's current set of configuration attributes.</p>
-     *
-     * <p><strong>NOTE</strong> - Depending upon the implementation of
+     * Construct (if necessary) and return a <code>Log</code> instance,
+     * using the factory's current set of configuration attributes.
+     * <p>
+     * <strong>NOTE</strong> - Depending upon the implementation of
      * the <code>LogFactory</code> you are using, the <code>Log</code>
      * instance you are returned may or may not be local to the current
      * application, and may or may not be returned again on a subsequent
-     * call with the same name argument.</p>
+     * call with the same name argument.
      *
      * @param name Logical name of the <code>Log</code> instance to be
      *  returned (the meaning of this name is only known to the underlying
      *  logging implementation that is being wrapped)
      *
-     * @exception LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
     public abstract Log getInstance(String name)
         throws LogConfigurationException;
-
 
     /**
      * Release any internal references to previously created {@link Log}
@@ -277,7 +265,6 @@ public abstract class LogFactory {
      */
     public abstract void release();
 
-
     /**
      * Remove any configuration attribute associated with the specified name.
      * If there is no such attribute, no action is taken.
@@ -285,7 +272,6 @@ public abstract class LogFactory {
      * @param name Name of the attribute to remove
      */
     public abstract void removeAttribute(String name);
-
 
     /**
      * Set the configuration attribute with the specified name.  Calling
@@ -298,9 +284,7 @@ public abstract class LogFactory {
      */
     public abstract void setAttribute(String name, Object value);
 
-
     // ------------------------------------------------------- Static Variables
-
 
     /**
      * The previously constructed <code>LogFactory</code> instances, keyed by
@@ -377,7 +361,6 @@ public abstract class LogFactory {
         return result;
     }
 
-
     // --------------------------------------------------------- Static Methods
 
     /** Utility method to safely trim a string. */
@@ -389,9 +372,10 @@ public abstract class LogFactory {
     }
 
     /**
-     * <p>Construct (if necessary) and return a <code>LogFactory</code>
+     * Construct (if necessary) and return a <code>LogFactory</code>
      * instance, using the following ordered lookup procedure to determine
-     * the name of the implementation class to be loaded.</p>
+     * the name of the implementation class to be loaded.
+     * <p>
      * <ul>
      * <li>The <code>org.apache.commons.logging.LogFactory</code> system
      *     property.</li>
@@ -404,18 +388,17 @@ public abstract class LogFactory {
      * <li>Fall back to a default implementation class
      *     (<code>org.apache.commons.logging.impl.LogFactoryImpl</code>).</li>
      * </ul>
-     *
-     * <p><em>NOTE</em> - If the properties file method of identifying the
+     * <p>
+     * <em>NOTE</em> - If the properties file method of identifying the
      * <code>LogFactory</code> implementation class is utilized, all of the
      * properties defined in this file will be set as configuration attributes
-     * on the corresponding <code>LogFactory</code> instance.</p>
-     * 
-     * <p><em>NOTE</em> - In a multi-threaded environment it is possible 
+     * on the corresponding <code>LogFactory</code> instance.
+     * <p>
+     * <em>NOTE</em> - In a multi-threaded environment it is possible 
      * that two different instances will be returned for the same 
      * classloader environment. 
-     * </p>
      *
-     * @exception LogConfigurationException if the implementation class is not
+     * @throws LogConfigurationException if the implementation class is not
      *  available or cannot be instantiated.
      */
     public static LogFactory getFactory() throws LogConfigurationException {
@@ -527,7 +510,6 @@ public abstract class LogFactory {
             throw e;
         }
 
-
         // Second, try to find a service by using the JDK1.3 class
         // discovery mechanism, which involves putting a file with the name
         // of an interface class in the META-INF/services directory, where the
@@ -591,7 +573,6 @@ public abstract class LogFactory {
             }
         }
 
-
         // Third try looking into the properties file read earlier (if found)
 
         if (factory == null) {
@@ -626,7 +607,6 @@ public abstract class LogFactory {
                 }
             }
         }
-
 
         // Fourth, try the fallback implementation class
 
@@ -669,14 +649,13 @@ public abstract class LogFactory {
         return factory;
     }
 
-
     /**
      * Convenience method to return a named logger, without the application
      * having to care about factories.
      *
      * @param clazz Class from which a log name will be derived
      *
-     * @exception LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
     public static Log getLog(Class clazz)
@@ -686,7 +665,6 @@ public abstract class LogFactory {
 
     }
 
-
     /**
      * Convenience method to return a named logger, without the application
      * having to care about factories.
@@ -695,7 +673,7 @@ public abstract class LogFactory {
      *  returned (the meaning of this name is only known to the underlying
      *  logging implementation that is being wrapped)
      *
-     * @exception LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
     public static Log getLog(String name)
@@ -704,7 +682,6 @@ public abstract class LogFactory {
         return getFactory().getInstance(name);
 
     }
-
 
     /**
      * Release any internal references to previously created {@link LogFactory}
@@ -738,7 +715,6 @@ public abstract class LogFactory {
 
     }
 
-
     /**
      * Release any internal references to previously created {@link LogFactory}
      * instances, after calling the instance method <code>release()</code> on
@@ -748,7 +724,6 @@ public abstract class LogFactory {
      * garbage collection.
      */
     public static void releaseAll() {
-
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Releasing factory for all classloaders.");
         }
@@ -767,9 +742,7 @@ public abstract class LogFactory {
                 nullClassLoaderFactory = null;
             }
         }
-
     }
-
 
     // ------------------------------------------------------ Protected Methods
 
@@ -858,8 +831,7 @@ public abstract class LogFactory {
      * @throws SecurityException if the current java security policy doesn't
      * allow this class to access the context classloader.
      */
-    private static ClassLoader getContextClassLoaderInternal()
-    throws LogConfigurationException {
+    private static ClassLoader getContextClassLoaderInternal() throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
@@ -1054,8 +1026,7 @@ public abstract class LogFactory {
     protected static LogFactory newFactory(final String factoryClass,
                                            final ClassLoader classLoader,
                                            final ClassLoader contextClassLoader)
-        throws LogConfigurationException
-    {
+        throws LogConfigurationException {
         // Note that any unchecked exceptions thrown by the createFactory
         // method will propagate out of this method; in particular a
         // ClassCastException can be thrown.
@@ -1117,7 +1088,6 @@ public abstract class LogFactory {
      * @since 1.1
      */
     protected static Object createFactory(String factoryClass, ClassLoader classLoader) {
-
         // This will be used to diagnose bad configurations
         // and allow a useful message to be sent to the user
         Class logFactoryClass = null;
@@ -1348,9 +1318,7 @@ public abstract class LogFactory {
      * been granted permission for that operation. In this case, we need to 
      * run the operation using an AccessController.
      */
-    private static InputStream getResourceAsStream(final ClassLoader loader,
-                                                   final String name)
-    {
+    private static InputStream getResourceAsStream(final ClassLoader loader, final String name) {
         return (InputStream)AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
@@ -1376,9 +1344,7 @@ public abstract class LogFactory {
      * hasMoreElements method returns false (ie an "empty" enumeration).
      * If resources could not be listed for some reason, null is returned.
      */
-    private static Enumeration getResources(final ClassLoader loader,
-            final String name)
-    {
+    private static Enumeration getResources(final ClassLoader loader, final String name) {
         PrivilegedAction action = 
             new PrivilegedAction() {
                 public Object run() {
@@ -1413,7 +1379,7 @@ public abstract class LogFactory {
      * succeed when this jarfile is privileged but the caller is not.
      * This method must therefore remain private to avoid security issues.
      * <p>
-     * Null is returned if the URL cannot be opened.
+     * {@code Null} is returned if the URL cannot be opened.
      */
     private static Properties getProperties(final URL url) {
         PrivilegedAction action = 
@@ -1476,9 +1442,7 @@ public abstract class LogFactory {
      * webapps. Webapps can also use explicit priorities to override a configuration
      * file in the shared classpath if needed. 
      */
-    private static final Properties getConfigurationFile(
-            ClassLoader classLoader, String fileName) {
-
+    private static final Properties getConfigurationFile(ClassLoader classLoader, String fileName) {
         Properties props = null;
         double priority = 0.0;
         URL propsUrl = null;
@@ -1571,7 +1535,7 @@ public abstract class LogFactory {
      * info to access data that should not be available to it.
      */
     private static String getSystemProperty(final String key, final String def)
-    throws SecurityException {
+        throws SecurityException {
         return (String) AccessController.doPrivileged(
                 new PrivilegedAction() {
                     public Object run() {

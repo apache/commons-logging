@@ -17,12 +17,10 @@
 
 package org.apache.commons.logging;
 
-
 import java.lang.reflect.Constructor;
 import java.util.Hashtable;
 
 import org.apache.commons.logging.impl.NoOpLog;
-
 
 /**
  * <p>Factory for creating {@link Log} instances.  Applications should call
@@ -69,7 +67,6 @@ public class LogSource {
 
     /** Constructor for current log class */
     static protected Constructor logImplctor = null;
-
 
     // ----------------------------------------------------- Class Initializers
 
@@ -134,24 +131,19 @@ public class LogSource {
 
     }
 
-
     // ------------------------------------------------------------ Constructor
 
-
-    /** Don't allow others to create instances */
+    /** Don't allow others to create instances. */
     private LogSource() {
     }
 
-
     // ---------------------------------------------------------- Class Methods
-
 
     /**
      * Set the log implementation/log implementation factory
-     * by the name of the class.  The given class
-     * must implement {@link Log}, and provide a constructor that
-     * takes a single {@link String} argument (containing the name
-     * of the log).
+     * by the name of the class.  The given class must implement {@link Log},
+     * and provide a constructor that takes a single {@link String} argument
+     * (containing the name of the log).
      */
     static public void setLogImplementation(String classname) throws
             LinkageError,
@@ -167,12 +159,10 @@ public class LogSource {
         }
     }
 
-
     /**
-     * Set the log implementation/log implementation factory
-     * by class.  The given class must implement {@link Log},
-     * and provide a constructor that takes a single {@link String}
-     * argument (containing the name of the log).
+     * Set the log implementation/log implementation factory by class.
+     * The given class must implement {@link Log}, and provide a constructor
+     * that takes a single {@link String} argument (containing the name of the log).
      */
     static public void setLogImplementation(Class logclass) throws
             LinkageError, ExceptionInInitializerError,
@@ -182,8 +172,7 @@ public class LogSource {
         logImplctor = logclass.getConstructor(argtypes);
     }
 
-
-    /** Get a <code>Log</code> instance by class name */
+    /** Get a <code>Log</code> instance by class name. */
     static public Log getInstance(String name) {
         Log log = (Log) logs.get(name);
         if (null == log) {
@@ -193,35 +182,26 @@ public class LogSource {
         return log;
     }
 
-
-    /** Get a <code>Log</code> instance by class */
+    /** Get a <code>Log</code> instance by class. */
     static public Log getInstance(Class clazz) {
         return getInstance(clazz.getName());
     }
 
-
     /**
-     * Create a new {@link Log} implementation, based
-     * on the given <i>name</i>.
+     * Create a new {@link Log} implementation, based on the given <i>name</i>.
      * <p>
-     * The specific {@link Log} implementation returned
-     * is determined by the value of the
-     * <tt>org.apache.commons.logging.log</tt> property.
-     * The value of <tt>org.apache.commons.logging.log</tt> may be set to
-     * the fully specified name of a class that implements
-     * the {@link Log} interface.  This class must also
-     * have a public constructor that takes a single
-     * {@link String} argument (containing the <i>name</i>
-     * of the {@link Log} to be constructed.
+     * The specific {@link Log} implementation returned is determined by the
+     * value of the <tt>org.apache.commons.logging.log</tt> property. The value
+     * of <tt>org.apache.commons.logging.log</tt> may be set to the fully specified
+     * name of a class that implements the {@link Log} interface. This class must
+     * also have a public constructor that takes a single {@link String} argument
+     * (containing the <i>name</i> of the {@link Log} to be constructed.
      * <p>
-     * When <tt>org.apache.commons.logging.log</tt> is not set,
-     * or when no corresponding class can be found,
-     * this method will return a Log4JLogger
-     * if the log4j Logger class is
-     * available in the {@link LogSource}'s classpath, or a
-     * Jdk14Logger if we are on a JDK 1.4 or later system, or
-     * NoOpLog if neither of the above conditions is true.
-     *
+     * When <tt>org.apache.commons.logging.log</tt> is not set, or when no corresponding
+     * class can be found, this method will return a Log4JLogger if the log4j Logger
+     * class is available in the {@link LogSource}'s classpath, or a Jdk14Logger if we
+     * are on a JDK 1.4 or later system, or NoOpLog if neither of the above conditions is true.
+     * 
      * @param name the log name (or category)
      */
     static public Log makeNewLogInstance(String name) {
@@ -240,7 +220,6 @@ public class LogSource {
 
     }
 
-
     /**
      * Returns a {@link String} array containing the names of
      * all logs known to me.
@@ -248,6 +227,4 @@ public class LogSource {
     static public String[] getLogNames() {
         return (String[]) logs.keySet().toArray(new String[logs.size()]);
     }
-
-
 }
