@@ -117,7 +117,7 @@ public class Log4JLogger implements Log, Serializable {
                 "Warning - null logger in constructor; possible log4j misconfiguration.");
         }
         this.name = logger.getName();
-        this.logger=logger;
+        this.logger = logger;
     }
 
     /**

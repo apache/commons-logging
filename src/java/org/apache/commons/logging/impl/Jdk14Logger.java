@@ -73,17 +73,17 @@ public class Jdk14Logger implements Log, Serializable {
         Logger logger = getLogger();
         if (logger.isLoggable(level)) {
             // Hack (?) to get the stack trace.
-            Throwable dummyException=new Throwable();
-            StackTraceElement locations[]=dummyException.getStackTrace();
+            Throwable dummyException = new Throwable();
+            StackTraceElement locations[] = dummyException.getStackTrace();
             // Caller will be the third element
-            String cname="unknown";
-            String method="unknown";
-            if( locations!=null && locations.length >2 ) {
+            String cname = "unknown";
+            String method = "unknown";
+            if( locations != null && locations.length > 2 ) {
                 StackTraceElement caller=locations[2];
                 cname=caller.getClassName();
                 method=caller.getMethodName();
             }
-            if( ex==null ) {
+            if( ex == null ) {
                 logger.logp( level, cname, method, msg );
             } else {
                 logger.logp( level, cname, method, msg, ex );

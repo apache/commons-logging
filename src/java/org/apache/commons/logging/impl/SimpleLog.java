@@ -167,9 +167,9 @@ public class SimpleLog implements Log, Serializable {
             }
         }
 
-        showLogName = getBooleanProperty( systemPrefix + "showlogname", showLogName);
-        showShortName = getBooleanProperty( systemPrefix + "showShortLogname", showShortName);
-        showDateTime = getBooleanProperty( systemPrefix + "showdatetime", showDateTime);
+        showLogName = getBooleanProperty(systemPrefix + "showlogname", showLogName);
+        showShortName = getBooleanProperty(systemPrefix + "showShortLogname", showShortName);
+        showDateTime = getBooleanProperty(systemPrefix + "showdatetime", showDateTime);
 
         if(showDateTime) {
             dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat",
@@ -201,7 +201,6 @@ public class SimpleLog implements Log, Serializable {
      * @param name log name
      */
     public SimpleLog(String name) {
-
         logName = name;
 
         // Set initial log level
@@ -239,20 +238,17 @@ public class SimpleLog implements Log, Serializable {
         } else if("off".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_OFF);
         }
-
     }
 
     // -------------------------------------------------------- Properties
 
     /**
-     * <p> Set logging level. </p>
+     * Set logging level.
      *
      * @param currentLogLevel new logging level
      */
     public void setLevel(int currentLogLevel) {
-
         this.currentLogLevel = currentLogLevel;
-
     }
 
     /**
@@ -276,11 +272,11 @@ public class SimpleLog implements Log, Serializable {
      */
     protected void log(int type, Object message, Throwable t) {
         // Use a string buffer for better performance
-        StringBuffer buf = new StringBuffer();
+        final StringBuffer buf = new StringBuffer();
 
         // Append date-time if so configured
         if(showDateTime) {
-            Date now = new Date();
+            final Date now = new Date();
             String dateText;
             synchronized(dateFormatter) {
                 dateText = dateFormatter.format(now);
@@ -300,10 +296,10 @@ public class SimpleLog implements Log, Serializable {
         }
 
         // Append the name of the log instance if so configured
-        if( showShortName) {
-            if( shortLogName==null ) {
+        if(showShortName) {
+            if(shortLogName == null) {
                 // Cut all but the last component of the name for both styles
-                String slName = logName.substring(logName.lastIndexOf(".") + 1);
+                final String slName = logName.substring(logName.lastIndexOf(".") + 1);
                 shortLogName = slName.substring(slName.lastIndexOf("/") + 1);
             }
             buf.append(String.valueOf(shortLogName)).append(" - ");
@@ -320,8 +316,8 @@ public class SimpleLog implements Log, Serializable {
             buf.append(t.toString());
             buf.append(">");
 
-            java.io.StringWriter sw= new java.io.StringWriter(1024);
-            java.io.PrintWriter pw= new java.io.PrintWriter(sw);
+            final java.io.StringWriter sw = new java.io.StringWriter(1024);
+            final java.io.PrintWriter pw = new java.io.PrintWriter(sw);
             t.printStackTrace(pw);
             pw.close();
             buf.append(sw.toString());
@@ -332,9 +328,9 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * <p>Write the content of the message accumulated in the specified
+     * Write the content of the message accumulated in the specified
      * <code>StringBuffer</code> to the appropriate output destination.  The
-     * default implementation writes to <code>System.err</code>.</p>
+     * default implementation writes to <code>System.err</code>.
      *
      * @param buffer A <code>StringBuffer</code> containing the accumulated
      *  text to be logged
@@ -589,8 +585,7 @@ public class SimpleLog implements Log, Serializable {
 
         try {
             // Are we running on a JDK 1.2 or later system?
-            Method method = Thread.class.getMethod("getContextClassLoader",
-                    (Class[]) null);
+            final Method method = Thread.class.getMethod("getContextClassLoader", (Class[]) null);
 
             // Get the thread context class loader (if there is one)
             try {

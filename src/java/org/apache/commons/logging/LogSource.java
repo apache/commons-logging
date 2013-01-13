@@ -81,7 +81,7 @@ public class LogSource {
         // Is JDK 1.4 Logging Available?
         try {
             jdk14IsAvailable = null != Class.forName("java.util.logging.Logger") &&
-                    null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
+                               null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
         } catch (Throwable t) {
             jdk14IsAvailable = false;
         }
@@ -100,8 +100,7 @@ public class LogSource {
                 setLogImplementation(name);
             } catch (Throwable t) {
                 try {
-                    setLogImplementation
-                            ("org.apache.commons.logging.impl.NoOpLog");
+                    setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
                 } catch (Throwable u) {
                     // ignored
                 }
@@ -109,19 +108,15 @@ public class LogSource {
         } else {
             try {
                 if (log4jIsAvailable) {
-                    setLogImplementation
-                            ("org.apache.commons.logging.impl.Log4JLogger");
+                    setLogImplementation("org.apache.commons.logging.impl.Log4JLogger");
                 } else if (jdk14IsAvailable) {
-                    setLogImplementation
-                            ("org.apache.commons.logging.impl.Jdk14Logger");
+                    setLogImplementation("org.apache.commons.logging.impl.Jdk14Logger");
                 } else {
-                    setLogImplementation
-                            ("org.apache.commons.logging.impl.NoOpLog");
+                    setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
                 }
             } catch (Throwable t) {
                 try {
-                    setLogImplementation
-                            ("org.apache.commons.logging.impl.NoOpLog");
+                    setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
                 } catch (Throwable u) {
                     // ignored
                 }
@@ -144,10 +139,8 @@ public class LogSource {
      * and provide a constructor that takes a single {@link String} argument
      * (containing the name of the log).
      */
-    static public void setLogImplementation(String classname) throws
-            LinkageError,
-            NoSuchMethodException, SecurityException,
-            ClassNotFoundException {
+    static public void setLogImplementation(String classname)
+        throws LinkageError, NoSuchMethodException, SecurityException, ClassNotFoundException {
         try {
             Class logclass = Class.forName(classname);
             Class[] argtypes = new Class[1];
@@ -163,9 +156,8 @@ public class LogSource {
      * The given class must implement {@link Log}, and provide a constructor
      * that takes a single {@link String} argument (containing the name of the log).
      */
-    static public void setLogImplementation(Class logclass) throws
-            LinkageError, ExceptionInInitializerError,
-            NoSuchMethodException, SecurityException {
+    static public void setLogImplementation(Class logclass)
+        throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
         Class[] argtypes = new Class[1];
         argtypes[0] = "".getClass();
         logImplctor = logclass.getConstructor(argtypes);
@@ -204,7 +196,6 @@ public class LogSource {
      * @param name the log name (or category)
      */
     static public Log makeNewLogInstance(String name) {
-
         Log log;
         try {
             Object[] args = { name };
@@ -216,7 +207,6 @@ public class LogSource {
             log = new NoOpLog(name);
         }
         return log;
-
     }
 
     /**
