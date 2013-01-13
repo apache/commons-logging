@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.config;
 
@@ -58,7 +58,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
         dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
-        
+
         String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         URL baseUrl = dummy.findResource(thisClassPath);
 
@@ -68,7 +68,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
         PathableClassLoader containerLoader = new PathableClassLoader(null);
         containerLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         containerLoader.addLogicalLib("commons-logging");
-        
+
         PathableClassLoader webappLoader = new PathableClassLoader(containerLoader);
         webappLoader.addLogicalLib("testclasses");
 
@@ -77,7 +77,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
 
         URL pri10URL = new URL(baseUrl, "priority10/");
         webappLoader.addURL(pri10URL);
-        
+
         // load the test class via webapp loader, and use the webapp loader
         // as the tccl loader too.
         Class testClass = webappLoader.loadClass(thisClass.getName());
@@ -113,7 +113,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
 
         // context classloader should be thisClassLoader
         assertEquals(thisClassLoader, contextClassLoader);
-        
+
         // lfClassLoader should be parent of this classloader
         assertEquals(lfClassLoader, thisClassLoader.getParent());
         assertEquals(PathableClassLoader.class.getName(),

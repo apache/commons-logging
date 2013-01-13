@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package org.apache.commons.logging.pathable;
 
 import java.net.URL;
@@ -41,7 +41,7 @@ import org.apache.commons.logging.PathableTestSuite;
  */
 
 public class ParentFirstTestCase extends TestCase {
-    
+
     /**
      * Set up a custom classloader hierarchy for this test case.
      * The hierarchy is:
@@ -58,7 +58,7 @@ public class ParentFirstTestCase extends TestCase {
         // Make the parent a direct child of the bootloader to hide all
         // other classes in the system classpath
         PathableClassLoader parent = new PathableClassLoader(null);
-        
+
         // Make the junit classes visible as a special case, as junit
         // won't be able to call this class at all without this. The
         // junit classes must be visible from the classloader that loaded

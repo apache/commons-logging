@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 
 package org.apache.commons.logging.impl;
@@ -53,19 +53,18 @@ public class WeakHashtableTest extends TestCase {
     public WeakHashtableTest(String testName) {
         super(testName);
     }
-    
 
     protected void setUp() throws Exception {
         super.setUp();
         weakHashtable = new WeakHashtable();
-        
+
         keyOne = new Long(1);
         keyTwo = new Long(2);
         keyThree = new Long(3);
         valueOne = new Long(100);
         valueTwo = new Long(200);
         valueThree = new Long(300);
-        
+
         weakHashtable.put(keyOne, valueOne);
         weakHashtable.put(keyTwo, valueTwo);
         weakHashtable.put(keyThree, valueThree);
@@ -81,7 +80,7 @@ public class WeakHashtableTest extends TestCase {
         assertTrue(weakHashtable.contains(new Long(300)));
         assertFalse(weakHashtable.contains(new Long(400)));
     }
-    
+
     /** Tests public boolean containsKey(Object key) */
     public void testContainsKey() throws Exception {
         assertTrue(weakHashtable.containsKey(new Long(1)));
@@ -90,9 +89,9 @@ public class WeakHashtableTest extends TestCase {
         assertFalse(weakHashtable.containsKey(new Long(100)));
         assertFalse(weakHashtable.containsKey(new Long(200)));
         assertFalse(weakHashtable.containsKey(new Long(300)));
-        assertFalse(weakHashtable.containsKey(new Long(400)));    
+        assertFalse(weakHashtable.containsKey(new Long(400)));
     }
-    
+
     /** Tests public boolean containsValue(Object value) */
     public void testContainsValue() throws Exception {
         assertFalse(weakHashtable.containsValue(new Long(1)));
@@ -101,9 +100,9 @@ public class WeakHashtableTest extends TestCase {
         assertTrue(weakHashtable.containsValue(new Long(100)));
         assertTrue(weakHashtable.containsValue(new Long(200)));
         assertTrue(weakHashtable.containsValue(new Long(300)));
-        assertFalse(weakHashtable.containsValue(new Long(400)));    
+        assertFalse(weakHashtable.containsValue(new Long(400)));
     }
-    
+
     /** Tests public Enumeration elements() */
     public void testElements() throws Exception {
         ArrayList elements = new ArrayList();
@@ -115,7 +114,7 @@ public class WeakHashtableTest extends TestCase {
         assertTrue(elements.contains(valueTwo));
         assertTrue(elements.contains(valueThree));
     }
-    
+
     /** Tests public Set entrySet() */
     public void testEntrySet() throws Exception {
         Set entrySet = weakHashtable.entrySet();
@@ -133,15 +132,15 @@ public class WeakHashtableTest extends TestCase {
             }
         }
     }
-    
-    /** Tests public Object get(Object�key) */
+
+    /** Tests public Object get(Object key) */
     public void testGet() throws Exception {
         assertEquals(valueOne, weakHashtable.get(keyOne));
         assertEquals(valueTwo, weakHashtable.get(keyTwo));
         assertEquals(valueThree, weakHashtable.get(keyThree));
         assertNull(weakHashtable.get(new Long(50)));
     }
-    
+
     /** Tests public Enumeration keys() */
     public void testKeys() throws Exception {
         ArrayList keys = new ArrayList();
@@ -151,9 +150,9 @@ public class WeakHashtableTest extends TestCase {
         assertEquals(3, keys.size());
         assertTrue(keys.contains(keyOne));
         assertTrue(keys.contains(keyTwo));
-        assertTrue(keys.contains(keyThree));    
+        assertTrue(keys.contains(keyThree));
     }
-    
+
     /** Tests public Set keySet() */
     public void testKeySet() throws Exception {
         Set keySet = weakHashtable.keySet();
@@ -162,14 +161,14 @@ public class WeakHashtableTest extends TestCase {
         assertTrue(keySet.contains(keyTwo));
         assertTrue(keySet.contains(keyThree));
     }
-    
+
     /** Tests public Object put(Object key, Object value) */
     public void testPut() throws Exception {
         Long anotherKey = new Long(2004);
         weakHashtable.put(anotherKey, new Long(1066));
-        
+
         assertEquals(new Long(1066), weakHashtable.get(anotherKey));
-               
+
         // Test compliance with the hashtable API re nulls
         Exception caught = null;
         try {
@@ -188,7 +187,7 @@ public class WeakHashtableTest extends TestCase {
         }
         assertNotNull("did not throw an exception adding a null value", caught);
     }
-    
+
     /** Tests public void putAll(Map t) */
     public void testPutAll() throws Exception {
         Map newValues = new HashMap();
@@ -199,19 +198,19 @@ public class WeakHashtableTest extends TestCase {
         Long anotherNewValue = new Long(1815);
         newValues.put(anotherNewKey, anotherNewValue);
         weakHashtable.putAll(newValues);
-        
+
         assertEquals(5, weakHashtable.size());
         assertEquals(newValue, weakHashtable.get(newKey));
         assertEquals(anotherNewValue, weakHashtable.get(anotherNewKey));
     }
-    
-    /** Tests public Object remove(Object�key) */
+
+    /** Tests public Object remove(Object key) */
     public void testRemove() throws Exception {
         weakHashtable.remove(keyOne);
         assertEquals(2, weakHashtable.size());
         assertNull(weakHashtable.get(keyOne));
     }
-    
+
     /** Tests public Collection values() */
     public void testValues() throws Exception {
         Collection values = weakHashtable.values();
@@ -220,7 +219,7 @@ public class WeakHashtableTest extends TestCase {
         assertTrue(values.contains(valueTwo));
         assertTrue(values.contains(valueThree));
     }
-    
+
     public void testRelease() throws Exception {
         assertNotNull(weakHashtable.get(new Long(1)));
         ReferenceQueue testQueue = new ReferenceQueue();
@@ -233,7 +232,7 @@ public class WeakHashtableTest extends TestCase {
         valueOne = null;
         valueTwo = null;
         valueThree = null;
-        
+
         int iterations = 0;
         int bytz = 2;
         while(true) {
@@ -241,23 +240,23 @@ public class WeakHashtableTest extends TestCase {
             if(iterations++ > MAX_GC_ITERATIONS){
                 fail("Max iterations reached before resource released.");
             }
-            
+
             if(weakHashtable.get(new Long(1)) == null) {
                 break;
-                
+
             } else {
                 // create garbage:
                 byte[] b =  new byte[bytz];
                 bytz = bytz * 2;
             }
         }
-        
-        // some JVMs seem to take a little time to put references on 
+
+        // some JVMs seem to take a little time to put references on
         // the reference queue once the reference has been collected
         // need to think about whether this is enough to justify
         // stepping through the collection each time...
         while(testQueue.poll() == null) {}
-        
+
         // Test that the released objects are not taking space in the table
         assertEquals("underlying table not emptied", 0, weakHashtable.size());
     }

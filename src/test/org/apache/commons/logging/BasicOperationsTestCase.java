@@ -5,25 +5,24 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
- 
+ */
 package org.apache.commons.logging;
 
 import junit.framework.TestCase;
 
 /**
- * Tests the basic logging operations to ensure that they all function 
+ * Tests the basic logging operations to ensure that they all function
  * without exception failure. In other words, that they do no fail by
  * throwing exceptions.
- * This is the minimum requirement for any well behaved logger 
+ * This is the minimum requirement for any well behaved logger
  * and so this test should be run for each kind.
  */
 public class BasicOperationsTestCase extends TestCase
@@ -33,13 +32,13 @@ public class BasicOperationsTestCase extends TestCase
         Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeIsEnabledTest(log);
     }
-    
+
     public void testIsEnabledNamedLog()
     {
         Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeIsEnabledTest(log);
-    }    
-    
+    }
+
     public void executeIsEnabledTest(Log log)
     {
         try
@@ -57,20 +56,19 @@ public class BasicOperationsTestCase extends TestCase
             fail("Exception thrown: " + t);
         }
     }
-    
-    
+
     public void testMessageWithoutExceptionClassLog()
     {
         Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithoutExceptionTest(log);
     }
-    
+
     public void testMessageWithoutExceptionNamedLog()
     {
         Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithoutExceptionTest(log);
-    }    
-    
+    }
+
     public void executeMessageWithoutExceptionTest(Log log)
     {
         try
@@ -88,19 +86,19 @@ public class BasicOperationsTestCase extends TestCase
             fail("Exception thrown: " + t);
         }
     }
-    
+
     public void testMessageWithExceptionClassLog()
     {
         Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithExceptionTest(log);
     }
-    
+
     public void testMessageWithExceptionNamedLog()
     {
         Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithExceptionTest(log);
-    }    
-    
+    }
+
     public void executeMessageWithExceptionTest(Log log)
     {
         try

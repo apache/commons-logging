@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.config;
 
@@ -65,7 +65,7 @@ public class PriorityConfigTestCase extends TestCase {
         dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
-        
+
         String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         URL baseUrl = dummy.findResource(thisClassPath);
 
@@ -79,7 +79,7 @@ public class PriorityConfigTestCase extends TestCase {
         PathableClassLoader containerLoader = new PathableClassLoader(null);
         containerLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         containerLoader.addLogicalLib("commons-logging");
-        
+
         URL pri10URL = new URL(baseUrl, "priority10/");
         containerLoader.addURL(pri10URL);
 
@@ -89,13 +89,13 @@ public class PriorityConfigTestCase extends TestCase {
 
         URL noPriorityURL = new URL(baseUrl, "nopriority/");
         webappLoader.addURL(noPriorityURL);
-        
+
         URL pri20URL = new URL(baseUrl, "priority20/");
         webappLoader.addURL(pri20URL);
-        
+
         URL pri20aURL = new URL(baseUrl, "priority20a/");
         webappLoader.addURL(pri20aURL);
-        
+
         // load the test class via webapp loader, and use the webapp loader
         // as the tccl loader too.
         Class testClass = webappLoader.loadClass(thisClass.getName());

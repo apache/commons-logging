@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.jdk14;
 
@@ -46,8 +46,7 @@ import org.apache.commons.logging.PathableTestSuite;
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 
-    protected static final String HANDLER_NAME 
-        = "org.apache.commons.logging.jdk14.TestHandler";
+    protected static final String HANDLER_NAME = "org.apache.commons.logging.jdk14.TestHandler";
 
     // ----------------------------------------------------------- Constructors
 
@@ -147,9 +146,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             ClassLoader srcCL = CustomConfigAPITestCase.class.getClassLoader();
             byte[] classData = readClass(className, srcCL);
 
-            Class[] params = new Class[] {
-                String.class, classData.getClass(), 
-                Integer.TYPE, Integer.TYPE};
+            Class[] params = new Class[] { String.class, classData.getClass(), Integer.TYPE, Integer.TYPE };
             Method m = ClassLoader.class.getDeclaredMethod("defineClass", params);
 
             Object[] args = new Object[4];
@@ -195,7 +192,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         cl.useExplicitLoader(HANDLER_NAME, scl);
         cl.addLogicalLib("commons-logging");
         cl.addLogicalLib("testclasses");
-        
+
         Class testClass = cl.loadClass(CustomConfigTestCase.class.getName());
         return new PathableTestSuite(testClass, cl);
     }
@@ -358,14 +355,14 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             parent = parent.getParent();
         }
         handlers = parent.getHandlers();
-        
+
         // The CustomConfig.properties file explicitly defines one handler class
-        // to be attached to the root logger, so if it isn't there then 
+        // to be attached to the root logger, so if it isn't there then
         // something is badly wrong...
         //
         // Yes this testing is also done in testPristineHandlers but
         // unfortunately:
-        //  * we need to set up the handlers variable here, 
+        //  * we need to set up the handlers variable here,
         //  * we don't want that to be set up incorrectly, as that can
         //    produce weird error messages in other tests, and
         //  * we can't rely on testPristineHandlers being the first

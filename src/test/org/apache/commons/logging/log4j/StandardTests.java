@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.log4j;
 
@@ -51,9 +51,9 @@ public abstract class StandardTests extends TestCase {
         public Throwable throwable;
     }
 
-    // ------------------------------------------------------------------- 
+    // -------------------------------------------------------------------
     // JUnit Infrastructure Methods
-    // ------------------------------------------------------------------- 
+    // -------------------------------------------------------------------
 
     /**
      * Set up instance variables required by this test case.
@@ -69,9 +69,9 @@ public abstract class StandardTests extends TestCase {
         LogFactory.releaseAll();
     }
 
-    // ----------------------------------------------------------- 
+    // -----------------------------------------------------------
     // abstract methods
-    // ----------------------------------------------------------- 
+    // -----------------------------------------------------------
 
     /**
      * Modify log4j's setup so that all messages actually logged get redirected
@@ -81,7 +81,7 @@ public abstract class StandardTests extends TestCase {
      * can test whether messages are getting properly filtered.
      */
     public abstract void setUpTestAppender(List logEvents) throws Exception;
-    
+
     // ----------------------------------------------------------- Test Methods
 
     /**
@@ -154,9 +154,9 @@ public abstract class StandardTests extends TestCase {
      * <li>logPlainMessages or logExceptionMessages has been
      * called to log a known number of messages at known levels.
      * </ul>
-     * 
+     *
      * @param logEvents is the list of log events received.
-     * 
+     *
      * @param thrown False if logPlainMessages was called
      * (ie the TestAppender is expected to have received
      * logevents with no associated exception info). True if
@@ -164,24 +164,24 @@ public abstract class StandardTests extends TestCase {
      */
     private void checkLoggingEvents(List logEvents, boolean thrown) {
         LogEvent ev;
-        
+
         assertEquals("Unexpected number of log events", 4, logEvents.size());
-        
+
         ev = (LogEvent) logEvents.get(0);
         assertEquals("Info message expected", "info", ev.msg);
         assertEquals("Info level expected", "INFO", ev.level);
         assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
-        
+
         ev = (LogEvent) logEvents.get(1);
         assertEquals("Warn message expected", "warn", ev.msg);
         assertEquals("Warn level expected", "WARN", ev.level);
         assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
-        
+
         ev = (LogEvent) logEvents.get(2);
         assertEquals("Error message expected", "error", ev.msg);
         assertEquals("Error level expected", "ERROR", ev.level);
         assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
-        
+
         ev = (LogEvent) logEvents.get(3);
         assertEquals("Fatal message expected", "fatal", ev.msg);
         assertEquals("Fatal level expected", "FATAL", ev.level);
