@@ -54,15 +54,17 @@ public class TestAppender extends AppenderSkeleton {
         
         lev.level = event.getLevel().toString();
 
-        if (event.getMessage() == null)
+        if (event.getMessage() == null) {
             lev.msg = null;
-        else
+        } else {
             lev.msg = event.getMessage().toString();
+        }
         
-        if (event.getThrowableInformation() == null)
+        if (event.getThrowableInformation() == null) {
             lev.throwable = null;
-        else
+        } else {
             lev.throwable = event.getThrowableInformation().getThrowable();
+        }
 
         events.add(lev);
     }

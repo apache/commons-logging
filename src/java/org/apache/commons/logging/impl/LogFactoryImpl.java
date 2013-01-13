@@ -739,8 +739,9 @@ public class LogFactoryImpl extends LogFactory {
      */
     private boolean getBooleanConfiguration(String key, boolean dflt) {
         String val = getConfigurationValue(key);
-        if (val == null)
+        if (val == null) {
             return dflt;
+        }
         return Boolean.valueOf(val).booleanValue();
     }
 
@@ -1234,19 +1235,22 @@ public class LogFactoryImpl extends LogFactory {
     private ClassLoader getLowestClassLoader(ClassLoader c1, ClassLoader c2) {
         // TODO: use AccessController when dealing with classloaders here
         
-        if (c1 == null)
+        if (c1 == null) {
             return c2;
+        }
         
-        if (c2 == null)
+        if (c2 == null) {
             return c1;
+        }
         
         ClassLoader current;
 
         // scan c1's ancestors to find c2
         current = c1;
         while (current != null) {
-            if (current == c2)
+            if (current == c2) {
                 return c1;
+            }
             // current = current.getParent();
             current = getParentClassLoader(current);
         }
@@ -1254,8 +1258,9 @@ public class LogFactoryImpl extends LogFactory {
         // scan c2's ancestors to find c1
         current = c2;
         while (current != null) {
-            if (current == c1)
+            if (current == c1) {
                 return c2;
+            }
             // current = current.getParent();
             current = getParentClassLoader(current);
         }
