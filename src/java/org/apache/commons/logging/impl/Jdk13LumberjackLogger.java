@@ -28,14 +28,10 @@ import java.io.StringWriter;
 import org.apache.commons.logging.Log;
 
 /**
- * <p>Implementation of the <code>org.apache.commons.logging.Log</code>
+ * Implementation of the <code>org.apache.commons.logging.Log</code>
  * interface that wraps the standard JDK logging mechanisms that are
- * available in SourceForge's Lumberjack for JDKs prior to 1.4.</p>
+ * available in SourceForge's Lumberjack for JDKs prior to 1.4.
  *
- * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
- * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
- * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
- * @author <a href="mailto:vince256@comcast.net">Vince Eagen</a>
  * @version $Id$
  * @since 1.1
  */

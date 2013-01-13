@@ -54,8 +54,6 @@ package org.apache.commons.logging;
  * external to the Logging APIs, through whatever mechanism is supported by
  * that system.
  *
- * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
- * @author Rod Waldhoff
  * @version $Id$
  */
 public interface Log {
@@ -205,14 +203,12 @@ public interface Log {
      */
     public void error(Object message, Throwable t);
 
-
     /**
      * Log a message with fatal log level.
      *
      * @param message log this message
      */
     public void fatal(Object message);
-
 
     /**
      * Log an error with fatal log level.

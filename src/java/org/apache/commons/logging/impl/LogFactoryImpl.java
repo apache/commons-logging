@@ -30,9 +30,9 @@ import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * <p>Concrete subclass of {@link LogFactory} that implements the
+ * Concrete subclass of {@link LogFactory} that implements the
  * following algorithm to dynamically select a logging implementation
- * class to instantiate a wrapper for.</p>
+ * class to instantiate a wrapper for:
  * <ul>
  * <li>Use a factory configuration attribute named
  *     <code>org.apache.commons.logging.Log</code> to identify the
@@ -46,21 +46,17 @@ import org.apache.commons.logging.LogFactory;
  * <li>Otherwise, return an instance of
  *     <code>org.apache.commons.logging.impl.SimpleLog</code>.</li>
  * </ul>
- *
- * <p>If the selected {@link Log} implementation class has a
+ * <p>
+ * If the selected {@link Log} implementation class has a
  * <code>setLogFactory()</code> method that accepts a {@link LogFactory}
  * parameter, this method will be called on each newly created instance
  * to identify the associated factory.  This makes factory configuration
- * attributes available to the Log instance, if it so desires.</p>
- *
- * <p>This factory will remember previously created <code>Log</code> instances
+ * attributes available to the Log instance, if it so desires.
+ * <p>
+ * This factory will remember previously created <code>Log</code> instances
  * for the same name, and will return them on repeated requests to the
- * <code>getInstance()</code> method.</p>
+ * <code>getInstance()</code> method.
  *
- * @author Rod Waldhoff
- * @author Craig R. McClanahan
- * @author Richard A. Sitze
- * @author Brian Stansberry
  * @version $Id$
  */
 public class LogFactoryImpl extends LogFactory {

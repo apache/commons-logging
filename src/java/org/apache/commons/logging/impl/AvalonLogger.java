@@ -47,7 +47,6 @@ import org.apache.commons.logging.Log;
  * be thrown as soon as the deserialized object was used), so removing this marker
  * is not considered to be an incompatible change.
  *
- * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
  * @version $Id$
  */
 public class AvalonLogger implements Log {

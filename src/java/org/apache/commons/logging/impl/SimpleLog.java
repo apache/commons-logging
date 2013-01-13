@@ -32,9 +32,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
 
 /**
- * <p>Simple implementation of Log that sends all enabled log messages,
+ * Simple implementation of Log that sends all enabled log messages,
  * for all defined loggers, to System.err.  The following system properties
- * are supported to configure the behavior of this logger:</p>
+ * are supported to configure the behavior of this logger:
  * <ul>
  * <li><code>org.apache.commons.logging.simplelog.defaultlog</code> -
  *     Default logging detail level for all instances of SimpleLog.
@@ -60,15 +60,11 @@ import org.apache.commons.logging.LogConfigurationException;
  *     specified or is invalid, the default format is used.
  *     The default format is <code>yyyy/MM/dd HH:mm:ss:SSS zzz</code>.</li>
  * </ul>
- *
- * <p>In addition to looking for system properties with the names specified
+ * <p>
+ * In addition to looking for system properties with the names specified
  * above, this implementation also checks for a class loader resource named
  * <code>"simplelog.properties"</code>, and includes any matching definitions
- * from this resource (if it exists).</p>
- *
- * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
- * @author Rod Waldhoff
- * @author Robert Burrell Donkin
+ * from this resource (if it exists).
  *
  * @version $Id$
  */

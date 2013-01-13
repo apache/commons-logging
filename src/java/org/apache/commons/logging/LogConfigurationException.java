@@ -22,7 +22,6 @@ package org.apache.commons.logging;
  * or <code>Log</code> instance cannot be created by the corresponding
  * factory methods.
  *
- * @author Craig R. McClanahan
  * @version $Id$
  */
 public class LogConfigurationException extends RuntimeException {

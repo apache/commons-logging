@@ -28,29 +28,27 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>Implementation of <code>Hashtable</code> that uses <code>WeakReference</code>'s
+ * Implementation of <code>Hashtable</code> that uses <code>WeakReference</code>'s
  * to hold its keys thus allowing them to be reclaimed by the garbage collector.
- * The associated values are retained using strong references.</p>
- *
- * <p>This class follows the semantics of <code>Hashtable</code> as closely as
- * possible. It therefore does not accept null values or keys.</p>
- *
- * <p><strong>Note:</strong>
+ * The associated values are retained using strong references.
+ * <p>
+ * This class follows the semantics of <code>Hashtable</code> as closely as
+ * possible. It therefore does not accept null values or keys.
+ * <p>
+ * <strong>Note:</strong>
  * This is <em>not</em> intended to be a general purpose hash table replacement.
  * This implementation is also tuned towards a particular purpose: for use as a replacement
  * for <code>Hashtable</code> in <code>LogFactory</code>. This application requires
  * good liveliness for <code>get</code> and <code>put</code>. Various tradeoffs
  * have been made with this in mind.
- * </p>
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement
  * for the <code>Hashtable</code> used in <code>LogFactory</code> for J2EE environments
  * running 1.3+ JVMs. Use of this class <i>in most cases</i> (see below) will
  * allow classloaders to be collected by the garbage collector without the need
  * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
- * </p>
- *
- * <p><code>org.apache.commons.logging.LogFactory</code> checks whether this class
+ * <p>
+ * <code>org.apache.commons.logging.LogFactory</code> checks whether this class
  * can be supported by the current JVM, and if so then uses it to store
  * references to the <code>LogFactory</code> implementation it loads
  * (rather than using a standard Hashtable instance).
@@ -60,9 +58,9 @@ import java.util.Set;
  * of <code>java.lang.ref.WeakReference</code> and associates).
  * And by the way, this extends <code>Hashtable</code> rather than <code>HashMap</code>
  * for backwards compatibility reasons. See the documentation
- * for method <code>LogFactory.createFactoryStore</code> for more details.</p>
- *
- * <p>The reason all this is necessary is due to a issue which
+ * for method <code>LogFactory.createFactoryStore</code> for more details.
+ * <p>
+ * The reason all this is necessary is due to a issue which
  * arises during hot deploy in a J2EE-like containers.
  * Each component running in the container owns one or more classloaders; when
  * the component loads a LogFactory instance via the component classloader
@@ -77,16 +75,14 @@ import java.util.Set;
  * garbage collected; this <i>should</i> be done by any container that
  * bundles commons-logging by default. However, holding the classloader
  * references weakly ensures that the classloader will be garbage collected
- * without the container performing this step. </p>
- *
+ * without the container performing this step.
  * <p>
  * <strong>Limitations:</strong>
  * There is still one (unusual) scenario in which a component will not
  * be correctly unloaded without an explicit release. Though weak references
  * are used for its keys, it is necessary to use strong references for its values.
- * </p>
- * 
- * <p> If the abstract class <code>LogFactory</code> is
+ * <p>
+ * If the abstract class <code>LogFactory</code> is
  * loaded by the container classloader but a subclass of
  * <code>LogFactory</code> [LogFactory1] is loaded by the component's
  * classloader and an instance stored in the static map associated with the
@@ -94,22 +90,18 @@ import java.util.Set;
  * class to the LogFactory1 instance (as normal) and a strong reference from
  * the LogFactory1 instance to the component classloader via
  * <code>getClass().getClassLoader()</code>. This chain of references will prevent
- * collection of the child classloader.</p>
- *
+ * collection of the child classloader.
  * <p>
  * Such a situation occurs when the commons-logging.jar is
  * loaded by a parent classloader (e.g. a server level classloader in a
  * servlet container) and a custom <code>LogFactory</code> implementation is
- * loaded by a child classloader (e.g. a web app classloader).</p>
- *
- * <p>To avoid this scenario, ensure
+ * loaded by a child classloader (e.g. a web app classloader).
+ * <p>
+ * To avoid this scenario, ensure
  * that any custom LogFactory subclass is loaded by the same classloader as
  * the base <code>LogFactory</code>. Creating custom LogFactory subclasses is,
  * however, rare. The standard LogFactoryImpl class should be sufficient
- * for most or all users.</p>
- *
- *
- * @author Brian Stansberry
+ * for most or all users.
  *
  * @version $Id$
  * @since 1.1
@@ -363,8 +355,7 @@ public final class WeakHashtable extends Hashtable {
                 Map.Entry entry = (Map.Entry) o;
                 result =    (getKey()==null ?
                                             entry.getKey() == null :
-                                            getKey().equals(entry.getKey()))
-                            &&
+                                            getKey().equals(entry.getKey())) &&
                             (getValue()==null ?
                                             entry.getValue() == null :
                                             getValue().equals(entry.getValue()));
@@ -373,7 +364,6 @@ public final class WeakHashtable extends Hashtable {
         }
 
         public int hashCode() {
-
             return (getKey()==null ? 0 : getKey().hashCode()) ^
                 (getValue()==null ? 0 : getValue().hashCode());
         }

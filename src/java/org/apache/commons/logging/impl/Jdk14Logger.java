@@ -28,9 +28,6 @@ import org.apache.commons.logging.Log;
  * interface that wraps the standard JDK logging mechanisms that were
  * introduced in the Merlin release (JDK 1.4).
  *
- * @author <a href="mailto:sanders@apache.org">Scott Sanders</a>
- * @author <a href="mailto:bloritsch@apache.org">Berin Loritsch</a>
- * @author <a href="mailto:donaldp@apache.org">Peter Donald</a>
  * @version $Id$
  */
 public class Jdk14Logger implements Log, Serializable {
