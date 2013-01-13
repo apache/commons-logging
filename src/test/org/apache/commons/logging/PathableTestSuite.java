@@ -109,7 +109,7 @@ public class PathableTestSuite extends TestSuite {
      * The classloader that should be set as the context classloader
      * before each test in the suite is run.
      */
-    private ClassLoader contextLoader;
+    private final ClassLoader contextLoader;
 
     /**
      * Constructor.

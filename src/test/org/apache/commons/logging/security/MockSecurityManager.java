@@ -30,7 +30,7 @@ import java.security.Permissions;
  */
 public class MockSecurityManager extends SecurityManager {
 
-    private Permissions permissions = new Permissions();
+    private final Permissions permissions = new Permissions();
     private static final Permission setSecurityManagerPerm =
         new RuntimePermission("setSecurityManager");
     

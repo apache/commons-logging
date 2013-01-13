@@ -39,7 +39,7 @@ public class TestHandler extends Handler {
 
 
     // The set of logged records for this handler
-    private List records = new ArrayList();
+    private final List records = new ArrayList();
 
 
     // --------------------------------------------------------- Public Methods

@@ -44,7 +44,7 @@ public class TestAppender extends AppenderSkeleton {
 
 
     // The set of logged events for this appender
-    private List events;
+    private final List events;
 
 
     // ------------------------------------------------------- Appender Methods
