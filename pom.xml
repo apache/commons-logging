@@ -153,18 +153,6 @@ under the License.
   </scm>
 
   <build>
-    <testSourceDirectory>src/test</testSourceDirectory>
-
-    <testResources>
-      <testResource>
-        <directory>src/test</directory>
-        <filtering>false</filtering>
-        <includes>
-          <include>**/*.properties</include>
-        </includes>
-      </testResource>
-    </testResources>
-
     <plugins>
 
       <!--
