@@ -940,19 +940,14 @@ public class LogFactoryImpl extends LogFactory {
      * and instantiate an instance of Log.
      *
      * @param logAdapterClassName classname of the Log implementation
-     *
-     * @param logCategory  argument to pass to the Log implementation's
-     * constructor
-     *
+     * @param logCategory  argument to pass to the Log implementation's constructor
      * @param affectState  <code>true</code> if this object's state should
-     * be affected by this method call, <code>false</code> otherwise.
-     *
+     *  be affected by this method call, <code>false</code> otherwise.
      * @return  an instance of the given class, or null if the logging
-     * library associated with the specified adapter is not available.
-     *
+     *  library associated with the specified adapter is not available.
      * @throws LogConfigurationException if there was a serious error with
-     * configuration and the handleFlawedDiscovery method decided this
-     * problem was fatal.
+     *  configuration and the handleFlawedDiscovery method decided this
+     *  problem was fatal.
      */
     private Log createLogFromClass(String logAdapterClassName,
                                    String logCategory,
@@ -1090,15 +1085,14 @@ public class LogFactoryImpl extends LogFactory {
             currentCL = getParentClassLoader(currentCL);
         }
 
-        if (logAdapter != null && affectState) {
+        if (logAdapterClass != null && affectState) {
             // We've succeeded, so set instance fields
             this.logClassName   = logAdapterClassName;
             this.logConstructor = constructor;
 
             // Identify the <code>setLogFactory</code> method (if there is one)
             try {
-                this.logMethod = logAdapterClass.getMethod("setLogFactory",
-                                               logMethodSignature);
+                this.logMethod = logAdapterClass.getMethod("setLogFactory", logMethodSignature);
                 logDiagnostic("Found method setLogFactory(LogFactory) in '" + logAdapterClassName + "'");
             } catch (Throwable t) {
                 this.logMethod = null;
