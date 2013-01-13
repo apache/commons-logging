@@ -319,7 +319,7 @@ public abstract class LogFactory {
         String storeImplementationClass;
         try {
             storeImplementationClass = getSystemProperty(HASHTABLE_IMPLEMENTATION_PROPERTY, null);
-        } catch(SecurityException ex) {
+        } catch (SecurityException ex) {
             // Permissions don't allow this to be accessed. Default to the "modern"
             // weak hashtable implementation if it is available.
             storeImplementationClass = null;
@@ -477,7 +477,7 @@ public abstract class LogFactory {
                               "]. Trying alternative implementations...");
             }
             // ignore
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             // This is not consistent with the behaviour when a bad LogFactory class is
             // specified in a services file.
             //
@@ -534,7 +534,7 @@ public abstract class LogFactory {
                         logDiagnostic("[LOOKUP] No resource file with name '" + SERVICE_ID + "' found.");
                     }
                 }
-            } catch( Exception ex ) {
+            } catch (Exception ex) {
                 // note: if the specified LogFactory class wasn't compatible with LogFactory
                 // for some reason, a ClassCastException will be caught here, and attempts will
                 // continue to find a compatible class.
@@ -737,7 +737,7 @@ public abstract class LogFactory {
     protected static ClassLoader getClassLoader(Class clazz) {
         try {
             return clazz.getClassLoader();
-        } catch(SecurityException ex) {
+        } catch (SecurityException ex) {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("Unable to get classloader for class '" + clazz +
                               "' due to security restrictions - " + ex.getMessage());
@@ -1085,7 +1085,7 @@ public abstract class LogFactory {
                         throw e;
                     }
                     // ignore exception, continue
-                } catch(ClassCastException e) {
+                } catch (ClassCastException e) {
                     if (classLoader == thisClassLoader) {
                         // There's no point in falling through to the code below that
                         // tries again with thisClassLoader, because we've just tried
@@ -1283,13 +1283,13 @@ public abstract class LogFactory {
                         } else {
                             return ClassLoader.getSystemResources(name);
                         }
-                    } catch(IOException e) {
+                    } catch (IOException e) {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Exception while trying to find configuration file " +
                                           name + ":" + e.getMessage());
                         }
                         return null;
-                    } catch(NoSuchMethodError e) {
+                    } catch (NoSuchMethodError e) {
                         // we must be running on a 1.1 JVM which doesn't support
                         // ClassLoader.getSystemResources; just return null in
                         // this case.
@@ -1328,7 +1328,7 @@ public abstract class LogFactory {
                             stream = null;
                             return props;
                         }
-                    } catch(IOException e) {
+                    } catch (IOException e) {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Unable to read URL " + url);
                         }
@@ -1336,7 +1336,7 @@ public abstract class LogFactory {
                         if (stream != null) {
                             try {
                                 stream.close();
-                            } catch(Throwable t) {
+                            } catch (Throwable t) {
                                 // ignore exception; this should not happen
                                 if (isDiagnosticsEnabled()) {
                                     logDiagnostic("Unable to close stream for URL " + url);
@@ -1478,7 +1478,7 @@ public abstract class LogFactory {
             if (dest == null) {
                 return null;
             }
-        } catch(SecurityException ex) {
+        } catch (SecurityException ex) {
             // We must be running in some very secure environment.
             // We just have to assume output is not wanted..
             return null;
@@ -1493,7 +1493,7 @@ public abstract class LogFactory {
                 // open the file in append mode
                 FileOutputStream fos = new FileOutputStream(dest, true);
                 return new PrintStream(fos);
-            } catch(IOException ex) {
+            } catch (IOException ex) {
                 // We should report this to the user - but how?
                 return null;
             }
@@ -1580,7 +1580,7 @@ public abstract class LogFactory {
             // these variables then we do not want to output them to the diagnostic stream.
             logDiagnostic("[ENV] Extension directories (java.ext.dir): " + System.getProperty("java.ext.dir"));
             logDiagnostic("[ENV] Application classpath (java.class.path): " + System.getProperty("java.class.path"));
-        } catch(SecurityException ex) {
+        } catch (SecurityException ex) {
             logDiagnostic("[ENV] Security setting prevent interrogation of system classpaths.");
         }
 
@@ -1589,7 +1589,7 @@ public abstract class LogFactory {
 
         try {
             classLoader = getClassLoader(clazz);
-        } catch(SecurityException ex) {
+        } catch (SecurityException ex) {
             // not much useful diagnostics we can print here!
             logDiagnostic("[ENV] Security forbids determining the classloader for " + className);
             return;
@@ -1618,7 +1618,7 @@ public abstract class LogFactory {
 
         try {
             systemClassLoader = ClassLoader.getSystemClassLoader();
-        } catch(SecurityException ex) {
+        } catch (SecurityException ex) {
             logDiagnostic(prefix + "Security forbids determining the system classloader.");
             return;
         }
@@ -1632,7 +1632,7 @@ public abstract class LogFactory {
 
                 try {
                     classLoader = classLoader.getParent();
-                } catch(SecurityException ex) {
+                } catch (SecurityException ex) {
                     buf.append(" --> SECRET");
                     break;
                 }
@@ -1707,7 +1707,7 @@ public abstract class LogFactory {
             } else {
                 classLoaderName = objectId(classLoader);
             }
-        } catch(SecurityException e) {
+        } catch (SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
         diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";
