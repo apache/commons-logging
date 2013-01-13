@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.impl;
 
@@ -54,7 +54,7 @@ public class Log4JLogger implements Log, Serializable {
 
     /** The fully qualified name of the Log4JLogger class. */
     private static final String FQCN = Log4JLogger.class.getName();
-    
+
     /** Log to this logger */
     private transient Logger logger = null;
 
@@ -62,7 +62,7 @@ public class Log4JLogger implements Log, Serializable {
     private final String name;
 
     private static final Priority traceLevel;
-    
+
     // ------------------------------------------------------------
     // Static Initializer.
     //
@@ -82,11 +82,11 @@ public class Log4JLogger implements Log, Serializable {
             // nope, this is log4j 1.3, so force an ExceptionInInitializerError
             throw new InstantiationError("Log4J 1.2 not available");
         }
-        
+
         // Releases of log4j1.2 >= 1.2.12 have Priority.TRACE available, earlier
         // versions do not. If TRACE is not available, then we have to map
         // calls to Log.trace(...) onto the DEBUG level.
-        
+
         Priority _traceLevel;
         try {
             _traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
@@ -111,7 +111,7 @@ public class Log4JLogger implements Log, Serializable {
         this.logger = getLogger();
     }
 
-    /** 
+    /**
      * For use with a log4j factory.
      */
     public Log4JLogger(Logger logger ) {

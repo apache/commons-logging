@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging;
 
@@ -52,7 +52,7 @@ public abstract class LogFactory {
     //
     // It is important to keep code invoked via an AccessController to small
     // auditable blocks. Such code must carefully evaluate all user input
-    // (parameters, system properties, config file contents, etc). As an 
+    // (parameters, system properties, config file contents, etc). As an
     // example, a Log implementation should not write to its logfile
     // with an AccessController anywhere in the call stack, otherwise an
     // insecure application could configure the log implementation to write
@@ -64,7 +64,7 @@ public abstract class LogFactory {
     // to invoke that method and obtain data that it is not permitted to have.
     //
     // Invoking user-supplied code with an AccessController set is not a major
-    // issue (eg invoking the constructor of the class specified by 
+    // issue (eg invoking the constructor of the class specified by
     // HASHTABLE_IMPLEMENTATION_PROPERTY). That class will be in a different
     // trust domain, and therefore must have permissions to do whatever it
     // is trying to do regardless of the permissions granted to JCL. There is
@@ -76,21 +76,21 @@ public abstract class LogFactory {
     // ----------------------------------------------------- Manifest Constants
 
     /**
-     * The name (<code>priority</code>) of the key in the config file used to 
-     * specify the priority of that particular config file. The associated value 
+     * The name (<code>priority</code>) of the key in the config file used to
+     * specify the priority of that particular config file. The associated value
      * is a floating-point number; higher values take priority over lower values.
      */
     public static final String PRIORITY_KEY = "priority";
 
     /**
-     * The name (<code>use_tccl</code>) of the key in the config file used 
-     * to specify whether logging classes should be loaded via the thread 
+     * The name (<code>use_tccl</code>) of the key in the config file used
+     * to specify whether logging classes should be loaded via the thread
      * context class loader (TCCL), or not. By default, the TCCL is used.
      */
     public static final String TCCL_KEY = "use_tccl";
 
     /**
-     * The name (<code>org.apache.commons.logging.LogFactory</code>) of the property 
+     * The name (<code>org.apache.commons.logging.LogFactory</code>) of the property
      * used to identify the LogFactory implementation
      * class name. This can be used as a system property, or as an entry in a
      * configuration properties file.
@@ -116,10 +116,10 @@ public abstract class LogFactory {
         "META-INF/services/org.apache.commons.logging.LogFactory";
 
     /**
-     * The name (<code>org.apache.commons.logging.diagnostics.dest</code>) 
+     * The name (<code>org.apache.commons.logging.diagnostics.dest</code>)
      * of the property used to enable internal commons-logging
      * diagnostic output, in order to get information on what logging
-     * implementations are being discovered, what classloaders they 
+     * implementations are being discovered, what classloaders they
      * are loaded through, etc.
      * <p>
      * If a system property of this name is set then the value is
@@ -139,17 +139,17 @@ public abstract class LogFactory {
      * interesting events will be written to the specified object.
      */
     private static PrintStream diagnosticsStream = null;
-    
+
     /**
      * A string that gets prefixed to every message output by the
      * logDiagnostic method, so that users can clearly see which
      * LogFactory class is generating the output.
      */
     private static final String diagnosticPrefix;
-    
+
     /**
-     * <p>Setting this system property 
-     * (<code>org.apache.commons.logging.LogFactory.HashtableImpl</code>) 
+     * <p>Setting this system property
+     * (<code>org.apache.commons.logging.LogFactory.HashtableImpl</code>)
      * value allows the <code>Hashtable</code> used to store
      * classloaders to be substituted by an alternative implementation.
      * </p>
@@ -162,13 +162,13 @@ public abstract class LogFactory {
      * </p>
      * <p>
      * <strong>Usage:</strong> Set this property when Java is invoked
-     * and <code>LogFactory</code> will attempt to load a new instance 
+     * and <code>LogFactory</code> will attempt to load a new instance
      * of the given implementation class.
      * For example, running the following ant scriplet:
      * <code><pre>
      *  &lt;java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}"&gt;
      *     ...
-     *     &lt;sysproperty 
+     *     &lt;sysproperty
      *        key="org.apache.commons.logging.LogFactory.HashtableImpl"
      *        value="org.apache.commons.logging.AltHashtable"/&gt;
      *  &lt;/java&gt;
@@ -187,7 +187,7 @@ public abstract class LogFactory {
         "org.apache.commons.logging.LogFactory.HashtableImpl";
 
     /** Name used to load the weak hashtable implementation by names */
-    private static final String WEAK_HASHTABLE_CLASSNAME = 
+    private static final String WEAK_HASHTABLE_CLASSNAME =
         "org.apache.commons.logging.impl.WeakHashtable";
 
     /**
@@ -198,7 +198,7 @@ public abstract class LogFactory {
      * cache it here.
      */
     private static final ClassLoader thisClassLoader;
-    
+
     // ----------------------------------------------------------- Constructors
 
     /**
@@ -206,7 +206,7 @@ public abstract class LogFactory {
      */
     protected LogFactory() {
     }
-    
+
     // --------------------------------------------------------- Public Methods
 
     /**
@@ -291,7 +291,7 @@ public abstract class LogFactory {
      * the <code>ClassLoader</code> with which it was created.
      */
     protected static Hashtable factories = null;
-    
+
     /**
      * Previously constructed <code>LogFactory</code> instance as in the
      * <code>factories</code> map, but for the case where
@@ -320,7 +320,7 @@ public abstract class LogFactory {
      * arbitrary Hashtable implementation name.
      * <p>
      * Note that the correct way to ensure no memory leaks occur is to ensure
-     * that LogFactory.release(contextClassLoader) is called whenever a 
+     * that LogFactory.release(contextClassLoader) is called whenever a
      * webapp is undeployed.
      */
     private static final Hashtable createFactoryStore() {
@@ -340,7 +340,6 @@ public abstract class LogFactory {
         try {
             Class implementationClass = Class.forName(storeImplementationClass);
             result = (Hashtable) implementationClass.newInstance();
-            
         } catch (Throwable t) {
             // ignore
             if (!WEAK_HASHTABLE_CLASSNAME.equals(storeImplementationClass)) {
@@ -365,10 +364,10 @@ public abstract class LogFactory {
 
     /** Utility method to safely trim a string. */
     private static String trim(String src) {
-    	if (src == null) {
-    		return null;
-    	}
-    	return src.trim();
+        if (src == null) {
+            return null;
+        }
+        return src.trim();
     }
 
     /**
@@ -394,9 +393,9 @@ public abstract class LogFactory {
      * properties defined in this file will be set as configuration attributes
      * on the corresponding <code>LogFactory</code> instance.
      * <p>
-     * <em>NOTE</em> - In a multi-threaded environment it is possible 
-     * that two different instances will be returned for the same 
-     * classloader environment. 
+     * <em>NOTE</em> - In a multi-threaded environment it is possible
+     * that two different instances will be returned for the same
+     * classloader environment.
      *
      * @throws LogConfigurationException if the implementation class is not
      *  available or cannot be instantiated.
@@ -422,8 +421,8 @@ public abstract class LogFactory {
 
         if (isDiagnosticsEnabled()) {
             logDiagnostic(
-                    "[LOOKUP] LogFactory implementation requested for the first time for context classloader "
-                    + objectId(contextClassLoader));
+                    "[LOOKUP] LogFactory implementation requested for the first time for context classloader " +
+                    objectId(contextClassLoader));
             logHierarchy("[LOOKUP] ", contextClassLoader);
         }
 
@@ -434,7 +433,7 @@ public abstract class LogFactory {
         // property may also control which LogFactory concrete subclass is
         // used, but only if other discovery mechanisms fail..
         //
-        // As the properties file (if it exists) will be used one way or 
+        // As the properties file (if it exists) will be used one way or
         // another in the end we may as well look for it first.
 
         Properties props = getConfigurationFile(contextClassLoader, FACTORY_PROPERTIES);
@@ -455,7 +454,7 @@ public abstract class LogFactory {
                     // own logging implementations. It also means that it is up to the
                     // implementation whether to load library-specific config files
                     // from the TCCL or not.
-                    baseClassLoader = thisClassLoader; 
+                    baseClassLoader = thisClassLoader;
                 }
             }
         }
@@ -463,35 +462,28 @@ public abstract class LogFactory {
         // Determine which concrete LogFactory subclass to use.
         // First, try a global system property
         if (isDiagnosticsEnabled()) {
-            logDiagnostic(
-                    "[LOOKUP] Looking for system property [" + FACTORY_PROPERTY 
-                    + "] to define the LogFactory subclass to use...");
+            logDiagnostic("[LOOKUP] Looking for system property [" + FACTORY_PROPERTY +
+                          "] to define the LogFactory subclass to use...");
         }
-        
+
         try {
             String factoryClass = getSystemProperty(FACTORY_PROPERTY, null);
             if (factoryClass != null) {
                 if (isDiagnosticsEnabled()) {
-                    logDiagnostic(
-                            "[LOOKUP] Creating an instance of LogFactory class '" + factoryClass
-                            + "' as specified by system property " + FACTORY_PROPERTY);
+                    logDiagnostic("[LOOKUP] Creating an instance of LogFactory class '" + factoryClass +
+                                  "' as specified by system property " + FACTORY_PROPERTY);
                 }
-                
                 factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
             } else {
                 if (isDiagnosticsEnabled()) {
-                    logDiagnostic(
-                            "[LOOKUP] No system property [" + FACTORY_PROPERTY 
-                            + "] defined.");
+                    logDiagnostic("[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
                 }
             }
         } catch (SecurityException e) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic(
-                        "[LOOKUP] A security exception occurred while trying to create an"
-                        + " instance of the custom factory class"
-                        + ": [" + trim(e.getMessage())
-                        + "]. Trying alternative implementations...");
+                logDiagnostic("[LOOKUP] A security exception occurred while trying to create an" +
+                              " instance of the custom factory class" + ": [" + trim(e.getMessage()) +
+                              "]. Trying alternative implementations...");
             }
             // ignore
         } catch(RuntimeException e) {
@@ -501,11 +493,9 @@ public abstract class LogFactory {
             // One possible exception that can occur here is a ClassCastException when
             // the specified class wasn't castable to this LogFactory type.
             if (isDiagnosticsEnabled()) {
-                logDiagnostic(
-                        "[LOOKUP] An exception occurred while trying to create an"
-                        + " instance of the custom factory class"
-                        + ": [" + trim(e.getMessage())
-                        + "] as specified by a system property.");
+                logDiagnostic("[LOOKUP] An exception occurred while trying to create an" +
+                              " instance of the custom factory class" + ": [" + trim(e.getMessage()) +
+                              "] as specified by a system property.");
             }
             throw e;
         }
@@ -513,14 +503,13 @@ public abstract class LogFactory {
         // Second, try to find a service by using the JDK1.3 class
         // discovery mechanism, which involves putting a file with the name
         // of an interface class in the META-INF/services directory, where the
-        // contents of the file is a single line specifying a concrete class 
+        // contents of the file is a single line specifying a concrete class
         // that implements the desired interface.
 
         if (factory == null) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic(
-                        "[LOOKUP] Looking for a resource file of name [" + SERVICE_ID
-                        + "] to define the LogFactory subclass to use...");
+                logDiagnostic("[LOOKUP] Looking for a resource file of name [" + SERVICE_ID +
+                              "] to define the LogFactory subclass to use...");
             }
             try {
                 InputStream is = getResourceAsStream(contextClassLoader,
@@ -542,20 +531,16 @@ public abstract class LogFactory {
                     if (factoryClassName != null &&
                         ! "".equals(factoryClassName)) {
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic(
-                                    "[LOOKUP]  Creating an instance of LogFactory class " + factoryClassName
-                                    + " as specified by file '" + SERVICE_ID 
-                                    + "' which was present in the path of the context"
-                                    + " classloader.");
+                            logDiagnostic("[LOOKUP]  Creating an instance of LogFactory class " + factoryClassName +
+                                          " as specified by file '" + SERVICE_ID +
+                                          "' which was present in the path of the context classloader.");
                         }
                         factory = newFactory(factoryClassName, baseClassLoader, contextClassLoader );
                     }
                 } else {
                     // is == null
                     if (isDiagnosticsEnabled()) {
-                        logDiagnostic(
-                            "[LOOKUP] No resource file with name '" + SERVICE_ID
-                            + "' found.");
+                        logDiagnostic("[LOOKUP] No resource file with name '" + SERVICE_ID + "' found.");
                     }
                 }
             } catch( Exception ex ) {
@@ -760,7 +745,7 @@ public abstract class LogFactory {
      * Even when using an AccessController, however, this method can still
      * throw SecurityException. Commons-logging basically relies on the
      * ability to access classloaders, ie a policy that forbids all
-     * classloader access will also prevent commons-logging from working: 
+     * classloader access will also prevent commons-logging from working:
      * currently this method will throw an exception preventing the entire app
      * from starting up. Maybe it would be good to detect this situation and
      * just disable all commons-logging? Not high priority though - as stated
@@ -770,7 +755,7 @@ public abstract class LogFactory {
      * technically be a security flaw anyway; untrusted code that has access
      * to a trusted JCL library could use it to fetch the classloader for
      * a class even when forbidden to do so directly.
-     * 
+     *
      * @since 1.1
      */
     protected static ClassLoader getClassLoader(Class clazz) {
@@ -797,13 +782,13 @@ public abstract class LogFactory {
      * an AccessController. User code wishing to obtain the context classloader
      * must invoke this method via AccessController.doPrivileged if it needs
      * support for that.
-     *  
+     *
      * @return the context classloader associated with the current thread,
      * or null if security doesn't allow it.
-     * 
+     *
      * @throws LogConfigurationException if there was some weird error while
      * attempting to get the context classloader.
-     * 
+     *
      * @throws SecurityException if the current java security policy doesn't
      * allow this class to access the context classloader.
      */
@@ -821,13 +806,13 @@ public abstract class LogFactory {
      * doesn't have such privileges. Without using an AccessController, the
      * the entire call stack must have the privilege before the call is
      * allowed.
-     *  
+     *
      * @return the context classloader associated with the current thread,
      * or null if security doesn't allow it.
-     * 
+     *
      * @throws LogConfigurationException if there was some weird error while
      * attempting to get the context classloader.
-     * 
+     *
      * @throws SecurityException if the current java security policy doesn't
      * allow this class to access the context classloader.
      */
@@ -842,7 +827,7 @@ public abstract class LogFactory {
 
     /**
      * Return the thread context class loader if available; otherwise return 
-     * null. 
+     * null.
      * <p>
      * Most/all code should call getContextClassLoaderInternal rather than
      * calling this method directly.
@@ -853,13 +838,13 @@ public abstract class LogFactory {
      * Note that no internal logging is done within this method because
      * this method is called every time LogFactory.getLogger() is called,
      * and we don't want too much output generated here.
-     * 
+     *
      * @exception LogConfigurationException if a suitable class loader
      * cannot be identified.
-     * 
+     *
      * @exception SecurityException if the java security policy forbids
      * access to the context classloader from one of the classes in the
-     * current call stack. 
+     * current call stack.
      * @since 1.1
      */
     protected static ClassLoader directGetContextClassLoader()
@@ -869,13 +854,11 @@ public abstract class LogFactory {
 
         try {
             // Are we running on a JDK 1.2 or later system?
-            Method method = Thread.class.getMethod("getContextClassLoader", 
-                    (Class[]) null);
+            Method method = Thread.class.getMethod("getContextClassLoader", (Class[]) null);
 
             // Get the thread context class loader (if there is one)
             try {
-                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), 
-                        (Object[]) null);
+                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), (Object[]) null);
             } catch (IllegalAccessException e) {
                 throw new LogConfigurationException
                     ("Unexpected IllegalAccessException", e);
@@ -920,7 +903,6 @@ public abstract class LogFactory {
             //         + " classloader is the same as the class that loaded"
             //         + " the concrete LogFactory class.");
             // }
-            
         }
 
         // Return the selected class loader
@@ -936,7 +918,7 @@ public abstract class LogFactory {
      * a distinct context classloader set. This parameter may be null
      * in JDK1.1, and in embedded systems where jcl-using code is
      * placed in the bootclasspath.
-     * 
+     *
      * @return the factory associated with the specified classloader if
      * one has previously been created, or null if this is the first time
      * we have seen this particular classloader.
@@ -985,7 +967,7 @@ public abstract class LogFactory {
      * (abstract) LogFactory.
      * <p>
      * <h2>ClassLoader conflicts</h2>
-     * Note that there can be problems if the specified ClassLoader is not the 
+     * Note that there can be problems if the specified ClassLoader is not the
      * same as the classloader that loaded this class, ie when loading a
      * concrete LogFactory subclass via a context classloader.
      * <p>
@@ -1040,16 +1022,13 @@ public abstract class LogFactory {
         if (result instanceof LogConfigurationException) {
             LogConfigurationException ex = (LogConfigurationException) result;
             if (isDiagnosticsEnabled()) {
-                logDiagnostic(
-                        "An error occurred while loading the factory class:"
-                        + ex.getMessage());
+                logDiagnostic("An error occurred while loading the factory class:" + ex.getMessage());
             }
             throw ex;
         }
         if (isDiagnosticsEnabled()) {
-            logDiagnostic(
-                    "Created object " + objectId(result)
-                    + " to manage classloader " + objectId(contextClassLoader));
+            logDiagnostic("Created object " + objectId(result) + " to manage classloader " +
+                          objectId(contextClassLoader));
         }
         return (LogFactory)result;
     }
@@ -1076,14 +1055,14 @@ public abstract class LogFactory {
 
     /**
      * Implements the operations described in the javadoc for newFactory.
-     * 
+     *
      * @param factoryClass
-     * 
+     *
      * @param classLoader used to load the specified factory class. This is
      * expected to be either the TCCL or the classloader which loaded this
      * class. Note that the classloader which loaded this class might be
      * "null" (ie the bootloader) for embedded systems.
-     * 
+     *
      * @return either a LogFactory object or a LogConfigurationException object.
      * @since 1.1
      */
@@ -1108,14 +1087,14 @@ public abstract class LogFactory {
                     } else {
                         //
                         // This indicates a problem with the ClassLoader tree.
-                        // An incompatible ClassLoader was used to load the 
-                        // implementation. 
+                        // An incompatible ClassLoader was used to load the
+                        // implementation.
                         // As the same classes
                         // must be available in multiple class loaders,
                         // it is very likely that multiple JCL jars are present.
                         // The most likely fix for this
-                        // problem is to remove the extra JCL jars from the 
-                        // ClassLoader hierarchy. 
+                        // problem is to remove the extra JCL jars from the
+                        // ClassLoader hierarchy.
                         //
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(
@@ -1126,7 +1105,7 @@ public abstract class LogFactory {
                             logHierarchy("[BAD CL TREE] ", classLoader);
                         }
                     }
-                    
+
                     return (LogFactory) logFactoryClass.newInstance();
 
                 } catch (ClassNotFoundException ex) {
@@ -1161,13 +1140,13 @@ public abstract class LogFactory {
                         // appropriate exception here.
 
                         final boolean implementsLogFactory = implementsLogFactory(logFactoryClass);
-                        
+
                         //
-                        // Construct a good message: users may not actual expect that a custom implementation 
-                        // has been specified. Several well known containers use this mechanism to adapt JCL 
-                        // to their native logging system. 
-                        // 
-                        String msg = 
+                        // Construct a good message: users may not actual expect that a custom implementation
+                        // has been specified. Several well known containers use this mechanism to adapt JCL
+                        // to their native logging system.
+                        //
+                        String msg =
                             "The application has specified that a custom LogFactory implementation should be used but " +
                             "Class '" + factoryClass + "' cannot be converted to '"
                             + LogFactory.class.getName() + "'. ";
@@ -1182,14 +1161,14 @@ public abstract class LogFactory {
                             msg = msg + "Please check the custom implementation. ";
                         }
                         msg = msg + "Help can be found @http://commons.apache.org/logging/troubleshooting.html.";
-                        
+
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(msg);
                         }
-                        
+
                         throw new ClassCastException(msg);
                     }
-                    
+
                     // Ignore exception, continue. Presumably the classloader was the
                     // TCCL; the code below will try to load the class via thisClassLoader.
                     // This will handle the case where the original calling class is in
@@ -1212,7 +1191,7 @@ public abstract class LogFactory {
              * to LogFactory.class.getClassLoader().load(name), ie we ignore
              * the classloader parameter the caller passed, and fall back
              * to trying the classloader associated with this class. See the
-             * javadoc for the newFactory method for more info on the 
+             * javadoc for the newFactory method for more info on the
              * consequences of this.
              *
              * Notes:
@@ -1223,7 +1202,7 @@ public abstract class LogFactory {
             // to be generated/caught & recast properly.
             if (isDiagnosticsEnabled()) {
                 logDiagnostic(
-                    "Unable to load factory class via classloader " 
+                    "Unable to load factory class via classloader "
                     + objectId(classLoader)
                     + " - trying the classloader associated with this LogFactory.");
             }
@@ -1234,9 +1213,7 @@ public abstract class LogFactory {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("Unable to create LogFactory instance.");
             }
-            if (logFactoryClass != null
-                && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
-                
+            if (logFactoryClass != null && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
                 return new LogConfigurationException(
                     "The chosen LogFactory implementation does not extend LogFactory."
                     + " Please check your configuration.",
@@ -1315,7 +1292,7 @@ public abstract class LogFactory {
     /**
      * Applets may run in an environment where accessing resources of a loader is
      * a secure operation, but where the commons-logging library has explicitly
-     * been granted permission for that operation. In this case, we need to 
+     * been granted permission for that operation. In this case, we need to
      * run the operation using an AccessController.
      */
     private static InputStream getResourceAsStream(final ClassLoader loader, final String name) {
@@ -1345,7 +1322,7 @@ public abstract class LogFactory {
      * If resources could not be listed for some reason, null is returned.
      */
     private static Enumeration getResources(final ClassLoader loader, final String name) {
-        PrivilegedAction action = 
+        PrivilegedAction action =
             new PrivilegedAction() {
                 public Object run() {
                     try {
@@ -1356,9 +1333,8 @@ public abstract class LogFactory {
                         }
                     } catch(IOException e) {
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic(
-                                "Exception while trying to find configuration file "
-                                + name + ":" + e.getMessage());
+                            logDiagnostic("Exception while trying to find configuration file " +
+                                          name + ":" + e.getMessage());
                         }
                         return null;
                     } catch(NoSuchMethodError e) {
@@ -1382,7 +1358,7 @@ public abstract class LogFactory {
      * {@code Null} is returned if the URL cannot be opened.
      */
     private static Properties getProperties(final URL url) {
-        PrivilegedAction action = 
+        PrivilegedAction action =
             new PrivilegedAction() {
                 public Object run() {
                     InputStream stream = null;
@@ -1431,7 +1407,7 @@ public abstract class LogFactory {
      * null is returned. If more than one is found, then the file with the greatest
      * value for its PRIORITY property is returned. If multiple files have the
      * same PRIORITY value then the first in the classpath is returned.
-     * <p> 
+     * <p>
      * This differs from the 1.0.x releases; those always use the first one found.
      * However as the priority is a new field, this change is backwards compatible.
      * <p>
@@ -1440,7 +1416,7 @@ public abstract class LogFactory {
      * file in a shared classpath location with a priority > 0; this overrides any
      * commons-logging.properties files without priorities which are in the
      * webapps. Webapps can also use explicit priorities to override a configuration
-     * file in the shared classpath if needed. 
+     * file in the shared classpath if needed.
      */
     private static final Properties getConfigurationFile(ClassLoader classLoader, String fileName) {
         Properties props = null;
@@ -1452,14 +1428,14 @@ public abstract class LogFactory {
             if (urls == null) {
                 return null;
             }
-            
+
             while (urls.hasMoreElements()) {
                 URL url = (URL) urls.nextElement();
-                
+
                 Properties newProps = getProperties(url);
                 if (newProps != null) {
                     if (props == null) {
-                        propsUrl = url; 
+                        propsUrl = url;
                         props = newProps;
                         String priorityStr = props.getProperty(PRIORITY_KEY);
                         priority = 0.0;
@@ -1470,7 +1446,7 @@ public abstract class LogFactory {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(
                                 "[LOOKUP] Properties file found at '" + url + "'"
-                                + " with priority " + priority); 
+                                + " with priority " + priority);
                         }
                     } else {
                         String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
@@ -1483,12 +1459,12 @@ public abstract class LogFactory {
                             if (isDiagnosticsEnabled()) {
                                 logDiagnostic(
                                     "[LOOKUP] Properties file at '" + url + "'"
-                                    + " with priority " + newPriority 
+                                    + " with priority " + newPriority
                                     + " overrides file at '" + propsUrl + "'"
                                     + " with priority " + priority);
                             }
 
-                            propsUrl = url; 
+                            propsUrl = url;
                             props = newProps;
                             priority = newPriority;
                         } else {
@@ -1512,13 +1488,9 @@ public abstract class LogFactory {
 
         if (isDiagnosticsEnabled()) {
             if (props == null) {
-                logDiagnostic(
-                    "[LOOKUP] No properties file of name '" + fileName
-                    + "' found.");
+                logDiagnostic("[LOOKUP] No properties file of name '" + fileName + "' found.");
             } else {
-                logDiagnostic(
-                    "[LOOKUP] Properties file of name '" + fileName
-                    + "' found at '" + propsUrl + '"');
+                logDiagnostic("[LOOKUP] Properties file of name '" + fileName + "' found at '" + propsUrl + '"');
             }
         }
 
@@ -1526,7 +1498,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Read the specified system property, using an AccessController so that 
+     * Read the specified system property, using an AccessController so that
      * the property can be read if JCL has been granted the appropriate
      * security rights even if the calling code has not.
      * <p>
@@ -1548,7 +1520,7 @@ public abstract class LogFactory {
      * Determines whether the user wants internal diagnostic output. If so,
      * returns an appropriate writer object. Users can enable diagnostic
      * output by setting the system property named {@link #DIAGNOSTICS_DEST_PROPERTY} to
-     * a filename, or the special values STDOUT or STDERR. 
+     * a filename, or the special values STDOUT or STDERR.
      */
     private static PrintStream initDiagnostics() {
         String dest;
@@ -1584,7 +1556,7 @@ public abstract class LogFactory {
      * <p>
      * By the way, sorry for the incorrect grammar, but calling this method
      * areDiagnosticsEnabled just isn't java beans style.
-     * 
+     *
      * @return true if calls to logDiagnostic will have any effect.
      * @since 1.1
      */
@@ -1607,7 +1579,7 @@ public abstract class LogFactory {
      * Note that it is safe to call this method before initDiagnostics
      * is called; any output will just be ignored (as isDiagnosticsEnabled
      * will return false).
-     * 
+     *
      * @param msg is the diagnostic message to be output.
      */
     private static final void logDiagnostic(String msg) {
@@ -1620,7 +1592,7 @@ public abstract class LogFactory {
 
     /**
      * Write the specified message to the internal logging destination.
-     * 
+     *
      * @param msg is the diagnostic message to be output.
      * @since 1.1
      */
@@ -1639,12 +1611,12 @@ public abstract class LogFactory {
      * classloader, then you may get the following output:
      * <pre>
      * Class com.acme.Foo was loaded via classloader 11111
-     * ClassLoader tree: 11111 -> 22222 (SYSTEM) -> 33333 -> BOOT 
+     * ClassLoader tree: 11111 -> 22222 (SYSTEM) -> 33333 -> BOOT
      * </pre>
      * <p>
      * This method returns immediately if isDiagnosticsEnabled()
      * returns false.
-     * 
+     *
      * @param clazz is the class whose classloader + tree are to be
      * output.
      */
@@ -1652,20 +1624,20 @@ public abstract class LogFactory {
         if (!isDiagnosticsEnabled()) {
             return;
         }
-        
+
         try {
             // Deliberately use System.getProperty here instead of getSystemProperty; if
             // the overall security policy for the calling application forbids access to
-            // these variables then we do not want to output them to the diagnostic stream. 
+            // these variables then we do not want to output them to the diagnostic stream.
             logDiagnostic("[ENV] Extension directories (java.ext.dir): " + System.getProperty("java.ext.dir"));
             logDiagnostic("[ENV] Application classpath (java.class.path): " + System.getProperty("java.class.path"));
         } catch(SecurityException ex) {
             logDiagnostic("[ENV] Security setting prevent interrogation of system classpaths.");
         }
-        
+
         String className = clazz.getName();
         ClassLoader classLoader;
-        
+
         try {
             classLoader = getClassLoader(clazz);
         } catch(SecurityException ex) {
@@ -1675,9 +1647,7 @@ public abstract class LogFactory {
             return;
         }
 
-        logDiagnostic(
-            "[ENV] Class " + className + " was loaded via classloader "
-            + objectId(classLoader));
+        logDiagnostic("[ENV] Class " + className + " was loaded via classloader " + objectId(classLoader));
         logHierarchy("[ENV] Ancestry of classloader which loaded " + className + " is ", classLoader);
     }
 
@@ -1685,7 +1655,7 @@ public abstract class LogFactory {
      * Logs diagnostic messages about the given classloader
      * and it's hierarchy. The prefix is prepended to the message
      * and is intended to make it easier to understand the logs.
-     * @param prefix 
+     * @param prefix
      * @param classLoader
      */
     private static void logHierarchy(String prefix, ClassLoader classLoader) {
@@ -1697,14 +1667,13 @@ public abstract class LogFactory {
             final String classLoaderString = classLoader.toString();
             logDiagnostic(prefix + objectId(classLoader) + " == '" + classLoaderString + "'");
         }
-        
+
         try {
             systemClassLoader = ClassLoader.getSystemClassLoader();
         } catch(SecurityException ex) {
-            logDiagnostic(
-                    prefix + "Security forbids determining the system classloader.");
+            logDiagnostic(prefix + "Security forbids determining the system classloader.");
             return;
-        }        
+        }
         if (classLoader != null) {
             StringBuffer buf = new StringBuffer(prefix + "ClassLoader tree:");
             for(;;) {
@@ -1737,7 +1706,7 @@ public abstract class LogFactory {
      * The returned string is of form "classname@hashcode", ie is the same as
      * the return value of the Object.toString() method, but works even when
      * the specified object's class has overidden the toString method.
-     * 
+     *
      * @param o may be null.
      * @return a string of form classname@hashcode, or "null" if param o is null.
      * @since 1.1
@@ -1753,7 +1722,7 @@ public abstract class LogFactory {
     // ----------------------------------------------------------------------
     // Static initialiser block to perform initialisation at class load time.
     //
-    // We can't do this in the class constructor, as there are many 
+    // We can't do this in the class constructor, as there are many
     // static methods on this class that can be called before any
     // LogFactory instances are created, and they depend upon this
     // stuff having been set up.
@@ -1778,7 +1747,7 @@ public abstract class LogFactory {
         // ensure each logged message has a prefix of form
         // [LogFactory from classloader OID]
         //
-        // Note that this prefix should be kept consistent with that 
+        // Note that this prefix should be kept consistent with that
         // in LogFactoryImpl. However here we don't need to output info
         // about the actual *instance* of LogFactory, as all methods that
         // output diagnostics from this class are static.

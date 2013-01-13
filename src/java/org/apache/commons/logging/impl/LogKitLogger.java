@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.impl;
 
@@ -79,7 +79,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
     */
@@ -89,7 +89,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
@@ -100,7 +100,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
      */
@@ -112,7 +112,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.DEBUG</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
@@ -125,7 +125,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.INFO</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
@@ -137,7 +137,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.INFO</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
@@ -150,7 +150,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.WARN</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
@@ -162,7 +162,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.WARN</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
@@ -175,7 +175,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.ERROR</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
@@ -187,7 +187,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.ERROR</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
@@ -200,7 +200,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.FATAL_ERROR</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
@@ -212,7 +212,7 @@ public class LogKitLogger implements Log, Serializable {
 
     /**
      * Logs a message with <code>org.apache.log.Priority.FATAL_ERROR</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)

@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.impl;
 
@@ -43,14 +43,14 @@ import org.apache.commons.logging.LogFactory;
  * this class on webapp undeploy; the contextDestroyed method will tell
  * every accessible LogFactory class that the entry in its map for the
  * current webapp's context classloader should be cleared.
- * 
+ *
  * @version $Id$
  * @since 1.1
  */
 public class ServletContextCleaner implements ServletContextListener {
 
     private static final Class[] RELEASE_SIGNATURE = {ClassLoader.class};
-    
+
     /**
      * Invoked when a webapp is undeployed, this tells the LogFactory
      * class to release any logging information related to the current
@@ -84,7 +84,7 @@ public class ServletContextCleaner implements ServletContextListener {
         // and that class calls LogFactory the tccl gets registered in
         // the LogFactory instance that is visible from the ancestor
         // classloader. However the concrete logging library it points
-        // to is expected to have been loaded via the TCCL, so the 
+        // to is expected to have been loaded via the TCCL, so the
         // underlying logging lib is only initialised/configured once.
         // These references from ancestor LogFactory classes down to
         // TCCL classloaders are held via weak references and so should
@@ -120,13 +120,13 @@ public class ServletContextCleaner implements ServletContextListener {
                 loader = null;
             }
         }
-        
+
         // Just to be sure, invoke release on the LogFactory that is visible from
         // this ServletContextCleaner class too. This should already have been caught
         // by the above loop but just in case...
         LogFactory.release(tccl);
     }
-    
+
     /**
      * Invoked when a webapp is deployed. Nothing needs to be done here.
      */

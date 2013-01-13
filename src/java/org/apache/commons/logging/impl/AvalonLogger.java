@@ -5,15 +5,15 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 package org.apache.commons.logging.impl;
 
@@ -26,13 +26,13 @@ import org.apache.commons.logging.Log;
  * <p>
  * There are two ways in which this class can be used:
  * <ul>
- * <li>the instance can be constructed with an Avalon logger 
- * (by calling {@link #AvalonLogger(Logger)}). In this case, it acts 
- * as a simple thin wrapping implementation over the logger. This is 
+ * <li>the instance can be constructed with an Avalon logger
+ * (by calling {@link #AvalonLogger(Logger)}). In this case, it acts
+ * as a simple thin wrapping implementation over the logger. This is
  * particularly useful when using a property setter.
  * </li>
  * <li>the {@link #setDefaultLogger} class property can be called which
- * sets the ancestral Avalon logger for this class. Any <code>AvalonLogger</code> 
+ * sets the ancestral Avalon logger for this class. Any <code>AvalonLogger</code>
  * instances created through the <code>LogFactory</code> mechanisms will output
  * to child loggers of this <code>Logger</code>.
  * </li>
@@ -43,7 +43,7 @@ import org.apache.commons.logging.Log;
  * circumstances; there is no way to "reconnect" to an underlying Logger object on
  * deserialization if one was just passed in to the constructor of the original
  * object. This class <i>was</i> marked Serializable in the 1.0.4 release of
- * commons-logging, but this never actually worked (a NullPointerException would 
+ * commons-logging, but this never actually worked (a NullPointerException would
  * be thrown as soon as the deserialized object was used), so removing this marker
  * is not considered to be an incompatible change.
  *
@@ -52,7 +52,7 @@ import org.apache.commons.logging.Log;
  */
 public class AvalonLogger implements Log {
 
-    /** Ancestral Avalon logger. */ 
+    /** Ancestral Avalon logger. */
     private static Logger defaultLogger = null;
     /** Avalon logger used to perform log. */
     private final transient Logger logger;
@@ -101,7 +101,7 @@ public class AvalonLogger implements Log {
 
     /**
     * Logs a message with <code>org.apache.avalon.framework.logger.Logger.debug</code>.
-    * 
+    *
     * @param message to log
     * @param t log this cause
     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
@@ -114,7 +114,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.debug</code>.
-     * 
+     *
      * @param message to log.
      * @see org.apache.commons.logging.Log#debug(Object)
      */
@@ -126,7 +126,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.error</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
@@ -139,7 +139,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.error</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
@@ -151,7 +151,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.fatalError</code>.
-     * 
+     *
      * @param message to log.
      * @param t log this cause.
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
@@ -164,7 +164,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.fatalError</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
@@ -176,7 +176,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.info</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
@@ -189,7 +189,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.info</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
@@ -249,7 +249,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.debug</code>.
-     * 
+     *
      * @param message to log.
      * @param t log this cause.
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
@@ -262,7 +262,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.debug</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
@@ -274,7 +274,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.warn</code>.
-     * 
+     *
      * @param message to log
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
@@ -287,7 +287,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Logs a message with <code>org.apache.avalon.framework.logger.Logger.warn</code>.
-     * 
+     *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
