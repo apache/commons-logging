@@ -437,7 +437,7 @@ implementation.
  can only see their matching concrete logging library if that library is
  available in the same classpath. Bundling the full commons-logging jarfile
  (with adapters) into the system classpath therefore means that logging
- libraries (eg log4j) within WEB-INF/lib are not accessable.
+ libraries (eg log4j) within WEB-INF/lib are not accessible.
    </p>
    <p>
  Note that the behaviour described here only applies if the standard Tomcat

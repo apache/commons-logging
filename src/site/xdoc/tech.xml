@@ -200,11 +200,11 @@ limitations under the License.
       <p>
   This is intended to present a guide to the process by which Java bytecode uses bytecode in other classes
   from the perspective of the language and virtual machine specifications. The focus will be on deciding
-  which bytecode will be used (rather than the mechanics of the usage). It focusses on facts and terminology.
+  which bytecode will be used (rather than the mechanics of the usage). It focuses on facts and terminology.
       </p>
       <p>
   The process is recursive: it is therefore difficult to pick a starting point.
-  Sun's documentation starts from the persective of the startup of a new application.
+  Sun's documentation starts from the perspective of the startup of a new application.
   This guide starts from the perspective of an executing application.
       </p>
       <p>
@@ -304,7 +304,7 @@ limitations under the License.
       <p>
         <em>
   In practical development terms: The System classloader returned by <code>Classloader.getSystemClassLoader()</code>
-  will be either the bootstrap classloader or a direct descendent of the bootstrap classloader.
+  will be either the bootstrap classloader or a direct descendant of the bootstrap classloader.
   Only when debugging issues concerning the system classloader should there be any need to consider the detailed
   differences between the bootstrap classloader and the system classloader.
         </em>
@@ -322,7 +322,7 @@ limitations under the License.
       </p>
       <p>
         <em>
-  In practical development terms: two classes with the same symbolic name can only be used interchangably
+  In practical development terms: two classes with the same symbolic name can only be used interchangeably
   if they are defined by the same classloader. A classic symptom indicative of a classloader issue is that
   two classes with the same fully qualified name are found to be incompatible during a method call.
   This may happen when a member is expecting an interface which is (seemingly) implemented by a class
@@ -340,7 +340,7 @@ limitations under the License.
       </p>
       <p>
         <em>
-  In practial development terms: This is very important to bear in mind when trying to solve classloader issues.
+  In practical development terms: This is very important to bear in mind when trying to solve classloader issues.
   A classic misunderstanding is this: suppose class A defined by classloader C has a symbolic reference to
   class B and further that when C initiates loading of B, this is delegated to classloader D which defines B.
   Class B can now only resolve symbols that can be loaded by D, rather than all those which can be loaded by C.
@@ -515,9 +515,9 @@ limitations under the License.
 <source>
 This specification requires that J2EE containers provide a per thread
 context class loader for the use of system or library classes in
-dynamicly loading classes provided by the application.  The EJB
+dynamically loading classes provided by the application.  The EJB
 specification requires that all EJB client containers provide a per
-thread context class loader for dynamicly loading system value classes.
+thread context class loader for dynamically loading system value classes.
 The per thread context class loader is accessed using the Thread method
 getContextClassLoader.
 
@@ -527,7 +527,7 @@ loader, an extension class loader, and so on, down to a system class
 loader.  The top level application class loader delegates to the lower
 class loaders as needed.  Classes loaded by lower class loaders, such as
 portable EJB system value classes, need to be able to discover the top
-level application class loader used to dynamicly load application
+level application class loader used to dynamically load application
 classes.
 
 We require that containers provide a per thread context class loader
@@ -633,7 +633,7 @@ href='http://publib.boulder.ibm.com/infocenter/wasinfo/v6r0/index.jsp?topic=/com
       <p>
   Performance dictates that symbolic references to the logging systems are present in the implementation
   classes (again, reflection would simply be too slow). So, for an implementation to be able to function,
-  it is neccessary for the logging system to be loadable by the classloader that defines the implementing class.
+  it is necessary for the logging system to be loadable by the classloader that defines the implementing class.
       </p>
       </subsection>
 
