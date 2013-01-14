@@ -109,10 +109,13 @@
   <property name="artifacts.home"               value="artifacts"/>
 
   <!-- The base directory for component sources -->
-  <property name="source.home"             value="src/java"/>
+  <property name="source.home"             value="src/main/java"/>
 
   <!-- The base directory for unit test sources -->
-  <property name="test.home"               value="src/test"/>
+  <property name="test.home"               value="src/test/java"/>
+
+  <!-- The base directory for unit test resources -->
+  <property name="test.resources"          value="src/test/resources"/>
 
   <!-- jar names -->
   <property name="core.jar.name" value="commons-${component.name}-${component.version}.jar"/>
@@ -587,7 +590,7 @@
     <antcall target='compile.avalon.tests'/>
     <antcall target='compile.logkit.tests'/>
     <copy    todir="${build.home}/tests" filtering="on">
-      <fileset dir="${test.home}" excludes="**/*.java"/>
+      <fileset dir="${test.resources}" excludes="**/*.java"/>
     </copy>
     <jar jarfile="${build.home}/commons-${component.name}-appender.jar"
          basedir="${build.home}/tests"
