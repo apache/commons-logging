@@ -296,8 +296,9 @@ public abstract class LogFactory {
      * </ul>
      * Note that <code>factories</code> is a <i>Hashtable</i> (not a HashMap),
      * and hashtables don't allow null as a key.
+     * @deprecated since 1.1.2
      */
-    protected static LogFactory nullClassLoaderFactory = null;
+    protected static volatile LogFactory nullClassLoaderFactory = null;
 
     /**
      * Create the hashtable which will be used to store a map of
