@@ -52,7 +52,7 @@ import org.apache.commons.logging.Log;
 public class AvalonLogger implements Log {
 
     /** Ancestral Avalon logger. */
-    private static Logger defaultLogger = null;
+    private static volatile Logger defaultLogger = null;
     /** Avalon logger used to perform log. */
     private final transient Logger logger;
 
