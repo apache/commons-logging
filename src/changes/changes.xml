@@ -44,6 +44,9 @@ The <action> type attribute can be add,update,fix,remove.
   </properties>
   <body>
     <release version="1.1.2" date="In SVN" description="Bug fixes.">
+      <action type="fix" issue="LOGGING-146">
+        Properly synchronize access to protected static field LogFactory.nullClassLoaderFactory.
+      </action>
       <action type="fix" issue="LOGGING-119">
         Prevent potential deadlock scenario in WeakHashtable.
       </action>
