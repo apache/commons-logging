@@ -30,7 +30,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-public class WeakHashtableTest extends TestCase {
+public class WeakHashtableTestCase extends TestCase {
 
     private static final int WAIT_FOR_THREAD_COMPLETION = 5000; // 5 seconds
     private static final int RUN_LOOPS = 3000;
@@ -50,7 +50,7 @@ public class WeakHashtableTest extends TestCase {
     private Long valueTwo;
     private Long valueThree;
 
-    public WeakHashtableTest(String testName) {
+    public WeakHashtableTestCase(String testName) {
         super(testName);
     }
 

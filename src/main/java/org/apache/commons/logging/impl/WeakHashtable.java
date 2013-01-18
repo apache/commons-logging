@@ -19,11 +19,13 @@ package org.apache.commons.logging.impl;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -217,7 +219,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
-    public Object put(Object key, Object value) {
+    public synchronized Object put(Object key, Object value) {
         // check for nulls, ensuring semantics match superclass
         if (key == null) {
             throw new NullPointerException("Null keys are not allowed");
@@ -265,7 +267,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
-    public Object remove(Object key) {
+    public synchronized Object remove(Object key) {
         // for performance reasons, only purge every
         // MAX_CHANGES_BEFORE_PURGE times
         if (changeCount++ > MAX_CHANGES_BEFORE_PURGE) {
@@ -317,11 +319,20 @@ public final class WeakHashtable extends Hashtable {
      * have been garbage collected.
      */
     private void purge() {
+        final List toRemove = new ArrayList();
         synchronized (queue) {
             WeakKey key;
             while ((key = (WeakKey) queue.poll()) != null) {
-                super.remove(key.getReferenced());
+                toRemove.add(key.getReferenced());
             }
+        }
+
+        // LOGGING-119: do the actual removal of the keys outside the sync block
+        // to prevent deadlock scenarios as purge() may be called from
+        // non-synchronized methods too
+        final int size = toRemove.size();
+        for (int i = 0; i < size; i++) {
+            super.remove(toRemove.get(i));
         }
     }
 
