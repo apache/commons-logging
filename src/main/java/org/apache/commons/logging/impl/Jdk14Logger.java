@@ -67,9 +67,9 @@ public class Jdk14Logger implements Log, Serializable {
      */
     protected String name = null;
 
-    // --------------------------------------------------------- Public Methods
+    // --------------------------------------------------------- Protected Methods
 
-    private void log( Level level, String msg, Throwable ex ) {
+    protected void log( Level level, String msg, Throwable ex ) {
         Logger logger = getLogger();
         if (logger.isLoggable(level)) {
             // Hack (?) to get the stack trace.
@@ -90,6 +90,8 @@ public class Jdk14Logger implements Log, Serializable {
             }
         }
     }
+
+    // --------------------------------------------------------- Public Methods
 
     /**
      * Logs a message with <code>java.util.logging.Level.FINE</code>.
