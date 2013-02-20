@@ -168,10 +168,10 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     public void setUp() throws Exception {
         setUpManager
             ("org/apache/commons/logging/jdk14/CustomConfig.properties");
-        setUpLogger("TestLogger");
+        setUpLogger(this.getClass().getName());
         setUpHandlers();
         setUpFactory();
-        setUpLog("TestLogger");
+        setUpLog(this.getClass().getName());
     }
 
 
@@ -244,7 +244,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     public void testPristineLogger() {
 
         assertNotNull("Logger exists", logger);
-        assertEquals("Logger name", "TestLogger", logger.getName());
+        assertEquals("Logger name", this.getClass().getName(), logger.getName());
 
         // Assert which logging levels have been enabled
         assertTrue(logger.isLoggable(Level.SEVERE));

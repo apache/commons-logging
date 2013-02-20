@@ -44,6 +44,9 @@ The <action> type attribute can be add,update,fix,remove.
   </properties>
   <body>
     <release version="1.1.2" date="In SVN" description="Bug fixes.">
+      <action type="fix" issue="LOGGING-132">
+        Jdk14Logger now correctly uses the specified logger name.
+      </action>
       <action type="update" issue="LOGGING-133">
         Change scope of Jdk14Logger.log(Level, String, Throwable) to protected, allowing
         subclasses to modify the logging output.
