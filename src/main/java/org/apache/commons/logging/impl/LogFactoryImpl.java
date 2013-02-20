@@ -17,6 +17,8 @@
 
 package org.apache.commons.logging.impl;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -1272,9 +1274,9 @@ public class LogFactoryImpl extends LogFactory {
                         ExceptionInInitializerError eiie = (ExceptionInInitializerError)cause;
                         Throwable cause2 = eiie.getException();
                         if (cause2 != null) {
-                            logDiagnostic("... ExceptionInInitializerError: " +
-                                cause2.getClass().getName() + ": " +
-                                cause2.getLocalizedMessage());
+                            final StringWriter sw = new StringWriter();
+                            cause2.printStackTrace(new PrintWriter(sw, true));
+                            logDiagnostic("... ExceptionInInitializerError: " + sw.toString());
                         }
                     }
                 }
