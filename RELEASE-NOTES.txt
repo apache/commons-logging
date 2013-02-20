@@ -1,6 +1,8 @@
-              Apache Commons Logging 1.1.2 RELEASE NOTES
+              Apache Commons Logging
+                  Version 1.1.2
+                 RELEASE NOTES
 
-The Commons Logging team is pleased to announce the release of commons-logging-1.1.2-SNAPSHOT
+The Commons Logging team is pleased to announce the release of Apache Commons Logging 1.1.2
 
 Commons Logging is a thin adapter allowing configurable bridging to other,
 well known logging systems.
