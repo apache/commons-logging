@@ -43,7 +43,7 @@ The <action> type attribute can be add,update,fix,remove.
     <title>Release Notes</title>
   </properties>
   <body>
-    <release version="1.1.2" date="In SVN" description="Bug fixes.">
+    <release version="1.1.2" date="In SVN" description="This is a maintenance release containing bug fixes.">
       <action type="update" issue="LOGGING-135">
         Improved thread-safety for several log adapters, including AvalonLogger, SimpleLog,
         Log4JLogger, LogKitLogger.

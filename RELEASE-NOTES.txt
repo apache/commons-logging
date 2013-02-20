@@ -1,16 +1,19 @@
               Apache Commons Logging 1.1.2 RELEASE NOTES
 
-The Commons Logging team is pleased to announce the release of commons-logging-1.1.2
+The Commons Logging team is pleased to announce the release of commons-logging-1.1.2-SNAPSHOT
 
 Commons Logging is a thin adapter allowing configurable bridging to other,
 well known logging systems.
 
-Bug fixes.
+This is a maintenance release containing bug fixes.
 
 Changes in this version include:
 
 
 Fixed Bugs:
+o LOGGING-132:  Jdk14Logger now correctly uses the specified logger name.
+o LOGGING-146:  Properly synchronize access to protected static field LogFactory.nullClassLoaderFactory.
+o LOGGING-119:  Prevent potential deadlock scenario in WeakHashtable.
 o LOGGING-130:  Potential missing privileged block for class loader.
 o LOGGING-145:  LogFactoryImpl.setAttribute - possible NPE.
 o LOGGING-142:  Log4JLogger uses deprecated static members of Priority such as INFO.
@@ -18,6 +21,13 @@ o LOGGING-128:  Static analysis suggests a number of potential improvements.
 o LOGGING-147:  SimpleLog.log - unsafe update of shortLogName.
 o LOGGING-148:  LogFactory.diagnosticPrefix and diagnosticsStream could be final.
 
+Changes:
+o LOGGING-135:  Improved thread-safety for several log adapters, including AvalonLogger, SimpleLog,
+                Log4JLogger, LogKitLogger.
+o LOGGING-138:  In case of a discovery failure now also the stacktrace of the cause will be
+                added to the diagnostic message.
+o LOGGING-133:  Change scope of Jdk14Logger.log(Level, String, Throwable) to protected, allowing
+                subclasses to modify the logging output.
 
 
 Historical list of changes: http://commons.apache.org/logging/changes-report.html
