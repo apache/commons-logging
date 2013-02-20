@@ -29,9 +29,9 @@ limitations under the License.
         The Apache Commons Logging test cases make extensive use of
         sophisticated classloader configurations in order to simulate the
         behaviour of various containers. It is difficult to run these tests
-        under Maven (which is used to generate the website). Once JCL is
-        upgraded to Maven 2 it is hoped that we will be able to display a report
-        on the unit tests.
+        under Maven in the default "test" phase. As a consequence the tests
+        are executed via the failsafe-plugin as part of the "integration-test"
+        phase. The reports are available <a href="failsafe-report.html">here</a>.
       </p>
     </section>
     <!-- ================================================== -->

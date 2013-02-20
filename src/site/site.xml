@@ -84,17 +84,5 @@ under the License.
       <item   name='Release Notes'
               href='http://commons.apache.org/logging/commons-logging-1.0.4/RELEASE-NOTES.txt'/>
     </menu>
-    <menu name='1.0.3 Release'>
-      <item   name='User Guide'
-              href='http://commons.apache.org/logging/commons-logging-1.0.3/usersguide.html'/>
-      <item   name='JavaDoc'
-              href='http://commons.apache.org/logging/commons-logging-1.0.3/docs/api/'/>
-      <item   name='Release Notes'
-              href='http://commons.apache.org/logging/commons-logging-1.0.3/RELEASE-NOTES.txt'/>
-    </menu>
-    <menu name='1.0.2 Release'>
-      <item   name='JavaDoc'
-              href='http://commons.apache.org/logging/commons-logging-1.0.2/docs/api/'/>
-    </menu>
   </body>
 </project>
