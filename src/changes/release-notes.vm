@@ -16,7 +16,7 @@
 ## under the License.
               Apache ${project.name}
                   Version ${version}
-                 RELEASE NOTES
+                  RELEASE NOTES
 
 The ${developmentTeam} is pleased to announce the release of Apache ${project.name} ${version}
 

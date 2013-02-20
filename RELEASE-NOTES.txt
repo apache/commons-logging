@@ -1,6 +1,6 @@
               Apache Commons Logging
                   Version 1.1.2
-                 RELEASE NOTES
+                  RELEASE NOTES
 
 The Commons Logging team is pleased to announce the release of Apache Commons Logging 1.1.2
 
