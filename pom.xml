@@ -412,6 +412,7 @@ under the License.
         <configuration>
           <ignorePathsToDelete>
             <ignorePathToDelete>javadocs</ignorePathToDelete>
+            <ignorePathToDelete>commons-logging-**</ignorePathToDelete>
           </ignorePathsToDelete>
         </configuration>
       </plugin>
