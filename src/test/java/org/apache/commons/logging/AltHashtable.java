@@ -21,6 +21,11 @@ import java.util.Hashtable;
 
 public class AltHashtable extends Hashtable {
 
+    /**
+     * Generated serial version ID.
+     */
+    private static final long serialVersionUID = 8927996458633688095L;
+    
     public static Object lastKey;
     public static Object lastValue;
 

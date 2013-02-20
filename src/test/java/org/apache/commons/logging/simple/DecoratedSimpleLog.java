@@ -35,6 +35,11 @@ public class DecoratedSimpleLog extends SimpleLog {
     // ------------------------------------------------------------ Constructor
 
 
+    /**
+     * Generated serial version ID.
+     */
+    private static final long serialVersionUID = 196544280770017153L;
+
     public DecoratedSimpleLog(String name) {
         super(name);
     }

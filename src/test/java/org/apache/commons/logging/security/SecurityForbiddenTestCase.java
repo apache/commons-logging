@@ -51,6 +51,11 @@ public class SecurityForbiddenTestCase extends TestCase
     // Dummy special hashtable, so we can tell JCL to use this instead of
     // the standard one.
     public static class CustomHashtable extends Hashtable {
+
+        /**
+         * Generated serial version ID.
+         */
+        private static final long serialVersionUID = 7224652794746236024L;
     }
 
     /**
