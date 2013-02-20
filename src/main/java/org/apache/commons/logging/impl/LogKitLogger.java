@@ -41,7 +41,7 @@ public class LogKitLogger implements Log, Serializable {
     // ------------------------------------------------------------- Attributes
 
     /** Logging goes to this <code>LogKit</code> logger */
-    protected transient Logger logger = null;
+    protected transient volatile Logger logger = null;
 
     /** Name of this logger */
     protected String name = null;
@@ -65,12 +65,16 @@ public class LogKitLogger implements Log, Serializable {
      * Return the underlying Logger we are using.
      */
     public Logger getLogger() {
-
-        if (logger == null) {
-            logger = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
+        Logger result = logger;
+        if (result == null) {
+            synchronized(this) {
+                result = logger;
+                if (result == null) {
+                    logger = result = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
+                }
+            }
         }
-        return logger;
-
+        return result;
     }
 
     // ----------------------------------------------------- Log Implementation
