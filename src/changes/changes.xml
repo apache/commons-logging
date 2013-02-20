@@ -44,6 +44,10 @@ The <action> type attribute can be add,update,fix,remove.
   </properties>
   <body>
     <release version="1.1.2" date="In SVN" description="Bug fixes.">
+      <action type="update" issue="LOGGING-135">
+        Improved thread-safety for several log adapters, including AvalonLogger, SimpleLog,
+        Log4JLogger, LogKitLogger.
+      </action>
       <action type="update" issue="LOGGING-138">
         In case of a discovery failure now also the stacktrace of the cause will be
         added to the diagnostic message.
