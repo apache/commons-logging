@@ -44,43 +44,47 @@ The <action> type attribute can be add,update,fix,remove.
   </properties>
   <body>
     <release version="1.1.2" date="In SVN" description="This is a maintenance release containing bug fixes.">
-      <action type="update" issue="LOGGING-135">
+      <action issue="LOGGING-144" dev="tn" type="fix" due-to="Sebastian Bazley">
+        LogFactory and LogFactoryImpl will not swallow certain errors anymore (ThreadDeath
+        and VirtualMachineError).
+      </action>
+      <action issue="LOGGING-135" dev="tn" type="update" due-to="Sebastian Bazley">
         Improved thread-safety for several log adapters, including AvalonLogger, SimpleLog,
         Log4JLogger, LogKitLogger.
       </action>
-      <action type="update" issue="LOGGING-138">
+      <action issue="LOGGING-138" dev="tn" type="update" due-to="Luke Lu">
         In case of a discovery failure now also the stacktrace of the cause will be
         added to the diagnostic message.
       </action>
-      <action type="fix" issue="LOGGING-132">
+      <action issue="LOGGING-132" dev="tn" type="fix" due-to="Nathan Niesen">
         Jdk14Logger now correctly uses the specified logger name.
       </action>
-      <action type="update" issue="LOGGING-133">
+      <action issue="LOGGING-133" dev="tn" type="update" due-to="Shevek">
         Change scope of Jdk14Logger.log(Level, String, Throwable) to protected, allowing
         subclasses to modify the logging output.
       </action>
-      <action type="fix" issue="LOGGING-146">
+      <action issue="LOGGING-146" dev="tn" type="fix" due-to="Sebastian Bazley">
         Properly synchronize access to protected static field LogFactory.nullClassLoaderFactory.
       </action>
-      <action type="fix" issue="LOGGING-119">
+      <action issue="LOGGING-119" dev="tn" type="fix" due-to="Nitzan Niv, Philippe Mouawad">
         Prevent potential deadlock scenario in WeakHashtable.
       </action>
-      <action type="fix" issue="LOGGING-130">
+      <action issue="LOGGING-130" dev="sebb" type="fix" due-to="Matthew P. Del Buono">
         Potential missing privileged block for class loader.
       </action>
-      <action type="fix" issue="LOGGING-145">
+      <action issue="LOGGING-145" dev="sebb" type="fix">
         LogFactoryImpl.setAttribute - possible NPE.
       </action>
-      <action type="fix" issue="LOGGING-142">
+      <action issue="LOGGING-142" dev="sebb" type="fix" due-to="Jingguo Yao">
         Log4JLogger uses deprecated static members of Priority such as INFO.
       </action>
-      <action type="fix" issue="LOGGING-128">
+      <action issue="LOGGING-128" dev="sebb" type="fix" due-to="Peter Lawrey">
         Static analysis suggests a number of potential improvements.
       </action>
-      <action type="fix" issue="LOGGING-147">
+      <action issue="LOGGING-147" dev="sebb" type="fix">
         SimpleLog.log - unsafe update of shortLogName.
       </action>
-      <action type="fix" issue="LOGGING-148">
+      <action issue="LOGGING-148" dev="sebb" type="fix">
         LogFactory.diagnosticPrefix and diagnosticsStream could be final.
       </action>
     </release>
