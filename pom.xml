@@ -54,12 +54,6 @@ under the License.
       </roles>
     </developer>
     <developer>
-      <id>sebb</id>
-      <name>Sebastian Bazley</name>
-      <email>sebb at apache dot org</email>
-      <organization>Apache Software Foundation</organization>
-    </developer>
-    <developer>
       <id>morgand</id>
       <name>Morgan Delagrange</name>
       <email>morgand at apache dot org</email>
