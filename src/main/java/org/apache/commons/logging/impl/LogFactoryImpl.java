@@ -425,7 +425,7 @@ public class LogFactoryImpl extends LogFactory {
             } else {
                 classLoaderName = objectId(classLoader);
             }
-        } catch(SecurityException e) {
+        } catch (SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
         diagnosticPrefix = "[LogFactoryImpl@" + System.identityHashCode(this) + " from " + classLoaderName + "] ";
@@ -565,6 +565,7 @@ public class LogFactoryImpl extends LogFactory {
             Throwable c = e.getTargetException();
             throw new LogConfigurationException(c == null ? e : c);
         } catch (Throwable t) {
+            handleThrowable(t); // may re-throw t
             // A problem occurred invoking the Constructor or Method
             // previously discovered
             throw new LogConfigurationException(t);
@@ -635,7 +636,7 @@ public class LogFactoryImpl extends LogFactory {
                             return cl.getParent();
                         }
                     });
-        } catch(SecurityException ex) {
+        } catch (SecurityException ex) {
             logDiagnostic("[SECURITY] Unable to obtain parent classloader");
             return null;
         }
@@ -668,7 +669,7 @@ public class LogFactoryImpl extends LogFactory {
                 }
                 return true;
             }
-        } catch(LogConfigurationException e) {
+        } catch (LogConfigurationException e) {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("Logging system '" + name + "' is available but not useable.");
             }
@@ -1067,11 +1068,12 @@ public class LogFactoryImpl extends LogFactory {
                               "' is unable to initialize itself when loaded via classloader " + objectId(currentCL) +
                               ": " + msg.trim());
                 break;
-            } catch(LogConfigurationException e) {
+            } catch (LogConfigurationException e) {
                 // call to handleFlawedHierarchy above must have thrown
                 // a LogConfigurationException, so just throw it on
                 throw e;
-            } catch(Throwable t) {
+            } catch (Throwable t) {
+                handleThrowable(t); // may re-throw t
                 // handleFlawedDiscovery will determine whether this is a fatal
                 // problem or not. If it is fatal, then a LogConfigurationException
                 // will be thrown.
@@ -1097,6 +1099,7 @@ public class LogFactoryImpl extends LogFactory {
                 this.logMethod = logAdapterClass.getMethod("setLogFactory", logMethodSignature);
                 logDiagnostic("Found method setLogFactory(LogFactory) in '" + logAdapterClassName + "'");
             } catch (Throwable t) {
+                handleThrowable(t); // may re-throw t
                 this.logMethod = null;
                 logDiagnostic("[INFO] '" + logAdapterClassName + "' from classloader " + objectId(currentCL) +
                               " does not declare optional method " + "setLogFactory(LogFactory)");
@@ -1337,6 +1340,7 @@ public class LogFactoryImpl extends LogFactory {
                                   objectId(badClassLoader) + ". It is bound to a Log interface which is not" +
                                   " the one loaded from classloader " + objectId(logInterfaceClassLoader));
                 } catch (Throwable t) {
+                    handleThrowable(t); // may re-throw t
                     logDiagnostic("Error while trying to output diagnostics about" + " bad class '" + badClass + "'");
                 }
             }

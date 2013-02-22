@@ -333,6 +333,8 @@ public abstract class LogFactory {
             Class implementationClass = Class.forName(storeImplementationClass);
             result = (Hashtable) implementationClass.newInstance();
         } catch (Throwable t) {
+            handleThrowable(t); // may re-throw t
+
             // ignore
             if (!WEAK_HASHTABLE_CLASSNAME.equals(storeImplementationClass)) {
                 // if the user's trying to set up a custom implementation, give a clue
@@ -360,6 +362,28 @@ public abstract class LogFactory {
             return null;
         }
         return src.trim();
+    }
+
+    /**
+     * Checks whether the supplied Throwable is one that needs to be
+     * re-thrown and ignores all others.
+     *
+     * The following errors are re-thrown:
+     * <ul>
+     *   <li>ThreadDeath</li>
+     *   <li>VirtualMachineError</li>
+     * </ul>
+     *
+     * @param t the Throwable to check
+     */
+    protected static void handleThrowable(Throwable t) {
+        if (t instanceof ThreadDeath) {
+            throw (ThreadDeath) t;
+        }
+        if (t instanceof VirtualMachineError) {
+            throw (VirtualMachineError) t;
+        }
+        // All other instances of Throwable will be silently ignored
     }
 
     /**
@@ -1337,7 +1361,7 @@ public abstract class LogFactory {
                         if (stream != null) {
                             try {
                                 stream.close();
-                            } catch (Throwable t) {
+                            } catch (IOException e) {
                                 // ignore exception; this should not happen
                                 if (isDiagnosticsEnabled()) {
                                     logDiagnostic("Unable to close stream for URL " + url);
