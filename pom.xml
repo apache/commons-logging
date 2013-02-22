@@ -46,6 +46,20 @@ under the License.
 
   <developers>
     <developer>
+      <id>baliuka</id>
+      <name>Juozas Baliuka</name>
+      <email>baliuka at apache dot org</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>sebb</id>
+      <name>Sebastian Bazley</name>
+      <email>sebb at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
       <id>morgand</id>
       <name>Morgan Delagrange</name>
       <email>morgand at apache dot org</email>
@@ -55,53 +69,15 @@ under the License.
       </roles>
     </developer>
     <developer>
-      <id>rwaldhoff</id>
-      <name>Rodney Waldhoff</name>
-      <email>rwaldhoff at apache org</email>
-      <organization>Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>craigmcc</id>
-      <name>Craig McClanahan</name>
-      <email>craigmcc at apache org</email>
-      <organization>Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>sanders</id>
-      <name>Scott Sanders</name>
-      <email>sanders at apache dot org</email>
-      <organization>Apache Software Foundation</organization>
+      <id>donaldp</id>
+      <name>Peter Donald</name>
+      <email>donaldp at apache dot org</email>
     </developer>
     <developer>
       <id>rdonkin</id>
       <name>Robert Burrell Donkin</name>
       <email>rdonkin at apache dot org</email>
       <organization>Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>donaldp</id>
-      <name>Peter Donald</name>
-      <email>donaldp at apache dot org</email>
-    </developer>
-    <developer>
-      <id>costin</id>
-      <name>Costin Manolache</name>
-      <email>costin at apache dot org</email>
-      <organization>Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>rsitze</id>
-      <name>Richard Sitze</name>
-      <email>rsitze at apache dot org</email>
-      <organization>Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>baliuka</id>
-      <name>Juozas Baliuka</name>
-      <email>baliuka at apache dot org</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
     </developer>
     <developer>
       <id>skitching</id>
@@ -116,8 +92,16 @@ under the License.
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
-      <id>bstansberry</id>
-      <name>Brian Stansberry</name>
+      <id>costin</id>
+      <name>Costin Manolache</name>
+      <email>costin at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>craigmcc</id>
+      <name>Craig McClanahan</name>
+      <email>craigmcc at apache org</email>
+      <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>tn</id>
@@ -125,8 +109,36 @@ under the License.
       <email>tn at apache dot org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
+    <developer>
+      <id>sanders</id>
+      <name>Scott Sanders</name>
+      <email>sanders at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>rsitze</id>
+      <name>Richard Sitze</name>
+      <email>rsitze at apache dot org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>bstansberry</id>
+      <name>Brian Stansberry</name>
+    </developer>
+    <developer>
+      <id>rwaldhoff</id>
+      <name>Rodney Waldhoff</name>
+      <email>rwaldhoff at apache org</email>
+      <organization>Apache Software Foundation</organization>
+    </developer>
   </developers>
   <contributors>
+    <contributor>
+      <name>Matthew P. Del Buono</name>
+      <roles>
+        <role>Provided patch</role>
+      </roles>
+    </contributor>
     <contributor>
       <name>Vince Eagen</name>
       <email>vince256 at comcast dot net</email>
@@ -135,11 +147,23 @@ under the License.
       </roles>
     </contributor>
     <contributor>
+      <name>Peter Lawrey</name>
+      <roles>
+        <role>Provided patch</role>
+      </roles>
+    </contributor>
+    <contributor>
       <name>Berin Loritsch</name>
       <email>bloritsch at apache dot org</email>
       <roles>
         <role>Lumberjack logging abstraction</role>
         <role>JDK 1.4 logging abstraction</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Philippe Mouawad</name>
+      <roles>
+        <role>Provided patch</role>
       </roles>
     </contributor>
     <contributor>
