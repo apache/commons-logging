@@ -39,14 +39,14 @@ under the License.
             href="/troubleshooting.html"/>
       <item name="Wiki"
             href="http://wiki.apache.org/commons/Logging"/>
-      <item name='JavaDoc'
+      <item name='JavaDoc (SVN latest)'
             href='/apidocs/index.html'/>
       <item name="Release Notes"
             href="/RELEASE-NOTES.txt"/>
       <item name="Building"
             href="/building.html"/>
       <item name="Download"
-            href="http://commons.apache.org/logging/download_logging.cgi"/>
+            href="/download_logging.cgi"/>
     </menu>
     <menu name="1.1.1 Release">
       <item name="Overview"
