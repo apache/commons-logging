@@ -29,60 +29,36 @@ under the License.
     <menu name="Commons Logging">
       <item name="Overview"
             href="/index.html"/>
+      <item name="Download"
+            href="/download_logging.cgi"/>
       <item name="User Guide"
             href="/guide.html"/>
-      <item name="Tech Guide"
-            href="/tech.html"/>
-      <item name="Issue Tracking"
-            href="/issue-tracking.html"/>
       <item name="Troubleshooting Guide"
             href="/troubleshooting.html"/>
+      <item name="Release Notes"
+            href="/RELEASE-NOTES.txt"/>
+      <item name='JavaDoc (Latest release)'
+            href='/javadocs/api-release/index.html'/>
+      <item name='JavaDoc (v1.1)'
+            href='/javadocs/api-1.1/index.html'/>
+      <item name='JavaDoc (v1.0.4)'
+            href='/javadocs/api-1.0.4/index.html'/>
+    </menu>
+    <menu name="Development">
+      <item name="Building"
+            href="/building.html"/>
+      <item name="Mailing Lists"
+            href="/mail-lists.html"/>
+      <item name="Issue Tracking"
+            href="/issue-tracking.html"/>
+      <item name="Proposal"
+            href="/proposal.html"/>
+      <item name="Tech Guide"
+            href="/tech.html"/>
       <item name="Wiki"
             href="http://wiki.apache.org/commons/Logging"/>
       <item name='JavaDoc (SVN latest)'
             href='/apidocs/index.html'/>
-      <item name="Release Notes"
-            href="/RELEASE-NOTES.txt"/>
-      <item name="Building"
-            href="/building.html"/>
-      <item name="Download"
-            href="/download_logging.cgi"/>
-    </menu>
-    <menu name="1.1.1 Release">
-      <item name="Overview"
-            href="http://commons.apache.org/logging/commons-logging-1.1.1/index.html"/>
-      <item name="User Guide"
-            href="http://commons.apache.org/logging/commons-logging-1.1.1/guide.html"/>
-      <item name="Tech Guide"
-            href="http://commons.apache.org/logging/commons-logging-1.1.1/tech.html"/>
-      <item name="Troubleshooting Guide"
-            href="http://commons.apache.org/logging/commons-logging-1.1.1/troubleshooting.html"/>
-      <item name='JavaDoc'
-            href='http://commons.apache.org/logging/commons-logging-1.1.1/apidocs/index.html'/>
-      <item name="Release Notes"
-            href="http://commons.apache.org/logging/commons-logging-1.1.1/RELEASE-NOTES.txt"/>
-    </menu>
-    <menu name="1.1 Release">
-      <item name="Overview"
-            href="http://commons.apache.org/logging/commons-logging-1.1/index.html"/>
-      <item name="User Guide"
-            href="http://commons.apache.org/logging/commons-logging-1.1/guide.html"/>
-      <item name="Tech Guide"
-            href="http://commons.apache.org/logging/commons-logging-1.1/tech.html"/>
-      <item name="Troubleshooting Guide"
-            href="http://commons.apache.org/logging/commons-logging-1.1/troubleshooting.html"/>
-      <item name='JavaDoc'
-            href='http://commons.apache.org/logging/commons-logging-1.1/apidocs/index.html'/>
-      <item name="Release Notes"
-            href="http://commons.apache.org/logging/commons-logging-1.1/RELEASE-NOTES.txt"/>
-    </menu>
-    <menu name='1.0.4 Release'>
-      <item   name='Documentation'
-              href='http://commons.apache.org/logging/commons-logging-1.0.4/docs/'/>
-      <item   name='JavaDoc'
-              href='http://commons.apache.org/logging/commons-logging-1.0.4/docs/apidocs/'/>
-      <item   name='Release Notes'
-              href='http://commons.apache.org/logging/commons-logging-1.0.4/RELEASE-NOTES.txt'/>
-    </menu>
+    </menu>    
   </body>
 </project>
