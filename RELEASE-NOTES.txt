@@ -13,6 +13,7 @@ Changes in this version include:
 
 
 Fixed Bugs:
+o LOGGING-124:  The jar manifest now contains proper OSGi-related metadata information. Thanks to Christian Schneider.
 o LOGGING-144:  LogFactory and LogFactoryImpl will not swallow certain errors anymore (ThreadDeath
                 and VirtualMachineError). Thanks to Sebastian Bazley.
 o LOGGING-132:  Jdk14Logger now correctly uses the specified logger name. Thanks to Nathan Niesen.
