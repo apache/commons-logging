@@ -559,7 +559,7 @@ under the License.
     <commons.surefire.version>2.12</commons.surefire.version>    
     <skipSurefireReport>true</skipSurefireReport>    
     
-<!--    <commons.osgi.symbolicName>${project.artifactId}</commons.osgi.symbolicName> -->
+    <commons.osgi.symbolicName>${project.artifactId}</commons.osgi.symbolicName>
     <commons.osgi.import>
       javax.servlet;version="[2.1.0, 3.0.0)";resolution:=optional,
       org.apache.avalon.framework.logger;version="[4.1.3, 4.1.5]";resolution:=optional,
