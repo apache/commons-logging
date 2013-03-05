@@ -48,7 +48,7 @@ under the License.
     <developer>
       <id>baliuka</id>
       <name>Juozas Baliuka</name>
-      <email>baliuka at apache dot org</email>
+      <email>baliuka@apache.org</email>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -56,7 +56,7 @@ under the License.
     <developer>
       <id>morgand</id>
       <name>Morgan Delagrange</name>
-      <email>morgand at apache dot org</email>
+      <email>morgand@apache.org</email>
       <organization>Apache</organization>
       <roles>
         <role>Java Developer</role>
@@ -65,54 +65,54 @@ under the License.
     <developer>
       <id>donaldp</id>
       <name>Peter Donald</name>
-      <email>donaldp at apache dot org</email>
+      <email>donaldp@apache.org</email>
     </developer>
     <developer>
       <id>rdonkin</id>
       <name>Robert Burrell Donkin</name>
-      <email>rdonkin at apache dot org</email>
+      <email>rdonkin@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>skitching</id>
       <name>Simon Kitching</name>
-      <email>skitching at apache dot org</email>
+      <email>skitching@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>dennisl</id>
       <name>Dennis Lundberg</name>
-      <email>dennisl at apache dot org</email>
+      <email>dennisl@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>costin</id>
       <name>Costin Manolache</name>
-      <email>costin at apache dot org</email>
+      <email>costin@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>craigmcc</id>
       <name>Craig McClanahan</name>
-      <email>craigmcc at apache org</email>
+      <email>craigmcc@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>tn</id>
       <name>Thomas Neidhart</name>
-      <email>tn at apache dot org</email>
+      <email>tn@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>sanders</id>
       <name>Scott Sanders</name>
-      <email>sanders at apache dot org</email>
+      <email>sanders@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>rsitze</id>
       <name>Richard Sitze</name>
-      <email>rsitze at apache dot org</email>
+      <email>rsitze@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
     <developer>
@@ -122,7 +122,7 @@ under the License.
     <developer>
       <id>rwaldhoff</id>
       <name>Rodney Waldhoff</name>
-      <email>rwaldhoff at apache org</email>
+      <email>rwaldhoff@apache.org</email>
       <organization>Apache Software Foundation</organization>
     </developer>
   </developers>
