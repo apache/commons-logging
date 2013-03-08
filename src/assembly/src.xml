@@ -43,7 +43,7 @@ under the License.
     <fileSet>
       <directory>src</directory>
       <excludes>
-        <exclude>**/*.cgi</exclude>
+        <exclude>**/download*.cgi</exclude>
       </excludes>
     </fileSet>
   </fileSets>
