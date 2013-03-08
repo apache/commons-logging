@@ -414,8 +414,8 @@ under the License.
           <!-- Do not deploy the assemblies to the repository. -->
           <attach>false</attach>
           <descriptors>
-            <descriptor>src/assembly/bin.xml</descriptor>
-            <descriptor>src/assembly/src.xml</descriptor>
+            <descriptor>src/main/assembly/bin.xml</descriptor>
+            <descriptor>src/main/assembly/src.xml</descriptor>
           </descriptors>
           <tarLongFileMode>gnu</tarLongFileMode>
         </configuration>
