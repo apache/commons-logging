@@ -366,6 +366,7 @@ under the License.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${commons.surefire.version}</version>        
         <executions>
           <execution>
             <id>integration-test</id>
@@ -509,6 +510,7 @@ under the License.
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
+    <commons.surefire.version>2.12</commons.surefire.version>
     <skipSurefireReport>true</skipSurefireReport>    
     
     <commons.osgi.symbolicName>${project.artifactId}</commons.osgi.symbolicName>
