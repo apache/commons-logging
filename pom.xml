@@ -323,18 +323,6 @@ under the License.
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <!--
-            - The site needs to be built prior to deploy,
-            - because it is included in the assembly.
-            -->
-          <goals>site deploy</goals>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <!--
           - Many of JCL's tests use tricky techniques to place the generated
           - JCL jarfiles on the classpath in various configurations. This means
@@ -378,7 +366,6 @@ under the License.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>${commons.surefire.version}</version>
         <executions>
           <execution>
             <id>integration-test</id>
@@ -410,9 +397,8 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.3</version>
         <configuration>
-          <!-- Do not deploy the assemblies to the repository. -->
-          <attach>false</attach>
           <descriptors>
             <descriptor>src/main/assembly/bin.xml</descriptor>
             <descriptor>src/main/assembly/src.xml</descriptor>
@@ -518,13 +504,11 @@ under the License.
     <maven.compile.source>1.2</maven.compile.source>
     <maven.compile.target>1.1</maven.compile.target>
     <commons.componentid>logging</commons.componentid>
-    <commons.release.version>1.1.1</commons.release.version>
-    <commons.binary.suffix>-bin</commons.binary.suffix>
+    <commons.release.version>1.1.2</commons.release.version>
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
-    <commons.surefire.version>2.12</commons.surefire.version>    
     <skipSurefireReport>true</skipSurefireReport>    
     
     <commons.osgi.symbolicName>${project.artifactId}</commons.osgi.symbolicName>
