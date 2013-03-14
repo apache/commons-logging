@@ -76,7 +76,7 @@ public class SecurityForbiddenTestCase extends TestCase
         // save security manager so it can be restored in tearDown
         oldSecMgr = System.getSecurityManager();
     }
-    
+
     public void tearDown() {
         // Restore, so other tests don't get stuffed up if a test
         // sets a custom security manager.
@@ -85,7 +85,7 @@ public class SecurityForbiddenTestCase extends TestCase
 
     /**
      * Test what happens when JCL is run with absolutely no security
-     * priveleges at all, including reading system properties. Everything
+     * privileges at all, including reading system properties. Everything
      * should fall back to the built-in defaults.
      */
     public void testAllForbidden() {
@@ -93,6 +93,7 @@ public class SecurityForbiddenTestCase extends TestCase
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
         MockSecurityManager mySecurityManager = new MockSecurityManager();
+
         System.setSecurityManager(mySecurityManager);
 
         try {
@@ -103,7 +104,7 @@ public class SecurityForbiddenTestCase extends TestCase
             Method m = c.getMethod("getLog", new Class[] {Class.class});
             Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
             log.info("testing");
-            
+
             // check that the default map implementation was loaded, as JCL was
             // forbidden from reading the HASHTABLE_IMPLEMENTATION_PROPERTY property.
             //
@@ -112,10 +113,10 @@ public class SecurityForbiddenTestCase extends TestCase
             System.setSecurityManager(oldSecMgr);
             Field factoryField = c.getDeclaredField("factories");
             factoryField.setAccessible(true);
-            Object factoryTable = factoryField.get(null); 
+            Object factoryTable = factoryField.get(null);
             assertNotNull(factoryTable);
             String ftClassName = factoryTable.getClass().getName();
-            assertTrue("Custom hashtable unexpectedly used", 
+            assertTrue("Custom hashtable unexpectedly used",
                     !CustomHashtable.class.getName().equals(ftClassName));
 
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());

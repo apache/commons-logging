@@ -73,7 +73,7 @@ public class SecurityAllowedTestCase extends TestCase
         // save security manager so it can be restored in tearDown
         oldSecMgr = System.getSecurityManager();
     }
-    
+
     public void tearDown() {
         // Restore, so other tests don't get stuffed up if a test
         // sets a custom security manager.
@@ -110,20 +110,22 @@ public class SecurityAllowedTestCase extends TestCase
             // requires permission accessClassInPackage. JCL explicitly does not
             // wrap calls to log methods in AccessControllers because writes to
             // a log file *should* only be permitted if the original caller is
-            // trusted to access that file. 
+            // trusted to access that file.
             int untrustedCodeCount = mySecurityManager.getUntrustedCodeCount();
             log.info("testing");
-            
+
             // check that the default map implementation was loaded, as JCL was
             // forbidden from reading the HASHTABLE_IMPLEMENTATION_PROPERTY property.
             System.setSecurityManager(null);
             Field factoryField = c.getDeclaredField("factories");
             factoryField.setAccessible(true);
-            Object factoryTable = factoryField.get(null); 
+            Object factoryTable = factoryField.get(null);
             assertNotNull(factoryTable);
             assertEquals(CustomHashtable.class.getName(), factoryTable.getClass().getName());
-            
-            assertEquals(0, untrustedCodeCount);
+
+            // we better compare that we have no security exception during the call to log
+            // IBM JVM tries to load bundles during the invoke call, which increase the count
+            assertEquals(untrustedCodeCount, mySecurityManager.getUntrustedCodeCount());
         } catch(Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator

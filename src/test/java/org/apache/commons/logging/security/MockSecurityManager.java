@@ -31,7 +31,7 @@ public class MockSecurityManager extends SecurityManager {
     private final Permissions permissions = new Permissions();
     private static final Permission setSecurityManagerPerm =
         new RuntimePermission("setSecurityManager");
-    
+
     private int untrustedCodeCount = 0;
 
     public MockSecurityManager() {
@@ -52,7 +52,7 @@ public class MockSecurityManager extends SecurityManager {
      * value indicates a bug in JCL, ie a situation where code was not
      * correctly wrapped in an AccessController block. The result of such a
      * bug is that signing JCL is not sufficient to allow JCL to perform
-     * the operation; the caller would need to be signed too. 
+     * the operation; the caller would need to be signed too.
      */
     public int getUntrustedCodeCount() {
         return untrustedCodeCount;
@@ -81,13 +81,19 @@ public class MockSecurityManager extends SecurityManager {
         Exception e = new Exception();
         e.fillInStackTrace();
         StackTraceElement[] stack = e.getStackTrace();
-        
+
         // scan the call stack from most recent to oldest.
         // start at 1 to skip the entry in the stack for this method
         for(int i=1; i<stack.length; ++i) {
             String cname = stack[i].getClassName();
-            System.out.println("" + i + ":" + stack[i].getClassName() + 
-              "." + stack[i].getMethodName());
+            System.out.println("" + i + ":" + stack[i].getClassName() +
+              "." + stack[i].getMethodName() + stack[i].getLineNumber());
+
+            if (cname.equals("java.util.logging.Handler") && stack[i].getMethodName().equals("setLevel")) {
+                // LOGGING CODE CAUSES ACCESSCONTROLEXCEPTION
+                // http://www-01.ibm.com/support/docview.wss?uid=swg1IZ51152
+                return;
+            }
 
             if (cname.equals("java.security.AccessController")) {
                 // Presumably method name equals "doPrivileged"
@@ -102,9 +108,9 @@ public class MockSecurityManager extends SecurityManager {
                 // the call stack.
                 System.out.println("Access controller found: returning");
                 return;
-            } else if (cname.startsWith("java.") 
-                || cname.startsWith("javax.") 
-                || cname.startsWith("junit.") 
+            } else if (cname.startsWith("java.")
+                || cname.startsWith("javax.")
+                || cname.startsWith("junit.")
                 || cname.startsWith("org.apache.tools.ant.")
                 || cname.startsWith("sun.")) {
                 // Code in these packages is trusted if the caller is trusted.
