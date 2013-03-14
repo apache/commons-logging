@@ -87,7 +87,7 @@ public class MockSecurityManager extends SecurityManager {
         for(int i=1; i<stack.length; ++i) {
             String cname = stack[i].getClassName();
             System.out.println("" + i + ":" + stack[i].getClassName() +
-              "." + stack[i].getMethodName() + stack[i].getLineNumber());
+              "." + stack[i].getMethodName() + ":" + stack[i].getLineNumber());
 
             if (cname.equals("java.util.logging.Handler") && stack[i].getMethodName().equals("setLevel")) {
                 // LOGGING CODE CAUSES ACCESSCONTROLEXCEPTION
