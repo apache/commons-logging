@@ -43,7 +43,9 @@ The <action> type attribute can be add,update,fix,remove.
     <title>Release Notes</title>
   </properties>
   <body>
-    <release version="1.1.2" date="2013-03-10" description="This is a maintenance release containing bug fixes.">
+    <release version="1.2" date="TBD">
+    </release>
+    <release version="1.1.2" date="2013-03-20" description="This is a maintenance release containing bug fixes.">
       <action issue="LOGGING-124" dev="tn" type="fix" due-to="Christian Schneider">
         The jar manifest now contains proper OSGi-related metadata information.
       </action>

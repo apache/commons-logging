@@ -39,6 +39,11 @@ limitations under the License.
     <release>
       <Version>
         <name>commons-logging</name>
+        <created>2013-03-20</created>
+        <revision>1.1.2</revision>
+      </Version>
+      <Version>
+        <name>commons-logging</name>
         <created>2007-11-26</created>
         <revision>1.1.1</revision>
       </Version>
