@@ -35,7 +35,7 @@ under the License.
   <version>1.2-SNAPSHOT</version>
   <description>Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
-  <url>http://commons.apache.org/logging/</url>
+  <url>http://commons.apache.org/proper/commons-logging/</url>
 
   <issueManagement>
     <system>JIRA</system>
