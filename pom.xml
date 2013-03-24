@@ -71,49 +71,49 @@ under the License.
       <id>rdonkin</id>
       <name>Robert Burrell Donkin</name>
       <email>rdonkin@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>skitching</id>
       <name>Simon Kitching</name>
       <email>skitching@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>dennisl</id>
       <name>Dennis Lundberg</name>
       <email>dennisl@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>costin</id>
       <name>Costin Manolache</name>
       <email>costin@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>craigmcc</id>
       <name>Craig McClanahan</name>
       <email>craigmcc@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>tn</id>
       <name>Thomas Neidhart</name>
       <email>tn@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>sanders</id>
       <name>Scott Sanders</name>
       <email>sanders@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>rsitze</id>
       <name>Richard Sitze</name>
       <email>rsitze@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
     <developer>
       <id>bstansberry</id>
@@ -123,7 +123,7 @@ under the License.
       <id>rwaldhoff</id>
       <name>Rodney Waldhoff</name>
       <email>rwaldhoff@apache.org</email>
-      <organization>Apache Software Foundation</organization>
+      <organization>The Apache Software Foundation</organization>
     </developer>
   </developers>
   <contributors>
