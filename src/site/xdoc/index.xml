@@ -81,6 +81,12 @@ This gives short introductions to topics such as advanced class loading.
 Binary and source distributions are available
        <a href="http://commons.apache.org/logging/download_logging.cgi">here</a>.
     </p>
+    <subsection name='1.1.3 Release - May 2013'>
+      <p>The 1.1.3 release only updates the Bundle-SymbolicName in the manifest
+      to "org.apache.commons.logging".</p>
+      <p>For a full list of changes since the 1.1.1 release, please refer to the
+      <a href="changes-report.html">change-report</a>.</p> 
+    </subsection>
     <subsection name='1.1.2 Release - March 2013'>
       <p>The 1.1.2 release is a packaging of bug fixes since release 1.1.1.</p>
       <p>For the full details, see the release notes for this version.</p> 
