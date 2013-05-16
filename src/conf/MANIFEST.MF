@@ -1,8 +1,28 @@
-Extension-Name: org.apache.commons.logging
-Specification-Title: Commons Logging
-Specification-Vendor: Apache Software Foundation
-Specification-Version: 1.0
+Manifest-Version: 1.0
+Export-Package: org.apache.commons.logging;version="1.1.3",org.apache.
+ commons.logging.impl;version="1.1.3"
 Implementation-Title: Commons Logging
+Implementation-Vendor: The Apache Software Foundation
 Implementation-Vendor-Id: org.apache
-Implementation-Vendor: Apache Software Foundation
-Implementation-Version: 1.1.2
+Specification-Title: Commons Logging
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.commons.logging
+X-Compile-Target-JDK: 1.1
+Implementation-Version: 1.1.3
+Specification-Vendor: The Apache Software Foundation
+Bundle-Name: Commons Logging
+Created-By: Apache Maven Bundle Plugin
+X-Compile-Source-JDK: 1.2
+Bundle-Vendor: The Apache Software Foundation
+Bundle-Version: 1.1.3
+Bundle-ManifestVersion: 2
+Bundle-Description: Commons Logging is a thin adapter allowing configu
+ rable bridging to other,    well known logging systems.
+Bundle-DocURL: http://commons.apache.org/proper/commons-logging/
+Import-Package: javax.servlet;resolution:=optional;version="[2.1.0,3.0
+ .0)",org.apache.avalon.framework.logger;resolution:=optional;version=
+ "[4.1.3,4.1.5]",org.apache.log;resolution:=optional;version="[1.0.1,1
+ .0.1]",org.apache.log4j;resolution:=optional;version="[1.2.15,2.0.0)"
+Include-Resource: META-INF/NOTICE.txt=NOTICE.txt,META-INF/LICENSE.txt=
+ LICENSE.txt
+Specification-Version: 1.1.3
