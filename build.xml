@@ -74,10 +74,10 @@
 
   <!-- The locations of necessary jar files -->
   <property name="junit.jar"               value="junit-3.8.1.jar"/>
-  <property name="log4j12.jar"             value="log4j-1.2.12.jar"/>
+  <property name="log4j12.jar"             value="log4j-1.2.17.jar"/>
   <property name="log4j13.jar"             value="log4j-1.3.0.jar"/>
   <property name="logkit.jar"              value="logkit-1.0.1.jar"/>
-  <property name="avalon-framework.jar"    value="avalon-framework-4.1.3.jar"/>
+  <property name="avalon-framework.jar"    value="avalon-framework-4.1.5.jar"/>
   <property name="servletapi.jar"          value="servletapi-2.3.jar"/>
 
 
@@ -592,26 +592,11 @@
     <copy    todir="${build.home}/tests" filtering="on">
       <fileset dir="${test.resources}" excludes="**/*.java"/>
     </copy>
-    <jar jarfile="${build.home}/commons-${component.name}-appender.jar"
-         basedir="${build.home}/tests"
-        manifest="${build.home}/conf/MANIFEST.MF">
-      <include name="org/apache/commons/logging/log4j/CustomConfig.properties"
-                 if="log4j12.present"/>
-      <include name="org/apache/commons/logging/log4j/TestAppender.class"
-                 if="log4j12.present"/>
-    </jar>
     <jar jarfile="${build.home}/commons-${component.name}-tests.jar"
          basedir="${build.home}/tests"
         manifest="${build.home}/conf/MANIFEST.MF">
       <exclude name="org/apache/commons/logging/Wrapper.class"/>
       <exclude name="org/apache/commons/logging/jdk14/TestHandler.class"
-                 if="jdk.1.4.present"/>
-    </jar>
-    <jar jarfile="${build.home}/commons-${component.name}-wrapper.jar"
-         basedir="${build.home}/tests"
-        manifest="${build.home}/conf/MANIFEST.MF">
-      <include name="org/apache/commons/logging/Wrapper.class"/>
-      <include name="org/apache/commons/logging/jdk14/TestHandler.class"
                  if="jdk.1.4.present"/>
     </jar>
 
