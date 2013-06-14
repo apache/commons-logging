@@ -61,14 +61,14 @@ public interface Log {
     // ----------------------------------------------------- Logging Properties
 
     /**
-     * Log a message with debug log level.
+     * Logs a message with debug log level.
      *
      * @param message log this message
      */
     public void debug(Object message);
 
     /**
-     * Log an error with debug log level.
+     * Logs an error with debug log level.
      *
      * @param message log this message
      * @param t log this cause
@@ -76,14 +76,14 @@ public interface Log {
     public void debug(Object message, Throwable t);
 
     /**
-     * Log a message with error log level.
+     * Logs a message with error log level.
      *
      * @param message log this message
      */
     public void error(Object message);
 
     /**
-     * Log an error with error log level.
+     * Logs an error with error log level.
      *
      * @param message log this message
      * @param t log this cause
@@ -91,14 +91,14 @@ public interface Log {
     public void error(Object message, Throwable t);
 
     /**
-     * Log a message with fatal log level.
+     * Logs a message with fatal log level.
      *
      * @param message log this message
      */
     public void fatal(Object message);
 
     /**
-     * Log an error with fatal log level.
+     * Logs an error with fatal log level.
      *
      * @param message log this message
      * @param t log this cause
@@ -108,14 +108,14 @@ public interface Log {
     // -------------------------------------------------------- Logging Methods
 
     /**
-     * Log a message with info log level.
+     * Logs a message with info log level.
      *
      * @param message log this message
      */
     public void info(Object message);
 
     /**
-     * Log an error with info log level.
+     * Logs an error with info log level.
      *
      * @param message log this message
      * @param t log this cause
@@ -189,14 +189,14 @@ public interface Log {
     public boolean isWarnEnabled();
 
     /**
-     * Log a message with trace log level.
+     * Logs a message with trace log level.
      *
      * @param message log this message
      */
     public void trace(Object message);
 
     /**
-     * Log an error with trace log level.
+     * Logs an error with trace log level.
      *
      * @param message log this message
      * @param t log this cause
@@ -204,14 +204,14 @@ public interface Log {
     public void trace(Object message, Throwable t);
 
     /**
-     * Log a message with warn log level.
+     * Logs a message with warn log level.
      *
      * @param message log this message
      */
     public void warn(Object message);
 
     /**
-     * Log an error with warn log level.
+     * Logs an error with warn log level.
      *
      * @param message log this message
      * @param t log this cause
