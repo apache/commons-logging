@@ -58,15 +58,13 @@ package org.apache.commons.logging;
  */
 public interface Log {
 
-    // ----------------------------------------------------- Logging Properties
-
-    /**
+	/**
      * Logs a message with debug log level.
      *
      * @param message log this message
      */
     public void debug(Object message);
-
+	
     /**
      * Logs an error with debug log level.
      *
@@ -104,8 +102,6 @@ public interface Log {
      * @param t log this cause
      */
     public void fatal(Object message, Throwable t);
-
-    // -------------------------------------------------------- Logging Methods
 
     /**
      * Logs a message with info log level.
