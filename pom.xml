@@ -31,9 +31,9 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
-  <name>Commons Logging</name>
+  <name>Apache Commons Logging</name>
   <version>1.2-SNAPSHOT</version>
-  <description>Commons Logging is a thin adapter allowing configurable bridging to other,
+  <description>Apache Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
   <url>http://commons.apache.org/proper/commons-logging/</url>
 
