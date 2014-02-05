@@ -375,6 +375,8 @@ under the License.
               <goal>verify</goal>
             </goals>
             <configuration>
+              <!-- Temporary hack to ensure test order is predictable so can compare local runs with Continuum easily -->
+              <runOrder>alphabetical</runOrder>
               <includes>
                 <include>**/*TestCase.java</include>
               </includes>
