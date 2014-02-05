@@ -375,7 +375,7 @@ under the License.
               <goal>verify</goal>
             </goals>
             <configuration>
-              <runOrder>${failsafe.runorder}}</runOrder>
+              <runOrder>${failsafe.runorder}</runOrder>
               <includes>
                 <include>**/*TestCase.java</include>
               </includes>
