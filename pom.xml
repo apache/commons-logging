@@ -375,8 +375,7 @@ under the License.
               <goal>verify</goal>
             </goals>
             <configuration>
-              <!-- Temporary hack to ensure test order is predictable so can compare local runs with Continuum easily -->
-              <runOrder>alphabetical</runOrder>
+              <runOrder>${failsafe.runorder}}</runOrder>
               <includes>
                 <include>**/*TestCase.java</include>
               </includes>
@@ -531,7 +530,9 @@ under the License.
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC2</commons.rc.version>
     <commons.surefire.version>2.12</commons.surefire.version>
-    <skipSurefireReport>true</skipSurefireReport>    
+    <skipSurefireReport>true</skipSurefireReport>
+    <!-- Allow default test run order to be changed -->
+    <failsafe.runorder>filesystem</failsafe.runorder>
     
     <commons.osgi.import>
       javax.servlet;version="[2.1.0, 3.0.0)";resolution:=optional,
