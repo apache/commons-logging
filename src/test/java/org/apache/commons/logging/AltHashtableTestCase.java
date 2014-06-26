@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 /**
  * Test the ability to force the LogFactory class to use some
  * arbitrary Hashtable implementation to store its mapping from
- * context-classloader -> LogFactory object.
+ * context-classloader -&gt; LogFactory object.
  */
 public class AltHashtableTestCase extends TestCase {
 

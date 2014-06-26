@@ -151,23 +151,23 @@ public abstract class LogFactory {
      * classloaders to be substituted by an alternative implementation.
      * <p>
      * <strong>Note:</strong> <code>LogFactory</code> will print:
-     * <code><pre>
-     * [ERROR] LogFactory: Load of custom hashtable failed</em>
-     * </pre></code>
+     * <pre>
+     * [ERROR] LogFactory: Load of custom hashtable failed
+     * </pre>
      * to system error and then continue using a standard Hashtable.
      * <p>
      * <strong>Usage:</strong> Set this property when Java is invoked
      * and <code>LogFactory</code> will attempt to load a new instance
      * of the given implementation class.
      * For example, running the following ant scriplet:
-     * <code><pre>
+     * <pre>
      *  &lt;java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}"&gt;
      *     ...
      *     &lt;sysproperty
      *        key="org.apache.commons.logging.LogFactory.HashtableImpl"
      *        value="org.apache.commons.logging.AltHashtable"/&gt;
      *  &lt;/java&gt;
-     * </pre></code>
+     * </pre>
      * will mean that <code>LogFactory</code> will load an instance of
      * <code>org.apache.commons.logging.AltHashtable</code>.
      * <p>
@@ -951,8 +951,8 @@ public abstract class LogFactory {
      * implementation class, loaded by the specified class loader.
      * If that fails, try the class loader used to load this
      * (abstract) LogFactory.
-     * <p>
      * <h2>ClassLoader conflicts</h2>
+     * <p>
      * Note that there can be problems if the specified ClassLoader is not the
      * same as the classloader that loaded this class, ie when loading a
      * concrete LogFactory subclass via a context classloader.

@@ -43,12 +43,12 @@ package org.apache.commons.logging;
  * to be logged).
  * <p>
  * For example,
- * <code><pre>
+ * <pre>
  *    if (log.isDebugEnabled()) {
  *        ... do something expensive ...
  *        log.debug(theResult);
  *    }
- * </pre></code>
+ * </pre>
  * <p>
  * Configuration of the underlying logging system will generally be done
  * external to the Logging APIs, through whatever mechanism is supported by
