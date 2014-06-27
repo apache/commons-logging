@@ -63,7 +63,7 @@ public interface Log {
      *
      * @param message log this message
      */
-    public void debug(Object message);
+    void debug(Object message);
 
     /**
      * Logs an error with debug log level.
@@ -71,14 +71,14 @@ public interface Log {
      * @param message log this message
      * @param t log this cause
      */
-    public void debug(Object message, Throwable t);
+    void debug(Object message, Throwable t);
 
     /**
      * Logs a message with error log level.
      *
      * @param message log this message
      */
-    public void error(Object message);
+    void error(Object message);
 
     /**
      * Logs an error with error log level.
@@ -86,14 +86,14 @@ public interface Log {
      * @param message log this message
      * @param t log this cause
      */
-    public void error(Object message, Throwable t);
+    void error(Object message, Throwable t);
 
     /**
      * Logs a message with fatal log level.
      *
      * @param message log this message
      */
-    public void fatal(Object message);
+    void fatal(Object message);
 
     /**
      * Logs an error with fatal log level.
@@ -101,14 +101,14 @@ public interface Log {
      * @param message log this message
      * @param t log this cause
      */
-    public void fatal(Object message, Throwable t);
+    void fatal(Object message, Throwable t);
 
     /**
      * Logs a message with info log level.
      *
      * @param message log this message
      */
-    public void info(Object message);
+    void info(Object message);
 
     /**
      * Logs an error with info log level.
@@ -116,7 +116,7 @@ public interface Log {
      * @param message log this message
      * @param t log this cause
      */
-    public void info(Object message, Throwable t);
+    void info(Object message, Throwable t);
 
     /**
      * Is debug logging currently enabled?
@@ -127,7 +127,7 @@ public interface Log {
      *
      * @return true if debug is enabled in the underlying logger.
      */
-    public boolean isDebugEnabled();
+    boolean isDebugEnabled();
 
     /**
      * Is error logging currently enabled?
@@ -138,7 +138,7 @@ public interface Log {
      *
      * @return true if error is enabled in the underlying logger.
      */
-    public boolean isErrorEnabled();
+    boolean isErrorEnabled();
 
     /**
      * Is fatal logging currently enabled?
@@ -149,7 +149,7 @@ public interface Log {
      *
      * @return true if fatal is enabled in the underlying logger.
      */
-    public boolean isFatalEnabled();
+    boolean isFatalEnabled();
 
     /**
      * Is info logging currently enabled?
@@ -160,7 +160,7 @@ public interface Log {
      *
      * @return true if info is enabled in the underlying logger.
      */
-    public boolean isInfoEnabled();
+    boolean isInfoEnabled();
 
     /**
      * Is trace logging currently enabled?
@@ -171,7 +171,7 @@ public interface Log {
      *
      * @return true if trace is enabled in the underlying logger.
      */
-    public boolean isTraceEnabled();
+    boolean isTraceEnabled();
 
     /**
      * Is warn logging currently enabled?
@@ -182,14 +182,14 @@ public interface Log {
      *
      * @return true if warn is enabled in the underlying logger.
      */
-    public boolean isWarnEnabled();
+    boolean isWarnEnabled();
 
     /**
      * Logs a message with trace log level.
      *
      * @param message log this message
      */
-    public void trace(Object message);
+    void trace(Object message);
 
     /**
      * Logs an error with trace log level.
@@ -197,14 +197,14 @@ public interface Log {
      * @param message log this message
      * @param t log this cause
      */
-    public void trace(Object message, Throwable t);
+    void trace(Object message, Throwable t);
 
     /**
      * Logs a message with warn log level.
      *
      * @param message log this message
      */
-    public void warn(Object message);
+    void warn(Object message);
 
     /**
      * Logs an error with warn log level.
@@ -212,5 +212,5 @@ public interface Log {
      * @param message log this message
      * @param t log this cause
      */
-    public void warn(Object message, Throwable t);
+    void warn(Object message, Throwable t);
 }
