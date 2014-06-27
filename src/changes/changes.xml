@@ -44,6 +44,10 @@ The <action> type attribute can be add,update,fix,remove.
   </properties>
   <body>
     <release version="1.2" date="TBD" description="TBD">
+      <action issue="LOGGING-37" dev="tn" type="fix" due-to="Matthias Ernst,Archie Cobbs">
+        Improve performance of LogFactory#getFactory() by calling Thread#currentThread()#getContextClassLoader()
+        directly instead of using reflection. As a consequence support for JDK 1.1 has been dropped.
+      </action>
       <action issue="LOGGING-156" dev="tn" type="fix" due-to="Mikolaj Izdebski">
         Fix SecurityAllowedTestCase when executed with OpenJDK 1.7 due to an additional required RuntimePermission.
       </action>

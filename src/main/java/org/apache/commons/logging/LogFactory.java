@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.AccessController;
@@ -787,8 +785,6 @@ public abstract class LogFactory {
      *  or null if security doesn't allow it.
      * @throws LogConfigurationException if there was some weird error while
      *  attempting to get the context classloader.
-     * @throws SecurityException if the current java security policy doesn't
-     *  allow this class to access the context classloader.
      */
     protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
         return directGetContextClassLoader();
@@ -807,8 +803,6 @@ public abstract class LogFactory {
      *  or null if security doesn't allow it.
      * @throws LogConfigurationException if there was some weird error while
      *  attempting to get the context classloader.
-     * @throws SecurityException if the current java security policy doesn't
-     *  allow this class to access the context classloader.
      */
     private static ClassLoader getContextClassLoaderInternal() throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
@@ -834,64 +828,27 @@ public abstract class LogFactory {
      *
      * @throws LogConfigurationException if a suitable class loader
      *  cannot be identified.
-     * @throws SecurityException if the java security policy forbids
-     *  access to the context classloader from one of the classes in the
-     *  current call stack.
+     * @return the thread's context classloader or {@code null} if the java security
+     *  policy forbids access to the context classloader from one of the classes
+     *  in the current call stack.
      * @since 1.1
      */
     protected static ClassLoader directGetContextClassLoader() throws LogConfigurationException {
         ClassLoader classLoader = null;
 
         try {
-            // Are we running on a JDK 1.2 or later system?
-            final Method method = Thread.class.getMethod("getContextClassLoader", (Class[]) null);
-
-            // Get the thread context class loader (if there is one)
-            try {
-                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), (Object[]) null);
-            } catch (IllegalAccessException e) {
-                throw new LogConfigurationException
-                    ("Unexpected IllegalAccessException", e);
-            } catch (InvocationTargetException e) {
-                /**
-                 * InvocationTargetException is thrown by 'invoke' when
-                 * the method being invoked (getContextClassLoader) throws
-                 * an exception.
-                 *
-                 * getContextClassLoader() throws SecurityException when
-                 * the context class loader isn't an ancestor of the
-                 * calling class's class loader, or if security
-                 * permissions are restricted.
-                 *
-                 * In the first case (not related), we want to ignore and
-                 * keep going.  We cannot help but also ignore the second
-                 * with the logic below, but other calls elsewhere (to
-                 * obtain a class loader) will trigger this exception where
-                 * we can make a distinction.
-                 */
-                if (e.getTargetException() instanceof SecurityException) {
-                    // ignore
-                } else {
-                    // Capture 'e.getTargetException()' exception for details
-                    // alternate: log 'e.getTargetException()', and pass back 'e'.
-                    throw new LogConfigurationException("Unexpected InvocationTargetException", e.getTargetException());
-                }
-            }
-        } catch (NoSuchMethodException e) {
-            // Assume we are running on JDK 1.1
-            classLoader = getClassLoader(LogFactory.class);
-
-            // We deliberately don't log a message here to outputStream;
-            // this message would be output for every call to LogFactory.getLog()
-            // when running on JDK1.1
-            //
-            // if (outputStream != null) {
-            //    outputStream.println(
-            //        "Method Thread.getContextClassLoader does not exist;"
-            //         + " assuming this is JDK 1.1, and that the context"
-            //         + " classloader is the same as the class that loaded"
-            //         + " the concrete LogFactory class.");
-            // }
+            classLoader = Thread.currentThread().getContextClassLoader();
+        } catch (SecurityException ex) {
+            /**
+             * getContextClassLoader() throws SecurityException when
+             * the context class loader isn't an ancestor of the
+             * calling class's class loader, or if security
+             * permissions are restricted.
+             *
+             * We ignore this exception to be consistent with the previous
+             * behavior (e.g. 1.1.3 and earlier).
+             */
+            // ignore
         }
 
         // Return the selected class loader
