@@ -58,13 +58,13 @@ package org.apache.commons.logging;
  */
 public interface Log {
 
-	/**
+    /**
      * Logs a message with debug log level.
      *
      * @param message log this message
      */
     public void debug(Object message);
-	
+
     /**
      * Logs an error with debug log level.
      *
