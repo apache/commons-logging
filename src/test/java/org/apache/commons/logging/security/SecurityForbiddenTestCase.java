@@ -47,6 +47,7 @@ import org.apache.commons.logging.PathableTestSuite;
 public class SecurityForbiddenTestCase extends TestCase
 {
     private SecurityManager oldSecMgr;
+    private ClassLoader otherClassLoader;
 
     // Dummy special hashtable, so we can tell JCL to use this instead of
     // the standard one.
@@ -75,6 +76,12 @@ public class SecurityForbiddenTestCase extends TestCase
     public void setUp() {
         // save security manager so it can be restored in tearDown
         oldSecMgr = System.getSecurityManager();
+        
+        PathableClassLoader classLoader = new PathableClassLoader(null);
+        classLoader.addLogicalLib("commons-logging");
+        classLoader.addLogicalLib("testclasses");
+        
+        otherClassLoader = classLoader;
     }
 
     public void tearDown() {
@@ -130,5 +137,55 @@ public class SecurityForbiddenTestCase extends TestCase
             t.printStackTrace(pw);
             fail("Unexpected exception:" + t.getMessage() + ":" + sw.toString());
         }
+    }
+
+    /**
+     * Test what happens when JCL is run with absolutely no security
+     * privileges at all and a class loaded with a different classloader
+     * than the context classloader of the current thread tries to log something. 
+     */
+    public void testContextClassLoader() {
+        System.setProperty(
+                LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
+                CustomHashtable.class.getName());
+        MockSecurityManager mySecurityManager = new MockSecurityManager();
+
+        System.setSecurityManager(mySecurityManager);
+
+        try {
+            // load a dummy class with another classloader
+            // to force a SecurityException when the LogFactory calls
+            // Thread.getCurrentThread().getContextClassLoader()
+            loadClass("org.apache.commons.logging.security.DummyClass", otherClassLoader);
+
+            System.setSecurityManager(oldSecMgr);
+            assertEquals(0, mySecurityManager.getUntrustedCodeCount());
+        } catch(Throwable t) {
+            // Restore original security manager so output can be generated; the
+            // PrintWriter constructor tries to read the line.separator
+            // system property.
+            System.setSecurityManager(oldSecMgr);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            fail("Unexpected exception:" + t.getMessage() + ":" + sw.toString());
+        }
+    }
+
+    /**
+     * Loads a class with the given classloader.
+     */
+    private Object loadClass(String name, ClassLoader classLoader) {
+        try {
+            Class clazz = classLoader.loadClass(name);
+            Object obj = clazz.newInstance();
+            return obj;
+        } catch ( Exception e ) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            fail("Unexpected exception:" + e.getMessage() + ":" + sw.toString());
+        }
+        return null;
     }
 }
