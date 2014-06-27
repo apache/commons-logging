@@ -95,6 +95,13 @@ public class MockSecurityManager extends SecurityManager {
                 return;
             }
 
+            if (cname.equals("java.util.logging.Level") && stack[i].getMethodName().equals("getLocalizedLevelName")) {
+                // LOGGING-156: OpenJDK 1.7 JULI code (java.util.logging.Level#getLocalizedLevelName)
+                // calls ResourceBundle#getBundle() without using AccessController#doPrivileged()
+                // requiring RuntimePermission: "accessClassInPackage.sun.util.logging.resources"
+                return;
+            }
+            
             if (cname.equals("java.security.AccessController")) {
                 // Presumably method name equals "doPrivileged"
                 //

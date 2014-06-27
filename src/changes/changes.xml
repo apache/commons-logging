@@ -44,6 +44,9 @@ The <action> type attribute can be add,update,fix,remove.
   </properties>
   <body>
     <release version="1.2" date="TBD" description="TBD">
+      <action issue="LOGGING-156" dev="tn" type="fix" due-to="Mikolaj Izdebski">
+        Fix SecurityAllowedTestCase when executed with OpenJDK 1.7 due to an additional required RuntimePermission.
+      </action>
       <action issue="LOGGING-157" dev="tn" type="fix" due-to="Ville Skyttä">
         Fix javadoc to comply with javadoc tool from jdk 1.8.
       </action>
