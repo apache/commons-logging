@@ -30,6 +30,7 @@ under the License.
         <include>checkstyle.xml</include>
         <include>LICENSE.txt</include>
         <include>NOTICE.txt</include>
+        <include>pmd.xml</include>
         <include>pom.xml</include>
         <include>PROPOSAL.html</include>
         <include>RELEASE-NOTES.txt</include>
