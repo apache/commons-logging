@@ -1,22 +1,31 @@
               Apache Commons Logging
-                  Version 1.1.3
+                  Version 1.2
                   RELEASE NOTES
 
-The Commons Logging team is pleased to announce the release of Apache Commons Logging 1.1.3
+The Apache Commons Logging team is pleased to announce
+the release of Apache Commons Logging 1.2
 
-Commons Logging is a thin adapter allowing configurable bridging to other,
-well known logging systems.
+Apache Commons Logging is a thin adapter allowing configurable
+bridging to other, well known logging systems.
 
 This is a maintenance release containing bug fixes.
+Java 1.2 or later is required.
 
 Changes in this version include:
 
 Fixed Bugs:
-o LOGGING-151:  Use "org.apache.commons.logging" as bundle symbolic name. Thanks to Krzysztof Daniel.
+o LOGGING-37:   Improve performance of LogFactory#getFactory() by calling
+                Thread#currentThread()#getContextClassLoader() directly instead
+                of using reflection. As a consequence support for JDK 1.1 has
+                been dropped. Thanks to Matthias Ernst, Archie Cobbs.
+o LOGGING-156:  Fix SecurityAllowedTestCase when executed with OpenJDK 1.7 due
+                to an additional required RuntimePermission. Thanks to Mikolaj Izdebski.
+o LOGGING-157:  Fix javadoc to comply with javadoc tool from jdk 1.8. Thanks to Ville Skyttä.
+
 
 Historical list of changes: http://commons.apache.org/proper/commons-logging/changes-report.html
 
-For complete information on Commons Logging, including instructions on how to submit bug reports,
+For complete information on Apache Commons Logging, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Commons Logging website:
 
 http://commons.apache.org/proper/commons-logging/

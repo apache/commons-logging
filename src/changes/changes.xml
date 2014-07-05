@@ -43,7 +43,7 @@ The <action> type attribute can be add,update,fix,remove.
     <title>Release Notes</title>
   </properties>
   <body>
-    <release version="1.2" date="TBD" description="TBD">
+    <release version="1.2" date="2014-07-11" description="This is a maintenance release containing bug fixes. Java 1.2 or later is required.">
       <action issue="LOGGING-37" dev="tn" type="fix" due-to="Matthias Ernst,Archie Cobbs">
         Improve performance of LogFactory#getFactory() by calling Thread#currentThread()#getContextClassLoader()
         directly instead of using reflection. As a consequence support for JDK 1.1 has been dropped.
