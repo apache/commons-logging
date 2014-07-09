@@ -32,7 +32,7 @@ under the License.
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
   <name>Apache Commons Logging</name>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <description>Apache Commons Logging is a thin adapter allowing configurable bridging to other,
     well known logging systems.</description>
   <url>http://commons.apache.org/proper/commons-logging/</url>
@@ -527,11 +527,11 @@ under the License.
     <maven.compiler.source>1.2</maven.compiler.source>
     <maven.compiler.target>1.2</maven.compiler.target>
     <commons.componentid>logging</commons.componentid>
-    <commons.release.version>1.1.3</commons.release.version>
+    <commons.release.version>1.2</commons.release.version>
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC1</commons.rc.version>
+    <commons.rc.version>RC2</commons.rc.version>
     <commons.surefire.version>2.12</commons.surefire.version>
     <skipSurefireReport>true</skipSurefireReport>
     <!-- Allow default test run order to be changed -->
