@@ -182,13 +182,13 @@ public class LogSource {
      * Create a new {@link Log} implementation, based on the given <i>name</i>.
      * <p>
      * The specific {@link Log} implementation returned is determined by the
-     * value of the <tt>org.apache.commons.logging.log</tt> property. The value
-     * of <tt>org.apache.commons.logging.log</tt> may be set to the fully specified
+     * value of the {@code org.apache.commons.logging.log} property. The value
+     * of {@code org.apache.commons.logging.log} may be set to the fully specified
      * name of a class that implements the {@link Log} interface. This class must
      * also have a public constructor that takes a single {@link String} argument
      * (containing the <i>name</i> of the {@link Log} to be constructed.
      * <p>
-     * When <tt>org.apache.commons.logging.log</tt> is not set, or when no corresponding
+     * When {@code org.apache.commons.logging.log} is not set, or when no corresponding
      * class can be found, this method will return a Log4JLogger if the log4j Logger
      * class is available in the {@link LogSource}'s classpath, or a Jdk14Logger if we
      * are on a JDK 1.4 or later system, or NoOpLog if neither of the above conditions is true.
