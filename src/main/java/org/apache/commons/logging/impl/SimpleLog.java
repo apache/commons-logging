@@ -577,7 +577,7 @@ public class SimpleLog implements Log, Serializable {
      * The thread context class loader is available for JDK 1.2
      * or later, if certain security conditions are met.
      *
-     * @exception LogConfigurationException if a suitable class loader
+     * @throws LogConfigurationException if a suitable class loader
      * cannot be identified.
      */
     private static ClassLoader getContextClassLoader() {
