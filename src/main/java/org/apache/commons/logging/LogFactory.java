@@ -539,8 +539,12 @@ public abstract class LogFactory {
                         rd = new BufferedReader(new InputStreamReader(is));
                     }
 
-                    String factoryClassName = rd.readLine();
-                    rd.close();
+                    String factoryClassName;
+                    try {
+                        factoryClassName = rd.readLine();
+                    } finally {
+                        rd.close();
+                    }
 
                     if (factoryClassName != null && ! "".equals(factoryClassName)) {
                         if (isDiagnosticsEnabled()) {
