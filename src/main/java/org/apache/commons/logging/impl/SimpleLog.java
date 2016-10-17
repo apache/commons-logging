@@ -162,7 +162,7 @@ public class SimpleLog implements Log, Serializable {
         if (null != in) {
             try {
                 simpleLogProps.load(in);
-            } catch (java.io.IOException e) {
+            } catch (IOException e) {
                 // ignored
             } finally {
                 try {
