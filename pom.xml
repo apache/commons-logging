@@ -264,6 +264,13 @@ under the License.
             </configuration>
           </execution>
         </executions>
+        <configuration>
+          <archive combine.children="append">
+            <manifestEntries>
+              <Automatic-Module-Name>org.apache.commons.logging</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
 
       <plugin>

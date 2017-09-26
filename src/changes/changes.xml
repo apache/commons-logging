@@ -44,6 +44,9 @@ The <action> type attribute can be add,update,fix,remove.
   </properties>
   <body>
     <release version="1.2.1" date="TBD" description="This is a maintenance release containing bug fixes. Java 1.2 or later is required.">
+      <action issue="LOGGING-165" dev="britter" type="add">
+        Add Automatic-Module-Name Manifest Header for Java 9 compatibility.
+      </action>
       <action issue="LOGGING-163" dev="ggregory" type="fix" due-to="Kaloyan Spiridonov">
         BufferedReader is not closed properly.
       </action>
