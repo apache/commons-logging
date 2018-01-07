@@ -26,7 +26,7 @@ under the License.
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>34</version>
+    <version>43</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-logging</groupId>
@@ -303,7 +303,6 @@ under the License.
           -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.0</version>
         <executions>
           <execution>
             <id>attach-artifacts</id>
@@ -531,8 +530,8 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <maven.compiler.source>1.2</maven.compiler.source>
-    <maven.compiler.target>1.2</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
     <commons.componentid>logging</commons.componentid>
     <commons.module.name>org.apache.commons.logging</commons.module.name>
     <commons.release.version>1.2</commons.release.version>
