@@ -37,11 +37,11 @@ under the License.
             href="/troubleshooting.html"/>
       <item name="Release Notes"
             href="/RELEASE-NOTES.txt"/>
-      <item name='JavaDoc (Latest release)'
+      <item name='Javadoc (Latest release)'
             href='/javadocs/api-release/index.html'/>
-      <item name='JavaDoc (v1.1.3)'
+      <item name='Javadoc (v1.1.3)'
             href='/javadocs/api-1.1.3/index.html'/>
-      <item name='JavaDoc (v1.0.4)'
+      <item name='Javadoc (v1.0.4)'
             href='/javadocs/api-1.0.4/index.html'/>
     </menu>
     <menu name="Development">
@@ -57,7 +57,7 @@ under the License.
             href="/tech.html"/>
       <item name="Wiki"
             href="http://wiki.apache.org/commons/Logging"/>
-      <item name='JavaDoc (SVN latest)'
+      <item name='Javadoc (SVN latest)'
             href='/apidocs/index.html'/>
     </menu>    
   </body>

@@ -52,7 +52,7 @@ Documentation
 -------------
 
 More information can be found on the [Apache Commons Logging homepage](https://commons.apache.org/proper/commons-logging).
-The [JavaDoc](https://commons.apache.org/proper/commons-logging/javadocs/api-release) can be browsed.
+The [Javadoc](https://commons.apache.org/proper/commons-logging/javadocs/api-release) can be browsed.
 Questions related to the usage of Apache Commons Logging should be posted to the [user mailing list][ml].
 
 Where can I get the latest release?
