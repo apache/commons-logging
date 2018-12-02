@@ -17,6 +17,8 @@
 
 package org.apache.commons.logging;
 
+import java.util.function.Supplier;
+
 /**
  * A simple logging interface abstracting logging APIs.  In order to be
  * instantiated successfully by {@link LogFactory}, classes that implement
@@ -50,6 +52,11 @@ package org.apache.commons.logging;
  *    }
  * </pre>
  * <p>
+ * or
+ * <p>
+ * <pre>
+ *     log.debug(() -> theResult);
+ * </pre>
  * Configuration of the underlying logging system will generally be done
  * external to the Logging APIs, through whatever mechanism is supported by
  * that system.
@@ -57,6 +64,79 @@ package org.apache.commons.logging;
  * @version $Id$
  */
 public interface Log {
+
+    default void debug(Supplier<Object> msgSupplier) {
+        if (isDebugEnabled()) {
+            debug(msgSupplier != null ? msgSupplier.get() : null);
+        }
+    }
+
+    default void debug(Supplier<Object> msgSupplier, Throwable t) {
+        if (isDebugEnabled()) {
+            debug(msgSupplier != null ? msgSupplier.get() : null, t);
+        }
+    }
+
+    default void error(Supplier<Object> msgSupplier) {
+        if (isErrorEnabled()) {
+            error(msgSupplier != null ? msgSupplier.get() : null);
+        }
+    }
+
+    default void error(Supplier<Object> msgSupplier, Throwable t) {
+        if (isErrorEnabled()) {
+            error(msgSupplier != null ? msgSupplier.get() : null, t);
+        }
+    }
+
+    default void fatal(Supplier<Object> msgSupplier) {
+        if (isFatalEnabled()) {
+            fatal(msgSupplier != null ? msgSupplier.get() : null);
+        }
+    }
+
+    default void fatal(Supplier<Object> msgSupplier, Throwable t) {
+        if (isFatalEnabled()) {
+            fatal(msgSupplier != null ? msgSupplier.get() : null, t);
+        }
+    }
+
+    default void info(Supplier<Object> msgSupplier) {
+        if (isInfoEnabled()) {
+            info(msgSupplier != null ? msgSupplier.get() : null);
+        }
+    }
+
+    default void info(Supplier<Object> msgSupplier, Throwable t) {
+        if (isInfoEnabled()) {
+            info(msgSupplier != null ? msgSupplier.get() : null, t);
+        }
+    }
+
+    default void trace(Supplier<Object> msgSupplier) {
+        if (isTraceEnabled()) {
+            trace(msgSupplier != null ? msgSupplier.get() : null);
+        }
+    }
+
+    default void trace(Supplier<Object> msgSupplier, Throwable t) {
+        if (isTraceEnabled()) {
+            trace(msgSupplier != null ? msgSupplier.get() : null, t);
+        }
+    }
+
+    default void warn(Supplier<Object> msgSupplier) {
+        if (isWarnEnabled()) {
+            warn(msgSupplier != null ? msgSupplier.get() : null);
+        }
+    }
+
+    default void warn(Supplier<Object> msgSupplier, Throwable t) {
+        if (isWarnEnabled()) {
+            warn(msgSupplier != null ? msgSupplier.get() : null, t);
+        }
+    }
+
 
     /**
      * Logs a message with debug log level.
