@@ -171,9 +171,9 @@ under the License.
   </contributors>
   
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/logging/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/logging/trunk</developerConnection>
-    <url>http://svn.apache.org/repos/asf/commons/proper/logging/trunk</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-logging</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-logging</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf/commons-logging</url>
   </scm>
 
   <build>
