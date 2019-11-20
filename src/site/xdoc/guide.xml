@@ -94,7 +94,7 @@ is intended to be both light-weight and an independent abstraction of other logg
 It provides the middleware/tooling developer with a simple
 logging abstraction, that allows the user (application developer) to plug in
 a specific logging implementation.
-    </p>
+    </p>    
 <p>JCL provides thin-wrapper <code>Log</code> implementations for
 other logging tools, including
 <a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
@@ -103,7 +103,9 @@ other logging tools, including
 JDK 1.4, and an implementation of JDK 1.4 logging APIs (JSR-47) for pre-1.4
 systems.
 The interface maps closely to Log4J and LogKit.
-</p>
+</p>    
+      <p>If you are completely new to logging in Java,<a href="https://www.marcobehler.com/guides/a-guide-to-logging-in-java">https://www.marcobehler.com/guides/a-guide-to-logging-in-java</a> contains a good overview of the various parts, pieces and options and shows you where exactly JCL fits in.
+        </p>
         <p>
 Familiarity with high-level details of the relevant Logging implementations is presumed.
     </p>
