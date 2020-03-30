@@ -727,7 +727,7 @@
 
     <echo message="executing tests [${testmatch}.java]"/>
     <!--
-      - Note that the fork/forkmode settings define default behaviour for tests. 
+      - Note that the fork/forkmode settings define default behavior for tests. 
       - The <test> and <batchtest> tags can override these settings if needed.
       - The default settings cause a single VM to be created in which all of
       - the tests are then run. 

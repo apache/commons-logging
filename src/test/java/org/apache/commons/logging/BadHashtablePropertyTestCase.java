@@ -21,7 +21,7 @@ import junit.framework.TestCase;
 import java.util.Hashtable;
 
 /**
- * Tests behaviour when the property is misconfigured.
+ * Tests behavior when the property is misconfigured.
  */
 public class BadHashtablePropertyTestCase extends TestCase {
 

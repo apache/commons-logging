@@ -35,7 +35,7 @@ import org.apache.commons.logging.PathableTestSuite;
 /**
  * Tests for logging with a security policy that allows JCL access to everything.
  * <p>
- * This class has only one unit test, as we are (in part) checking behaviour in
+ * This class has only one unit test, as we are (in part) checking behavior in
  * the static block of the LogFactory class. As that class cannot be unloaded after
  * being loaded into a classloader, the only workaround is to use the
  * PathableClassLoader approach to ensure each test is run in its own

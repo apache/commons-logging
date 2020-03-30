@@ -38,7 +38,7 @@ import org.apache.commons.logging.PathableTestSuite;
  * messages on failure requires certain security permissions. If the security manager
  * blocks these, then the test can fail without the error messages being output.
  * <p>
- * This class has only one unit test, as we are (in part) checking behaviour in
+ * This class has only one unit test, as we are (in part) checking behavior in
  * the static block of the LogFactory class. As that class cannot be unloaded after
  * being loaded into a classloader, the only workaround is to use the
  * PathableClassLoader approach to ensure each test is run in its own

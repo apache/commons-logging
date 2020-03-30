@@ -269,7 +269,7 @@ limitations under the License.
       <p>
         <em>
   In practical development terms: This means that different JVMs may realize that a reference cannot be
-  resolved at different times during execution. Consequently, the actual behaviour cannot be precisely predicted
+  resolved at different times during execution. Consequently, the actual behavior cannot be precisely predicted
   without intimate knowledge of the JVM (on which the bytecode will be executed).
   This makes it hard to give universal guidance to users.
         </em>

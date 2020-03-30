@@ -107,12 +107,12 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The name (<code>org.apache.commons.logging.Log.allowFlawedContext</code>)
      * of the system property which can be set true/false to
-     * determine system behaviour when a bad context-classloader is encountered.
+     * determine system behavior when a bad context-classloader is encountered.
      * When set to false, a LogConfigurationException is thrown if
      * LogFactoryImpl is loaded via a child classloader of the TCCL (this
      * should never happen in sane systems).
      *
-     * Default behaviour: true (tolerates bad context classloaders)
+     * Default behavior: true (tolerates bad context classloaders)
      *
      * See also method setAttribute.
      */
@@ -122,13 +122,13 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The name (<code>org.apache.commons.logging.Log.allowFlawedDiscovery</code>)
      * of the system property which can be set true/false to
-     * determine system behaviour when a bad logging adapter class is
+     * determine system behavior when a bad logging adapter class is
      * encountered during logging discovery. When set to false, an
      * exception will be thrown and the app will fail to start. When set
      * to true, discovery will continue (though the user might end up
      * with a different logging implementation than they expected).
      * <p>
-     * Default behaviour: true (tolerates bad logging adapters)
+     * Default behavior: true (tolerates bad logging adapters)
      *
      * See also method setAttribute.
      */
@@ -138,13 +138,13 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The name (<code>org.apache.commons.logging.Log.allowFlawedHierarchy</code>)
      * of the system property which can be set true/false to
-     * determine system behaviour when a logging adapter class is
+     * determine system behavior when a logging adapter class is
      * encountered which has bound to the wrong Log class implementation.
      * When set to false, an exception will be thrown and the app will fail
      * to start. When set to true, discovery will continue (though the user
      * might end up with a different logging implementation than they expected).
      * <p>
-     * Default behaviour: true (tolerates bad Log class hierarchy)
+     * Default behavior: true (tolerates bad Log class hierarchy)
      *
      * See also method setAttribute.
      */
@@ -326,7 +326,7 @@ public class LogFactoryImpl extends LogFactory {
      * <p>
      * This method can be used to set logging configuration programmatically
      * rather than via system properties. It can also be used in code running
-     * within a container (such as a webapp) to configure behaviour on a
+     * within a container (such as a webapp) to configure behavior on a
      * per-component level instead of globally as system properties would do.
      * To use this method instead of a system property, call
      * <pre>
@@ -399,7 +399,7 @@ public class LogFactoryImpl extends LogFactory {
      * including which classloader the object was loaded from.
      * <p>
      * This string will later be prefixed to each "internal logging" message
-     * emitted, so that users can clearly see any unexpected behaviour.
+     * emitted, so that users can clearly see any unexpected behavior.
      * <p>
      * Note that this method does not detect whether internal logging is
      * enabled or not, nor where to output stuff if it is; that is all
@@ -646,7 +646,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * Utility method to check whether a particular logging library is
      * present and available for use. Note that this does <i>not</i>
-     * affect the future behaviour of this class.
+     * affect the future behavior of this class.
      */
     private boolean isLogLibraryAvailable(String name, String classname) {
         if (isDiagnosticsEnabled()) {
@@ -735,7 +735,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Get the setting for the user-configurable behaviour specified by key.
+     * Get the setting for the user-configurable behavior specified by key.
      * If nothing has explicitly been set, then return dflt.
      */
     private boolean getBooleanConfiguration(String key, boolean dflt) {
@@ -747,7 +747,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Initialize a number of variables that control the behaviour of this
+     * Initialize a number of variables that control the behavior of this
      * class and that can be tweaked by the user. This is done when the first
      * logger is created, not in the constructor of this class, because we
      * need to give the user a chance to call method setAttribute in order to
@@ -829,7 +829,7 @@ public class LogFactoryImpl extends LogFactory {
         // and SimpleLog will always work in any JVM. So the loop would never
         // ever look for logging libraries in the parent classpath. Yet many
         // users would expect that putting log4j there would cause it to be
-        // detected (and this is the historical JCL behaviour). So we go with
+        // detected (and this is the historical JCL behavior). So we go with
         // the first approach. A user that has bundled a specific logging lib
         // in a webapp should use a commons-logging.properties file or a
         // service file in META-INF to force use of that logging lib anyway,
@@ -1007,7 +1007,7 @@ public class LogFactoryImpl extends LogFactory {
                         // Try the class classloader.
                         // This may work in cases where the TCCL
                         // does not contain the code executed or JCL.
-                        // This behaviour indicates that the application
+                        // This behavior indicates that the application
                         // classloading strategy is not consistent with the
                         // Java 1.2 classloading guidelines but JCL can
                         // and so should handle this case.

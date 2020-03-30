@@ -501,7 +501,7 @@ public abstract class LogFactory {
             }
             // ignore
         } catch (RuntimeException e) {
-            // This is not consistent with the behaviour when a bad LogFactory class is
+            // This is not consistent with the behavior when a bad LogFactory class is
             // specified in a services file.
             //
             // One possible exception that can occur here is a ClassCastException when
@@ -1302,7 +1302,7 @@ public abstract class LogFactory {
                     InputStream stream = null;
                     try {
                         // We must ensure that useCaches is set to false, as the
-                        // default behaviour of java is to cache file handles, and
+                        // default behavior of java is to cache file handles, and
                         // this "locks" files, preventing hot-redeploy on windows.
                         URLConnection connection = url.openConnection();
                         connection.setUseCaches(false);

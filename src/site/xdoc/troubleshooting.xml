@@ -424,7 +424,7 @@ implementation.
    </p>
    <p>
  Because the commons-logging-api.jar in the container does not contain any
- log-library-adapter classes, updated behaviour for these <i>will</i> be
+ log-library-adapter classes, updated behavior for these <i>will</i> be
  seen when logging 1.1 is bundled in WEB-INF/lib. In particular, the 
  support for log4j's TRACE level will take effect without having to update
  the container.
@@ -440,7 +440,7 @@ implementation.
  libraries (eg log4j) within WEB-INF/lib are not accessible.
    </p>
    <p>
- Note that the behaviour described here only applies if the standard Tomcat
+ Note that the behavior described here only applies if the standard Tomcat
  startup process is run. When Tomcat is embedded in a larger
  framework (eg run embedded within an IDE) this may not apply.
    </p>
@@ -449,7 +449,7 @@ implementation.
    <p>
    The JBoss Application Server can be configured to prevent deployed
    code from overriding classes higher in the hierarchy, effectively
-   forcing "parent-first" behaviour for selected classes. By default,
+   forcing "parent-first" behavior for selected classes. By default,
    commons-logging is in this list (at least for some JBoss versions
    starting with 4.0.2), and therefore including an updated version
    of commons-logging in WEB-INF/lib or similar will have no effect.

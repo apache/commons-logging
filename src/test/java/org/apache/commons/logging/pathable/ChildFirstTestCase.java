@@ -256,7 +256,7 @@ public class ChildFirstTestCase extends TestCase {
         // ClassLoader.getResources is final it isn't possible for PathableClassLoader
         // to override this. So even when child-first is enabled the resource order
         // is still (parent-resources, child-resources). This test verifies the expected
-        // behaviour - even though it's not the desired behaviour.
+        // behavior - even though it's not the desired behavior.
 
         resources = childLoader.getResources("org/apache/commons/logging/impl/Log4JLogger.class");
         urls = toURLArray(resources);

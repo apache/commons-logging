@@ -94,7 +94,7 @@ import junit.framework.TestSuite;
  * settings.
  * <p>
  * The effect of using this approach in a system that uses junit's
- * "reloading classloader" behaviour is unknown. This junit feature is
+ * "reloading classloader" behavior is unknown. This junit feature is
  * intended for junit GUI apps where a test may be run multiple times
  * within the same JVM - and in particular, when the .class file may
  * be modified between runs of the test. How junit achieves this is

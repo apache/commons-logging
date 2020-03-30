@@ -28,7 +28,7 @@ limitations under the License.
       <p>
         The Apache Commons Logging test cases make extensive use of
         sophisticated classloader configurations in order to simulate the
-        behaviour of various containers. It is difficult to run these tests
+        behavior of various containers. It is difficult to run these tests
         under Maven in the default "test" phase. As a consequence the tests
         are executed via the failsafe-plugin as part of the "integration-test"
         phase. The reports are available <a href="failsafe-report.html">here</a>.
