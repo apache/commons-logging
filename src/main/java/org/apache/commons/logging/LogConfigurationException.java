@@ -69,7 +69,7 @@ public class LogConfigurationException extends RuntimeException {
     /**
      * The underlying cause of this exception.
      */
-    protected Throwable cause = null;
+    protected Throwable cause;
 
     /**
      * Return the underlying cause of this exception (if any).

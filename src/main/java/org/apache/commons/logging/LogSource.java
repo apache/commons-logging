@@ -59,13 +59,13 @@ public class LogSource {
     static protected Hashtable logs = new Hashtable();
 
     /** Is log4j available (in the current classpath) */
-    static protected boolean log4jIsAvailable = false;
+    static protected boolean log4jIsAvailable;
 
     /** Is JDK 1.4 logging available */
-    static protected boolean jdk14IsAvailable = false;
+    static protected boolean jdk14IsAvailable;
 
     /** Constructor for current log class */
-    static protected Constructor logImplctor = null;
+    static protected Constructor logImplctor;
 
     // ----------------------------------------------------- Class Initializers
 

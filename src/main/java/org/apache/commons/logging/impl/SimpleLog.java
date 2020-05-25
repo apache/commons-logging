@@ -108,7 +108,7 @@ public class SimpleLog implements Log, Serializable {
      * in 1.1.1 to fix an existing thread safety bug (SimpleDateFormat.format
      * is not thread-safe).
      */
-    static protected DateFormat dateFormatter = null;
+    static protected DateFormat dateFormatter;
 
     // ---------------------------------------------------- Log Level Constants
 

@@ -45,11 +45,11 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     /**
      * The underlying Logger implementation we are using.
      */
-    protected transient Logger logger = null;
-    protected String name = null;
+    protected transient Logger logger;
+    protected String name;
     private String sourceClassName = "unknown";
     private String sourceMethodName = "unknown";
-    private boolean classAndMethodFound = false;
+    private boolean classAndMethodFound;
 
     /**
      * This member variable simply ensures that any attempt to initialise

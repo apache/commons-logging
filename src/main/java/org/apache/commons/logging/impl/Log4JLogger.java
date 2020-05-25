@@ -53,7 +53,7 @@ public class Log4JLogger implements Log, Serializable {
     private static final String FQCN = Log4JLogger.class.getName();
 
     /** Log to this logger */
-    private transient volatile Logger logger = null;
+    private transient volatile Logger logger;
 
     /** Logger name */
     private final String name;

@@ -41,10 +41,10 @@ public class LogKitLogger implements Log, Serializable {
     // ------------------------------------------------------------- Attributes
 
     /** Logging goes to this <code>LogKit</code> logger */
-    protected transient volatile Logger logger = null;
+    protected transient volatile Logger logger;
 
     /** Name of this logger */
-    protected String name = null;
+    protected String name;
 
     // ------------------------------------------------------------ Constructor
 

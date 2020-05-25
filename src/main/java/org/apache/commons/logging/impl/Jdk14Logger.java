@@ -60,12 +60,12 @@ public class Jdk14Logger implements Log, Serializable {
     /**
      * The underlying Logger implementation we are using.
      */
-    protected transient Logger logger = null;
+    protected transient Logger logger;
 
     /**
      * The name of the logger we are wrapping.
      */
-    protected String name = null;
+    protected String name;
 
     // --------------------------------------------------------- Protected Methods
 

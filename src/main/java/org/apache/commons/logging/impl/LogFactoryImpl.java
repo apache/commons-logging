@@ -202,7 +202,7 @@ public class LogFactoryImpl extends LogFactory {
      * This value is initialized by <code>getLogConstructor()</code>,
      * and then returned repeatedly.
      */
-    protected Constructor logConstructor = null;
+    protected Constructor logConstructor;
 
     /**
      * The signature of the Constructor to be used.
@@ -213,7 +213,7 @@ public class LogFactoryImpl extends LogFactory {
      * The one-argument <code>setLogFactory</code> method of the selected
      * {@link org.apache.commons.logging.Log} method, if it exists.
      */
-    protected Method logMethod = null;
+    protected Method logMethod;
 
     /**
      * The signature of the <code>setLogFactory</code> method to be used.
