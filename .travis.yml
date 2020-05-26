@@ -17,7 +17,9 @@ language: java
 sudo: false
 
 dist: precise
-
+cache:
+  directories:
+    - $HOME/.m2
 jdk:
   - openjdk6
   - openjdk7
