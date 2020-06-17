@@ -33,24 +33,24 @@ import junit.framework.TestSuite;
  *  public static Test suite() throws Exception {
  *   PathableClassLoader parent = new PathableClassLoader(null);
  *   parent.useSystemLoader("junit.");
- * 
+ *
  *   PathableClassLoader child = new PathableClassLoader(parent);
  *   child.addLogicalLib("testclasses");
  *   child.addLogicalLib("log4j12");
  *   child.addLogicalLib("commons-logging");
- * 
+ *
  *   Class testClass = child.loadClass(SomeTestCase.class.getName());
  *   ClassLoader contextClassLoader = child;
- * 
+ *
  *   PathableTestSuite suite = new PathableTestSuite(testClass, child);
  *   return suite;
  *  }
- * 
+ *
  *  // test methods go here
  * }
  * </pre>
  * Note that if the suite method throws an exception then this will be handled
- * reasonable gracefully by junit; it will report that the suite method for 
+ * reasonable gracefully by junit; it will report that the suite method for
  * a test case failed with exception yyy.
  * <p>
  * The use of PathableClassLoader is not required to use this class, but it
@@ -59,7 +59,7 @@ import junit.framework.TestSuite;
  * This class will run each test methods within the specified TestCase using
  * the specified context classloader and system classloader. If different
  * tests within the same class require different context classloaders,
- * then the context classloader passed to the constructor should be the 
+ * then the context classloader passed to the constructor should be the
  * "lowest" one available, and tests that need the context set to some parent
  * of this "lowest" classloader can call
  * <pre>
@@ -70,14 +70,14 @@ import junit.framework.TestSuite;
  * is undone after the test is run, so tests don't need to worry about
  * restoring the context classloader on exit. This class also ensures that
  * the system properties are restored to their original settings after each
- * test, so tests that manipulate those don't need to worry about resetting them. 
+ * test, so tests that manipulate those don't need to worry about resetting them.
  * <p>
  * This class does not provide facilities for manipulating system properties;
  * tests that need specific system properties can simply set them in the
  * fixture or at the start of a test method.
  * <p>
  * <b>Important!</b> When the test case is run, "this.getClass()" refers of
- * course to the Class object passed to the constructor of this class - which 
+ * course to the Class object passed to the constructor of this class - which
  * is different from the class whose suite() method was executed to determine
  * the classpath. This means that the suite method cannot communicate with
  * the test cases simply by setting static variables (for example to make the
@@ -87,7 +87,7 @@ import junit.framework.TestSuite;
  * <p>
  * <h2>Limitations</h2>
  * <p>
- * This class cannot control the system classloader (ie what method 
+ * This class cannot control the system classloader (ie what method
  * ClassLoader.getSystemClassLoader returns) because Java provides no
  * mechanism for setting the system classloader. In this case, the only
  * option is to invoke the unit test in a separate JVM with the appropriate
@@ -112,10 +112,10 @@ public class PathableTestSuite extends TestSuite {
 
     /**
      * Constructor.
-     * 
+     *
      * @param testClass is the TestCase that is to be run, as loaded by
      * the appropriate ClassLoader.
-     * 
+     *
      * @param contextClassLoader is the loader that should be returned by
      * calls to Thread.currentThread.getContextClassLoader from test methods
      * (or any method called by test methods).

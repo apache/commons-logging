@@ -52,7 +52,7 @@ public class TcclEnabledTestCase extends TestCase {
         dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
-        
+
         String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         URL baseUrl = dummy.findResource(thisClassPath);
 
@@ -64,7 +64,7 @@ public class TcclEnabledTestCase extends TestCase {
         // LogFactory class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
         PathableClassLoader emptyLoader = new PathableClassLoader(null);
-        
+
         PathableClassLoader parentLoader = new PathableClassLoader(null);
         parentLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         parentLoader.addLogicalLib("commons-logging");
@@ -73,7 +73,7 @@ public class TcclEnabledTestCase extends TestCase {
         // the cust MyLogFactoryImpl
         parentLoader.useExplicitLoader(
             "org.apache.commons.logging.tccl.custom.", emptyLoader);
-        
+
         URL propsEnableUrl = new URL(baseUrl, "props_enable_tccl/");
         parentLoader.addURL(propsEnableUrl);
 
@@ -104,7 +104,7 @@ public class TcclEnabledTestCase extends TestCase {
      * Verify that MyLogFactoryImpl is only loadable via the tccl.
      */
     public void testLoader() throws Exception {
-        
+
         ClassLoader thisClassLoader = this.getClass().getClassLoader();
         ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
@@ -120,7 +120,7 @@ public class TcclEnabledTestCase extends TestCase {
         } catch(ClassNotFoundException ex) {
             // ok, expected
         }
-        
+
         // MyLogFactoryImpl should be loadable via tccl loader
         try {
             Class clazz = tcclLoader.loadClass(
@@ -138,9 +138,9 @@ public class TcclEnabledTestCase extends TestCase {
      */
     public void testTcclLoading() throws Exception {
         LogFactory instance = LogFactory.getFactory();
-        
+
         assertEquals(
-            "Correct LogFactory loaded", 
+            "Correct LogFactory loaded",
             "org.apache.commons.logging.tccl.custom.MyLogFactoryImpl",
             instance.getClass().getName());
     }

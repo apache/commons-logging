@@ -81,7 +81,7 @@ public class DefaultConfigTestCase extends TestCase {
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
-        
+
         Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }

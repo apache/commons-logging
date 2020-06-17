@@ -26,8 +26,8 @@ import junit.framework.TestCase;
  */
 public class NullClassLoaderTestCase extends TestCase {
 
-    //---------------------- unit tests ---------------------------------    
-    
+    //---------------------- unit tests ---------------------------------
+
     /**
      * This tests that when getContextClassLoader returns null, the
      * LogFactory.getLog(name) method still correctly returns the same

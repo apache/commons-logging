@@ -76,11 +76,11 @@ public class SecurityForbiddenTestCase extends TestCase
     public void setUp() {
         // save security manager so it can be restored in tearDown
         oldSecMgr = System.getSecurityManager();
-        
+
         PathableClassLoader classLoader = new PathableClassLoader(null);
         classLoader.addLogicalLib("commons-logging");
         classLoader.addLogicalLib("testclasses");
-        
+
         otherClassLoader = classLoader;
     }
 
@@ -142,7 +142,7 @@ public class SecurityForbiddenTestCase extends TestCase
     /**
      * Test what happens when JCL is run with absolutely no security
      * privileges at all and a class loaded with a different classloader
-     * than the context classloader of the current thread tries to log something. 
+     * than the context classloader of the current thread tries to log something.
      */
     public void testContextClassLoader() {
         System.setProperty(

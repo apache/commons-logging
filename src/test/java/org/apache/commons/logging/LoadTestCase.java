@@ -27,7 +27,7 @@ public class LoadTestCase extends TestCase{
     //TODO: need some way to add service provider packages
     static private String LOG_PCKG[] = {"org.apache.commons.logging",
                                         "org.apache.commons.logging.impl"};
-    
+
     /**
      * A custom classloader which "duplicates" logging classes available
      * in the parent classloader into itself.
@@ -38,51 +38,51 @@ public class LoadTestCase extends TestCase{
      * as the classloader that loaded it.
      */
     static class AppClassLoader extends ClassLoader{
-        
+
         java.util.Map classes = new java.util.HashMap();
-        
+
         AppClassLoader(ClassLoader parent){
             super(parent);
         }
-        
+
         private Class def(String name)throws ClassNotFoundException{
-            
+
             Class result = (Class)classes.get(name);
             if(result != null){
                 return result;
             }
-            
+
             try{
-                
+
                 ClassLoader cl = this.getClass().getClassLoader();
                 String classFileName = name.replace('.','/') + ".class";
                 java.io.InputStream is = cl.getResourceAsStream(classFileName);
                 java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-                
+
                 while(is.available() > 0){
                     out.write(is.read());
                 }
-                
+
                 byte data [] = out.toByteArray();
-                
+
                 result = super.defineClass(name, data, 0, data.length );
                 classes.put(name,result);
-                
+
                 return result;
-                
+
             }catch(java.io.IOException ioe){
-                
+
                 throw new ClassNotFoundException( name + " caused by "
                 + ioe.getMessage() );
             }
-            
-            
+
+
         }
-        
+
         // not very trivial to emulate we must implement "findClass",
         // but it will delegete to junit class loder first
         public Class loadClass(String name)throws ClassNotFoundException{
-            
+
             //isolates all logging classes, application in the same classloader too.
             //filters exeptions to simlify handling in test
             for(int i = 0; i < LOG_PCKG.length; i++ ){
@@ -93,9 +93,9 @@ public class LoadTestCase extends TestCase{
             }
             return super.loadClass(name);
         }
-        
+
     }
-    
+
 
     /**
      * Call the static setAllowFlawedContext method on the specified class
@@ -116,26 +116,26 @@ public class LoadTestCase extends TestCase{
      * are available via the system classpath.
      */
     public void testInContainer()throws Exception{
-        
+
         //problem can be in this step (broken app container or missconfiguration)
         //1.  Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
         //2.  Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
         // we expect this :
         // 1. Thread.currentThread().setContextClassLoader(appLoader);
         // 2. Thread.currentThread().setContextClassLoader(null);
-        
+
         // Context classloader is same as class calling into log
         Class cls = reload();
         Thread.currentThread().setContextClassLoader(cls.getClassLoader());
         execute(cls);
-        
+
         // Context classloader is the "bootclassloader". This is technically
         // bad, but LogFactoryImpl.ALLOW_FLAWED_CONTEXT defaults to true so
         // this test should pass.
         cls = reload();
         Thread.currentThread().setContextClassLoader(null);
         execute(cls);
-        
+
         // Context classloader is the "bootclassloader". This is same as above
         // except that ALLOW_FLAWED_CONTEXT is set to false; an error should
         // now be reported.
@@ -148,7 +148,7 @@ public class LoadTestCase extends TestCase{
         } catch(LogConfigurationException ex) {
             // expected; the boot classloader doesn't *have* JCL available
         }
-        
+
         // Context classloader is the system classloader.
         //
         // This is expected to cause problems, as LogFactoryImpl will attempt
@@ -159,9 +159,9 @@ public class LoadTestCase extends TestCase{
         cls = reload();
         Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
         execute(cls);
-        
+
         // Context classloader is the system classloader. This is the same
-        // as above except that ALLOW_FLAWED_CONTEXT is set to false; an error 
+        // as above except that ALLOW_FLAWED_CONTEXT is set to false; an error
         // should now be reported.
         cls = reload();
         Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
@@ -171,7 +171,7 @@ public class LoadTestCase extends TestCase{
             fail("Error: somehow downcast a Logger loaded via system classloader"
                     + " to the Log interface loaded via a custom classloader");
         } catch(LogConfigurationException ex) {
-            // expected 
+            // expected
         }
     }
 
@@ -180,46 +180,46 @@ public class LoadTestCase extends TestCase{
      * the classloader used to load this test class.
      */
     private Class reload()throws Exception{
-        
+
         Class testObjCls = null;
-        
-        AppClassLoader appLoader = new AppClassLoader( 
+
+        AppClassLoader appLoader = new AppClassLoader(
                 this.getClass().getClassLoader());
         try{
-            
+
             testObjCls = appLoader.loadClass(UserClass.class.getName());
-            
+
         }catch(ClassNotFoundException cnfe){
             throw cnfe;
         }catch(Throwable t){
             t.printStackTrace();
             fail("AppClassLoader failed ");
         }
-        
+
         assertTrue( "app isolated" ,testObjCls.getClassLoader() == appLoader );
-        
-        
+
+
         return testObjCls;
-        
-        
+
+
     }
-    
-    
+
+
     private void execute(Class cls)throws Exception{
-            
+
             cls.newInstance();
-        
+
     }
-    
+
     public void setUp() {
         // save state before test starts so we can restore it when test ends
         origContextClassLoader = Thread.currentThread().getContextClassLoader();
     }
-    
+
     public void tearDown() {
         // restore original state so a test can't stuff up later tests.
         Thread.currentThread().setContextClassLoader(origContextClassLoader);
     }
-    
+
     private ClassLoader origContextClassLoader;
 }

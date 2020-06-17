@@ -101,7 +101,7 @@ public class MockSecurityManager extends SecurityManager {
                 // requiring RuntimePermission: "accessClassInPackage.sun.util.logging.resources"
                 return;
             }
-            
+
             if (cname.equals("java.security.AccessController")) {
                 // Presumably method name equals "doPrivileged"
                 //

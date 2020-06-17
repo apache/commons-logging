@@ -65,28 +65,28 @@ public class ParentFirstTestCase extends TestCase {
         // this class, so use that as the source for future access to classes
         // from the junit package.
         parent.useExplicitLoader("junit.", thisClassLoader);
-        
+
         // make the commons-logging.jar classes visible via the parent
         parent.addLogicalLib("commons-logging");
-        
+
         // create a child classloader to load the test case through
         PathableClassLoader child = new PathableClassLoader(parent);
-        
+
         // obviously, the child classloader needs to have the test classes
         // in its path!
         child.addLogicalLib("testclasses");
         child.addLogicalLib("commons-logging-adapters");
-        
+
         // create a third classloader to be the context classloader.
         PathableClassLoader context = new PathableClassLoader(child);
 
         // reload this class via the child classloader
         Class testClass = child.loadClass(thisClass.getName());
-        
+
         // and return our custom TestSuite class
         return new PathableTestSuite(testClass, context);
     }
-    
+
     /**
      * Utility method to return the set of all classloaders in the
      * parent chain starting from the one that loaded the class for
@@ -115,14 +115,14 @@ public class ParentFirstTestCase extends TestCase {
         assertEquals("Context classloader has unexpected type",
                 PathableClassLoader.class.getName(),
                 contextLoader.getClass().getName());
-        
+
         // the classloader that loaded this class is obviously not null
         ClassLoader thisLoader = this.getClass().getClassLoader();
         assertNotNull("thisLoader is null", thisLoader);
         assertEquals("thisLoader has unexpected type",
                 PathableClassLoader.class.getName(),
                 thisLoader.getClass().getName());
-        
+
         // the suite method specified that the context classloader's parent
         // is the loader that loaded this test case.
         assertSame("Context classloader is not child of thisLoader",
@@ -134,7 +134,7 @@ public class ParentFirstTestCase extends TestCase {
         assertEquals("Parent classloader has unexpected type",
                 PathableClassLoader.class.getName(),
                 parentLoader.getClass().getName());
-        
+
         // parent should have a parent of null
         assertNull("Parent classloader has non-null parent", parentLoader.getParent());
 
@@ -152,7 +152,7 @@ public class ParentFirstTestCase extends TestCase {
         // though it is accessable due to trickery in the PathableClassLoader.
         Class junitTest = contextLoader.loadClass("junit.framework.Test");
         Set ancestorCLs = getAncestorCLs();
-        assertFalse("Junit not loaded by ancestor classloader", 
+        assertFalse("Junit not loaded by ancestor classloader",
                 ancestorCLs.contains(junitTest.getClassLoader()));
 
         // jcl api classes should be visible only via the parent
@@ -163,14 +163,14 @@ public class ParentFirstTestCase extends TestCase {
         // jcl adapter classes should be visible via both parent and child. However
         // as the classloaders are parent-first we should see the parent one.
         Class log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4JLogger");
-        assertSame("Log4JLogger not loaded via parent", 
+        assertSame("Log4JLogger not loaded via parent",
                 log4jClass.getClassLoader(), parentLoader);
-        
+
         // test classes should be visible via the child only
         Class testClass = contextLoader.loadClass("org.apache.commons.logging.PathableTestSuite");
-        assertSame("PathableTestSuite not loaded via child", 
+        assertSame("PathableTestSuite not loaded via child",
                 testClass.getClassLoader(), thisLoader);
-        
+
         // test loading of class that is not available
         try {
             Class noSuchClass = contextLoader.loadClass("no.such.class");
@@ -185,16 +185,16 @@ public class ParentFirstTestCase extends TestCase {
         assertNull("String class classloader is not null!",
                 stringClass.getClassLoader());
     }
-    
+
     /**
      * Test that the various flavours of ClassLoader.getResource work as expected.
      */
     public void testResource() {
         URL resource;
-        
+
         ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         ClassLoader childLoader = contextLoader.getParent();
-        
+
         // getResource where it doesn't exist
         resource = childLoader.getResource("nosuchfile");
         assertNull("Non-null URL returned for invalid resource name", resource);
@@ -202,7 +202,7 @@ public class ParentFirstTestCase extends TestCase {
         // getResource where it is accessable only to parent classloader
         resource = childLoader.getResource("org/apache/commons/logging/Log.class");
         assertNotNull("Unable to locate Log.class resource", resource);
-        
+
         // getResource where it is accessable only to child classloader
         resource = childLoader.getResource("org/apache/commons/logging/PathableTestSuite.class");
         assertNotNull("Unable to locate PathableTestSuite.class resource", resource);
@@ -216,42 +216,42 @@ public class ParentFirstTestCase extends TestCase {
         assertTrue("Incorrect source for Log4JLogger class",
                 resource.toString().indexOf("/commons-logging-1.") > 0);
     }
-    
+
     /**
      * Test that the various flavours of ClassLoader.getResources work as expected.
      */
     public void testResources() throws Exception {
         Enumeration resources;
         URL[] urls;
-        
+
         // verify the classloader hierarchy
         ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         ClassLoader childLoader = contextLoader.getParent();
         ClassLoader parentLoader = childLoader.getParent();
         ClassLoader bootLoader = parentLoader.getParent();
         assertNull("Unexpected classloader hierarchy", bootLoader);
-        
+
         // getResources where no instances exist
         resources = childLoader.getResources("nosuchfile");
         urls = toURLArray(resources);
         assertEquals("Non-null URL returned for invalid resource name", 0, urls.length);
-        
+
         // getResources where the resource only exists in the parent
         resources = childLoader.getResources("org/apache/commons/logging/Log.class");
         urls = toURLArray(resources);
         assertEquals("Unexpected number of Log.class resources found", 1, urls.length);
-        
+
         // getResources where the resource only exists in the child
         resources = childLoader.getResources("org/apache/commons/logging/PathableTestSuite.class");
         urls = toURLArray(resources);
         assertEquals("Unexpected number of PathableTestSuite.class resources found", 1, urls.length);
-        
+
         // getResources where the resource exists in both.
         // resources should be returned in order (parent-resource, child-resource)
         resources = childLoader.getResources("org/apache/commons/logging/impl/Log4JLogger.class");
         urls = toURLArray(resources);
         assertEquals("Unexpected number of Log4JLogger.class resources found", 2, urls.length);
-        
+
         // There is no gaurantee about the ordering of results returned from getResources
         // To make this test portable across JVMs, sort the string to give them a known order
         String[] urlsToStrings = new String[2];
@@ -262,7 +262,7 @@ public class ParentFirstTestCase extends TestCase {
                 urlsToStrings[0].indexOf("/commons-logging-1.") > 0);
         assertTrue("Incorrect source for Log4JLogger class",
                 urlsToStrings[1].indexOf("/commons-logging-adapters-1.") > 0);
-        
+
     }
 
     /**
@@ -283,23 +283,23 @@ public class ParentFirstTestCase extends TestCase {
      */
     public void testResourceAsStream() throws Exception {
         java.io.InputStream is;
-        
+
         // verify the classloader hierarchy
         ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         ClassLoader childLoader = contextLoader.getParent();
         ClassLoader parentLoader = childLoader.getParent();
         ClassLoader bootLoader = parentLoader.getParent();
         assertNull("Unexpected classloader hierarchy", bootLoader);
-        
+
         // getResourceAsStream where no instances exist
         is = childLoader.getResourceAsStream("nosuchfile");
         assertNull("Invalid resource returned non-null stream", is);
-        
+
         // getResourceAsStream where resource does exist
         is = childLoader.getResourceAsStream("org/apache/commons/logging/Log.class");
         assertNotNull("Null returned for valid resource", is);
         is.close();
-        
+
         // It would be nice to test parent-first ordering here, but that would require
         // having a resource with the same name in both the parent and child loaders,
         // but with different contents. That's a little tricky to set up so we'll

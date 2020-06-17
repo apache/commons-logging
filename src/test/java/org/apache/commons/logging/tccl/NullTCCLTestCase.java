@@ -34,7 +34,7 @@ public class NullTCCLTestCase extends TestCase {
     }
 
     // test methods
-    
+
     /**
      * This test just tests that a log implementation can be found
      * by the LogFactory.

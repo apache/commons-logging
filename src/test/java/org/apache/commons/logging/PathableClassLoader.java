@@ -48,9 +48,9 @@ import java.util.Map;
  */
 
 public class PathableClassLoader extends URLClassLoader {
-    
+
     private static final URL[] NO_URLS = new URL[0];
-    
+
     /**
      * A map of package-prefix to ClassLoader. Any class which is in
      * this map is looked up via the specified classloader instead of
@@ -60,7 +60,7 @@ public class PathableClassLoader extends URLClassLoader {
      * with classes loaded via a custom classloader. As an example, junit
      * testcases which are loaded via a custom classloader needs to see
      * the same junit classes as the code invoking the testcase, otherwise
-     * they can't pass result objects back. 
+     * they can't pass result objects back.
      * <p>
      * Normally, only a classloader created with a null parent needs to
      * have any lookasides defined.
@@ -96,7 +96,7 @@ public class PathableClassLoader extends URLClassLoader {
     public PathableClassLoader(ClassLoader parent) {
         super(NO_URLS, parent);
     }
-    
+
     /**
      * Allow caller to explicitly add paths. Generally this not a good idea;
      * use addLogicalLib instead, then define the location for that logical
@@ -110,9 +110,9 @@ public class PathableClassLoader extends URLClassLoader {
      * Specify whether this classloader should ask the parent classloader
      * to resolve a class first, before trying to resolve it via its own
      * classpath.
-     * <p> 
+     * <p>
      * Checking with the parent first is the normal approach for java, but
-     * components within containers such as servlet engines can use 
+     * components within containers such as servlet engines can use
      * child-first lookup instead, to allow the components to override libs
      * which are visible in shared classloaders provided by the container.
      * <p>
@@ -140,7 +140,7 @@ public class PathableClassLoader extends URLClassLoader {
      */
     public void useSystemLoader(String prefix) {
         useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
-        
+
     }
 
     /**
@@ -148,7 +148,7 @@ public class PathableClassLoader extends URLClassLoader {
      * <p>
      * The specified classloader is normally a loader that is NOT
      * an ancestor of this classloader. In particular, this loader
-     * may have the bootloader as its parent, but be configured to 
+     * may have the bootloader as its parent, but be configured to
      * see specific other classes (eg the junit library loaded
      * via the system classloader).
      * <p>
@@ -186,7 +186,7 @@ public class PathableClassLoader extends URLClassLoader {
 
     /**
      * Specify a logical library to be included in the classpath used to
-     * locate classes. 
+     * locate classes.
      * <p>
      * The specified lib name is used as a key into the system properties;
      * there is expected to be a system property defined with that name
@@ -198,11 +198,11 @@ public class PathableClassLoader extends URLClassLoader {
      * this class is a URLClassLoader then the set of URLs that the
      * classloader uses for its classpath is scanned; any jar in the
      * URL set whose name starts with the specified string is added to
-     * the classpath managed by this instance. 
+     * the classpath managed by this instance.
      * <p>
      * Using logical library names allows the calling code to specify its
      * desired classpath without knowing the exact location of the necessary
-     * classes. 
+     * classes.
      */
     public void addLogicalLib(String logicalLib) {
         // first, check the system properties
@@ -255,14 +255,14 @@ public class PathableClassLoader extends URLClassLoader {
         if (cl instanceof URLClassLoader == false) {
             return null;
         }
-        
+
         URLClassLoader ucl = (URLClassLoader) cl;
         URL[] path = ucl.getURLs();
         URL shortestMatch = null;
         int shortestMatchLen = Integer.MAX_VALUE;
         for(int i=0; i<path.length; ++i) {
             URL u = path[i];
-            
+
             // extract the filename bit on the end of the url
             String filename = u.toString();
             if (!filename.endsWith(".jar")) {
@@ -274,7 +274,7 @@ public class PathableClassLoader extends URLClassLoader {
             if (lastSlash >= 0) {
                 filename = filename.substring(lastSlash+1);
             }
-            
+
             if (filename.startsWith(logicalLib)) {
                 // ok, this is a candidate
                 if (filename.length() < shortestMatchLen) {
@@ -283,18 +283,18 @@ public class PathableClassLoader extends URLClassLoader {
                 }
             }
         }
-        
+
         return shortestMatch;
     }
 
     /**
      * Override ClassLoader method.
      * <p>
-     * For each explicitly mapped package prefix, if the name matches the 
-     * prefix associated with that entry then attempt to load the class via 
+     * For each explicitly mapped package prefix, if the name matches the
+     * prefix associated with that entry then attempt to load the class via
      * that entries' classloader.
      */
-    protected Class loadClass(String name, boolean resolve) 
+    protected Class loadClass(String name, boolean resolve)
     throws ClassNotFoundException {
         // just for performance, check java and javax
         if (name.startsWith("java.") || name.startsWith("javax.")) {
@@ -312,17 +312,17 @@ public class PathableClassLoader extends URLClassLoader {
                 }
             }
         }
-        
+
         if (parentFirst) {
             return super.loadClass(name, resolve);
         } else {
-            // Implement child-first. 
+            // Implement child-first.
             //
             // It appears that the findClass method doesn't check whether the
             // class has already been loaded. This seems odd to me, but without
             // first checking via findLoadedClass we can get java.lang.LinkageError
             // with message "duplicate class definition" which isn't good.
-            
+
             try {
                 Class clazz = findLoadedClass(name);
                 if (clazz == null) {
@@ -337,7 +337,7 @@ public class PathableClassLoader extends URLClassLoader {
             }
         }
     }
-    
+
     /**
      * Same as parent class method except that when parentFirst is false
      * the resource is looked for in the local classpath before the parent
@@ -354,7 +354,7 @@ public class PathableClassLoader extends URLClassLoader {
             return super.getResource(name);
         }
     }
-    
+
     /**
      * Emulate a proper implementation of getResources which respects the
      * setting for parentFirst.
@@ -368,7 +368,7 @@ public class PathableClassLoader extends URLClassLoader {
             return super.getResources(name);
         } else {
             Enumeration localUrls = super.findResources(name);
-            
+
             ClassLoader parent = getParent();
             if (parent == null) {
                 // Alas, there is no method to get matching resources
@@ -391,11 +391,11 @@ public class PathableClassLoader extends URLClassLoader {
             return Collections.enumeration(localItems);
         }
     }
-    
+
     /**
-     * 
-     * Clean implementation of list function of 
-     * {@link java.utils.Collection} added in JDK 1.4 
+     *
+     * Clean implementation of list function of
+     * {@link java.utils.Collection} added in JDK 1.4
      * @param en <code>Enumeration</code>, possibly null
      * @return <code>ArrayList</code> containing the enumerated
      * elements in the enumerated order, not null
@@ -410,7 +410,7 @@ public class PathableClassLoader extends URLClassLoader {
         }
         return results;
     }
-    
+
     /**
      * Same as parent class method except that when parentFirst is false
      * the resource is looked for in the local classpath before the parent

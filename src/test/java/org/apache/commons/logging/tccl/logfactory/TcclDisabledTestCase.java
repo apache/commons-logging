@@ -35,7 +35,7 @@ import org.apache.commons.logging.PathableTestSuite;
 
 public class TcclDisabledTestCase extends TestCase {
 
-    public static final String MY_LOG_FACTORY_PKG = 
+    public static final String MY_LOG_FACTORY_PKG =
         "org.apache.commons.logging.tccl.custom";
 
     public static final String MY_LOG_FACTORY_IMPL =
@@ -58,7 +58,7 @@ public class TcclDisabledTestCase extends TestCase {
         dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
-        
+
         String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         URL baseUrl = dummy.findResource(thisClassPath);
 
@@ -70,7 +70,7 @@ public class TcclDisabledTestCase extends TestCase {
         // LogFactory class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
         PathableClassLoader emptyLoader = new PathableClassLoader(null);
-        
+
         PathableClassLoader parentLoader = new PathableClassLoader(null);
         parentLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         parentLoader.addLogicalLib("commons-logging");
@@ -79,7 +79,7 @@ public class TcclDisabledTestCase extends TestCase {
         // the custom MyLogFactoryImpl
         parentLoader.useExplicitLoader(
             MY_LOG_FACTORY_PKG + ".", emptyLoader);
-        
+
         URL propsEnableUrl = new URL(baseUrl, "props_disable_tccl/");
         parentLoader.addURL(propsEnableUrl);
 
@@ -110,7 +110,7 @@ public class TcclDisabledTestCase extends TestCase {
      * Verify that MyLogFactoryImpl is only loadable via the tccl.
      */
     public void testLoader() throws Exception {
-        
+
         ClassLoader thisClassLoader = this.getClass().getClassLoader();
         ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
@@ -125,7 +125,7 @@ public class TcclDisabledTestCase extends TestCase {
         } catch(ClassNotFoundException ex) {
             // ok, expected
         }
-        
+
         // MyLogFactoryImpl should be loadable via tccl loader
         try {
             Class clazz = tcclLoader.loadClass(MY_LOG_FACTORY_IMPL);

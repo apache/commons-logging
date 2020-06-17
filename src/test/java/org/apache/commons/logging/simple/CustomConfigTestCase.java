@@ -113,7 +113,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
-        
+
         Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
@@ -192,18 +192,18 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertTrue(((DecoratedSimpleLog) log).getShowShortName());
 
     }
-    
+
     /** Hook for subclassses */
     protected void checkShowDateTime() {
         assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());
     }
-    
+
     /** Hook for subclasses */
     protected void checkDecoratedDateTime() {
             assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
                      ((DecoratedSimpleLog) log).getDateTimeFormat());
     }
-    
+
 
 
     // Check the actual log records against the expected ones
