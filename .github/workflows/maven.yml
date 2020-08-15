@@ -43,4 +43,4 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
     - name: Build with Maven
-      run: mvn -V --no-transfer-progress apache-rat:check spotbugs:check javadoc:javadoc -Ddoclint=all package --file pom.xml
+      run: ./mvnw -V --no-transfer-progress apache-rat:check spotbugs:check javadoc:javadoc -Ddoclint=all package --file pom.xml

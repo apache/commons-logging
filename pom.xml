@@ -20,7 +20,7 @@ under the License.
   <!--
     - Note that due to the special requirements of logging unit-tests, most
     - tests are executed in the "integration-test" phase rather than the
-    - "test" phase. Please run "mvn integration-test" to run the full suite of
+    - "test" phase. Please run "./mvnw integration-test" to run the full suite of
     - available unit tests.
     -->
   <parent>

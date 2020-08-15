@@ -25,7 +25,7 @@
  | commons-build-plugin/trunk/src/main/resources/commons-xdoc-templates |
  +======================================================================+
  |                                                                      |
- | 1) Re-generate using: mvn commons:contributing-md                    |
+ | 1) Re-generate using: ./mvnw commons:contributing-md                 |
  |                                                                      |
  | 2) Set the following properties in the component's pom:              |
  |    - commons.jira.id  (required, alphabetic, upper case)             |
@@ -67,7 +67,7 @@ Making Changes
   + Check for unnecessary whitespace with git diff --check before committing.
 + Make sure your commit messages are in the proper format. Your commit message should contain the key of the JIRA issue.
 + Make sure you have added the necessary tests for your changes.
-+ Run all the tests with `mvn clean verify` to assure nothing else was accidentally broken.
++ Run all the tests with `./mvnw clean verify` to assure nothing else was accidentally broken.
 
 Making Trivial Changes
 ----------------------

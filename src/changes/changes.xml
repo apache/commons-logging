@@ -31,7 +31,7 @@ SVN commits. TBA how to use this with SVN.
 
 To generate the release notes from this file:
 
-mvn changes:announcement-generate -Prelease-notes [-Dchanges.version=nn]
+./mvnw changes:announcement-generate -Prelease-notes [-Dchanges.version=nn]
 then tweak the formatting if necessary
 and commit
 

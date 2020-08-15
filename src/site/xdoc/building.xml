@@ -33,7 +33,7 @@ limitations under the License.
   <p>
     To build the full website, run
   </p>
-  <source>mvn site</source>
+  <source>./mvnw site</source>
   <p>
     The result will be in the <code>target/site</code> folder.
     You must be online and using JDK 1.4 or higher to successfully complete this target.
@@ -41,7 +41,7 @@ limitations under the License.
   <p>
     To build the jar files, run
   </p>
-  <source>mvn package</source>
+  <source>./mvnw package</source>
   <p>
     The resulting 4 jar files will be in the <code>target</code> folder.
     You must use JDK 1.4 or higher to successfully complete this target.
@@ -49,7 +49,7 @@ limitations under the License.
   <p>
     To create a full distribution, run
   </p>
-  <source>mvn clean site assembly:assembly</source>
+  <source>./mvnw clean site assembly:assembly</source>
   <p>
     The resulting .zip and .tar.gz files will be in the <code>target</code> folder.
     You must use JDK 1.4 or higher to successfully complete this target.

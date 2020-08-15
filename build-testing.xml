@@ -21,7 +21,7 @@
   - Ant file for running tests for commons-logging.
   -
   - Quick build instructions:
-  -  * mvn package
+  -  * ./mvnw package
   -  * ant getlibs
   -  * cp build.properties.sample build.properties
   -  * Depending on which platform you are on, do either

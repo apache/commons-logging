@@ -24,4 +24,4 @@ jdk:
   - oraclejdk8
 
 after_success:
-  - mvn -V --no-transfer-progress clean cobertura:cobertura coveralls:report
+  - ./mvnw -V --no-transfer-progress clean cobertura:cobertura coveralls:report

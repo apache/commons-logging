@@ -26,7 +26,7 @@ Getting started:
   using Maven 2/3.  For instructions on downloading and installing Maven see
   http://maven.apache.org/.
 
-  To build execute the command 'mvn package verify'.
+  To build execute the command './mvnw package verify'.
   The jar file will be built in the target directory.
   
   Note: the unit tests are executed during the verify phase and require that
@@ -34,13 +34,13 @@ Getting started:
 
 2) Generate the documentation
 
-  Run the 'mvn verify site' command.  The documentation will be written
+  Run the './mvnw verify site' command.  The documentation will be written
   to the target/site directory.  The documentation has some examples of
   how to use this package as well as a troubleshooting guide.
 
 3) Create source and binary distributions
 
-  Run the 'mvn verify site assembly:assembly' command.  The source and binary
+  Run the './mvnw verify site assembly:assembly' command.  The source and binary
   distributions are created in the 'target' directory.
 
 4) Use
