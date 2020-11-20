@@ -362,7 +362,7 @@ public final class WeakHashtable extends Hashtable {
 
         public boolean equals(Object o) {
             boolean result = false;
-            if (o != null && o instanceof Map.Entry) {
+            if (o instanceof Map.Entry) {
                 Map.Entry entry = (Map.Entry) o;
                 result =    (getKey()==null ?
                                             entry.getKey() == null :
