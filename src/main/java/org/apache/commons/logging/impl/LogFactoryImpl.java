@@ -83,7 +83,6 @@ public class LogFactoryImpl extends LogFactory {
      * Public no-arguments constructor required by the lookup mechanism.
      */
     public LogFactoryImpl() {
-        super();
         initDiagnostics();  // method on this object
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Instance created.");

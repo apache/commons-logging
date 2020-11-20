@@ -33,7 +33,6 @@ public class LogConfigurationException extends RuntimeException {
      * Construct a new exception with <code>null</code> as its detail message.
      */
     public LogConfigurationException() {
-        super();
     }
 
     /**
