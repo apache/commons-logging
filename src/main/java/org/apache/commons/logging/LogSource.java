@@ -74,7 +74,7 @@ public class LogSource {
         // Is Log4J Available?
         try {
             log4jIsAvailable = null != Class.forName("org.apache.log4j.Logger");
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             log4jIsAvailable = false;
         }
 
@@ -82,7 +82,7 @@ public class LogSource {
         try {
             jdk14IsAvailable = null != Class.forName("java.util.logging.Logger") &&
                                null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             jdk14IsAvailable = false;
         }
 
@@ -93,15 +93,15 @@ public class LogSource {
             if (name == null) {
                 name = System.getProperty("org.apache.commons.logging.Log");
             }
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
         }
         if (name != null) {
             try {
                 setLogImplementation(name);
-            } catch (Throwable t) {
+            } catch (final Throwable t) {
                 try {
                     setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
-                } catch (Throwable u) {
+                } catch (final Throwable u) {
                     // ignored
                 }
             }
@@ -114,10 +114,10 @@ public class LogSource {
                 } else {
                     setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
                 }
-            } catch (Throwable t) {
+            } catch (final Throwable t) {
                 try {
                     setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
-                } catch (Throwable u) {
+                } catch (final Throwable u) {
                     // ignored
                 }
             }
@@ -139,14 +139,14 @@ public class LogSource {
      * and provide a constructor that takes a single {@link String} argument
      * (containing the name of the log).
      */
-    static public void setLogImplementation(String classname)
+    static public void setLogImplementation(final String classname)
         throws LinkageError, NoSuchMethodException, SecurityException, ClassNotFoundException {
         try {
-            Class logclass = Class.forName(classname);
-            Class[] argtypes = new Class[1];
+            final Class logclass = Class.forName(classname);
+            final Class[] argtypes = new Class[1];
             argtypes[0] = "".getClass();
             logImplctor = logclass.getConstructor(argtypes);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             logImplctor = null;
         }
     }
@@ -156,15 +156,15 @@ public class LogSource {
      * The given class must implement {@link Log}, and provide a constructor
      * that takes a single {@link String} argument (containing the name of the log).
      */
-    static public void setLogImplementation(Class logclass)
+    static public void setLogImplementation(final Class logclass)
         throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
-        Class[] argtypes = new Class[1];
+        final Class[] argtypes = new Class[1];
         argtypes[0] = "".getClass();
         logImplctor = logclass.getConstructor(argtypes);
     }
 
     /** Get a <code>Log</code> instance by class name. */
-    static public Log getInstance(String name) {
+    static public Log getInstance(final String name) {
         Log log = (Log) logs.get(name);
         if (null == log) {
             log = makeNewLogInstance(name);
@@ -174,7 +174,7 @@ public class LogSource {
     }
 
     /** Get a <code>Log</code> instance by class. */
-    static public Log getInstance(Class clazz) {
+    static public Log getInstance(final Class clazz) {
         return getInstance(clazz.getName());
     }
 
@@ -195,12 +195,12 @@ public class LogSource {
      *
      * @param name the log name (or category)
      */
-    static public Log makeNewLogInstance(String name) {
+    static public Log makeNewLogInstance(final String name) {
         Log log;
         try {
-            Object[] args = { name };
+            final Object[] args = { name };
             log = (Log) logImplctor.newInstance(args);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             log = null;
         }
         if (null == log) {

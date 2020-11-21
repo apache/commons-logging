@@ -87,7 +87,7 @@ public class Log4JLogger implements Log, Serializable {
         Priority _traceLevel;
         try {
             _traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
-        } catch(Exception ex) {
+        } catch(final Exception ex) {
             // ok, trace not available
             _traceLevel = Level.DEBUG;
         }
@@ -103,7 +103,7 @@ public class Log4JLogger implements Log, Serializable {
     /**
      * Base constructor.
      */
-    public Log4JLogger(String name) {
+    public Log4JLogger(final String name) {
         this.name = name;
         this.logger = getLogger();
     }
@@ -111,7 +111,7 @@ public class Log4JLogger implements Log, Serializable {
     /**
      * For use with a log4j factory.
      */
-    public Log4JLogger(Logger logger) {
+    public Log4JLogger(final Logger logger) {
         if (logger == null) {
             throw new IllegalArgumentException(
                 "Warning - null logger in constructor; possible log4j misconfiguration.");
@@ -128,7 +128,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
-    public void trace(Object message) {
+    public void trace(final Object message) {
         getLogger().log(FQCN, traceLevel, message, null);
     }
 
@@ -141,7 +141,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
-    public void trace(Object message, Throwable t) {
+    public void trace(final Object message, final Throwable t) {
         getLogger().log(FQCN, traceLevel, message, t);
     }
 
@@ -151,7 +151,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
      */
-    public void debug(Object message) {
+    public void debug(final Object message) {
         getLogger().log(FQCN, Level.DEBUG, message, null);
     }
 
@@ -162,7 +162,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
-    public void debug(Object message, Throwable t) {
+    public void debug(final Object message, final Throwable t) {
         getLogger().log(FQCN, Level.DEBUG, message, t);
     }
 
@@ -172,7 +172,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
-    public void info(Object message) {
+    public void info(final Object message) {
         getLogger().log(FQCN, Level.INFO, message, null);
     }
 
@@ -183,7 +183,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
-    public void info(Object message, Throwable t) {
+    public void info(final Object message, final Throwable t) {
         getLogger().log(FQCN, Level.INFO, message, t);
     }
 
@@ -193,7 +193,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
-    public void warn(Object message) {
+    public void warn(final Object message) {
         getLogger().log(FQCN, Level.WARN, message, null);
     }
 
@@ -204,7 +204,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
-    public void warn(Object message, Throwable t) {
+    public void warn(final Object message, final Throwable t) {
         getLogger().log(FQCN, Level.WARN, message, t);
     }
 
@@ -214,7 +214,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
-    public void error(Object message) {
+    public void error(final Object message) {
         getLogger().log(FQCN, Level.ERROR, message, null);
     }
 
@@ -225,7 +225,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
-    public void error(Object message, Throwable t) {
+    public void error(final Object message, final Throwable t) {
         getLogger().log(FQCN, Level.ERROR, message, t);
     }
 
@@ -235,7 +235,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
-    public void fatal(Object message) {
+    public void fatal(final Object message) {
         getLogger().log(FQCN, Level.FATAL, message, null);
     }
 
@@ -246,7 +246,7 @@ public class Log4JLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
-    public void fatal(Object message, Throwable t) {
+    public void fatal(final Object message, final Throwable t) {
         getLogger().log(FQCN, Level.FATAL, message, t);
     }
 

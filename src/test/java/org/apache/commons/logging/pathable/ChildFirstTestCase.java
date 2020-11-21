@@ -52,12 +52,12 @@ public class ChildFirstTestCase extends TestCase {
      * </ul>
      */
     public static Test suite() throws Exception {
-        Class thisClass = ChildFirstTestCase.class;
-        ClassLoader thisClassLoader = thisClass.getClassLoader();
+        final Class thisClass = ChildFirstTestCase.class;
+        final ClassLoader thisClassLoader = thisClass.getClassLoader();
 
         // Make the parent a direct child of the bootloader to hide all
         // other classes in the system classpath
-        PathableClassLoader parent = new PathableClassLoader(null);
+        final PathableClassLoader parent = new PathableClassLoader(null);
         parent.setParentFirst(false);
 
         // Make the junit classes visible as a special case, as junit
@@ -71,7 +71,7 @@ public class ChildFirstTestCase extends TestCase {
         parent.addLogicalLib("commons-logging");
 
         // Create a child classloader to load the test case through
-        PathableClassLoader child = new PathableClassLoader(parent);
+        final PathableClassLoader child = new PathableClassLoader(parent);
         child.setParentFirst(false);
 
         // Obviously, the child classloader needs to have the test classes
@@ -80,11 +80,11 @@ public class ChildFirstTestCase extends TestCase {
         child.addLogicalLib("commons-logging-adapters");
 
         // Create a third classloader to be the context classloader.
-        PathableClassLoader context = new PathableClassLoader(child);
+        final PathableClassLoader context = new PathableClassLoader(child);
         context.setParentFirst(false);
 
         // reload this class via the child classloader
-        Class testClass = child.loadClass(thisClass.getName());
+        final Class testClass = child.loadClass(thisClass.getName());
 
         // and return our custom TestSuite class
         return new PathableTestSuite(testClass, context);
@@ -96,7 +96,7 @@ public class ChildFirstTestCase extends TestCase {
      * this object instance.
      */
     private Set getAncestorCLs() {
-        Set s = new HashSet();
+        final Set s = new HashSet();
         ClassLoader cl = this.getClass().getClassLoader();
         while (cl != null) {
             s.add(cl);
@@ -113,14 +113,14 @@ public class ChildFirstTestCase extends TestCase {
      */
     public void testPaths() throws Exception {
         // the context classloader is not expected to be null
-        ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         assertNotNull("Context classloader is null", contextLoader);
         assertEquals("Context classloader has unexpected type",
                 PathableClassLoader.class.getName(),
                 contextLoader.getClass().getName());
 
         // the classloader that loaded this class is obviously not null
-        ClassLoader thisLoader = this.getClass().getClassLoader();
+        final ClassLoader thisLoader = this.getClass().getClassLoader();
         assertNotNull("thisLoader is null", thisLoader);
         assertEquals("thisLoader has unexpected type",
                 PathableClassLoader.class.getName(),
@@ -132,7 +132,7 @@ public class ChildFirstTestCase extends TestCase {
                 thisLoader, contextLoader.getParent());
 
         // thisLoader's parent should be available
-        ClassLoader parentLoader = thisLoader.getParent();
+        final ClassLoader parentLoader = thisLoader.getParent();
         assertNotNull("Parent classloader is null", parentLoader);
         assertEquals("Parent classloader has unexpected type",
                 PathableClassLoader.class.getName(),
@@ -144,7 +144,7 @@ public class ChildFirstTestCase extends TestCase {
         // getSystemClassloader is not a PathableClassLoader; it's of a
         // built-in type. This also verifies that system classloader is none of
         // (context, child, parent).
-        ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
+        final ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
         assertNotNull("System classloader is null", systemLoader);
         assertFalse("System classloader has unexpected type",
                 PathableClassLoader.class.getName().equals(
@@ -153,38 +153,38 @@ public class ChildFirstTestCase extends TestCase {
         // junit classes should be visible; their classloader is not
         // in the hierarchy of parent classloaders for this class,
         // though it is accessable due to trickery in the PathableClassLoader.
-        Class junitTest = contextLoader.loadClass("junit.framework.Test");
-        Set ancestorCLs = getAncestorCLs();
+        final Class junitTest = contextLoader.loadClass("junit.framework.Test");
+        final Set ancestorCLs = getAncestorCLs();
         assertFalse("Junit not loaded by ancestor classloader",
                 ancestorCLs.contains(junitTest.getClassLoader()));
 
         // jcl api classes should be visible only via the parent
-        Class logClass = contextLoader.loadClass("org.apache.commons.logging.Log");
+        final Class logClass = contextLoader.loadClass("org.apache.commons.logging.Log");
         assertSame("Log class not loaded via parent",
                 logClass.getClassLoader(), parentLoader);
 
         // jcl adapter classes should be visible via both parent and child. However
         // as the classloaders are child-first we should see the child one.
-        Class log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4JLogger");
+        final Class log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4JLogger");
         assertSame("Log4JLogger not loaded via child",
                 log4jClass.getClassLoader(), thisLoader);
 
         // test classes should be visible via the child only
-        Class testClass = contextLoader.loadClass("org.apache.commons.logging.PathableTestSuite");
+        final Class testClass = contextLoader.loadClass("org.apache.commons.logging.PathableTestSuite");
         assertSame("PathableTestSuite not loaded via child",
                 testClass.getClassLoader(), thisLoader);
 
         // test loading of class that is not available
         try {
-            Class noSuchClass = contextLoader.loadClass("no.such.class");
+            final Class noSuchClass = contextLoader.loadClass("no.such.class");
             fail("Class no.such.class is unexpectedly available");
             assertNotNull(noSuchClass); // silence warning about unused var
-        } catch(ClassNotFoundException ex) {
+        } catch(final ClassNotFoundException ex) {
             // ok
         }
 
         // String class classloader is null
-        Class stringClass = contextLoader.loadClass("java.lang.String");
+        final Class stringClass = contextLoader.loadClass("java.lang.String");
         assertNull("String class classloader is not null!",
                 stringClass.getClassLoader());
     }
@@ -195,8 +195,8 @@ public class ChildFirstTestCase extends TestCase {
     public void testResource() {
         URL resource;
 
-        ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
-        ClassLoader childLoader = contextLoader.getParent();
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader childLoader = contextLoader.getParent();
 
         // getResource where it doesn't exist
         resource = childLoader.getResource("nosuchfile");
@@ -228,10 +228,10 @@ public class ChildFirstTestCase extends TestCase {
         URL[] urls;
 
         // verify the classloader hierarchy
-        ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
-        ClassLoader childLoader = contextLoader.getParent();
-        ClassLoader parentLoader = childLoader.getParent();
-        ClassLoader bootLoader = parentLoader.getParent();
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader childLoader = contextLoader.getParent();
+        final ClassLoader parentLoader = childLoader.getParent();
+        final ClassLoader bootLoader = parentLoader.getParent();
         assertNull("Unexpected classloader hierarchy", bootLoader);
 
         // getResources where no instances exist
@@ -264,7 +264,7 @@ public class ChildFirstTestCase extends TestCase {
 
         // There is no guarantee about the ordering of results returned from getResources
         // To make this test portable across JVMs, sort the string to give them a known order
-        String[] urlsToStrings = new String[2];
+        final String[] urlsToStrings = new String[2];
         urlsToStrings[0] = urls[0].toString();
         urlsToStrings[1] = urls[1].toString();
         Arrays.sort(urlsToStrings);
@@ -277,13 +277,13 @@ public class ChildFirstTestCase extends TestCase {
     /**
      * Utility method to convert an enumeration-of-URLs into an array of URLs.
      */
-    private static URL[] toURLArray(Enumeration e) {
-        ArrayList l = new ArrayList();
+    private static URL[] toURLArray(final Enumeration e) {
+        final ArrayList l = new ArrayList();
         while (e.hasMoreElements()) {
-            URL u = (URL) e.nextElement();
+            final URL u = (URL) e.nextElement();
             l.add(u);
         }
-        URL[] tmp = new URL[l.size()];
+        final URL[] tmp = new URL[l.size()];
         return (URL[]) l.toArray(tmp);
     }
 
@@ -294,10 +294,10 @@ public class ChildFirstTestCase extends TestCase {
         java.io.InputStream is;
 
         // verify the classloader hierarchy
-        ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
-        ClassLoader childLoader = contextLoader.getParent();
-        ClassLoader parentLoader = childLoader.getParent();
-        ClassLoader bootLoader = parentLoader.getParent();
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader childLoader = contextLoader.getParent();
+        final ClassLoader parentLoader = childLoader.getParent();
+        final ClassLoader bootLoader = parentLoader.getParent();
         assertNull("Unexpected classloader hierarchy", bootLoader);
 
         // getResourceAsStream where no instances exist

@@ -54,7 +54,7 @@ public class LogKitLogger implements Log, Serializable {
      *
      * @param name log name
      */
-    public LogKitLogger(String name) {
+    public LogKitLogger(final String name) {
         this.name = name;
         this.logger = getLogger();
     }
@@ -85,7 +85,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
     */
-    public void trace(Object message) {
+    public void trace(final Object message) {
         debug(message);
     }
 
@@ -96,7 +96,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
-    public void trace(Object message, Throwable t) {
+    public void trace(final Object message, final Throwable t) {
         debug(message, t);
     }
 
@@ -106,7 +106,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
      */
-    public void debug(Object message) {
+    public void debug(final Object message) {
         if (message != null) {
             getLogger().debug(String.valueOf(message));
         }
@@ -119,7 +119,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
-    public void debug(Object message, Throwable t) {
+    public void debug(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().debug(String.valueOf(message), t);
         }
@@ -131,7 +131,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
-    public void info(Object message) {
+    public void info(final Object message) {
         if (message != null) {
             getLogger().info(String.valueOf(message));
         }
@@ -144,7 +144,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
-    public void info(Object message, Throwable t) {
+    public void info(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().info(String.valueOf(message), t);
         }
@@ -156,7 +156,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
-    public void warn(Object message) {
+    public void warn(final Object message) {
         if (message != null) {
             getLogger().warn(String.valueOf(message));
         }
@@ -169,7 +169,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
-    public void warn(Object message, Throwable t) {
+    public void warn(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().warn(String.valueOf(message), t);
         }
@@ -181,7 +181,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
-    public void error(Object message) {
+    public void error(final Object message) {
         if (message != null) {
             getLogger().error(String.valueOf(message));
         }
@@ -194,7 +194,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
-    public void error(Object message, Throwable t) {
+    public void error(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().error(String.valueOf(message), t);
         }
@@ -206,7 +206,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
-    public void fatal(Object message) {
+    public void fatal(final Object message) {
         if (message != null) {
             getLogger().fatalError(String.valueOf(message));
         }
@@ -219,7 +219,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
-    public void fatal(Object message, Throwable t) {
+    public void fatal(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().fatalError(String.valueOf(message), t);
         }

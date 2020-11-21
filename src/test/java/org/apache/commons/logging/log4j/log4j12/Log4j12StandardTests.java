@@ -32,9 +32,9 @@ import org.apache.log4j.Logger;
 
 public class Log4j12StandardTests extends StandardTests {
 
-    public void setUpTestAppender(List logEvents) {
-        TestAppender appender = new TestAppender(logEvents);
-        Logger rootLogger = Logger.getRootLogger();
+    public void setUpTestAppender(final List logEvents) {
+        final TestAppender appender = new TestAppender(logEvents);
+        final Logger rootLogger = Logger.getRootLogger();
         rootLogger.removeAllAppenders();
         rootLogger.addAppender(appender);
         rootLogger.setLevel(Level.INFO);

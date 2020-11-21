@@ -29,17 +29,17 @@ public class BasicOperationsTestCase extends TestCase
 {
     public void testIsEnabledClassLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTestCase.class);
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeIsEnabledTest(log);
     }
 
     public void testIsEnabledNamedLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeIsEnabledTest(log);
     }
 
-    public void executeIsEnabledTest(Log log)
+    public void executeIsEnabledTest(final Log log)
     {
         try
         {
@@ -50,7 +50,7 @@ public class BasicOperationsTestCase extends TestCase
             log.isErrorEnabled();
             log.isFatalEnabled();
         }
-        catch (Throwable t)
+        catch (final Throwable t)
         {
             t.printStackTrace();
             fail("Exception thrown: " + t);
@@ -59,17 +59,17 @@ public class BasicOperationsTestCase extends TestCase
 
     public void testMessageWithoutExceptionClassLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTestCase.class);
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithoutExceptionTest(log);
     }
 
     public void testMessageWithoutExceptionNamedLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithoutExceptionTest(log);
     }
 
-    public void executeMessageWithoutExceptionTest(Log log)
+    public void executeMessageWithoutExceptionTest(final Log log)
     {
         try
         {
@@ -80,7 +80,7 @@ public class BasicOperationsTestCase extends TestCase
             log.error("Hello, Mum");
             log.fatal("Hello, Mum");
         }
-        catch (Throwable t)
+        catch (final Throwable t)
         {
             t.printStackTrace();
             fail("Exception thrown: " + t);
@@ -89,17 +89,17 @@ public class BasicOperationsTestCase extends TestCase
 
     public void testMessageWithExceptionClassLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTestCase.class);
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithExceptionTest(log);
     }
 
     public void testMessageWithExceptionNamedLog()
     {
-        Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithExceptionTest(log);
     }
 
-    public void executeMessageWithExceptionTest(Log log)
+    public void executeMessageWithExceptionTest(final Log log)
     {
         try
         {
@@ -110,7 +110,7 @@ public class BasicOperationsTestCase extends TestCase
             log.error("Hello, Mum", new ArithmeticException());
             log.fatal("Hello, Mum", new ArithmeticException());
         }
-        catch (Throwable t)
+        catch (final Throwable t)
         {
             t.printStackTrace();
             fail("Exception thrown: " + t);

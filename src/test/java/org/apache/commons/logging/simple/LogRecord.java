@@ -30,7 +30,7 @@ public class LogRecord implements Serializable {
      */
     private static final long serialVersionUID = -5254831759209770665L;
 
-    public LogRecord(int type, Object message, Throwable t) {
+    public LogRecord(final int type, final Object message, final Throwable t) {
         this.type = type;
         this.message = message;
         this.t = t;

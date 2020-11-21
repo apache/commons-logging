@@ -34,13 +34,13 @@ public class AppClasspathStandardTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        PathableClassLoader loader = new PathableClassLoader(null);
+        final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("log4j12");
         loader.addLogicalLib("commons-logging");
 
-        Class testClass = loader.loadClass(
+        final Class testClass = loader.loadClass(
             "org.apache.commons.logging.log4j.log4j12.Log4j12StandardTests");
         return new PathableTestSuite(testClass, loader);
     }

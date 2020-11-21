@@ -133,23 +133,23 @@ public class SimpleLog implements Log, Serializable {
 
     // ------------------------------------------------------------ Initializer
 
-    private static String getStringProperty(String name) {
+    private static String getStringProperty(final String name) {
         String prop = null;
         try {
             prop = System.getProperty(name);
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // Ignore
         }
         return prop == null ? simpleLogProps.getProperty(name) : prop;
     }
 
-    private static String getStringProperty(String name, String dephault) {
-        String prop = getStringProperty(name);
+    private static String getStringProperty(final String name, final String dephault) {
+        final String prop = getStringProperty(name);
         return prop == null ? dephault : prop;
     }
 
-    private static boolean getBooleanProperty(String name, boolean dephault) {
-        String prop = getStringProperty(name);
+    private static boolean getBooleanProperty(final String name, final boolean dephault) {
+        final String prop = getStringProperty(name);
         return prop == null ? dephault : "true".equalsIgnoreCase(prop);
     }
 
@@ -158,16 +158,16 @@ public class SimpleLog implements Log, Serializable {
     // Override with system properties.
     static {
         // Add props from the resource simplelog.properties
-        InputStream in = getResourceAsStream("simplelog.properties");
+        final InputStream in = getResourceAsStream("simplelog.properties");
         if (null != in) {
             try {
                 simpleLogProps.load(in);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // ignored
             } finally {
                 try {
                     in.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     // ignored
                 }
             }
@@ -182,7 +182,7 @@ public class SimpleLog implements Log, Serializable {
                                                dateTimeFormat);
             try {
                 dateFormatter = new SimpleDateFormat(dateTimeFormat);
-            } catch(IllegalArgumentException e) {
+            } catch(final IllegalArgumentException e) {
                 // If the format pattern is invalid - use the default format
                 dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
                 dateFormatter = new SimpleDateFormat(dateTimeFormat);
@@ -253,7 +253,7 @@ public class SimpleLog implements Log, Serializable {
      *
      * @param currentLogLevel new logging level
      */
-    public void setLevel(int currentLogLevel) {
+    public void setLevel(final int currentLogLevel) {
         this.currentLogLevel = currentLogLevel;
     }
 
@@ -276,7 +276,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message The message itself (typically a String)
      * @param t The exception whose stack trace should be logged
      */
-    protected void log(int type, Object message, Throwable t) {
+    protected void log(final int type, final Object message, final Throwable t) {
         // Use a string buffer for better performance
         final StringBuffer buf = new StringBuffer();
 
@@ -341,7 +341,7 @@ public class SimpleLog implements Log, Serializable {
      * @param buffer A <code>StringBuffer</code> containing the accumulated
      *  text to be logged
      */
-    protected void write(StringBuffer buffer) {
+    protected void write(final StringBuffer buffer) {
         System.err.println(buffer.toString());
     }
 
@@ -350,7 +350,7 @@ public class SimpleLog implements Log, Serializable {
      *
      * @param logLevel is this level enabled?
      */
-    protected boolean isLevelEnabled(int logLevel) {
+    protected boolean isLevelEnabled(final int logLevel) {
         // log level are numerically ordered so can use simple numeric
         // comparison
         return logLevel >= currentLogLevel;
@@ -365,7 +365,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
      */
-    public final void debug(Object message) {
+    public final void debug(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, null);
         }
@@ -379,7 +379,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
-    public final void debug(Object message, Throwable t) {
+    public final void debug(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, t);
         }
@@ -391,7 +391,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
-    public final void trace(Object message) {
+    public final void trace(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
             log(SimpleLog.LOG_LEVEL_TRACE, message, null);
         }
@@ -404,7 +404,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
-    public final void trace(Object message, Throwable t) {
+    public final void trace(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
             log(SimpleLog.LOG_LEVEL_TRACE, message, t);
         }
@@ -416,7 +416,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
-    public final void info(Object message) {
+    public final void info(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO,message,null);
         }
@@ -429,7 +429,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
-    public final void info(Object message, Throwable t) {
+    public final void info(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO, message, t);
         }
@@ -441,7 +441,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
-    public final void warn(Object message) {
+    public final void warn(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, null);
         }
@@ -454,7 +454,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
-    public final void warn(Object message, Throwable t) {
+    public final void warn(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, t);
         }
@@ -466,7 +466,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
-    public final void error(Object message) {
+    public final void error(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, null);
         }
@@ -479,7 +479,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
-    public final void error(Object message, Throwable t) {
+    public final void error(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, t);
         }
@@ -491,7 +491,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
-    public final void fatal(Object message) {
+    public final void fatal(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, null);
         }
@@ -504,7 +504,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
-    public final void fatal(Object message, Throwable t) {
+    public final void fatal(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, t);
         }
@@ -596,9 +596,9 @@ public class SimpleLog implements Log, Serializable {
             // Get the thread context class loader (if there is one)
             try {
                 classLoader = (ClassLoader)method.invoke(Thread.currentThread(), (Class[]) null);
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 // ignore
-            } catch (InvocationTargetException e) {
+            } catch (final InvocationTargetException e) {
                 /**
                  * InvocationTargetException is thrown by 'invoke' when
                  * the method being invoked (getContextClassLoader) throws
@@ -624,7 +624,7 @@ public class SimpleLog implements Log, Serializable {
                         ("Unexpected InvocationTargetException", e.getTargetException());
                 }
             }
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             // Assume we are running on JDK 1.1
             // ignore
         }
@@ -641,7 +641,7 @@ public class SimpleLog implements Log, Serializable {
         return (InputStream)AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
-                    ClassLoader threadCL = getContextClassLoader();
+                    final ClassLoader threadCL = getContextClassLoader();
 
                     if (threadCL != null) {
                         return threadCL.getResourceAsStream(name);

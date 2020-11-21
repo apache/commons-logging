@@ -56,7 +56,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      *
      * @param name Name of the test case
      */
-    public CustomConfigTestCase(String name) {
+    public CustomConfigTestCase(final String name) {
         super(name);
     }
 
@@ -109,15 +109,15 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * Given the name of a class that is somewhere in the classpath of the provided
      * classloader, return the contents of the corresponding .class file.
      */
-    protected static byte[] readClass(String name, ClassLoader srcCL) throws Exception {
-        String resName = name.replace('.', '/') + ".class";
+    protected static byte[] readClass(final String name, final ClassLoader srcCL) throws Exception {
+        final String resName = name.replace('.', '/') + ".class";
         System.err.println("Trying to load resource [" + resName + "]");
-        InputStream is = srcCL.getResourceAsStream(resName);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final InputStream is = srcCL.getResourceAsStream(resName);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         System.err.println("Reading resource [" + resName + "]");
-        byte[] buf = new byte[1000];
+        final byte[] buf = new byte[1000];
         for(;;) {
-            int read = is.read(buf);
+            final int read = is.read(buf);
             if (read <= 0) {
                 break;
             }
@@ -133,30 +133,30 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * works for classes for which all dependencies are already loaded in
      * that classloader.
      */
-    protected static void loadTestHandler(String className, ClassLoader targetCL) {
+    protected static void loadTestHandler(final String className, final ClassLoader targetCL) {
         try {
             targetCL.loadClass(className);
             // fail("Class already in target classloader");
             return;
-        } catch(ClassNotFoundException ex) {
+        } catch(final ClassNotFoundException ex) {
             // ok, go ahead and load it
         }
 
         try {
-            ClassLoader srcCL = CustomConfigAPITestCase.class.getClassLoader();
-            byte[] classData = readClass(className, srcCL);
+            final ClassLoader srcCL = CustomConfigAPITestCase.class.getClassLoader();
+            final byte[] classData = readClass(className, srcCL);
 
-            Class[] params = new Class[] { String.class, classData.getClass(), Integer.TYPE, Integer.TYPE };
-            Method m = ClassLoader.class.getDeclaredMethod("defineClass", params);
+            final Class[] params = new Class[] { String.class, classData.getClass(), Integer.TYPE, Integer.TYPE };
+            final Method m = ClassLoader.class.getDeclaredMethod("defineClass", params);
 
-            Object[] args = new Object[4];
+            final Object[] args = new Object[4];
             args[0] = className;
             args[1] = classData;
             args[2] = new Integer(0);
             args[3] = new Integer(classData.length);
             m.setAccessible(true);
             m.invoke(targetCL, args);
-        } catch(Exception e) {
+        } catch(final Exception e) {
             e.printStackTrace();
             fail("Unable to load class " + className);
         }
@@ -179,7 +179,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        PathableClassLoader cl = new PathableClassLoader(null);
+        final PathableClassLoader cl = new PathableClassLoader(null);
         cl.useExplicitLoader("junit.", Test.class.getClassLoader());
 
         // the TestHandler class must be accessable from the System classloader
@@ -187,13 +187,13 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         // be able to instantiate it. And this test case must see the same
         // class in order to be able to access its data. Yes this is ugly
         // but the whole jdk14 API is a ******* mess anyway.
-        ClassLoader scl = ClassLoader.getSystemClassLoader();
+        final ClassLoader scl = ClassLoader.getSystemClassLoader();
         loadTestHandler(HANDLER_NAME, scl);
         cl.useExplicitLoader(HANDLER_NAME, scl);
         cl.addLogicalLib("commons-logging");
         cl.addLogicalLib("testclasses");
 
-        Class testClass = cl.loadClass(CustomConfigTestCase.class.getName());
+        final Class testClass = cl.loadClass(CustomConfigTestCase.class.getName());
         return new PathableTestSuite(testClass, cl);
     }
 
@@ -290,11 +290,11 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Check the recorded messages
-    protected void checkLogRecords(boolean thrown) {
-        Iterator records = handler.records();
+    protected void checkLogRecords(final boolean thrown) {
+        final Iterator records = handler.records();
         for (int i = 0; i < testMessages.length; i++) {
             assertTrue(records.hasNext());
-            LogRecord record = (LogRecord) records.next();
+            final LogRecord record = (LogRecord) records.next();
             assertEquals("LogRecord level",
                          testLevels[i], record.getLevel());
             assertEquals("LogRecord message",
@@ -327,7 +327,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     // Log the messages with exceptions
     protected void logExceptionMessages() {
-        Throwable t = new DummyException();
+        final Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
         log.debug("debug", t);
         log.info("info", t);
@@ -377,15 +377,15 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Set up logger instance
-    protected void setUpLogger(String name) throws Exception {
+    protected void setUpLogger(final String name) throws Exception {
         logger = Logger.getLogger(name);
     }
 
 
     // Set up LogManager instance
-    protected void setUpManager(String config) throws Exception {
+    protected void setUpManager(final String config) throws Exception {
         manager = LogManager.getLogManager();
-        InputStream is =
+        final InputStream is =
             this.getClass().getClassLoader().getResourceAsStream(config);
         manager.readConfiguration(is);
         is.close();

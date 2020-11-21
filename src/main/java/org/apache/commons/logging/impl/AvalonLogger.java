@@ -63,7 +63,7 @@ public class AvalonLogger implements Log {
      *
      * @param logger the Avalon logger implementation to delegate to
      */
-    public AvalonLogger(Logger logger) {
+    public AvalonLogger(final Logger logger) {
         this.logger = logger;
     }
 
@@ -73,7 +73,7 @@ public class AvalonLogger implements Log {
      *
      * @param name the name of the avalon logger implementation to delegate to
      */
-    public AvalonLogger(String name) {
+    public AvalonLogger(final String name) {
         if (defaultLogger == null) {
             throw new NullPointerException("default logger has to be specified if this constructor is used!");
         }
@@ -95,7 +95,7 @@ public class AvalonLogger implements Log {
      * @param logger the default avalon logger,
      * in case there is no logger instance supplied in constructor
      */
-    public static void setDefaultLogger(Logger logger) {
+    public static void setDefaultLogger(final Logger logger) {
         defaultLogger = logger;
     }
 
@@ -106,7 +106,7 @@ public class AvalonLogger implements Log {
     * @param t log this cause
     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
-    public void debug(Object message, Throwable t) {
+    public void debug(final Object message, final Throwable t) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String.valueOf(message), t);
         }
@@ -118,7 +118,7 @@ public class AvalonLogger implements Log {
      * @param message to log.
      * @see org.apache.commons.logging.Log#debug(Object)
      */
-    public void debug(Object message) {
+    public void debug(final Object message) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String.valueOf(message));
         }
@@ -131,7 +131,7 @@ public class AvalonLogger implements Log {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
-    public void error(Object message, Throwable t) {
+    public void error(final Object message, final Throwable t) {
         if (getLogger().isErrorEnabled()) {
             getLogger().error(String.valueOf(message), t);
         }
@@ -143,7 +143,7 @@ public class AvalonLogger implements Log {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
-    public void error(Object message) {
+    public void error(final Object message) {
         if (getLogger().isErrorEnabled()) {
             getLogger().error(String.valueOf(message));
         }
@@ -156,7 +156,7 @@ public class AvalonLogger implements Log {
      * @param t log this cause.
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
-    public void fatal(Object message, Throwable t) {
+    public void fatal(final Object message, final Throwable t) {
         if (getLogger().isFatalErrorEnabled()) {
             getLogger().fatalError(String.valueOf(message), t);
         }
@@ -168,7 +168,7 @@ public class AvalonLogger implements Log {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
-    public void fatal(Object message) {
+    public void fatal(final Object message) {
         if (getLogger().isFatalErrorEnabled()) {
             getLogger().fatalError(String.valueOf(message));
         }
@@ -181,7 +181,7 @@ public class AvalonLogger implements Log {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
-    public void info(Object message, Throwable t) {
+    public void info(final Object message, final Throwable t) {
         if (getLogger().isInfoEnabled()) {
             getLogger().info(String.valueOf(message), t);
         }
@@ -193,7 +193,7 @@ public class AvalonLogger implements Log {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
-    public void info(Object message) {
+    public void info(final Object message) {
         if (getLogger().isInfoEnabled()) {
             getLogger().info(String.valueOf(message));
         }
@@ -254,7 +254,7 @@ public class AvalonLogger implements Log {
      * @param t log this cause.
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
-    public void trace(Object message, Throwable t) {
+    public void trace(final Object message, final Throwable t) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String.valueOf(message), t);
         }
@@ -266,7 +266,7 @@ public class AvalonLogger implements Log {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
-    public void trace(Object message) {
+    public void trace(final Object message) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String.valueOf(message));
         }
@@ -279,7 +279,7 @@ public class AvalonLogger implements Log {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
-    public void warn(Object message, Throwable t) {
+    public void warn(final Object message, final Throwable t) {
         if (getLogger().isWarnEnabled()) {
             getLogger().warn(String.valueOf(message), t);
         }
@@ -291,7 +291,7 @@ public class AvalonLogger implements Log {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
-    public void warn(Object message) {
+    public void warn(final Object message) {
         if (getLogger().isWarnEnabled()) {
             getLogger().warn(String.valueOf(message));
         }

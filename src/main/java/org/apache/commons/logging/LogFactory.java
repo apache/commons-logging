@@ -318,7 +318,7 @@ public abstract class LogFactory {
         String storeImplementationClass;
         try {
             storeImplementationClass = getSystemProperty(HASHTABLE_IMPLEMENTATION_PROPERTY, null);
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             // Permissions don't allow this to be accessed. Default to the "modern"
             // weak hashtable implementation if it is available.
             storeImplementationClass = null;
@@ -328,9 +328,9 @@ public abstract class LogFactory {
             storeImplementationClass = WEAK_HASHTABLE_CLASSNAME;
         }
         try {
-            Class implementationClass = Class.forName(storeImplementationClass);
+            final Class implementationClass = Class.forName(storeImplementationClass);
             result = (Hashtable) implementationClass.newInstance();
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             handleThrowable(t); // may re-throw t
 
             // ignore
@@ -355,7 +355,7 @@ public abstract class LogFactory {
     // --------------------------------------------------------- Static Methods
 
     /** Utility method to safely trim a string. */
-    private static String trim(String src) {
+    private static String trim(final String src) {
         if (src == null) {
             return null;
         }
@@ -374,7 +374,7 @@ public abstract class LogFactory {
      *
      * @param t the Throwable to check
      */
-    protected static void handleThrowable(Throwable t) {
+    protected static void handleThrowable(final Throwable t) {
         if (t instanceof ThreadDeath) {
             throw (ThreadDeath) t;
         }
@@ -416,7 +416,7 @@ public abstract class LogFactory {
      */
     public static LogFactory getFactory() throws LogConfigurationException {
         // Identify the class loader we will be using
-        ClassLoader contextClassLoader = getContextClassLoaderInternal();
+        final ClassLoader contextClassLoader = getContextClassLoaderInternal();
 
         if (contextClassLoader == null) {
             // This is an odd enough situation to report about. This
@@ -450,13 +450,13 @@ public abstract class LogFactory {
         // As the properties file (if it exists) will be used one way or
         // another in the end we may as well look for it first.
 
-        Properties props = getConfigurationFile(contextClassLoader, FACTORY_PROPERTIES);
+        final Properties props = getConfigurationFile(contextClassLoader, FACTORY_PROPERTIES);
 
         // Determine whether we will be using the thread context class loader to
         // load logging classes or not by checking the loaded properties file (if any).
         ClassLoader baseClassLoader = contextClassLoader;
         if (props != null) {
-            String useTCCLStr = props.getProperty(TCCL_KEY);
+            final String useTCCLStr = props.getProperty(TCCL_KEY);
             if (useTCCLStr != null) {
                 // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
                 // is required for Java 1.2 compatibility.
@@ -481,7 +481,7 @@ public abstract class LogFactory {
         }
 
         try {
-            String factoryClass = getSystemProperty(FACTORY_PROPERTY, null);
+            final String factoryClass = getSystemProperty(FACTORY_PROPERTY, null);
             if (factoryClass != null) {
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic("[LOOKUP] Creating an instance of LogFactory class '" + factoryClass +
@@ -493,14 +493,14 @@ public abstract class LogFactory {
                     logDiagnostic("[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
                 }
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("[LOOKUP] A security exception occurred while trying to create an" +
                               " instance of the custom factory class" + ": [" + trim(e.getMessage()) +
                               "]. Trying alternative implementations...");
             }
             // ignore
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             // This is not consistent with the behavior when a bad LogFactory class is
             // specified in a services file.
             //
@@ -535,7 +535,7 @@ public abstract class LogFactory {
                     BufferedReader rd;
                     try {
                         rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                    } catch (java.io.UnsupportedEncodingException e) {
+                    } catch (final java.io.UnsupportedEncodingException e) {
                         rd = new BufferedReader(new InputStreamReader(is));
                     }
 
@@ -561,7 +561,7 @@ public abstract class LogFactory {
                         logDiagnostic("[LOOKUP] No resource file with name '" + SERVICE_ID + "' found.");
                     }
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 // note: if the specified LogFactory class wasn't compatible with LogFactory
                 // for some reason, a ClassCastException will be caught here, and attempts will
                 // continue to find a compatible class.
@@ -585,7 +585,7 @@ public abstract class LogFactory {
                         "[LOOKUP] Looking in properties file for entry with key '" + FACTORY_PROPERTY +
                         "' to define the LogFactory subclass to use...");
                 }
-                String factoryClass = props.getProperty(FACTORY_PROPERTY);
+                final String factoryClass = props.getProperty(FACTORY_PROPERTY);
                 if (factoryClass != null) {
                     if (isDiagnosticsEnabled()) {
                         logDiagnostic(
@@ -635,10 +635,10 @@ public abstract class LogFactory {
             cacheFactory(contextClassLoader, factory);
 
             if (props != null) {
-                Enumeration names = props.propertyNames();
+                final Enumeration names = props.propertyNames();
                 while (names.hasMoreElements()) {
-                    String name = (String) names.nextElement();
-                    String value = props.getProperty(name);
+                    final String name = (String) names.nextElement();
+                    final String value = props.getProperty(name);
                     factory.setAttribute(name, value);
                 }
             }
@@ -655,7 +655,7 @@ public abstract class LogFactory {
      * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
-    public static Log getLog(Class clazz) throws LogConfigurationException {
+    public static Log getLog(final Class clazz) throws LogConfigurationException {
         return getFactory().getInstance(clazz);
     }
 
@@ -669,7 +669,7 @@ public abstract class LogFactory {
      * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
-    public static Log getLog(String name) throws LogConfigurationException {
+    public static Log getLog(final String name) throws LogConfigurationException {
         return getFactory().getInstance(name);
     }
 
@@ -681,7 +681,7 @@ public abstract class LogFactory {
      *
      * @param classLoader ClassLoader for which to release the LogFactory
      */
-    public static void release(ClassLoader classLoader) {
+    public static void release(final ClassLoader classLoader) {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Releasing factory for classloader " + objectId(classLoader));
         }
@@ -720,7 +720,7 @@ public abstract class LogFactory {
         synchronized (factories) {
             final Enumeration elements = factories.elements();
             while (elements.hasMoreElements()) {
-                LogFactory element = (LogFactory) elements.nextElement();
+                final LogFactory element = (LogFactory) elements.nextElement();
                 element.release();
             }
             factories.clear();
@@ -761,10 +761,10 @@ public abstract class LogFactory {
      *
      * @since 1.1
      */
-    protected static ClassLoader getClassLoader(Class clazz) {
+    protected static ClassLoader getClassLoader(final Class clazz) {
         try {
             return clazz.getClassLoader();
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("Unable to get classloader for class '" + clazz +
                               "' due to security restrictions - " + ex.getMessage());
@@ -842,7 +842,7 @@ public abstract class LogFactory {
 
         try {
             classLoader = Thread.currentThread().getContextClassLoader();
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             /**
              * getContextClassLoader() throws SecurityException when
              * the context class loader isn't an ancestor of the
@@ -873,7 +873,7 @@ public abstract class LogFactory {
      *  one has previously been created, or null if this is the first time
      *  we have seen this particular classloader.
      */
-    private static LogFactory getCachedFactory(ClassLoader contextClassLoader) {
+    private static LogFactory getCachedFactory(final ClassLoader contextClassLoader) {
         if (contextClassLoader == null) {
             // We have to handle this specially, as factories is a Hashtable
             // and those don't accept null as a key value.
@@ -894,7 +894,7 @@ public abstract class LogFactory {
      *  this can be null under some circumstances; this is ok.
      * @param factory should be the factory to cache. This should never be null.
      */
-    private static void cacheFactory(ClassLoader classLoader, LogFactory factory) {
+    private static void cacheFactory(final ClassLoader classLoader, final LogFactory factory) {
         // Ideally we would assert(factory != null) here. However reporting
         // errors from within a logging implementation is a little tricky!
 
@@ -958,7 +958,7 @@ public abstract class LogFactory {
         // Note that any unchecked exceptions thrown by the createFactory
         // method will propagate out of this method; in particular a
         // ClassCastException can be thrown.
-        Object result = AccessController.doPrivileged(
+        final Object result = AccessController.doPrivileged(
             new PrivilegedAction() {
                 public Object run() {
                     return createFactory(factoryClass, classLoader);
@@ -966,7 +966,7 @@ public abstract class LogFactory {
             });
 
         if (result instanceof LogConfigurationException) {
-            LogConfigurationException ex = (LogConfigurationException) result;
+            final LogConfigurationException ex = (LogConfigurationException) result;
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("An error occurred while loading the factory class:" + ex.getMessage());
             }
@@ -1010,7 +1010,7 @@ public abstract class LogFactory {
      * @return either a LogFactory object or a LogConfigurationException object.
      * @since 1.1
      */
-    protected static Object createFactory(String factoryClass, ClassLoader classLoader) {
+    protected static Object createFactory(final String factoryClass, final ClassLoader classLoader) {
         // This will be used to diagnose bad configurations
         // and allow a useful message to be sent to the user
         Class logFactoryClass = null;
@@ -1050,7 +1050,7 @@ public abstract class LogFactory {
 
                     return (LogFactory) logFactoryClass.newInstance();
 
-                } catch (ClassNotFoundException ex) {
+                } catch (final ClassNotFoundException ex) {
                     if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
@@ -1060,7 +1060,7 @@ public abstract class LogFactory {
                         throw ex;
                     }
                     // ignore exception, continue
-                } catch (NoClassDefFoundError e) {
+                } catch (final NoClassDefFoundError e) {
                     if (classLoader == thisClassLoader) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
@@ -1071,7 +1071,7 @@ public abstract class LogFactory {
                         throw e;
                     }
                     // ignore exception, continue
-                } catch (ClassCastException e) {
+                } catch (final ClassCastException e) {
                     if (classLoader == thisClassLoader) {
                         // There's no point in falling through to the code below that
                         // tries again with thisClassLoader, because we've just tried
@@ -1149,7 +1149,7 @@ public abstract class LogFactory {
             }
             logFactoryClass = Class.forName(factoryClass);
             return (LogFactory) logFactoryClass.newInstance();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Check to see if we've got a bad configuration
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("Unable to create LogFactory instance.");
@@ -1175,16 +1175,16 @@ public abstract class LogFactory {
      * <code>LogFactory</code> when that class is loaded via the same
      * classloader that loaded the <code>logFactoryClass</code>.
      */
-    private static boolean implementsLogFactory(Class logFactoryClass) {
+    private static boolean implementsLogFactory(final Class logFactoryClass) {
         boolean implementsLogFactory = false;
         if (logFactoryClass != null) {
             try {
-                ClassLoader logFactoryClassLoader = logFactoryClass.getClassLoader();
+                final ClassLoader logFactoryClassLoader = logFactoryClass.getClassLoader();
                 if (logFactoryClassLoader == null) {
                     logDiagnostic("[CUSTOM LOG FACTORY] was loaded by the boot classloader");
                 } else {
                     logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
-                    Class factoryFromCustomLoader
+                    final Class factoryFromCustomLoader
                         = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
                     implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
                     if (implementsLogFactory) {
@@ -1195,7 +1195,7 @@ public abstract class LogFactory {
                                       " does not implement LogFactory.");
                     }
                 }
-            } catch (SecurityException e) {
+            } catch (final SecurityException e) {
                 //
                 // The application is running within a hostile security environment.
                 // This will make it very hard to diagnose issues with JCL.
@@ -1203,7 +1203,7 @@ public abstract class LogFactory {
                 //
                 logDiagnostic("[CUSTOM LOG FACTORY] SecurityException thrown whilst trying to determine whether " +
                               "the compatibility was caused by a classloader conflict: " + e.getMessage());
-            } catch (LinkageError e) {
+            } catch (final LinkageError e) {
                 //
                 // This should be an unusual circumstance.
                 // LinkageError's usually indicate that a dependent class has incompatibly changed.
@@ -1212,7 +1212,7 @@ public abstract class LogFactory {
                 //
                 logDiagnostic("[CUSTOM LOG FACTORY] LinkageError thrown whilst trying to determine whether " +
                               "the compatibility was caused by a classloader conflict: " + e.getMessage());
-            } catch (ClassNotFoundException e) {
+            } catch (final ClassNotFoundException e) {
                 //
                 // LogFactory cannot be loaded by the classloader which loaded the custom factory implementation.
                 // The custom implementation is not viable until this is corrected.
@@ -1260,7 +1260,7 @@ public abstract class LogFactory {
      * If resources could not be listed for some reason, null is returned.
      */
     private static Enumeration getResources(final ClassLoader loader, final String name) {
-        PrivilegedAction action =
+        final PrivilegedAction action =
             new PrivilegedAction() {
                 public Object run() {
                     try {
@@ -1269,13 +1269,13 @@ public abstract class LogFactory {
                         } else {
                             return ClassLoader.getSystemResources(name);
                         }
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Exception while trying to find configuration file " +
                                           name + ":" + e.getMessage());
                         }
                         return null;
-                    } catch (NoSuchMethodError e) {
+                    } catch (final NoSuchMethodError e) {
                         // we must be running on a 1.1 JVM which doesn't support
                         // ClassLoader.getSystemResources; just return null in
                         // this case.
@@ -1283,7 +1283,7 @@ public abstract class LogFactory {
                     }
                 }
             };
-        Object result = AccessController.doPrivileged(action);
+        final Object result = AccessController.doPrivileged(action);
         return (Enumeration) result;
     }
 
@@ -1296,7 +1296,7 @@ public abstract class LogFactory {
      * {@code Null} is returned if the URL cannot be opened.
      */
     private static Properties getProperties(final URL url) {
-        PrivilegedAction action =
+        final PrivilegedAction action =
             new PrivilegedAction() {
                 public Object run() {
                     InputStream stream = null;
@@ -1304,17 +1304,17 @@ public abstract class LogFactory {
                         // We must ensure that useCaches is set to false, as the
                         // default behavior of java is to cache file handles, and
                         // this "locks" files, preventing hot-redeploy on windows.
-                        URLConnection connection = url.openConnection();
+                        final URLConnection connection = url.openConnection();
                         connection.setUseCaches(false);
                         stream = connection.getInputStream();
                         if (stream != null) {
-                            Properties props = new Properties();
+                            final Properties props = new Properties();
                             props.load(stream);
                             stream.close();
                             stream = null;
                             return props;
                         }
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Unable to read URL " + url);
                         }
@@ -1322,7 +1322,7 @@ public abstract class LogFactory {
                         if (stream != null) {
                             try {
                                 stream.close();
-                            } catch (IOException e) {
+                            } catch (final IOException e) {
                                 // ignore exception; this should not happen
                                 if (isDiagnosticsEnabled()) {
                                     logDiagnostic("Unable to close stream for URL " + url);
@@ -1356,26 +1356,26 @@ public abstract class LogFactory {
      * webapps. Webapps can also use explicit priorities to override a configuration
      * file in the shared classpath if needed.
      */
-    private static final Properties getConfigurationFile(ClassLoader classLoader, String fileName) {
+    private static final Properties getConfigurationFile(final ClassLoader classLoader, final String fileName) {
         Properties props = null;
         double priority = 0.0;
         URL propsUrl = null;
         try {
-            Enumeration urls = getResources(classLoader, fileName);
+            final Enumeration urls = getResources(classLoader, fileName);
 
             if (urls == null) {
                 return null;
             }
 
             while (urls.hasMoreElements()) {
-                URL url = (URL) urls.nextElement();
+                final URL url = (URL) urls.nextElement();
 
-                Properties newProps = getProperties(url);
+                final Properties newProps = getProperties(url);
                 if (newProps != null) {
                     if (props == null) {
                         propsUrl = url;
                         props = newProps;
-                        String priorityStr = props.getProperty(PRIORITY_KEY);
+                        final String priorityStr = props.getProperty(PRIORITY_KEY);
                         priority = 0.0;
                         if (priorityStr != null) {
                             priority = Double.parseDouble(priorityStr);
@@ -1386,7 +1386,7 @@ public abstract class LogFactory {
                                           " with priority " + priority);
                         }
                     } else {
-                        String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
+                        final String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
                         double newPriority = 0.0;
                         if (newPriorityStr != null) {
                             newPriority = Double.parseDouble(newPriorityStr);
@@ -1415,7 +1415,7 @@ public abstract class LogFactory {
 
                 }
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("SecurityException thrown while trying to find/read config files.");
             }
@@ -1464,7 +1464,7 @@ public abstract class LogFactory {
             if (dest == null) {
                 return null;
             }
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             // We must be running in some very secure environment.
             // We just have to assume output is not wanted..
             return null;
@@ -1477,9 +1477,9 @@ public abstract class LogFactory {
         } else {
             try {
                 // open the file in append mode
-                FileOutputStream fos = new FileOutputStream(dest, true);
+                final FileOutputStream fos = new FileOutputStream(dest, true);
                 return new PrintStream(fos);
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 // We should report this to the user - but how?
                 return null;
             }
@@ -1517,7 +1517,7 @@ public abstract class LogFactory {
      *
      * @param msg is the diagnostic message to be output.
      */
-    private static final void logDiagnostic(String msg) {
+    private static final void logDiagnostic(final String msg) {
         if (diagnosticsStream != null) {
             diagnosticsStream.print(diagnosticPrefix);
             diagnosticsStream.println(msg);
@@ -1531,7 +1531,7 @@ public abstract class LogFactory {
      * @param msg is the diagnostic message to be output.
      * @since 1.1
      */
-    protected static final void logRawDiagnostic(String msg) {
+    protected static final void logRawDiagnostic(final String msg) {
         if (diagnosticsStream != null) {
             diagnosticsStream.println(msg);
             diagnosticsStream.flush();
@@ -1555,7 +1555,7 @@ public abstract class LogFactory {
      * @param clazz is the class whose classloader + tree are to be
      * output.
      */
-    private static void logClassLoaderEnvironment(Class clazz) {
+    private static void logClassLoaderEnvironment(final Class clazz) {
         if (!isDiagnosticsEnabled()) {
             return;
         }
@@ -1566,16 +1566,16 @@ public abstract class LogFactory {
             // these variables then we do not want to output them to the diagnostic stream.
             logDiagnostic("[ENV] Extension directories (java.ext.dir): " + System.getProperty("java.ext.dir"));
             logDiagnostic("[ENV] Application classpath (java.class.path): " + System.getProperty("java.class.path"));
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             logDiagnostic("[ENV] Security setting prevent interrogation of system classpaths.");
         }
 
-        String className = clazz.getName();
+        final String className = clazz.getName();
         ClassLoader classLoader;
 
         try {
             classLoader = getClassLoader(clazz);
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             // not much useful diagnostics we can print here!
             logDiagnostic("[ENV] Security forbids determining the classloader for " + className);
             return;
@@ -1592,7 +1592,7 @@ public abstract class LogFactory {
      * @param prefix
      * @param classLoader
      */
-    private static void logHierarchy(String prefix, ClassLoader classLoader) {
+    private static void logHierarchy(final String prefix, ClassLoader classLoader) {
         if (!isDiagnosticsEnabled()) {
             return;
         }
@@ -1604,7 +1604,7 @@ public abstract class LogFactory {
 
         try {
             systemClassLoader = ClassLoader.getSystemClassLoader();
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             logDiagnostic(prefix + "Security forbids determining the system classloader.");
             return;
         }
@@ -1618,7 +1618,7 @@ public abstract class LogFactory {
 
                 try {
                     classLoader = classLoader.getParent();
-                } catch (SecurityException ex) {
+                } catch (final SecurityException ex) {
                     buf.append(" --> SECRET");
                     break;
                 }
@@ -1645,7 +1645,7 @@ public abstract class LogFactory {
      * @return a string of form classname@hashcode, or "null" if param o is null.
      * @since 1.1
      */
-    public static String objectId(Object o) {
+    public static String objectId(final Object o) {
         if (o == null) {
             return "null";
         } else {
@@ -1687,13 +1687,13 @@ public abstract class LogFactory {
         // output diagnostics from this class are static.
         String classLoaderName;
         try {
-            ClassLoader classLoader = thisClassLoader;
+            final ClassLoader classLoader = thisClassLoader;
             if (thisClassLoader == null) {
                 classLoaderName = "BOOTLOADER";
             } else {
                 classLoaderName = objectId(classLoader);
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
         diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";

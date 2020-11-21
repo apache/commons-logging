@@ -139,9 +139,9 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
-    public boolean containsKey(Object key) {
+    public boolean containsKey(final Object key) {
         // purge should not be required
-        Referenced referenced = new Referenced(key);
+        final Referenced referenced = new Referenced(key);
         return super.containsKey(referenced);
     }
 
@@ -158,15 +158,15 @@ public final class WeakHashtable extends Hashtable {
      */
     public Set entrySet() {
         purge();
-        Set referencedEntries = super.entrySet();
-        Set unreferencedEntries = new HashSet();
-        for (Iterator it=referencedEntries.iterator(); it.hasNext();) {
-            Map.Entry entry = (Map.Entry) it.next();
-            Referenced referencedKey = (Referenced) entry.getKey();
-            Object key = referencedKey.getValue();
-            Object value = entry.getValue();
+        final Set referencedEntries = super.entrySet();
+        final Set unreferencedEntries = new HashSet();
+        for (final Iterator it=referencedEntries.iterator(); it.hasNext();) {
+            final Map.Entry entry = (Map.Entry) it.next();
+            final Referenced referencedKey = (Referenced) entry.getKey();
+            final Object key = referencedKey.getValue();
+            final Object value = entry.getValue();
             if (key != null) {
-                Entry dereferencedEntry = new Entry(key, value);
+                final Entry dereferencedEntry = new Entry(key, value);
                 unreferencedEntries.add(dereferencedEntry);
             }
         }
@@ -176,9 +176,9 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
-    public Object get(Object key) {
+    public Object get(final Object key) {
         // for performance reasons, no purge
-        Referenced referenceKey = new Referenced(key);
+        final Referenced referenceKey = new Referenced(key);
         return super.get(referenceKey);
     }
 
@@ -193,7 +193,7 @@ public final class WeakHashtable extends Hashtable {
                 return enumer.hasMoreElements();
             }
             public Object nextElement() {
-                 Referenced nextReference = (Referenced) enumer.nextElement();
+                 final Referenced nextReference = (Referenced) enumer.nextElement();
                  return nextReference.getValue();
             }
         };
@@ -204,11 +204,11 @@ public final class WeakHashtable extends Hashtable {
      */
     public Set keySet() {
         purge();
-        Set referencedKeys = super.keySet();
-        Set unreferencedKeys = new HashSet();
-        for (Iterator it=referencedKeys.iterator(); it.hasNext();) {
-            Referenced referenceKey = (Referenced) it.next();
-            Object keyValue = referenceKey.getValue();
+        final Set referencedKeys = super.keySet();
+        final Set unreferencedKeys = new HashSet();
+        for (final Iterator it=referencedKeys.iterator(); it.hasNext();) {
+            final Referenced referenceKey = (Referenced) it.next();
+            final Object keyValue = referenceKey.getValue();
             if (keyValue != null) {
                 unreferencedKeys.add(keyValue);
             }
@@ -219,7 +219,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
-    public synchronized Object put(Object key, Object value) {
+    public synchronized Object put(final Object key, final Object value) {
         // check for nulls, ensuring semantics match superclass
         if (key == null) {
             throw new NullPointerException("Null keys are not allowed");
@@ -239,18 +239,18 @@ public final class WeakHashtable extends Hashtable {
             purgeOne();
         }
 
-        Referenced keyRef = new Referenced(key, queue);
+        final Referenced keyRef = new Referenced(key, queue);
         return super.put(keyRef, value);
     }
 
     /**
      *@see Hashtable
      */
-    public void putAll(Map t) {
+    public void putAll(final Map t) {
         if (t != null) {
-            Set entrySet = t.entrySet();
-            for (Iterator it=entrySet.iterator(); it.hasNext();) {
-                Map.Entry entry = (Map.Entry) it.next();
+            final Set entrySet = t.entrySet();
+            for (final Iterator it=entrySet.iterator(); it.hasNext();) {
+                final Map.Entry entry = (Map.Entry) it.next();
                 put(entry.getKey(), entry.getValue());
             }
         }
@@ -267,7 +267,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
-    public synchronized Object remove(Object key) {
+    public synchronized Object remove(final Object key) {
         // for performance reasons, only purge every
         // MAX_CHANGES_BEFORE_PURGE times
         if (changeCount++ > MAX_CHANGES_BEFORE_PURGE) {
@@ -342,7 +342,7 @@ public final class WeakHashtable extends Hashtable {
      */
     private void purgeOne() {
         synchronized (queue) {
-            WeakKey key = (WeakKey) queue.poll();
+            final WeakKey key = (WeakKey) queue.poll();
             if (key != null) {
                 super.remove(key.getReferenced());
             }
@@ -355,15 +355,15 @@ public final class WeakHashtable extends Hashtable {
         private final Object key;
         private final Object value;
 
-        private Entry(Object key, Object value) {
+        private Entry(final Object key, final Object value) {
             this.key = key;
             this.value = value;
         }
 
-        public boolean equals(Object o) {
+        public boolean equals(final Object o) {
             boolean result = false;
             if (o instanceof Map.Entry) {
-                Map.Entry entry = (Map.Entry) o;
+                final Map.Entry entry = (Map.Entry) o;
                 result =    (getKey()==null ?
                                             entry.getKey() == null :
                                             getKey().equals(entry.getKey())) &&
@@ -379,7 +379,7 @@ public final class WeakHashtable extends Hashtable {
                 (getValue()==null ? 0 : getValue().hashCode());
         }
 
-        public Object setValue(Object value) {
+        public Object setValue(final Object value) {
             throw new UnsupportedOperationException("Entry.setValue is not supported.");
         }
 
@@ -402,7 +402,7 @@ public final class WeakHashtable extends Hashtable {
          *
          * @throws NullPointerException if referant is <code>null</code>
          */
-        private Referenced(Object referant) {
+        private Referenced(final Object referant) {
             reference = new WeakReference(referant);
             // Calc a permanent hashCode so calls to Hashtable.remove()
             // work if the WeakReference has been cleared
@@ -413,7 +413,7 @@ public final class WeakHashtable extends Hashtable {
          *
          * @throws NullPointerException if key is <code>null</code>
          */
-        private Referenced(Object key, ReferenceQueue queue) {
+        private Referenced(final Object key, final ReferenceQueue queue) {
             reference = new WeakKey(key, queue, this);
             // Calc a permanent hashCode so calls to Hashtable.remove()
             // work if the WeakReference has been cleared
@@ -429,12 +429,12 @@ public final class WeakHashtable extends Hashtable {
             return reference.get();
         }
 
-        public boolean equals(Object o) {
+        public boolean equals(final Object o) {
             boolean result = false;
             if (o instanceof Referenced) {
-                Referenced otherKey = (Referenced) o;
-                Object thisKeyValue = getValue();
-                Object otherKeyValue = otherKey.getValue();
+                final Referenced otherKey = (Referenced) o;
+                final Object thisKeyValue = getValue();
+                final Object otherKeyValue = otherKey.getValue();
                 if (thisKeyValue == null) {
                     result = otherKeyValue == null;
 
@@ -468,9 +468,9 @@ public final class WeakHashtable extends Hashtable {
 
         private final Referenced referenced;
 
-        private WeakKey(Object key,
-                        ReferenceQueue queue,
-                        Referenced referenced) {
+        private WeakKey(final Object key,
+                        final ReferenceQueue queue,
+                        final Referenced referenced) {
             super(key, queue);
             this.referenced = referenced;
         }

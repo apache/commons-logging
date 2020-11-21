@@ -120,7 +120,7 @@ public class PathableTestSuite extends TestSuite {
      * calls to Thread.currentThread.getContextClassLoader from test methods
      * (or any method called by test methods).
      */
-    public PathableTestSuite(Class testClass, ClassLoader contextClassLoader) {
+    public PathableTestSuite(final Class testClass, final ClassLoader contextClassLoader) {
         super(testClass);
         contextLoader = contextClassLoader;
     }
@@ -133,9 +133,9 @@ public class PathableTestSuite extends TestSuite {
      * The context classloader and system properties are saved before each
      * test, and restored after the test completes to better isolate tests.
      */
-    public void runTest(Test test, TestResult result) {
-        ClassLoader origContext = Thread.currentThread().getContextClassLoader();
-        Properties oldSysProps = (Properties) System.getProperties().clone();
+    public void runTest(final Test test, final TestResult result) {
+        final ClassLoader origContext = Thread.currentThread().getContextClassLoader();
+        final Properties oldSysProps = (Properties) System.getProperties().clone();
         try {
             Thread.currentThread().setContextClassLoader(contextLoader);
             test.run(result);

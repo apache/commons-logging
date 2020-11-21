@@ -41,11 +41,11 @@ public class LoadTestCase extends TestCase{
 
         java.util.Map classes = new java.util.HashMap();
 
-        AppClassLoader(ClassLoader parent){
+        AppClassLoader(final ClassLoader parent){
             super(parent);
         }
 
-        private Class def(String name)throws ClassNotFoundException{
+        private Class def(final String name)throws ClassNotFoundException{
 
             Class result = (Class)classes.get(name);
             if(result != null){
@@ -54,23 +54,23 @@ public class LoadTestCase extends TestCase{
 
             try{
 
-                ClassLoader cl = this.getClass().getClassLoader();
-                String classFileName = name.replace('.','/') + ".class";
-                java.io.InputStream is = cl.getResourceAsStream(classFileName);
-                java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+                final ClassLoader cl = this.getClass().getClassLoader();
+                final String classFileName = name.replace('.','/') + ".class";
+                final java.io.InputStream is = cl.getResourceAsStream(classFileName);
+                final java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
 
                 while(is.available() > 0){
                     out.write(is.read());
                 }
 
-                byte data [] = out.toByteArray();
+                final byte data [] = out.toByteArray();
 
                 result = super.defineClass(name, data, 0, data.length );
                 classes.put(name,result);
 
                 return result;
 
-            }catch(java.io.IOException ioe){
+            }catch(final java.io.IOException ioe){
 
                 throw new ClassNotFoundException( name + " caused by "
                 + ioe.getMessage() );
@@ -81,7 +81,7 @@ public class LoadTestCase extends TestCase{
 
         // not very trivial to emulate we must implement "findClass",
         // but it will delegete to junit class loder first
-        public Class loadClass(String name)throws ClassNotFoundException{
+        public Class loadClass(final String name)throws ClassNotFoundException{
 
             //isolates all logging classes, application in the same classloader too.
             //filters exeptions to simlify handling in test
@@ -102,9 +102,9 @@ public class LoadTestCase extends TestCase{
      * (expected to be a UserClass loaded via a custom classloader), passing
      * it the specified state parameter.
      */
-    private void setAllowFlawedContext(Class c, String state) throws Exception {
-        Class[] params = {String.class};
-        java.lang.reflect.Method m = c.getDeclaredMethod("setAllowFlawedContext", params);
+    private void setAllowFlawedContext(final Class c, final String state) throws Exception {
+        final Class[] params = {String.class};
+        final java.lang.reflect.Method m = c.getDeclaredMethod("setAllowFlawedContext", params);
         m.invoke(null, new Object[] {state});
     }
 
@@ -145,7 +145,7 @@ public class LoadTestCase extends TestCase{
             setAllowFlawedContext(cls, "false");
             execute(cls);
             fail("Logging config succeeded when context classloader was null!");
-        } catch(LogConfigurationException ex) {
+        } catch(final LogConfigurationException ex) {
             // expected; the boot classloader doesn't *have* JCL available
         }
 
@@ -170,7 +170,7 @@ public class LoadTestCase extends TestCase{
             execute(cls);
             fail("Error: somehow downcast a Logger loaded via system classloader"
                     + " to the Log interface loaded via a custom classloader");
-        } catch(LogConfigurationException ex) {
+        } catch(final LogConfigurationException ex) {
             // expected
         }
     }
@@ -183,15 +183,15 @@ public class LoadTestCase extends TestCase{
 
         Class testObjCls = null;
 
-        AppClassLoader appLoader = new AppClassLoader(
+        final AppClassLoader appLoader = new AppClassLoader(
                 this.getClass().getClassLoader());
         try{
 
             testObjCls = appLoader.loadClass(UserClass.class.getName());
 
-        }catch(ClassNotFoundException cnfe){
+        }catch(final ClassNotFoundException cnfe){
             throw cnfe;
-        }catch(Throwable t){
+        }catch(final Throwable t){
             t.printStackTrace();
             fail("AppClassLoader failed ");
         }
@@ -205,7 +205,7 @@ public class LoadTestCase extends TestCase{
     }
 
 
-    private void execute(Class cls)throws Exception{
+    private void execute(final Class cls)throws Exception{
 
             cls.newInstance();
 

@@ -50,7 +50,7 @@ public class WeakHashtableTestCase extends TestCase {
     private Long valueTwo;
     private Long valueThree;
 
-    public WeakHashtableTestCase(String testName) {
+    public WeakHashtableTestCase(final String testName) {
         super(testName);
     }
 
@@ -105,8 +105,8 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public Enumeration elements() */
     public void testElements() throws Exception {
-        ArrayList elements = new ArrayList();
-        for (Enumeration e = weakHashtable.elements(); e.hasMoreElements();) {
+        final ArrayList elements = new ArrayList();
+        for (final Enumeration e = weakHashtable.elements(); e.hasMoreElements();) {
             elements.add(e.nextElement());
         }
         assertEquals(3, elements.size());
@@ -117,10 +117,10 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public Set entrySet() */
     public void testEntrySet() throws Exception {
-        Set entrySet = weakHashtable.entrySet();
-        for (Iterator it = entrySet.iterator(); it.hasNext();) {
-            Map.Entry entry = (Map.Entry) it.next();
-            Object key = entry.getKey();
+        final Set entrySet = weakHashtable.entrySet();
+        for (final Iterator it = entrySet.iterator(); it.hasNext();) {
+            final Map.Entry entry = (Map.Entry) it.next();
+            final Object key = entry.getKey();
             if (keyOne.equals(key)) {
                 assertEquals(valueOne, entry.getValue());
             } else if (keyTwo.equals(key)) {
@@ -143,8 +143,8 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public Enumeration keys() */
     public void testKeys() throws Exception {
-        ArrayList keys = new ArrayList();
-        for (Enumeration e = weakHashtable.keys(); e.hasMoreElements();) {
+        final ArrayList keys = new ArrayList();
+        for (final Enumeration e = weakHashtable.keys(); e.hasMoreElements();) {
             keys.add(e.nextElement());
         }
         assertEquals(3, keys.size());
@@ -155,7 +155,7 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public Set keySet() */
     public void testKeySet() throws Exception {
-        Set keySet = weakHashtable.keySet();
+        final Set keySet = weakHashtable.keySet();
         assertEquals(3, keySet.size());
         assertTrue(keySet.contains(keyOne));
         assertTrue(keySet.contains(keyTwo));
@@ -164,7 +164,7 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public Object put(Object key, Object value) */
     public void testPut() throws Exception {
-        Long anotherKey = new Long(2004);
+        final Long anotherKey = new Long(2004);
         weakHashtable.put(anotherKey, new Long(1066));
 
         assertEquals(new Long(1066), weakHashtable.get(anotherKey));
@@ -174,7 +174,7 @@ public class WeakHashtableTestCase extends TestCase {
         try {
             weakHashtable.put(null, new Object());
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             caught = e;
         }
         assertNotNull("did not throw an exception adding a null key", caught);
@@ -182,7 +182,7 @@ public class WeakHashtableTestCase extends TestCase {
         try {
             weakHashtable.put(new Object(), null);
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             caught = e;
         }
         assertNotNull("did not throw an exception adding a null value", caught);
@@ -190,12 +190,12 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public void putAll(Map t) */
     public void testPutAll() throws Exception {
-        Map newValues = new HashMap();
-        Long newKey = new Long(1066);
-        Long newValue = new Long(1415);
+        final Map newValues = new HashMap();
+        final Long newKey = new Long(1066);
+        final Long newValue = new Long(1415);
         newValues.put(newKey, newValue);
-        Long anotherNewKey = new Long(1645);
-        Long anotherNewValue = new Long(1815);
+        final Long anotherNewKey = new Long(1645);
+        final Long anotherNewValue = new Long(1815);
         newValues.put(anotherNewKey, anotherNewValue);
         weakHashtable.putAll(newValues);
 
@@ -213,7 +213,7 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public Collection values() */
     public void testValues() throws Exception {
-        Collection values = weakHashtable.values();
+        final Collection values = weakHashtable.values();
         assertEquals(3, values.size());
         assertTrue(values.contains(valueOne));
         assertTrue(values.contains(valueTwo));
@@ -229,8 +229,8 @@ public class WeakHashtableTestCase extends TestCase {
      */
     public void xxxIgnoretestRelease() throws Exception {
         assertNotNull(weakHashtable.get(new Long(1)));
-        ReferenceQueue testQueue = new ReferenceQueue();
-        WeakReference weakKeyOne = new WeakReference(keyOne, testQueue);
+        final ReferenceQueue testQueue = new ReferenceQueue();
+        final WeakReference weakKeyOne = new WeakReference(keyOne, testQueue);
 
         // lose our references
         keyOne = null;
@@ -253,7 +253,7 @@ public class WeakHashtableTestCase extends TestCase {
 
             } else {
                 // create garbage:
-                byte[] b =  new byte[bytz];
+                final byte[] b =  new byte[bytz];
                 bytz = bytz * 2;
             }
         }
@@ -270,7 +270,7 @@ public class WeakHashtableTestCase extends TestCase {
 
     public static class StupidThread extends Thread {
 
-        public StupidThread(String name) {
+        public StupidThread(final String name) {
             super(name);
         }
 
@@ -285,7 +285,7 @@ public class WeakHashtableTestCase extends TestCase {
     }
 
     public void testLOGGING_119() throws Exception {
-        Thread [] t = new Thread[THREAD_COUNT];
+        final Thread [] t = new Thread[THREAD_COUNT];
         for (int j=1; j <= OUTER_LOOP; j++) {
             hashtable = new WeakHashtable();
             for (int i = 0; i < t.length; i++) {

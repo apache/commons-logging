@@ -47,14 +47,14 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
      * Or we could fix SimpleLog to be sane...
      */
     public static Test suite() throws Exception {
-        Class thisClass = DateTimeCustomConfigTestCase.class;
+        final Class thisClass = DateTimeCustomConfigTestCase.class;
 
-        PathableClassLoader loader = new PathableClassLoader(null);
+        final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
 
-        Class testClass = loader.loadClass(thisClass.getName());
+        final Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 
@@ -90,9 +90,9 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
         assertEquals("Expected date format to be set", "dd.mm.yyyy",
                      ((DecoratedSimpleLog) log).getDateTimeFormat());
         // try the formatter
-        Date now = new Date();
-        DateFormat formatter = ((DecoratedSimpleLog) log).getDateTimeFormatter();
-        SimpleDateFormat sampleFormatter = new SimpleDateFormat("dd.mm.yyyy");
+        final Date now = new Date();
+        final DateFormat formatter = ((DecoratedSimpleLog) log).getDateTimeFormatter();
+        final SimpleDateFormat sampleFormatter = new SimpleDateFormat("dd.mm.yyyy");
         assertEquals("Date should be formatters to pattern dd.mm.yyyy",
                      sampleFormatter.format(now), formatter.format(now));
     }

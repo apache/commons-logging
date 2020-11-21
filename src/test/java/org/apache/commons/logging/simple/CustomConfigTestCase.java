@@ -107,14 +107,14 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * Or we could fix SimpleLog to be sane...
      */
     public static Test suite() throws Exception {
-        Class thisClass = CustomConfigTestCase.class;
+        final Class thisClass = CustomConfigTestCase.class;
 
-        PathableClassLoader loader = new PathableClassLoader(null);
+        final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
 
-        Class testClass = loader.loadClass(thisClass.getName());
+        final Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 
@@ -209,12 +209,12 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     // Check the actual log records against the expected ones
     protected void checkExpected() {
 
-        List acts = ((DecoratedSimpleLog) log).getCache();
-        Iterator exps = expected.iterator();
+        final List acts = ((DecoratedSimpleLog) log).getCache();
+        final Iterator exps = expected.iterator();
         int n = 0;
         while (exps.hasNext()) {
-            LogRecord exp = (LogRecord) exps.next();
-            LogRecord act = (LogRecord) acts.get(n++);
+            final LogRecord exp = (LogRecord) exps.next();
+            final LogRecord act = (LogRecord) acts.get(n++);
             assertEquals("Row " + n + " type", exp.type, act.type);
             assertEquals("Row " + n + " message", exp.message, act.message);
             assertEquals("Row " + n + " throwable", exp.t, act.t);
@@ -235,7 +235,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     protected void logExceptionMessages() {
 
         // Generate log records
-        Throwable t = new DummyException();
+        final Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
         log.debug("debug", t);
         log.info("info", t);

@@ -43,21 +43,21 @@ public class BasicServletTestCase extends TestCase {
         // where a web.xml file specifies ServletContextCleaner as a listener, and
         // that class is deployed via a shared classloader.
 
-        PathableClassLoader parent = new PathableClassLoader(null);
+        final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("servlet-api");
 
-        PathableClassLoader child = new PathableClassLoader(parent);
+        final PathableClassLoader child = new PathableClassLoader(parent);
         child.setParentFirst(false);
         child.addLogicalLib("commons-logging");
         child.addLogicalLib("testclasses");
 
-        PathableClassLoader tccl = new PathableClassLoader(child);
+        final PathableClassLoader tccl = new PathableClassLoader(child);
         tccl.setParentFirst(false);
         tccl.addLogicalLib("commons-logging");
 
-        Class testClass = child.loadClass(BasicServletTestCase.class.getName());
+        final Class testClass = child.loadClass(BasicServletTestCase.class.getName());
         return new PathableTestSuite(testClass, tccl);
     }
 
@@ -66,7 +66,7 @@ public class BasicServletTestCase extends TestCase {
      * Testing anything else is rather difficult...
      */
     public void testBasics() {
-        ServletContextCleaner scc = new ServletContextCleaner();
+        final ServletContextCleaner scc = new ServletContextCleaner();
         scc.contextDestroyed(null);
     }
 }

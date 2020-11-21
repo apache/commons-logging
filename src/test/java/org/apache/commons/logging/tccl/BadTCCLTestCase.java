@@ -30,9 +30,9 @@ import junit.framework.TestCase;
 public class BadTCCLTestCase extends TestCase {
 
     public static Test suite() throws Exception {
-        PathableClassLoader contextClassLoader = new PathableClassLoader(null);
+        final PathableClassLoader contextClassLoader = new PathableClassLoader(null);
         contextClassLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
-        PathableTestSuite suite = new PathableTestSuite(BadTCCLTestCase.class, contextClassLoader);
+        final PathableTestSuite suite = new PathableTestSuite(BadTCCLTestCase.class, contextClassLoader);
         return suite;
     }
 
@@ -43,7 +43,7 @@ public class BadTCCLTestCase extends TestCase {
      * by the LogFactory.
      */
     public void testGetLog() {
-         Log log = LogFactory.getLog(BadTCCLTestCase.class);
+         final Log log = LogFactory.getLog(BadTCCLTestCase.class);
          log.debug("Hello, Mum");
     }
 }

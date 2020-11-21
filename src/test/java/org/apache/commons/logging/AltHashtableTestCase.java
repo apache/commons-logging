@@ -28,15 +28,15 @@ import junit.framework.TestCase;
 public class AltHashtableTestCase extends TestCase {
 
     public static Test suite() throws Exception {
-        Class thisClass = AltHashtableTestCase.class;
-        ClassLoader thisClassLoader = thisClass.getClassLoader();
+        final Class thisClass = AltHashtableTestCase.class;
+        final ClassLoader thisClassLoader = thisClass.getClassLoader();
 
-        PathableClassLoader loader = new PathableClassLoader(null);
+        final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", thisClassLoader);
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
 
-        Class testClass = loader.loadClass(thisClass.getName());
+        final Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 
@@ -86,7 +86,7 @@ public class AltHashtableTestCase extends TestCase {
         AltHashtable.lastValue = null;
 
         LogFactory.getLog(AltHashtableTestCase.class);
-        ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         assertEquals(contextLoader, AltHashtable.lastKey);
         assertNotNull(AltHashtable.lastValue);
     }

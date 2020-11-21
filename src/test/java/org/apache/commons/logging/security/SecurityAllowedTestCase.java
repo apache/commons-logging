@@ -59,12 +59,12 @@ public class SecurityAllowedTestCase extends TestCase
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        PathableClassLoader parent = new PathableClassLoader(null);
+        final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
 
-        Class testClass = parent.loadClass(
+        final Class testClass = parent.loadClass(
             "org.apache.commons.logging.security.SecurityAllowedTestCase");
         return new PathableTestSuite(testClass, parent);
     }
@@ -88,17 +88,17 @@ public class SecurityAllowedTestCase extends TestCase
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
-        MockSecurityManager mySecurityManager = new MockSecurityManager();
+        final MockSecurityManager mySecurityManager = new MockSecurityManager();
         mySecurityManager.addPermission(new AllPermission());
         System.setSecurityManager(mySecurityManager);
 
         try {
             // Use reflection so that we can control exactly when the static
             // initialiser for the LogFactory class is executed.
-            Class c = this.getClass().getClassLoader().loadClass(
+            final Class c = this.getClass().getClassLoader().loadClass(
                     "org.apache.commons.logging.LogFactory");
-            Method m = c.getMethod("getLog", new Class[] {Class.class});
-            Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
+            final Method m = c.getMethod("getLog", new Class[] {Class.class});
+            final Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
 
             // Check whether we had any security exceptions so far (which were
             // caught by the code). We should not, as every secure operation
@@ -111,28 +111,28 @@ public class SecurityAllowedTestCase extends TestCase
             // wrap calls to log methods in AccessControllers because writes to
             // a log file *should* only be permitted if the original caller is
             // trusted to access that file.
-            int untrustedCodeCount = mySecurityManager.getUntrustedCodeCount();
+            final int untrustedCodeCount = mySecurityManager.getUntrustedCodeCount();
             log.info("testing");
 
             // check that the default map implementation was loaded, as JCL was
             // forbidden from reading the HASHTABLE_IMPLEMENTATION_PROPERTY property.
             System.setSecurityManager(null);
-            Field factoryField = c.getDeclaredField("factories");
+            final Field factoryField = c.getDeclaredField("factories");
             factoryField.setAccessible(true);
-            Object factoryTable = factoryField.get(null);
+            final Object factoryTable = factoryField.get(null);
             assertNotNull(factoryTable);
             assertEquals(CustomHashtable.class.getName(), factoryTable.getClass().getName());
 
             // we better compare that we have no security exception during the call to log
             // IBM JVM tries to load bundles during the invoke call, which increase the count
             assertEquals("Untrusted code count", untrustedCodeCount, mySecurityManager.getUntrustedCodeCount());
-        } catch(Throwable t) {
+        } catch(final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
             System.setSecurityManager(oldSecMgr);
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw);
             t.printStackTrace(pw);
             fail("Unexpected exception:" + t.getMessage() + ":" + sw.toString());
         }

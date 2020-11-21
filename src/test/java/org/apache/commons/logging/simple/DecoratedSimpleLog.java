@@ -40,7 +40,7 @@ public class DecoratedSimpleLog extends SimpleLog {
      */
     private static final long serialVersionUID = 196544280770017153L;
 
-    public DecoratedSimpleLog(String name) {
+    public DecoratedSimpleLog(final String name) {
         super(name);
     }
 
@@ -76,7 +76,7 @@ public class DecoratedSimpleLog extends SimpleLog {
 
 
     // Cache logged messages
-    protected void log(int type, Object message, Throwable t) {
+    protected void log(final int type, final Object message, final Throwable t) {
 
         super.log(type, message, t);
         cache.add(new LogRecord(type, message, t));

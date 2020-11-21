@@ -48,19 +48,19 @@ public class TcclDisabledTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        Class thisClass = TcclDisabledTestCase.class;
+        final Class thisClass = TcclDisabledTestCase.class;
 
         // Determine the URL to this .class file, so that we can then
         // append the priority dirs to it. For tidiness, load this
         // class through a dummy loader though this is not absolutely
         // necessary...
-        PathableClassLoader dummy = new PathableClassLoader(null);
+        final PathableClassLoader dummy = new PathableClassLoader(null);
         dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
 
-        String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
-        URL baseUrl = dummy.findResource(thisClassPath);
+        final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
+        final URL baseUrl = dummy.findResource(thisClassPath);
 
         // Now set up the desired classloader hierarchy. Everything goes into
         // the parent classpath, but we exclude the custom LogFactoryImpl
@@ -69,9 +69,9 @@ public class TcclDisabledTestCase extends TestCase {
         // We then create a tccl classloader that can see the custom
         // LogFactory class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
-        PathableClassLoader emptyLoader = new PathableClassLoader(null);
+        final PathableClassLoader emptyLoader = new PathableClassLoader(null);
 
-        PathableClassLoader parentLoader = new PathableClassLoader(null);
+        final PathableClassLoader parentLoader = new PathableClassLoader(null);
         parentLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         parentLoader.addLogicalLib("commons-logging");
         parentLoader.addLogicalLib("testclasses");
@@ -80,13 +80,13 @@ public class TcclDisabledTestCase extends TestCase {
         parentLoader.useExplicitLoader(
             MY_LOG_FACTORY_PKG + ".", emptyLoader);
 
-        URL propsEnableUrl = new URL(baseUrl, "props_disable_tccl/");
+        final URL propsEnableUrl = new URL(baseUrl, "props_disable_tccl/");
         parentLoader.addURL(propsEnableUrl);
 
-        PathableClassLoader tcclLoader = new PathableClassLoader(parentLoader);
+        final PathableClassLoader tcclLoader = new PathableClassLoader(parentLoader);
         tcclLoader.addLogicalLib("testclasses");
 
-        Class testClass = parentLoader.loadClass(thisClass.getName());
+        final Class testClass = parentLoader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, tcclLoader);
     }
 
@@ -111,26 +111,26 @@ public class TcclDisabledTestCase extends TestCase {
      */
     public void testLoader() throws Exception {
 
-        ClassLoader thisClassLoader = this.getClass().getClassLoader();
-        ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader thisClassLoader = this.getClass().getClassLoader();
+        final ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
         // the tccl loader should NOT be the same as the loader that loaded this test class.
         assertNotSame("tccl not same as test classloader", thisClassLoader, tcclLoader);
 
         // MyLogFactoryImpl should not be loadable via parent loader
         try {
-            Class clazz = thisClassLoader.loadClass(MY_LOG_FACTORY_IMPL);
+            final Class clazz = thisClassLoader.loadClass(MY_LOG_FACTORY_IMPL);
             fail("Unexpectedly able to load MyLogFactoryImpl via test class classloader");
             assertNotNull(clazz); // silence warning about unused var
-        } catch(ClassNotFoundException ex) {
+        } catch(final ClassNotFoundException ex) {
             // ok, expected
         }
 
         // MyLogFactoryImpl should be loadable via tccl loader
         try {
-            Class clazz = tcclLoader.loadClass(MY_LOG_FACTORY_IMPL);
+            final Class clazz = tcclLoader.loadClass(MY_LOG_FACTORY_IMPL);
             assertNotNull(clazz);
-        } catch(ClassNotFoundException ex) {
+        } catch(final ClassNotFoundException ex) {
             fail("Unexpectedly unable to load MyLogFactoryImpl via tccl classloader");
         }
     }
@@ -143,13 +143,13 @@ public class TcclDisabledTestCase extends TestCase {
      */
     public void testTcclLoading() throws Exception {
         try {
-            LogFactory instance = LogFactory.getFactory();
+            final LogFactory instance = LogFactory.getFactory();
             fail("Unexpectedly succeeded in loading custom factory, though TCCL disabled.");
             assertNotNull(instance); // silence warning about unused var
-        } catch(org.apache.commons.logging.LogConfigurationException ex) {
+        } catch(final org.apache.commons.logging.LogConfigurationException ex) {
             // ok, custom MyLogFactoryImpl as specified in props_disable_tccl
             // could not be found.
-            int index = ex.getMessage().indexOf(MY_LOG_FACTORY_IMPL);
+            final int index = ex.getMessage().indexOf(MY_LOG_FACTORY_IMPL);
             assertTrue("MylogFactoryImpl not found", index >= 0);
         }
     }

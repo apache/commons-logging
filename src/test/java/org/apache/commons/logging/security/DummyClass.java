@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
 public class DummyClass {
 
     public DummyClass() {
-        Log log = LogFactory.getLog(DummyClass.class);
+        final Log log = LogFactory.getLog(DummyClass.class);
         log.info("Some log message");
     }
 }

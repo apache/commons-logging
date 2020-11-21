@@ -22,11 +22,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class MyLogFactoryImpl extends LogFactory {
-    public Object getAttribute(String name) { return null; }
+    public Object getAttribute(final String name) { return null; }
     public String[] getAttributeNames() { return null; }
-    public Log getInstance(Class clazz) { return null; }
-    public Log getInstance(String name) { return null; }
+    public Log getInstance(final Class clazz) { return null; }
+    public Log getInstance(final String name) { return null; }
     public void release() {}
-    public void removeAttribute(String name) {}
-    public void setAttribute(String name, Object value) {}
+    public void removeAttribute(final String name) {}
+    public void setAttribute(final String name, final Object value) {}
 }

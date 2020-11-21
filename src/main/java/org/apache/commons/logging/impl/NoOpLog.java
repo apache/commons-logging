@@ -34,31 +34,31 @@ public class NoOpLog implements Log, Serializable {
     /** Convenience constructor */
     public NoOpLog() { }
     /** Base constructor */
-    public NoOpLog(String name) { }
+    public NoOpLog(final String name) { }
     /** Do nothing */
-    public void trace(Object message) { }
+    public void trace(final Object message) { }
     /** Do nothing */
-    public void trace(Object message, Throwable t) { }
+    public void trace(final Object message, final Throwable t) { }
     /** Do nothing */
-    public void debug(Object message) { }
+    public void debug(final Object message) { }
     /** Do nothing */
-    public void debug(Object message, Throwable t) { }
+    public void debug(final Object message, final Throwable t) { }
     /** Do nothing */
-    public void info(Object message) { }
+    public void info(final Object message) { }
     /** Do nothing */
-    public void info(Object message, Throwable t) { }
+    public void info(final Object message, final Throwable t) { }
     /** Do nothing */
-    public void warn(Object message) { }
+    public void warn(final Object message) { }
     /** Do nothing */
-    public void warn(Object message, Throwable t) { }
+    public void warn(final Object message, final Throwable t) { }
     /** Do nothing */
-    public void error(Object message) { }
+    public void error(final Object message) { }
     /** Do nothing */
-    public void error(Object message, Throwable t) { }
+    public void error(final Object message, final Throwable t) { }
     /** Do nothing */
-    public void fatal(Object message) { }
+    public void fatal(final Object message) { }
     /** Do nothing */
-    public void fatal(Object message, Throwable t) { }
+    public void fatal(final Object message, final Throwable t) { }
 
     /**
      * Debug is never enabled.

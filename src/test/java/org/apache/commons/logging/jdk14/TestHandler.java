@@ -62,7 +62,7 @@ public class TestHandler extends Handler {
     }
 
 
-    public void publish(LogRecord record) {
+    public void publish(final LogRecord record) {
         records.add(record);
     }
 

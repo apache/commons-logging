@@ -32,7 +32,7 @@ import org.apache.commons.logging.PathableClassLoader;
 public class CustomConfigFullTestCase extends CustomConfigTestCase {
 
 
-    public CustomConfigFullTestCase(String name) {
+    public CustomConfigFullTestCase(final String name) {
         super(name);
     }
 
@@ -41,7 +41,7 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        PathableClassLoader parent = new PathableClassLoader(null);
+        final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
 
         // the TestHandler class must be accessable from the System classloader
@@ -49,15 +49,15 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
         // be able to instantiate it. And this test case must see the same
         // class in order to be able to access its data. Yes this is ugly
         // but the whole jdk14 API is a ******* mess anyway.
-        ClassLoader scl = ClassLoader.getSystemClassLoader();
+        final ClassLoader scl = ClassLoader.getSystemClassLoader();
         loadTestHandler(HANDLER_NAME, scl);
         parent.useExplicitLoader(HANDLER_NAME, scl);
         parent.addLogicalLib("commons-logging");
 
-        PathableClassLoader child = new PathableClassLoader(parent);
+        final PathableClassLoader child = new PathableClassLoader(parent);
         child.addLogicalLib("testclasses");
 
-        Class testClass = child.loadClass(CustomConfigFullTestCase.class.getName());
+        final Class testClass = child.loadClass(CustomConfigFullTestCase.class.getName());
         return new PathableTestSuite(testClass, child);
     }
 }

@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 public class NullTCCLTestCase extends TestCase {
 
     public static Test suite() throws Exception {
-        PathableTestSuite suite = new PathableTestSuite(NullTCCLTestCase.class, null);
+        final PathableTestSuite suite = new PathableTestSuite(NullTCCLTestCase.class, null);
         return suite;
     }
 
@@ -40,7 +40,7 @@ public class NullTCCLTestCase extends TestCase {
      * by the LogFactory.
      */
     public void testGetLog() {
-         Log log = LogFactory.getLog(NullTCCLTestCase.class);
+         final Log log = LogFactory.getLog(NullTCCLTestCase.class);
          log.debug("Hello, Mum");
     }
 }

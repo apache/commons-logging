@@ -88,13 +88,13 @@ public abstract class StandardTests extends TestCase {
      * Test that a LogFactory gets created as expected.
      */
     public void testCreateFactory() {
-        LogFactory factory = LogFactory.getFactory();
+        final LogFactory factory = LogFactory.getFactory();
         assertNotNull("LogFactory exists", factory);
         assertEquals("LogFactory class",
                      "org.apache.commons.logging.impl.LogFactoryImpl",
                      factory.getClass().getName());
 
-        String names[] = factory.getAttributeNames();
+        final String names[] = factory.getAttributeNames();
         assertNotNull("Names exists", names);
         assertEquals("Names empty", 0, names.length);
     }
@@ -103,9 +103,9 @@ public abstract class StandardTests extends TestCase {
      * Verify that we can log messages without exceptions.
      */
     public void testPlainMessages() throws Exception {
-        List logEvents = new ArrayList();
+        final List logEvents = new ArrayList();
         setUpTestAppender(logEvents);
-        Log log = LogFactory.getLog("test-category");
+        final Log log = LogFactory.getLog("test-category");
         logPlainMessages(log);
         checkLoggingEvents(logEvents, false);
     }
@@ -114,9 +114,9 @@ public abstract class StandardTests extends TestCase {
      * Verify that we can log exception messages.
      */
     public void testExceptionMessages() throws Exception {
-        List logEvents = new ArrayList();
+        final List logEvents = new ArrayList();
         setUpTestAppender(logEvents);
-        Log log = LogFactory.getLog("test-category");
+        final Log log = LogFactory.getLog("test-category");
         logExceptionMessages(log);
         checkLoggingEvents(logEvents, true);
     }
@@ -125,18 +125,18 @@ public abstract class StandardTests extends TestCase {
      * Test Serializability of Log instance
      */
     public void testSerializable() throws Exception {
-        List logEvents = new ArrayList();
+        final List logEvents = new ArrayList();
         setUpTestAppender(logEvents);
-        Log log = LogFactory.getLog("test-category");
+        final Log log = LogFactory.getLog("test-category");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(log);
         oos.close();
-        ByteArrayInputStream bais =
+        final ByteArrayInputStream bais =
             new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        Log newLog = (Log) ois.readObject();
+        final ObjectInputStream ois = new ObjectInputStream(bais);
+        final Log newLog = (Log) ois.readObject();
         ois.close();
 
         // Check the characteristics of the resulting object
@@ -162,7 +162,7 @@ public abstract class StandardTests extends TestCase {
      * logevents with no associated exception info). True if
      * logExceptionMessages was called.
      */
-    private void checkLoggingEvents(List logEvents, boolean thrown) {
+    private void checkLoggingEvents(final List logEvents, final boolean thrown) {
         LogEvent ev;
 
         assertEquals("Unexpected number of log events", 4, logEvents.size());
@@ -192,7 +192,7 @@ public abstract class StandardTests extends TestCase {
     /**
      * Log plain messages.
      */
-    private void logPlainMessages(Log log) {
+    private void logPlainMessages(final Log log) {
         log.trace("trace"); // Should not actually get logged
         log.debug("debug"); // Should not actually get logged
         log.info("info");
@@ -204,8 +204,8 @@ public abstract class StandardTests extends TestCase {
     /**
      * Log messages with exceptions
      */
-    private void logExceptionMessages(Log log) {
-        Throwable t = new DummyException();
+    private void logExceptionMessages(final Log log) {
+        final Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
         log.debug("debug", t); // Should not actually get logged
         log.info("info", t);

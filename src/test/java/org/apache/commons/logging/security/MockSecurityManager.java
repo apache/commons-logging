@@ -42,7 +42,7 @@ public class MockSecurityManager extends SecurityManager {
      * Define the set of permissions to be granted to classes in the o.a.c.l package,
      * but NOT to unit-test classes in o.a.c.l.security package.
      */
-    public void addPermission(Permission p) {
+    public void addPermission(final Permission p) {
         permissions.add(p);
     }
 
@@ -58,7 +58,7 @@ public class MockSecurityManager extends SecurityManager {
         return untrustedCodeCount;
     }
 
-    public void checkPermission(Permission p) throws SecurityException {
+    public void checkPermission(final Permission p) throws SecurityException {
         if (setSecurityManagerPerm.implies(p)) {
             // ok, allow this; we don't want to block any calls to setSecurityManager
             // otherwise this custom security manager cannot be reset to the original.
@@ -69,7 +69,7 @@ public class MockSecurityManager extends SecurityManager {
         // Allow read-only access to files, as this is needed to load classes!
         // Ideally, we would limit this to just .class and .jar files.
         if (p instanceof FilePermission) {
-          FilePermission fp = (FilePermission) p;
+          final FilePermission fp = (FilePermission) p;
           if (fp.getActions().equals("read")) {
             // System.out.println("Permit read of files");
             return;
@@ -78,14 +78,14 @@ public class MockSecurityManager extends SecurityManager {
 
         System.out.println("\n\ntesting permission:" + p.getClass() + ":"+ p);
 
-        Exception e = new Exception();
+        final Exception e = new Exception();
         e.fillInStackTrace();
-        StackTraceElement[] stack = e.getStackTrace();
+        final StackTraceElement[] stack = e.getStackTrace();
 
         // scan the call stack from most recent to oldest.
         // start at 1 to skip the entry in the stack for this method
         for(int i=1; i<stack.length; ++i) {
-            String cname = stack[i].getClassName();
+            final String cname = stack[i].getClassName();
             System.out.println("" + i + ":" + stack[i].getClassName() +
               "." + stack[i].getMethodName() + ":" + stack[i].getLineNumber());
 

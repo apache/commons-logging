@@ -93,7 +93,7 @@ public class PathableClassLoader extends URLClassLoader {
      * creates its own classloader to run unit tests in (eg maven2's
      * Surefire plugin).
      */
-    public PathableClassLoader(ClassLoader parent) {
+    public PathableClassLoader(final ClassLoader parent) {
         super(NO_URLS, parent);
     }
 
@@ -102,7 +102,7 @@ public class PathableClassLoader extends URLClassLoader {
      * use addLogicalLib instead, then define the location for that logical
      * library in the build.xml file.
      */
-    public void addURL(URL url) {
+    public void addURL(final URL url) {
         super.addURL(url);
     }
 
@@ -122,7 +122,7 @@ public class PathableClassLoader extends URLClassLoader {
      * <p>
      * This value defaults to true.
      */
-    public void setParentFirst(boolean state) {
+    public void setParentFirst(final boolean state) {
         parentFirst = state;
     }
 
@@ -138,7 +138,7 @@ public class PathableClassLoader extends URLClassLoader {
      * Of course, this assumes that the classes of interest are already
      * in the classpath of the system classloader.
      */
-    public void useSystemLoader(String prefix) {
+    public void useSystemLoader(final String prefix) {
         useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
 
     }
@@ -168,7 +168,7 @@ public class PathableClassLoader extends URLClassLoader {
      * then a prefix used to map from here to one of those classloaders.
      * </ul>
      */
-    public void useExplicitLoader(String prefix, ClassLoader loader) {
+    public void useExplicitLoader(final String prefix, final ClassLoader loader) {
         if (lookasides == null) {
             lookasides = new HashMap();
         }
@@ -178,7 +178,7 @@ public class PathableClassLoader extends URLClassLoader {
     /**
      * Specify a collection of logical libraries. See addLogicalLib.
      */
-    public void addLogicalLib(String[] logicalLibs) {
+    public void addLogicalLib(final String[] logicalLibs) {
         for(int i=0; i<logicalLibs.length; ++i) {
             addLogicalLib(logicalLibs[i]);
         }
@@ -204,22 +204,22 @@ public class PathableClassLoader extends URLClassLoader {
      * desired classpath without knowing the exact location of the necessary
      * classes.
      */
-    public void addLogicalLib(String logicalLib) {
+    public void addLogicalLib(final String logicalLib) {
         // first, check the system properties
-        String filename = System.getProperty(logicalLib);
+        final String filename = System.getProperty(logicalLib);
         if (filename != null) {
             try {
-                URL libUrl = new File(filename).toURL();
+                final URL libUrl = new File(filename).toURL();
                 addURL(libUrl);
                 return;
-            } catch(java.net.MalformedURLException e) {
+            } catch(final java.net.MalformedURLException e) {
                 throw new UnknownError(
                     "Invalid file [" + filename + "] for logical lib [" + logicalLib + "]");
             }
         }
 
         // now check the classpath for a similar-named lib
-        URL libUrl = libFromClasspath(logicalLib);
+        final URL libUrl = libFromClasspath(logicalLib);
         if (libUrl != null) {
             addURL(libUrl);
             return;
@@ -250,18 +250,18 @@ public class PathableClassLoader extends URLClassLoader {
      * if "foo-1.1.jar" and "foobar-1.1.jar" are in the path, then a logicalLib
      * name of "foo" will match the first entry above.
      */
-    private URL libFromClasspath(String logicalLib) {
-        ClassLoader cl = this.getClass().getClassLoader();
+    private URL libFromClasspath(final String logicalLib) {
+        final ClassLoader cl = this.getClass().getClassLoader();
         if (cl instanceof URLClassLoader == false) {
             return null;
         }
 
-        URLClassLoader ucl = (URLClassLoader) cl;
-        URL[] path = ucl.getURLs();
+        final URLClassLoader ucl = (URLClassLoader) cl;
+        final URL[] path = ucl.getURLs();
         URL shortestMatch = null;
         int shortestMatchLen = Integer.MAX_VALUE;
         for(int i=0; i<path.length; ++i) {
-            URL u = path[i];
+            final URL u = path[i];
 
             // extract the filename bit on the end of the url
             String filename = u.toString();
@@ -270,7 +270,7 @@ public class PathableClassLoader extends URLClassLoader {
                 continue;
             }
 
-            int lastSlash = filename.lastIndexOf('/');
+            final int lastSlash = filename.lastIndexOf('/');
             if (lastSlash >= 0) {
                 filename = filename.substring(lastSlash+1);
             }
@@ -294,7 +294,7 @@ public class PathableClassLoader extends URLClassLoader {
      * prefix associated with that entry then attempt to load the class via
      * that entries' classloader.
      */
-    protected Class loadClass(String name, boolean resolve)
+    protected Class loadClass(final String name, final boolean resolve)
     throws ClassNotFoundException {
         // just for performance, check java and javax
         if (name.startsWith("java.") || name.startsWith("javax.")) {
@@ -302,12 +302,12 @@ public class PathableClassLoader extends URLClassLoader {
         }
 
         if (lookasides != null) {
-            for(Iterator i = lookasides.entrySet().iterator(); i.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) i.next();
-                String prefix = (String) entry.getKey();
+            for(final Iterator i = lookasides.entrySet().iterator(); i.hasNext(); ) {
+                final Map.Entry entry = (Map.Entry) i.next();
+                final String prefix = (String) entry.getKey();
                 if (name.startsWith(prefix) == true) {
-                    ClassLoader loader = (ClassLoader) entry.getValue();
-                    Class clazz = Class.forName(name, resolve, loader);
+                    final ClassLoader loader = (ClassLoader) entry.getValue();
+                    final Class clazz = Class.forName(name, resolve, loader);
                     return clazz;
                 }
             }
@@ -332,7 +332,7 @@ public class PathableClassLoader extends URLClassLoader {
                     resolveClass(clazz);
                 }
                 return clazz;
-            } catch(ClassNotFoundException e) {
+            } catch(final ClassNotFoundException e) {
                 return super.loadClass(name, resolve);
             }
         }
@@ -343,11 +343,11 @@ public class PathableClassLoader extends URLClassLoader {
      * the resource is looked for in the local classpath before the parent
      * loader is consulted.
      */
-    public URL getResource(String name) {
+    public URL getResource(final String name) {
         if (parentFirst) {
             return super.getResource(name);
         } else {
-            URL local = super.findResource(name);
+            final URL local = super.findResource(name);
             if (local != null) {
                 return local;
             }
@@ -363,13 +363,13 @@ public class PathableClassLoader extends URLClassLoader {
      * it's declared final in java1.4 (thought that's been removed for 1.5).
      * The inherited implementation always behaves as if parentFirst=true.
      */
-    public Enumeration getResourcesInOrder(String name) throws IOException {
+    public Enumeration getResourcesInOrder(final String name) throws IOException {
         if (parentFirst) {
             return super.getResources(name);
         } else {
-            Enumeration localUrls = super.findResources(name);
+            final Enumeration localUrls = super.findResources(name);
 
-            ClassLoader parent = getParent();
+            final ClassLoader parent = getParent();
             if (parent == null) {
                 // Alas, there is no method to get matching resources
                 // from a null (BOOT) parent classloader. Calling
@@ -383,10 +383,10 @@ public class PathableClassLoader extends URLClassLoader {
                 // path!
                 return localUrls;
             }
-            Enumeration parentUrls = parent.getResources(name);
+            final Enumeration parentUrls = parent.getResources(name);
 
-            ArrayList localItems = toList(localUrls);
-            ArrayList parentItems = toList(parentUrls);
+            final ArrayList localItems = toList(localUrls);
+            final ArrayList parentItems = toList(parentUrls);
             localItems.addAll(parentItems);
             return Collections.enumeration(localItems);
         }
@@ -400,11 +400,11 @@ public class PathableClassLoader extends URLClassLoader {
      * @return <code>ArrayList</code> containing the enumerated
      * elements in the enumerated order, not null
      */
-    private ArrayList toList(Enumeration en) {
-        ArrayList results = new ArrayList();
+    private ArrayList toList(final Enumeration en) {
+        final ArrayList results = new ArrayList();
         if (en != null) {
             while (en.hasMoreElements()){
-                Object element = en.nextElement();
+                final Object element = en.nextElement();
                 results.add(element);
             }
         }
@@ -416,15 +416,15 @@ public class PathableClassLoader extends URLClassLoader {
      * the resource is looked for in the local classpath before the parent
      * loader is consulted.
      */
-    public InputStream getResourceAsStream(String name) {
+    public InputStream getResourceAsStream(final String name) {
         if (parentFirst) {
             return super.getResourceAsStream(name);
         } else {
-            URL local = super.findResource(name);
+            final URL local = super.findResource(name);
             if (local != null) {
                 try {
                     return local.openStream();
-                } catch(IOException e) {
+                } catch(final IOException e) {
                     // TODO: check if this is right or whether we should
                     // fall back to trying parent. The javadoc doesn't say...
                     return null;

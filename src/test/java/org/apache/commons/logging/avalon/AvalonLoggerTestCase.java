@@ -31,14 +31,14 @@ import junit.framework.TestSuite;
 public class AvalonLoggerTestCase extends AbstractLogTest {
 
     public static Test suite() {
-        TestSuite suite = new TestSuite();
+        final TestSuite suite = new TestSuite();
         suite.addTestSuite(AvalonLoggerTestCase.class);
         return suite;
     }
 
     public Log getLogObject() {
         // Output does not seem to be used, so don't display it.
-        Log log = new AvalonLogger(new NullLogger());
+        final Log log = new AvalonLogger(new NullLogger());
         return log;
     }
 }

@@ -29,13 +29,13 @@ public class UserClass {
      * when an instance of this class is actually created <i>before</i> calling
      * this method!
      */
-    public static void setAllowFlawedContext(String state) {
-        LogFactory f = LogFactory.getFactory();
+    public static void setAllowFlawedContext(final String state) {
+        final LogFactory f = LogFactory.getFactory();
         f.setAttribute(LogFactoryImpl.ALLOW_FLAWED_CONTEXT_PROPERTY, state);
     }
 
     public UserClass() {
-        Log log = LogFactory.getLog(LoadTestCase.class);
+        final Log log = LogFactory.getLog(LoadTestCase.class);
       }
 
 }

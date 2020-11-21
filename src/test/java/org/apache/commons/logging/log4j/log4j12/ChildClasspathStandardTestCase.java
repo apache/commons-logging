@@ -35,15 +35,15 @@ public class ChildClasspathStandardTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        PathableClassLoader parent = new PathableClassLoader(null);
+        final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
 
-        PathableClassLoader child = new PathableClassLoader(parent);
+        final PathableClassLoader child = new PathableClassLoader(parent);
         child.addLogicalLib("testclasses");
         child.addLogicalLib("log4j12");
         child.addLogicalLib("commons-logging");
 
-        Class testClass = child.loadClass(
+        final Class testClass = child.loadClass(
             "org.apache.commons.logging.log4j.log4j12.Log4j12StandardTests");
         return new PathableTestSuite(testClass, child);
     }

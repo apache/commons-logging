@@ -33,7 +33,7 @@ public abstract class AbstractLogTest extends TestCase {
 
     public void testLoggingWithNullParameters()
     {
-        Log log = this.getLogObject();
+        final Log log = this.getLogObject();
 
         assertNotNull(log);
 

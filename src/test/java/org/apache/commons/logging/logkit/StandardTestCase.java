@@ -61,15 +61,15 @@ public class StandardTestCase extends AbstractLogTest {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        Class thisClass = StandardTestCase.class;
+        final Class thisClass = StandardTestCase.class;
 
-        PathableClassLoader loader = new PathableClassLoader(null);
+        final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
         loader.addLogicalLib("logkit");
 
-        Class testClass = loader.loadClass(thisClass.getName());
+        final Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 
@@ -115,7 +115,7 @@ public class StandardTestCase extends AbstractLogTest {
                      "org.apache.commons.logging.impl.LogFactoryImpl",
                      factory.getClass().getName());
 
-        String names[] = factory.getAttributeNames();
+        final String names[] = factory.getAttributeNames();
         assertNotNull("Names exists", names);
         assertEquals("Names empty", 0, names.length);
     }
@@ -130,13 +130,13 @@ public class StandardTestCase extends AbstractLogTest {
         checkStandard();
 
         // Serialize and deserialize the instance
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(log);
         oos.close();
-        ByteArrayInputStream bais =
+        final ByteArrayInputStream bais =
             new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(bais);
+        final ObjectInputStream ois = new ObjectInputStream(bais);
         log = (Log) ois.readObject();
         ois.close();
 

@@ -63,12 +63,12 @@ public class SecurityForbiddenTestCase extends TestCase
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        PathableClassLoader parent = new PathableClassLoader(null);
+        final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
 
-        Class testClass = parent.loadClass(
+        final Class testClass = parent.loadClass(
             "org.apache.commons.logging.security.SecurityForbiddenTestCase");
         return new PathableTestSuite(testClass, parent);
     }
@@ -77,7 +77,7 @@ public class SecurityForbiddenTestCase extends TestCase
         // save security manager so it can be restored in tearDown
         oldSecMgr = System.getSecurityManager();
 
-        PathableClassLoader classLoader = new PathableClassLoader(null);
+        final PathableClassLoader classLoader = new PathableClassLoader(null);
         classLoader.addLogicalLib("commons-logging");
         classLoader.addLogicalLib("testclasses");
 
@@ -99,17 +99,17 @@ public class SecurityForbiddenTestCase extends TestCase
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
-        MockSecurityManager mySecurityManager = new MockSecurityManager();
+        final MockSecurityManager mySecurityManager = new MockSecurityManager();
 
         System.setSecurityManager(mySecurityManager);
 
         try {
             // Use reflection so that we can control exactly when the static
             // initialiser for the LogFactory class is executed.
-            Class c = this.getClass().getClassLoader().loadClass(
+            final Class c = this.getClass().getClassLoader().loadClass(
                     "org.apache.commons.logging.LogFactory");
-            Method m = c.getMethod("getLog", new Class[] {Class.class});
-            Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
+            final Method m = c.getMethod("getLog", new Class[] {Class.class});
+            final Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
             log.info("testing");
 
             // check that the default map implementation was loaded, as JCL was
@@ -118,22 +118,22 @@ public class SecurityForbiddenTestCase extends TestCase
             // The default is either the java Hashtable class (java < 1.2) or the
             // JCL WeakHashtable (java >= 1.3).
             System.setSecurityManager(oldSecMgr);
-            Field factoryField = c.getDeclaredField("factories");
+            final Field factoryField = c.getDeclaredField("factories");
             factoryField.setAccessible(true);
-            Object factoryTable = factoryField.get(null);
+            final Object factoryTable = factoryField.get(null);
             assertNotNull(factoryTable);
-            String ftClassName = factoryTable.getClass().getName();
+            final String ftClassName = factoryTable.getClass().getName();
             assertTrue("Custom hashtable unexpectedly used",
                     !CustomHashtable.class.getName().equals(ftClassName));
 
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
-        } catch(Throwable t) {
+        } catch(final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
             System.setSecurityManager(oldSecMgr);
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw);
             t.printStackTrace(pw);
             fail("Unexpected exception:" + t.getMessage() + ":" + sw.toString());
         }
@@ -148,7 +148,7 @@ public class SecurityForbiddenTestCase extends TestCase
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
-        MockSecurityManager mySecurityManager = new MockSecurityManager();
+        final MockSecurityManager mySecurityManager = new MockSecurityManager();
 
         System.setSecurityManager(mySecurityManager);
 
@@ -160,13 +160,13 @@ public class SecurityForbiddenTestCase extends TestCase
 
             System.setSecurityManager(oldSecMgr);
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
-        } catch(Throwable t) {
+        } catch(final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
             System.setSecurityManager(oldSecMgr);
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw);
             t.printStackTrace(pw);
             fail("Unexpected exception:" + t.getMessage() + ":" + sw.toString());
         }
@@ -175,14 +175,14 @@ public class SecurityForbiddenTestCase extends TestCase
     /**
      * Loads a class with the given classloader.
      */
-    private Object loadClass(String name, ClassLoader classLoader) {
+    private Object loadClass(final String name, final ClassLoader classLoader) {
         try {
-            Class clazz = classLoader.loadClass(name);
-            Object obj = clazz.newInstance();
+            final Class clazz = classLoader.loadClass(name);
+            final Object obj = clazz.newInstance();
             return obj;
-        } catch ( Exception e ) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
+        } catch ( final Exception e ) {
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             fail("Unexpected exception:" + e.getMessage() + ":" + sw.toString());
         }

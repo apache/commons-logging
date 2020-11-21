@@ -68,13 +68,13 @@ public class NoOpLogTestCase extends AbstractLogTest
         checkLog(log);
 
         // Serialize and deserialize the instance
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(log);
         oos.close();
-        ByteArrayInputStream bais =
+        final ByteArrayInputStream bais =
             new ByteArrayInputStream(baos.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(bais);
+        final ObjectInputStream ois = new ObjectInputStream(bais);
         log = (Log) ois.readObject();
         ois.close();
 
@@ -84,7 +84,7 @@ public class NoOpLogTestCase extends AbstractLogTest
 
     // -------------------------------------------------------- Support Methods
 
-    private void checkLog(Log log) {
+    private void checkLog(final Log log) {
 
         assertNotNull("Log exists", log);
         assertEquals("Log class",

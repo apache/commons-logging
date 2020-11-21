@@ -40,7 +40,7 @@ public class LogConfigurationException extends RuntimeException {
      *
      * @param message The detail message
      */
-    public LogConfigurationException(String message) {
+    public LogConfigurationException(final String message) {
         super(message);
     }
 
@@ -50,7 +50,7 @@ public class LogConfigurationException extends RuntimeException {
      *
      * @param cause The underlying cause
      */
-    public LogConfigurationException(Throwable cause) {
+    public LogConfigurationException(final Throwable cause) {
         this(cause == null ? null : cause.toString(), cause);
     }
 
@@ -60,7 +60,7 @@ public class LogConfigurationException extends RuntimeException {
      * @param message The detail message
      * @param cause The underlying cause
      */
-    public LogConfigurationException(String message, Throwable cause) {
+    public LogConfigurationException(final String message, final Throwable cause) {
         super(message + " (Caused by " + cause + ")");
         this.cause = cause; // Two-argument version requires JDK 1.4 or later
     }

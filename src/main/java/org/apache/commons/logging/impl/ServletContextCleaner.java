@@ -56,10 +56,10 @@ public class ServletContextCleaner implements ServletContextListener {
      * class to release any logging information related to the current
      * contextClassloader.
      */
-    public void contextDestroyed(ServletContextEvent sce) {
-        ClassLoader tccl = Thread.currentThread().getContextClassLoader();
+    public void contextDestroyed(final ServletContextEvent sce) {
+        final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
 
-        Object[] params = new Object[1];
+        final Object[] params = new Object[1];
         params[0] = tccl;
 
         // Walk up the tree of classloaders, finding all the available
@@ -98,23 +98,23 @@ public class ServletContextCleaner implements ServletContextListener {
             // via this loader, but is accessible via some ancestor then that class
             // will be returned.
             try {
-                Class logFactoryClass = loader.loadClass("org.apache.commons.logging.LogFactory");
-                Method releaseMethod = logFactoryClass.getMethod("release", RELEASE_SIGNATURE);
+                final Class logFactoryClass = loader.loadClass("org.apache.commons.logging.LogFactory");
+                final Method releaseMethod = logFactoryClass.getMethod("release", RELEASE_SIGNATURE);
                 releaseMethod.invoke(null, params);
                 loader = logFactoryClass.getClassLoader().getParent();
-            } catch(ClassNotFoundException ex) {
+            } catch(final ClassNotFoundException ex) {
                 // Neither the current classloader nor any of its ancestors could find
                 // the LogFactory class, so we can stop now.
                 loader = null;
-            } catch(NoSuchMethodException ex) {
+            } catch(final NoSuchMethodException ex) {
                 // This is not expected; every version of JCL has this method
                 System.err.println("LogFactory instance found which does not support release method!");
                 loader = null;
-            } catch(IllegalAccessException ex) {
+            } catch(final IllegalAccessException ex) {
                 // This is not expected; every ancestor class should be accessible
                 System.err.println("LogFactory instance found which is not accessable!");
                 loader = null;
-            } catch(InvocationTargetException ex) {
+            } catch(final InvocationTargetException ex) {
                 // This is not expected
                 System.err.println("LogFactory instance release method failed!");
                 loader = null;
@@ -130,7 +130,7 @@ public class ServletContextCleaner implements ServletContextListener {
     /**
      * Invoked when a webapp is deployed. Nothing needs to be done here.
      */
-    public void contextInitialized(ServletContextEvent sce) {
+    public void contextInitialized(final ServletContextEvent sce) {
         // do nothing
     }
 }

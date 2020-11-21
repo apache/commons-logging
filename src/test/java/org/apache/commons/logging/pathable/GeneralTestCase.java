@@ -35,15 +35,15 @@ public class GeneralTestCase extends TestCase {
      * Set up a custom classloader hierarchy for this test case.
      */
     public static Test suite() throws Exception {
-        Class thisClass = GeneralTestCase.class;
-        ClassLoader thisClassLoader = thisClass.getClassLoader();
+        final Class thisClass = GeneralTestCase.class;
+        final ClassLoader thisClassLoader = thisClass.getClassLoader();
 
-        PathableClassLoader loader = new PathableClassLoader(null);
+        final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", thisClassLoader);
         loader.addLogicalLib("testclasses");
 
         // reload this class via the child classloader
-        Class testClass = loader.loadClass(thisClass.getName());
+        final Class testClass = loader.loadClass(thisClass.getName());
 
         // and return our custom TestSuite class
         return new PathableTestSuite(testClass, loader);
@@ -87,12 +87,12 @@ public class GeneralTestCase extends TestCase {
      * a non-custom one.
      */
     private static void checkAndSetContext() {
-        ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         assertEquals("ContextLoader is of unexpected type",
                 contextLoader.getClass().getName(),
                 PathableClassLoader.class.getName());
 
-        URL[] noUrls = new URL[0];
+        final URL[] noUrls = new URL[0];
         Thread.currentThread().setContextClassLoader(new URLClassLoader(noUrls));
     }
 

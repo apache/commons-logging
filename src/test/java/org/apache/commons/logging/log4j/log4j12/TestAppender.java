@@ -36,7 +36,7 @@ public class TestAppender extends AppenderSkeleton {
     /**
      * Constructor.
      */
-    public TestAppender(List logEvents) {
+    public TestAppender(final List logEvents) {
         events = logEvents;
     }
 
@@ -49,8 +49,8 @@ public class TestAppender extends AppenderSkeleton {
 
     // ------------------------------------------------------- Appender Methods
 
-    protected void append(LoggingEvent event) {
-        StandardTests.LogEvent lev = new StandardTests.LogEvent();
+    protected void append(final LoggingEvent event) {
+        final StandardTests.LogEvent lev = new StandardTests.LogEvent();
 
         lev.level = event.getLevel().toString();
 

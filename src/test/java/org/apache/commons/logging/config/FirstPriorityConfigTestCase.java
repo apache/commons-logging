@@ -48,39 +48,39 @@ public class FirstPriorityConfigTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        Class thisClass = FirstPriorityConfigTestCase.class;
+        final Class thisClass = FirstPriorityConfigTestCase.class;
 
         // Determine the URL to this .class file, so that we can then
         // append the priority dirs to it. For tidiness, load this
         // class through a dummy loader though this is not absolutely
         // necessary...
-        PathableClassLoader dummy = new PathableClassLoader(null);
+        final PathableClassLoader dummy = new PathableClassLoader(null);
         dummy.useExplicitLoader("junit.", Test.class.getClassLoader());
         dummy.addLogicalLib("testclasses");
         dummy.addLogicalLib("commons-logging");
 
-        String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
-        URL baseUrl = dummy.findResource(thisClassPath);
+        final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
+        final URL baseUrl = dummy.findResource(thisClassPath);
 
         // Now set up the desired classloader hierarchy. We'll put JCL
         // in the container path, the testcase in a webapp path, and
         // both config files into the webapp path too.
-        PathableClassLoader containerLoader = new PathableClassLoader(null);
+        final PathableClassLoader containerLoader = new PathableClassLoader(null);
         containerLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         containerLoader.addLogicalLib("commons-logging");
 
-        PathableClassLoader webappLoader = new PathableClassLoader(containerLoader);
+        final PathableClassLoader webappLoader = new PathableClassLoader(containerLoader);
         webappLoader.addLogicalLib("testclasses");
 
-        URL pri20URL = new URL(baseUrl, "priority20/");
+        final URL pri20URL = new URL(baseUrl, "priority20/");
         webappLoader.addURL(pri20URL);
 
-        URL pri10URL = new URL(baseUrl, "priority10/");
+        final URL pri10URL = new URL(baseUrl, "priority10/");
         webappLoader.addURL(pri10URL);
 
         // load the test class via webapp loader, and use the webapp loader
         // as the tccl loader too.
-        Class testClass = webappLoader.loadClass(thisClass.getName());
+        final Class testClass = webappLoader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, webappLoader);
     }
 
@@ -105,11 +105,11 @@ public class FirstPriorityConfigTestCase extends TestCase {
      * the desired configId value.
      */
     public void testPriority() throws Exception {
-        LogFactory instance = LogFactory.getFactory();
+        final LogFactory instance = LogFactory.getFactory();
 
-        ClassLoader thisClassLoader = this.getClass().getClassLoader();
-        ClassLoader lfClassLoader = instance.getClass().getClassLoader();
-        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader thisClassLoader = this.getClass().getClassLoader();
+        final ClassLoader lfClassLoader = instance.getClass().getClassLoader();
+        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
         // context classloader should be thisClassLoader
         assertEquals(thisClassLoader, contextClassLoader);
@@ -119,7 +119,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
         assertEquals(PathableClassLoader.class.getName(),
                 lfClassLoader.getClass().getName());
 
-        String id = (String) instance.getAttribute("configId");
+        final String id = (String) instance.getAttribute("configId");
         assertEquals("Correct config file loaded", "priority20", id );
     }
 }
