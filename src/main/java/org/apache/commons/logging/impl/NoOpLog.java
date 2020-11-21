@@ -36,28 +36,40 @@ public class NoOpLog implements Log, Serializable {
     /** Base constructor */
     public NoOpLog(final String name) { }
     /** Do nothing */
+    @Override
     public void trace(final Object message) { }
     /** Do nothing */
+    @Override
     public void trace(final Object message, final Throwable t) { }
     /** Do nothing */
+    @Override
     public void debug(final Object message) { }
     /** Do nothing */
+    @Override
     public void debug(final Object message, final Throwable t) { }
     /** Do nothing */
+    @Override
     public void info(final Object message) { }
     /** Do nothing */
+    @Override
     public void info(final Object message, final Throwable t) { }
     /** Do nothing */
+    @Override
     public void warn(final Object message) { }
     /** Do nothing */
+    @Override
     public void warn(final Object message, final Throwable t) { }
     /** Do nothing */
+    @Override
     public void error(final Object message) { }
     /** Do nothing */
+    @Override
     public void error(final Object message, final Throwable t) { }
     /** Do nothing */
+    @Override
     public void fatal(final Object message) { }
     /** Do nothing */
+    @Override
     public void fatal(final Object message, final Throwable t) { }
 
     /**
@@ -65,6 +77,7 @@ public class NoOpLog implements Log, Serializable {
      *
      * @return false
      */
+    @Override
     public final boolean isDebugEnabled() { return false; }
 
     /**
@@ -72,6 +85,7 @@ public class NoOpLog implements Log, Serializable {
      *
      * @return false
      */
+    @Override
     public final boolean isErrorEnabled() { return false; }
 
     /**
@@ -79,6 +93,7 @@ public class NoOpLog implements Log, Serializable {
      *
      * @return false
      */
+    @Override
     public final boolean isFatalEnabled() { return false; }
 
     /**
@@ -86,6 +101,7 @@ public class NoOpLog implements Log, Serializable {
      *
      * @return false
      */
+    @Override
     public final boolean isInfoEnabled() { return false; }
 
     /**
@@ -93,6 +109,7 @@ public class NoOpLog implements Log, Serializable {
      *
      * @return false
      */
+    @Override
     public final boolean isTraceEnabled() { return false; }
 
     /**
@@ -100,5 +117,6 @@ public class NoOpLog implements Log, Serializable {
      *
      * @return false
      */
+    @Override
     public final boolean isWarnEnabled() { return false; }
 }

@@ -20,6 +20,7 @@ import org.apache.commons.logging.impl.SimpleLog;
 
 public class SimpleLogTestCase extends AbstractLogTest
 {
+    @Override
     public Log getLogObject()
     {
         return new SimpleLog(this.getClass().getName());

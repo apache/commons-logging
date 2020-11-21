@@ -85,6 +85,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
     */
+    @Override
     public void trace(final Object message) {
         debug(message);
     }
@@ -96,6 +97,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
+    @Override
     public void trace(final Object message, final Throwable t) {
         debug(message, t);
     }
@@ -106,6 +108,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
      */
+    @Override
     public void debug(final Object message) {
         if (message != null) {
             getLogger().debug(String.valueOf(message));
@@ -119,6 +122,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
+    @Override
     public void debug(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().debug(String.valueOf(message), t);
@@ -131,6 +135,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
+    @Override
     public void info(final Object message) {
         if (message != null) {
             getLogger().info(String.valueOf(message));
@@ -144,6 +149,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
+    @Override
     public void info(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().info(String.valueOf(message), t);
@@ -156,6 +162,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
+    @Override
     public void warn(final Object message) {
         if (message != null) {
             getLogger().warn(String.valueOf(message));
@@ -169,6 +176,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
+    @Override
     public void warn(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().warn(String.valueOf(message), t);
@@ -181,6 +189,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
+    @Override
     public void error(final Object message) {
         if (message != null) {
             getLogger().error(String.valueOf(message));
@@ -194,6 +203,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
+    @Override
     public void error(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().error(String.valueOf(message), t);
@@ -206,6 +216,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
+    @Override
     public void fatal(final Object message) {
         if (message != null) {
             getLogger().fatalError(String.valueOf(message));
@@ -219,6 +230,7 @@ public class LogKitLogger implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
+    @Override
     public void fatal(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().fatalError(String.valueOf(message), t);
@@ -228,6 +240,7 @@ public class LogKitLogger implements Log, Serializable {
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
+    @Override
     public boolean isDebugEnabled() {
         return getLogger().isDebugEnabled();
     }
@@ -235,6 +248,7 @@ public class LogKitLogger implements Log, Serializable {
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>ERROR</code>.
      */
+    @Override
     public boolean isErrorEnabled() {
         return getLogger().isErrorEnabled();
     }
@@ -242,6 +256,7 @@ public class LogKitLogger implements Log, Serializable {
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>FATAL_ERROR</code>.
      */
+    @Override
     public boolean isFatalEnabled() {
         return getLogger().isFatalErrorEnabled();
     }
@@ -249,6 +264,7 @@ public class LogKitLogger implements Log, Serializable {
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>INFO</code>.
      */
+    @Override
     public boolean isInfoEnabled() {
         return getLogger().isInfoEnabled();
     }
@@ -256,6 +272,7 @@ public class LogKitLogger implements Log, Serializable {
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>DEBUG</code>.
      */
+    @Override
     public boolean isTraceEnabled() {
         return getLogger().isDebugEnabled();
     }
@@ -263,6 +280,7 @@ public class LogKitLogger implements Log, Serializable {
     /**
      * Checks whether the <code>LogKit</code> logger will log messages of priority <code>WARN</code>.
      */
+    @Override
     public boolean isWarnEnabled() {
         return getLogger().isWarnEnabled();
     }

@@ -53,6 +53,7 @@ public class AltHashtableTestCase extends TestCase {
      * This is true of all JVMs I know of; and if it isn't then this test will
      * fail and someone will tell us.
      */
+    @Override
     public void setUp() {
         System.setProperty(
                 "org.apache.commons.logging.LogFactory.HashtableImpl",

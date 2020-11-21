@@ -73,6 +73,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * when they are created. Subclasses can override this method to
      * define properties that suit them.
      */
+    @Override
     public void setProperties() {
         System.setProperty(
             "org.apache.commons.logging.Log",
@@ -85,6 +86,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * Set up instance variables required by this test case.
      */
+    @Override
     public void setUp() throws Exception {
         LogFactory.releaseAll();
         setProperties();
@@ -121,6 +123,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * Tear down instance variables required by this test case.
      */
+    @Override
     public void tearDown() {
         super.tearDown();
         expected = null;
@@ -151,6 +154,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Test Serializability of standard instance
+    @Override
     public void testSerializable() throws Exception {
 
         ((DecoratedSimpleLog) log).clearCache();
@@ -166,6 +170,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Check the decorated log instance
+    @Override
     protected void checkDecorated() {
 
         assertNotNull("Log exists", log);
@@ -224,6 +229,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Check the standard log instance
+    @Override
     protected void checkStandard() {
 
         checkDecorated();

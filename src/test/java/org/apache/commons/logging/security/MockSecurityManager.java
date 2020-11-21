@@ -58,6 +58,7 @@ public class MockSecurityManager extends SecurityManager {
         return untrustedCodeCount;
     }
 
+    @Override
     public void checkPermission(final Permission p) throws SecurityException {
         if (setSecurityManagerPerm.implies(p)) {
             // ok, allow this; we don't want to block any calls to setSecurityManager

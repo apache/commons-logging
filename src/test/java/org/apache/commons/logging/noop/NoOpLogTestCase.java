@@ -37,6 +37,7 @@ public class NoOpLogTestCase extends AbstractLogTest
     /**
      * Set up instance variables required by this test case.
      */
+    @Override
     public void setUp() throws Exception {
         LogFactory.releaseAll();
 
@@ -48,6 +49,7 @@ public class NoOpLogTestCase extends AbstractLogTest
     /**
      * Tear down instance variables required by this test case.
      */
+    @Override
     public void tearDown() {
         LogFactory.releaseAll();
         System.getProperties().remove("org.apache.commons.logging.Log");
@@ -57,6 +59,7 @@ public class NoOpLogTestCase extends AbstractLogTest
      * Override the abstract method from the parent class so that the
      * inherited tests can access the right Log object type.
      */
+    @Override
     public Log getLogObject()
     {
         return new NoOpLog(this.getClass().getName());

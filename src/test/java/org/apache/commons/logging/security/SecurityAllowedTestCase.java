@@ -69,11 +69,13 @@ public class SecurityAllowedTestCase extends TestCase
         return new PathableTestSuite(testClass, parent);
     }
 
+    @Override
     public void setUp() {
         // save security manager so it can be restored in tearDown
         oldSecMgr = System.getSecurityManager();
     }
 
+    @Override
     public void tearDown() {
         // Restore, so other tests don't get stuffed up if a test
         // sets a custom security manager.

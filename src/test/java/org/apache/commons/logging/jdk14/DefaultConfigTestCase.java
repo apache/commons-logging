@@ -78,6 +78,7 @@ public class DefaultConfigTestCase extends TestCase {
     /**
      * Set up instance variables required by this test case.
      */
+    @Override
     public void setUp() throws Exception {
         setUpFactory();
         setUpLog("TestLogger");
@@ -100,6 +101,7 @@ public class DefaultConfigTestCase extends TestCase {
     /**
      * Tear down instance variables required by this test case.
      */
+    @Override
     public void tearDown() {
         log = null;
         factory = null;

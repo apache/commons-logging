@@ -29,6 +29,7 @@ public class AltHashtable extends Hashtable {
     public static Object lastKey;
     public static Object lastValue;
 
+    @Override
     public Object put(final Object key, final Object value) {
         lastKey = key;
         lastValue = value;

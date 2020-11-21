@@ -76,6 +76,7 @@ public class StandardTestCase extends AbstractLogTest {
     /**
      * Set up instance variables required by this test case.
      */
+    @Override
     public void setUp() throws Exception {
         LogFactory.releaseAll();
 
@@ -90,6 +91,7 @@ public class StandardTestCase extends AbstractLogTest {
     /**
      * Tear down instance variables required by this test case.
      */
+    @Override
     public void tearDown() {
         log = null;
         factory = null;
@@ -102,6 +104,7 @@ public class StandardTestCase extends AbstractLogTest {
      * Override the abstract method from the parent class so that the
      * inherited tests can access the right Log object type.
      */
+    @Override
     public Log getLogObject()
     {
         return new LogKitLogger(this.getClass().getName());

@@ -76,6 +76,7 @@ public class DecoratedSimpleLog extends SimpleLog {
 
 
     // Cache logged messages
+    @Override
     protected void log(final int type, final Object message, final Throwable t) {
 
         super.log(type, message, t);

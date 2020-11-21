@@ -133,6 +133,7 @@ public class PathableTestSuite extends TestSuite {
      * The context classloader and system properties are saved before each
      * test, and restored after the test completes to better isolate tests.
      */
+    @Override
     public void runTest(final Test test, final TestResult result) {
         final ClassLoader origContext = Thread.currentThread().getContextClassLoader();
         final Properties oldSysProps = (Properties) System.getProperties().clone();

@@ -53,15 +53,18 @@ public class TestHandler extends Handler {
     // -------------------------------------------------------- Handler Methods
 
 
+    @Override
     public void close() {
     }
 
 
+    @Override
     public void flush() {
         records.clear();
     }
 
 
+    @Override
     public void publish(final LogRecord record) {
         records.add(record);
     }

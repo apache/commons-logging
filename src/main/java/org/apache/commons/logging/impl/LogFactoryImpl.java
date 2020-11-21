@@ -242,6 +242,7 @@ public class LogFactoryImpl extends LogFactory {
      *
      * @param name Name of the attribute to return
      */
+    @Override
     public Object getAttribute(final String name) {
         return attributes.get(name);
     }
@@ -251,6 +252,7 @@ public class LogFactoryImpl extends LogFactory {
      * configuration attributes.  If there are no such attributes, a zero
      * length array is returned.
      */
+    @Override
     public String[] getAttributeNames() {
         return (String[]) attributes.keySet().toArray(new String[attributes.size()]);
     }
@@ -264,6 +266,7 @@ public class LogFactoryImpl extends LogFactory {
      * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
+    @Override
     public Log getInstance(final Class clazz) throws LogConfigurationException {
         return getInstance(clazz.getName());
     }
@@ -285,6 +288,7 @@ public class LogFactoryImpl extends LogFactory {
      * @throws LogConfigurationException if a suitable <code>Log</code>
      *  instance cannot be returned
      */
+    @Override
     public Log getInstance(final String name) throws LogConfigurationException {
         Log instance = (Log) instances.get(name);
         if (instance == null) {
@@ -302,6 +306,7 @@ public class LogFactoryImpl extends LogFactory {
      * throwing away a ClassLoader.  Dangling references to objects in that
      * class loader would prevent garbage collection.
      */
+    @Override
     public void release() {
 
         logDiagnostic("Releasing all known loggers");
@@ -314,6 +319,7 @@ public class LogFactoryImpl extends LogFactory {
      *
      * @param name Name of the attribute to remove
      */
+    @Override
     public void removeAttribute(final String name) {
         attributes.remove(name);
     }
@@ -342,6 +348,7 @@ public class LogFactoryImpl extends LogFactory {
      * @param value Value of the attribute to set, or <code>null</code>
      *  to remove any setting for this attribute
      */
+    @Override
     public void setAttribute(final String name, final Object value) {
         if (logConstructor != null) {
             logDiagnostic("setAttribute: call too late; configuration already performed.");
@@ -450,6 +457,7 @@ public class LogFactoryImpl extends LogFactory {
      * @deprecated  Never invoked by this class; subclasses should not assume
      *              it will be.
      */
+    @Deprecated
     protected String getLogClassName() {
         if (logClassName == null) {
             discoverLogImplementation(getClass().getName());
@@ -474,6 +482,7 @@ public class LogFactoryImpl extends LogFactory {
      * @deprecated  Never invoked by this class; subclasses should not assume
      *              it will be.
      */
+    @Deprecated
     protected Constructor getLogConstructor()
         throws LogConfigurationException {
 
@@ -491,6 +500,7 @@ public class LogFactoryImpl extends LogFactory {
      * @deprecated  Never invoked by this class; subclasses should not assume
      *              it will be.
      */
+    @Deprecated
     protected boolean isJdk13LumberjackAvailable() {
         return isLogLibraryAvailable(
                 "Jdk13Lumberjack",
@@ -506,6 +516,7 @@ public class LogFactoryImpl extends LogFactory {
      * @deprecated  Never invoked by this class; subclasses should not assume
      *              it will be.
      */
+    @Deprecated
     protected boolean isJdk14Available() {
         return isLogLibraryAvailable(
                 "Jdk14",
@@ -518,6 +529,7 @@ public class LogFactoryImpl extends LogFactory {
      * @deprecated  Never invoked by this class; subclasses should not assume
      *              it will be.
      */
+    @Deprecated
     protected boolean isLog4JAvailable() {
         return isLogLibraryAvailable(
                 "Log4J",
@@ -595,6 +607,7 @@ public class LogFactoryImpl extends LogFactory {
         throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
             new PrivilegedAction() {
+                @Override
                 public Object run() {
                     return LogFactory.directGetContextClassLoader();
                 }
@@ -614,6 +627,7 @@ public class LogFactoryImpl extends LogFactory {
         throws SecurityException {
         return (String) AccessController.doPrivileged(
                 new PrivilegedAction() {
+                    @Override
                     public Object run() {
                         return System.getProperty(key, def);
                     }
@@ -631,6 +645,7 @@ public class LogFactoryImpl extends LogFactory {
         try {
             return (ClassLoader)AccessController.doPrivileged(
                     new PrivilegedAction() {
+                        @Override
                         public Object run() {
                             return cl.getParent();
                         }

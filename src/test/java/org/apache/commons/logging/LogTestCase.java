@@ -20,6 +20,7 @@ package org.apache.commons.logging;
 public class LogTestCase extends AbstractLogTest
 {
 
+    @Override
     public Log getLogObject()
     {
         /**

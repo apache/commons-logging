@@ -165,6 +165,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * Set up instance variables required by this test case.
      */
+    @Override
     public void setUp() throws Exception {
         setUpManager
             ("org/apache/commons/logging/jdk14/CustomConfig.properties");
@@ -200,6 +201,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * Tear down instance variables required by this test case.
      */
+    @Override
     public void tearDown() {
         super.tearDown();
         handlers = null;
@@ -259,6 +261,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Test Serializability of Log instance
+    @Override
     public void testSerializable() throws Exception {
 
         super.testSerializable();
@@ -271,6 +274,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     // Check the log instance
+    @Override
     protected void checkLog() {
 
         assertNotNull("Log exists", log);

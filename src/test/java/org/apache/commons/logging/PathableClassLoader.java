@@ -101,6 +101,7 @@ public class PathableClassLoader extends URLClassLoader {
      * use addLogicalLib instead, then define the location for that logical
      * library in the build.xml file.
      */
+    @Override
     public void addURL(final URL url) {
         super.addURL(url);
     }
@@ -291,6 +292,7 @@ public class PathableClassLoader extends URLClassLoader {
      * prefix associated with that entry then attempt to load the class via
      * that entries' classloader.
      */
+    @Override
     protected Class loadClass(final String name, final boolean resolve)
     throws ClassNotFoundException {
         // just for performance, check java and javax
@@ -340,6 +342,7 @@ public class PathableClassLoader extends URLClassLoader {
      * the resource is looked for in the local classpath before the parent
      * loader is consulted.
      */
+    @Override
     public URL getResource(final String name) {
         if (parentFirst) {
             return super.getResource(name);
@@ -413,6 +416,7 @@ public class PathableClassLoader extends URLClassLoader {
      * the resource is looked for in the local classpath before the parent
      * loader is consulted.
      */
+    @Override
     public InputStream getResourceAsStream(final String name) {
         if (parentFirst) {
             return super.getResourceAsStream(name);

@@ -87,6 +87,7 @@ public class TcclEnabledTestCase extends TestCase {
     /**
      * Set up instance variables required by this test case.
      */
+    @Override
     public void setUp() throws Exception {
         LogFactory.releaseAll();
     }
@@ -94,6 +95,7 @@ public class TcclEnabledTestCase extends TestCase {
     /**
      * Tear down instance variables required by this test case.
      */
+    @Override
     public void tearDown() {
         LogFactory.releaseAll();
     }

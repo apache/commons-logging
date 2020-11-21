@@ -365,6 +365,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
      */
+    @Override
     public final void debug(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, null);
@@ -379,6 +380,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
+    @Override
     public final void debug(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
             log(SimpleLog.LOG_LEVEL_DEBUG, message, t);
@@ -391,6 +393,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
+    @Override
     public final void trace(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
             log(SimpleLog.LOG_LEVEL_TRACE, message, null);
@@ -404,6 +407,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
+    @Override
     public final void trace(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
             log(SimpleLog.LOG_LEVEL_TRACE, message, t);
@@ -416,6 +420,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
+    @Override
     public final void info(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO,message,null);
@@ -429,6 +434,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
+    @Override
     public final void info(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO, message, t);
@@ -441,6 +447,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
+    @Override
     public final void warn(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, null);
@@ -454,6 +461,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
+    @Override
     public final void warn(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
             log(SimpleLog.LOG_LEVEL_WARN, message, t);
@@ -466,6 +474,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
+    @Override
     public final void error(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, null);
@@ -479,6 +488,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
+    @Override
     public final void error(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
             log(SimpleLog.LOG_LEVEL_ERROR, message, t);
@@ -491,6 +501,7 @@ public class SimpleLog implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
+    @Override
     public final void fatal(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, null);
@@ -504,6 +515,7 @@ public class SimpleLog implements Log, Serializable {
      * @param t log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
+    @Override
     public final void fatal(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
             log(SimpleLog.LOG_LEVEL_FATAL, message, t);
@@ -517,6 +529,7 @@ public class SimpleLog implements Log, Serializable {
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
+    @Override
     public final boolean isDebugEnabled() {
         return isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG);
     }
@@ -528,6 +541,7 @@ public class SimpleLog implements Log, Serializable {
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
+    @Override
     public final boolean isErrorEnabled() {
         return isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR);
     }
@@ -539,6 +553,7 @@ public class SimpleLog implements Log, Serializable {
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
+    @Override
     public final boolean isFatalEnabled() {
         return isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL);
     }
@@ -550,6 +565,7 @@ public class SimpleLog implements Log, Serializable {
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
+    @Override
     public final boolean isInfoEnabled() {
         return isLevelEnabled(SimpleLog.LOG_LEVEL_INFO);
     }
@@ -561,6 +577,7 @@ public class SimpleLog implements Log, Serializable {
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
+    @Override
     public final boolean isTraceEnabled() {
         return isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE);
     }
@@ -572,6 +589,7 @@ public class SimpleLog implements Log, Serializable {
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
+    @Override
     public final boolean isWarnEnabled() {
         return isLevelEnabled(SimpleLog.LOG_LEVEL_WARN);
     }
@@ -640,6 +658,7 @@ public class SimpleLog implements Log, Serializable {
     private static InputStream getResourceAsStream(final String name) {
         return (InputStream)AccessController.doPrivileged(
             new PrivilegedAction() {
+                @Override
                 public Object run() {
                     final ClassLoader threadCL = getContextClassLoader();
 

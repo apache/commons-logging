@@ -64,6 +64,7 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
      * set up the props defined in the parent class setProperties method,
      * and add a few to configure the SimpleLog class date/time output.
      */
+    @Override
     public void setProperties() {
         super.setProperties();
 
@@ -78,6 +79,7 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     /**
      * Set up instance variables required by this test case.
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
     }
@@ -86,6 +88,7 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     // ----------------------------------------------------------- Methods
 
     /** Checks that the date time format has been successfully set */
+    @Override
     protected void checkDecoratedDateTime() {
         assertEquals("Expected date format to be set", "dd.mm.yyyy",
                      ((DecoratedSimpleLog) log).getDateTimeFormat());
@@ -98,6 +101,7 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     }
 
     /** Hook for subclassses */
+    @Override
     protected void checkShowDateTime() {
         assertTrue(((DecoratedSimpleLog) log).getShowDateTime());
     }

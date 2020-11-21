@@ -22,23 +22,41 @@ public class MyLog implements Log {
 
     public MyLog(final String category) {}
 
+    @Override
     public boolean isDebugEnabled() { return false; }
+    @Override
     public boolean isErrorEnabled() { return false; }
+    @Override
     public boolean isFatalEnabled() { return false; }
+    @Override
     public boolean isInfoEnabled()  { return false; }
+    @Override
     public boolean isTraceEnabled() { return false; }
+    @Override
     public boolean isWarnEnabled()  { return false; }
 
+    @Override
     public void trace(final Object message) {}
+    @Override
     public void trace(final Object message, final Throwable t) {}
+    @Override
     public void debug(final Object message) {}
+    @Override
     public void debug(final Object message, final Throwable t) {}
+    @Override
     public void info(final Object message) {}
+    @Override
     public void info(final Object message, final Throwable t) {}
+    @Override
     public void warn(final Object message) {}
+    @Override
     public void warn(final Object message, final Throwable t) {}
+    @Override
     public void error(final Object message) {}
+    @Override
     public void error(final Object message, final Throwable t) {}
+    @Override
     public void fatal(final Object message) {}
+    @Override
     public void fatal(final Object message, final Throwable t) {}
 }

@@ -99,6 +99,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
      */
+    @Override
     public void debug(final Object message) {
         log(Level.FINE, String.valueOf(message), null);
     }
@@ -110,6 +111,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param exception log this cause
      * @see org.apache.commons.logging.Log#debug(Object, Throwable)
      */
+    @Override
     public void debug(final Object message, final Throwable exception) {
         log(Level.FINE, String.valueOf(message), exception);
     }
@@ -120,6 +122,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
      */
+    @Override
     public void error(final Object message) {
         log(Level.SEVERE, String.valueOf(message), null);
     }
@@ -131,6 +134,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param exception log this cause
      * @see org.apache.commons.logging.Log#error(Object, Throwable)
      */
+    @Override
     public void error(final Object message, final Throwable exception) {
         log(Level.SEVERE, String.valueOf(message), exception);
     }
@@ -141,6 +145,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
      */
+    @Override
     public void fatal(final Object message) {
         log(Level.SEVERE, String.valueOf(message), null);
     }
@@ -152,6 +157,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param exception log this cause
      * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
      */
+    @Override
     public void fatal(final Object message, final Throwable exception) {
         log(Level.SEVERE, String.valueOf(message), exception);
     }
@@ -172,6 +178,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
      */
+    @Override
     public void info(final Object message) {
         log(Level.INFO, String.valueOf(message), null);
     }
@@ -183,6 +190,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param exception log this cause
      * @see org.apache.commons.logging.Log#info(Object, Throwable)
      */
+    @Override
     public void info(final Object message, final Throwable exception) {
         log(Level.INFO, String.valueOf(message), exception);
     }
@@ -190,6 +198,7 @@ public class Jdk14Logger implements Log, Serializable {
     /**
      * Is debug logging currently enabled?
      */
+    @Override
     public boolean isDebugEnabled() {
         return getLogger().isLoggable(Level.FINE);
     }
@@ -197,6 +206,7 @@ public class Jdk14Logger implements Log, Serializable {
     /**
      * Is error logging currently enabled?
      */
+    @Override
     public boolean isErrorEnabled() {
         return getLogger().isLoggable(Level.SEVERE);
     }
@@ -204,6 +214,7 @@ public class Jdk14Logger implements Log, Serializable {
     /**
      * Is fatal logging currently enabled?
      */
+    @Override
     public boolean isFatalEnabled() {
         return getLogger().isLoggable(Level.SEVERE);
     }
@@ -211,6 +222,7 @@ public class Jdk14Logger implements Log, Serializable {
     /**
      * Is info logging currently enabled?
      */
+    @Override
     public boolean isInfoEnabled() {
         return getLogger().isLoggable(Level.INFO);
     }
@@ -218,6 +230,7 @@ public class Jdk14Logger implements Log, Serializable {
     /**
      * Is trace logging currently enabled?
      */
+    @Override
     public boolean isTraceEnabled() {
         return getLogger().isLoggable(Level.FINEST);
     }
@@ -225,6 +238,7 @@ public class Jdk14Logger implements Log, Serializable {
     /**
      * Is warn logging currently enabled?
      */
+    @Override
     public boolean isWarnEnabled() {
         return getLogger().isLoggable(Level.WARNING);
     }
@@ -235,6 +249,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
      */
+    @Override
     public void trace(final Object message) {
         log(Level.FINEST, String.valueOf(message), null);
     }
@@ -246,6 +261,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param exception log this cause
      * @see org.apache.commons.logging.Log#trace(Object, Throwable)
      */
+    @Override
     public void trace(final Object message, final Throwable exception) {
         log(Level.FINEST, String.valueOf(message), exception);
     }
@@ -256,6 +272,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
      */
+    @Override
     public void warn(final Object message) {
         log(Level.WARNING, String.valueOf(message), null);
     }
@@ -267,6 +284,7 @@ public class Jdk14Logger implements Log, Serializable {
      * @param exception log this cause
      * @see org.apache.commons.logging.Log#warn(Object, Throwable)
      */
+    @Override
     public void warn(final Object message, final Throwable exception) {
         log(Level.WARNING, String.valueOf(message), exception);
     }

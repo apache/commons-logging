@@ -56,6 +56,7 @@ public class ServletContextCleaner implements ServletContextListener {
      * class to release any logging information related to the current
      * contextClassloader.
      */
+    @Override
     public void contextDestroyed(final ServletContextEvent sce) {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
 
@@ -130,6 +131,7 @@ public class ServletContextCleaner implements ServletContextListener {
     /**
      * Invoked when a webapp is deployed. Nothing needs to be done here.
      */
+    @Override
     public void contextInitialized(final ServletContextEvent sce) {
         // do nothing
     }

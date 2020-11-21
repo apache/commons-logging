@@ -49,6 +49,7 @@ public class TestAppender extends AppenderSkeleton {
 
     // ------------------------------------------------------- Appender Methods
 
+    @Override
     protected void append(final LoggingEvent event) {
         final StandardTests.LogEvent lev = new StandardTests.LogEvent();
 
@@ -70,10 +71,12 @@ public class TestAppender extends AppenderSkeleton {
     }
 
 
+    @Override
     public void close() {
     }
 
 
+    @Override
     public boolean requiresLayout() {
         return false;
     }

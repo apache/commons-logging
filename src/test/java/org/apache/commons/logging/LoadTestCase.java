@@ -81,6 +81,7 @@ public class LoadTestCase extends TestCase{
 
         // not very trivial to emulate we must implement "findClass",
         // but it will delegete to junit class loder first
+        @Override
         public Class loadClass(final String name)throws ClassNotFoundException{
 
             //isolates all logging classes, application in the same classloader too.
@@ -211,11 +212,13 @@ public class LoadTestCase extends TestCase{
 
     }
 
+    @Override
     public void setUp() {
         // save state before test starts so we can restore it when test ends
         origContextClassLoader = Thread.currentThread().getContextClassLoader();
     }
 
+    @Override
     public void tearDown() {
         // restore original state so a test can't stuff up later tests.
         Thread.currentThread().setContextClassLoader(origContextClassLoader);

@@ -52,6 +52,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  *
  * @version $Id$
  */
+@Deprecated
 public class LogSource {
 
     // ------------------------------------------------------- Class Attributes

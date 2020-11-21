@@ -53,6 +53,7 @@ public class WeakHashtableTestCase extends TestCase {
         super(testName);
     }
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         weakHashtable = new WeakHashtable();
@@ -273,6 +274,7 @@ public class WeakHashtableTestCase extends TestCase {
             super(name);
         }
 
+        @Override
         public void run() {
             for (int i = 0; i < RUN_LOOPS; i++) {
                 hashtable.put("key" + ":" + i%10, Boolean.TRUE);

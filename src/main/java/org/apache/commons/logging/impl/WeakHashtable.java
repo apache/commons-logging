@@ -138,6 +138,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public boolean containsKey(final Object key) {
         // purge should not be required
         final Referenced referenced = new Referenced(key);
@@ -147,6 +148,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public Enumeration elements() {
         purge();
         return super.elements();
@@ -155,6 +157,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public Set entrySet() {
         purge();
         final Set referencedEntries = super.entrySet();
@@ -175,6 +178,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public Object get(final Object key) {
         // for performance reasons, no purge
         final Referenced referenceKey = new Referenced(key);
@@ -184,13 +188,16 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public Enumeration keys() {
         purge();
         final Enumeration enumer = super.keys();
         return new Enumeration() {
+            @Override
             public boolean hasMoreElements() {
                 return enumer.hasMoreElements();
             }
+            @Override
             public Object nextElement() {
                  final Referenced nextReference = (Referenced) enumer.nextElement();
                  return nextReference.getValue();
@@ -201,6 +208,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public Set keySet() {
         purge();
         final Set referencedKeys = super.keySet();
@@ -218,6 +226,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public synchronized Object put(final Object key, final Object value) {
         // check for nulls, ensuring semantics match superclass
         if (key == null) {
@@ -245,6 +254,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public void putAll(final Map t) {
         if (t != null) {
             final Set entrySet = t.entrySet();
@@ -258,6 +268,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public Collection values() {
         purge();
         return super.values();
@@ -266,6 +277,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public synchronized Object remove(final Object key) {
         // for performance reasons, only purge every
         // MAX_CHANGES_BEFORE_PURGE times
@@ -283,6 +295,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public boolean isEmpty() {
         purge();
         return super.isEmpty();
@@ -291,6 +304,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public int size() {
         purge();
         return super.size();
@@ -299,6 +313,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      *@see Hashtable
      */
+    @Override
     public String toString() {
         purge();
         return super.toString();
@@ -307,6 +322,7 @@ public final class WeakHashtable extends Hashtable {
     /**
      * @see Hashtable
      */
+    @Override
     protected void rehash() {
         // purge here to save the effort of rehashing dead entries
         purge();
@@ -359,6 +375,7 @@ public final class WeakHashtable extends Hashtable {
             this.value = value;
         }
 
+        @Override
         public boolean equals(final Object o) {
             boolean result = false;
             if (o instanceof Map.Entry) {
@@ -373,19 +390,23 @@ public final class WeakHashtable extends Hashtable {
             return result;
         }
 
+        @Override
         public int hashCode() {
             return (getKey()==null ? 0 : getKey().hashCode()) ^
                 (getValue()==null ? 0 : getValue().hashCode());
         }
 
+        @Override
         public Object setValue(final Object value) {
             throw new UnsupportedOperationException("Entry.setValue is not supported.");
         }
 
+        @Override
         public Object getValue() {
             return value;
         }
 
+        @Override
         public Object getKey() {
             return key;
         }
@@ -420,6 +441,7 @@ public final class WeakHashtable extends Hashtable {
 
         }
 
+        @Override
         public int hashCode() {
             return hashCode;
         }
@@ -428,6 +450,7 @@ public final class WeakHashtable extends Hashtable {
             return reference.get();
         }
 
+        @Override
         public boolean equals(final Object o) {
             boolean result = false;
             if (o instanceof Referenced) {

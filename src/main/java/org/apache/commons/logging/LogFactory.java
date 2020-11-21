@@ -296,6 +296,7 @@ public abstract class LogFactory {
      * and hashtables don't allow null as a key.
      * @deprecated since 1.1.2
      */
+    @Deprecated
     protected static volatile LogFactory nullClassLoaderFactory;
 
     /**
@@ -811,6 +812,7 @@ public abstract class LogFactory {
     private static ClassLoader getContextClassLoaderInternal() throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
             new PrivilegedAction() {
+                @Override
                 public Object run() {
                     return directGetContextClassLoader();
                 }
@@ -960,6 +962,7 @@ public abstract class LogFactory {
         // ClassCastException can be thrown.
         final Object result = AccessController.doPrivileged(
             new PrivilegedAction() {
+                @Override
                 public Object run() {
                     return createFactory(factoryClass, classLoader);
                 }
@@ -1236,6 +1239,7 @@ public abstract class LogFactory {
     private static InputStream getResourceAsStream(final ClassLoader loader, final String name) {
         return (InputStream)AccessController.doPrivileged(
             new PrivilegedAction() {
+                @Override
                 public Object run() {
                     if (loader != null) {
                         return loader.getResourceAsStream(name);
@@ -1262,6 +1266,7 @@ public abstract class LogFactory {
     private static Enumeration getResources(final ClassLoader loader, final String name) {
         final PrivilegedAction action =
             new PrivilegedAction() {
+                @Override
                 public Object run() {
                     try {
                         if (loader != null) {
@@ -1298,6 +1303,7 @@ public abstract class LogFactory {
     private static Properties getProperties(final URL url) {
         final PrivilegedAction action =
             new PrivilegedAction() {
+                @Override
                 public Object run() {
                     InputStream stream = null;
                     try {
@@ -1445,6 +1451,7 @@ public abstract class LogFactory {
         throws SecurityException {
         return (String) AccessController.doPrivileged(
                 new PrivilegedAction() {
+                    @Override
                     public Object run() {
                         return System.getProperty(key, def);
                     }
