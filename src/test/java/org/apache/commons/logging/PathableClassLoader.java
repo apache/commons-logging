@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -179,8 +178,8 @@ public class PathableClassLoader extends URLClassLoader {
      * Specify a collection of logical libraries. See addLogicalLib.
      */
     public void addLogicalLib(final String[] logicalLibs) {
-        for(int i=0; i<logicalLibs.length; ++i) {
-            addLogicalLib(logicalLibs[i]);
+        for (final String logicalLib : logicalLibs) {
+            addLogicalLib(logicalLib);
         }
     }
 
@@ -260,9 +259,7 @@ public class PathableClassLoader extends URLClassLoader {
         final URL[] path = ucl.getURLs();
         URL shortestMatch = null;
         int shortestMatchLen = Integer.MAX_VALUE;
-        for(int i=0; i<path.length; ++i) {
-            final URL u = path[i];
-
+        for (final URL u : path) {
             // extract the filename bit on the end of the url
             String filename = u.toString();
             if (!filename.endsWith(".jar")) {
@@ -302,8 +299,8 @@ public class PathableClassLoader extends URLClassLoader {
         }
 
         if (lookasides != null) {
-            for(final Iterator i = lookasides.entrySet().iterator(); i.hasNext(); ) {
-                final Map.Entry entry = (Map.Entry) i.next();
+            for (final Object element : lookasides.entrySet()) {
+                final Map.Entry entry = (Map.Entry) element;
                 final String prefix = (String) entry.getKey();
                 if (name.startsWith(prefix) == true) {
                     final ClassLoader loader = (ClassLoader) entry.getValue();

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -118,8 +117,8 @@ public class WeakHashtableTestCase extends TestCase {
     /** Tests public Set entrySet() */
     public void testEntrySet() throws Exception {
         final Set entrySet = weakHashtable.entrySet();
-        for (final Iterator it = entrySet.iterator(); it.hasNext();) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (final Object element : entrySet) {
+            final Map.Entry entry = (Map.Entry) element;
             final Object key = entry.getKey();
             if (keyOne.equals(key)) {
                 assertEquals(valueOne, entry.getValue());
@@ -293,15 +292,15 @@ public class WeakHashtableTestCase extends TestCase {
                 t[i].setDaemon(true); // Otherwise we cannot exit
                 t[i].start();
             }
-            for (int i = 0; i < t.length; i++) {
-                t[i].join(WAIT_FOR_THREAD_COMPLETION);
-                if (t[i].isAlive()) {
+            for (final Thread element : t) {
+                element.join(WAIT_FOR_THREAD_COMPLETION);
+                if (element.isAlive()) {
                     break; // at least one thread is stuck
                 }
             }
             int active=0;
-            for (int i = 0; i < t.length; i++) {
-                if (t[i].isAlive()) {
+            for (final Thread element : t) {
+                if (element.isAlive()) {
                     active++;
                 }
             }

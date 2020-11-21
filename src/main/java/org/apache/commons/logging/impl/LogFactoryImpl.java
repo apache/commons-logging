@@ -1322,8 +1322,8 @@ public class LogFactoryImpl extends LogFactory {
         boolean implementsLog = false;
         final String logInterfaceName = Log.class.getName();
         final Class interfaces[] = badClass.getInterfaces();
-        for (int i = 0; i < interfaces.length; i++) {
-            if (logInterfaceName.equals(interfaces[i].getName())) {
+        for (final Class element : interfaces) {
+            if (logInterfaceName.equals(element.getName())) {
                 implementsLog = true;
                 break;
             }

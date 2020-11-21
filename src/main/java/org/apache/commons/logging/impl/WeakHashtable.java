@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -160,8 +159,8 @@ public final class WeakHashtable extends Hashtable {
         purge();
         final Set referencedEntries = super.entrySet();
         final Set unreferencedEntries = new HashSet();
-        for (final Iterator it=referencedEntries.iterator(); it.hasNext();) {
-            final Map.Entry entry = (Map.Entry) it.next();
+        for (final Object referencedEntry : referencedEntries) {
+            final Map.Entry entry = (Map.Entry) referencedEntry;
             final Referenced referencedKey = (Referenced) entry.getKey();
             final Object key = referencedKey.getValue();
             final Object value = entry.getValue();
@@ -206,8 +205,8 @@ public final class WeakHashtable extends Hashtable {
         purge();
         final Set referencedKeys = super.keySet();
         final Set unreferencedKeys = new HashSet();
-        for (final Iterator it=referencedKeys.iterator(); it.hasNext();) {
-            final Referenced referenceKey = (Referenced) it.next();
+        for (final Object referencedKey : referencedKeys) {
+            final Referenced referenceKey = (Referenced) referencedKey;
             final Object keyValue = referenceKey.getValue();
             if (keyValue != null) {
                 unreferencedKeys.add(keyValue);
@@ -249,8 +248,8 @@ public final class WeakHashtable extends Hashtable {
     public void putAll(final Map t) {
         if (t != null) {
             final Set entrySet = t.entrySet();
-            for (final Iterator it=entrySet.iterator(); it.hasNext();) {
-                final Map.Entry entry = (Map.Entry) it.next();
+            for (final Object element : entrySet) {
+                final Map.Entry entry = (Map.Entry) element;
                 put(entry.getKey(), entry.getValue());
             }
         }

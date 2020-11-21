@@ -85,8 +85,8 @@ public class LoadTestCase extends TestCase{
 
             //isolates all logging classes, application in the same classloader too.
             //filters exeptions to simlify handling in test
-            for(int i = 0; i < LOG_PCKG.length; i++ ){
-                if( name.startsWith( LOG_PCKG[i] ) &&
+            for (final String element : LOG_PCKG) {
+                if( name.startsWith( element ) &&
                 name.indexOf("Exception") == -1   ){
                     return def(name);
                 }
