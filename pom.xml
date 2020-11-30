@@ -213,6 +213,7 @@ under the License.
             </goals>
             <configuration>
               <jarName>${project.artifactId}-api-${project.version}</jarName>
+              <classifier>apijar</classifier>
               <includes>
                 <include>org/apache/commons/logging/*.class</include>
                 <include>org/apache/commons/logging/impl/LogFactoryImpl*.class</include>
@@ -237,6 +238,7 @@ under the License.
             </goals>
             <configuration>
               <jarName>${project.artifactId}-adapters-${project.version}</jarName>
+              <classifier>adaptersjar</classifier>
               <includes>
                 <include>org/apache/commons/logging/impl/**.class</include>
                 <include>META-INF/LICENSE.txt</include>
@@ -261,6 +263,7 @@ under the License.
             </goals>
             <configuration>
               <jarName>${project.artifactId}-${project.version}</jarName>
+              <classifier>fulljar</classifier>
             </configuration>
           </execution>
         </executions>
