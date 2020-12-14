@@ -177,8 +177,9 @@ under the License.
   </scm>
 
   <build>
-    <!-- TODO spotbugs:check japicmp:cmp -->
-    <defaultGoal>clean apache-rat:check javadoc:javadoc package</defaultGoal>
+    <!-- TODO spotbugs:check -->
+    <!-- TODO replace clirr:check  with japicmp:cmp -->
+    <defaultGoal>clean apache-rat:check clirr:check javadoc:javadoc package</defaultGoal>
     <plugins>
 
       <!--
