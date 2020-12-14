@@ -50,6 +50,13 @@ The <action> type attribute can be add,update,fix,remove.
       <action issue="LOGGING-163" dev="ggregory" type="fix" due-to="Kaloyan Spiridonov">
         BufferedReader is not closed properly.
       </action>
+      <!-- UPDATES -->
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump actions/checkout from v2.3.1 to v2.3.4 (#24).
+      </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump actions/setup-java from v1.4.0 to v1.4.3 (#21).
+      </action>
     </release>
     <release version="1.2" date="2014-07-11" description="This is a maintenance release containing bug fixes. Java 1.2 or later is required.">
       <action issue="LOGGING-37" dev="tn" type="fix" due-to="Matthias Ernst,Archie Cobbs">

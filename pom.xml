@@ -177,6 +177,8 @@ under the License.
   </scm>
 
   <build>
+    <!-- TODO spotbugs:check japicmp:cmp -->
+    <defaultGoal>apache-rat:check javadoc:javadoc package</defaultGoal>
     <plugins>
 
       <!--
@@ -442,6 +444,19 @@ under the License.
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs.plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>${spotbugs.impl.version}</version>
+         </dependency>
+        </dependencies>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -545,6 +560,8 @@ under the License.
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC2</commons.rc.version>
     <commons.surefire.version>2.12</commons.surefire.version>
+    <spotbugs.plugin.version>4.1.4</spotbugs.plugin.version>
+    <spotbugs.impl.version>4.2.0</spotbugs.impl.version>    
     <skipSurefireReport>true</skipSurefireReport>
     <!-- Allow default test run order to be changed -->
     <failsafe.runorder>filesystem</failsafe.runorder>
