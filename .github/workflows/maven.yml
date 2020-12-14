@@ -43,4 +43,4 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
     - name: Build with Maven
-      run: mvn -V --no-transfer-progress -Ddoclint=all --file pom.xml
+      run: mvn -V --no-transfer-progress -D doclint=none --file pom.xml

@@ -21,7 +21,7 @@
 <p>Simple wrapper API around multiple logging APIs.</p>
 
 
-<h1>Overview</h1>
+<h2>Overview</h2>
 
 <p>This package provides an API for logging in server-based applications that
 can be used around a variety of different logging implementations, including
@@ -45,7 +45,7 @@ prebuilt support for the following:</p>
 </ul>
 
 
-<h1>Quick Start Guide</h1>
+<h2>Quick Start Guide</h2>
 
 <p>For those impatient to just get on with it, the following example
 illustrates the typical declaration and use of a logger that is named (by
@@ -79,10 +79,10 @@ this page in order to understand how to configure logging for your
 application.</p>
 
 
-<h1>Configuring the Commons Logging Package</h1>
+<h2>Configuring the Commons Logging Package</h2>
 
 
-<h2>Choosing a <code>LogFactory</code> Implementation</h2>
+<h3>Choosing a <code>LogFactory</code> Implementation</h3>
 
 <p>From an application perspective, the first requirement is to retrieve an
 object reference to the <code>LogFactory</code> instance that will be used
@@ -122,7 +122,7 @@ implementation, if it so desires.  An instance of this class will then be
 created, and cached per class loader.
 
 
-<h2>The Default <code>LogFactory</code> Implementation</h2>
+<h3>The Default <code>LogFactory</code> Implementation</h3>
 
 <p>The Logging Package APIs include a default <code>LogFactory</code>
 implementation class (<a href="impl/LogFactoryImpl.html">
@@ -169,7 +169,7 @@ implementation uses the following rules:</p>
 configuration information for this default implementation.</p>
 
 
-<h2>Configuring the Underlying Logging System</h2>
+<h3>Configuring the Underlying Logging System</h3>
 
 <p>The basic principle is that the user is totally responsible for the
 configuration of the underlying logging system.
@@ -185,7 +185,7 @@ This file should be prepared in a manner that is specific to the actual logging
 technology being used.</p>
 
 
-<h1>Using the Logging Package APIs</h1>
+<h2>Using the Logging Package APIs</h2>
 
 <p>Use of the Logging Package APIs, from the perspective of an application
 component, consists of the following steps:</p>
