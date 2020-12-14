@@ -66,6 +66,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump clirr-maven-plugin from 2.2.2 to 2.8 #14.
       </action>
+      <action dev="ggregory" type="update" due-to="Dependabot">
+        Bump findbugs-maven-plugin from 2.5.2 to 3.0.5 #8.
+      </action>
     </release>
     <release version="1.2" date="2014-07-11" description="This is a maintenance release containing bug fixes. Java 1.2 or later is required.">
       <action issue="LOGGING-37" dev="tn" type="fix" due-to="Matthias Ernst,Archie Cobbs">
