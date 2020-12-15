@@ -424,7 +424,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.1.2</version>
         <executions>
           <execution>
             <goals>
@@ -528,7 +528,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.3</version>
+        <version>3.14.0</version>
         <configuration>
           <!-- targetJdk 1.1, 1.2 is not supported -->
           <targetJdk>1.3</targetJdk>
@@ -560,7 +560,7 @@ under the License.
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC2</commons.rc.version>
-    <commons.surefire.version>2.12</commons.surefire.version>
+    <commons.surefire.version>2.22.2</commons.surefire.version>
     <spotbugs.plugin.version>4.1.4</spotbugs.plugin.version>
     <spotbugs.impl.version>4.2.0</spotbugs.impl.version>    
     <skipSurefireReport>true</skipSurefireReport>
