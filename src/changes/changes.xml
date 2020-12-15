@@ -84,6 +84,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump servlet-api from 2.3 to 2.5 #27.
       </action>
+      <action dev="ggregory" type="update" due-to="Gary Gregory">
+        Migrate from maven-checkstyle-plugin from 2.7 to 3.1.1.
+      </action>
     </release>
     <release version="1.2" date="2014-07-11" description="This is a maintenance release containing bug fixes. Java 1.2 or later is required.">
       <action issue="LOGGING-37" dev="tn" type="fix" due-to="Matthias Ernst,Archie Cobbs">
