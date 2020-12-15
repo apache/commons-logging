@@ -179,7 +179,7 @@ under the License.
   <build>
     <!-- TODO spotbugs:check -->
     <!-- TODO replace clirr:check with japicmp:cmp -->
-    <defaultGoal>clean apache-rat:check clirr:check javadoc:javadoc package</defaultGoal>
+    <defaultGoal>clean apache-rat:check clirr:check javadoc:javadoc checkstyle:check package</defaultGoal>
     <plugins>
 
       <!--
@@ -456,6 +456,17 @@ under the License.
             <version>${spotbugs.impl.version}</version>
          </dependency>
         </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <configLocation>${basedir}/checkstyle.xml</configLocation>
+          <enableRulesSummary>false</enableRulesSummary>
+          <headerFile>${basedir}/license-header.txt</headerFile>
+        </configuration>
       </plugin>
 
     </plugins>
