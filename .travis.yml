@@ -16,11 +16,9 @@
 language: java
 sudo: false
 
-dist: precise
-
 jdk:
   - openjdk7
-  - oraclejdk8
+  - openjdk8
 
 after_success:
   - mvn -V --no-transfer-progress clean cobertura:cobertura coveralls:report
