@@ -395,7 +395,7 @@ public class PathableClassLoader extends URLClassLoader {
     /**
      *
      * Clean implementation of list function of
-     * {@link java.utils.Collection} added in JDK 1.4
+     * {@link java.util.Collection} added in JDK 1.4
      * @param en <code>Enumeration</code>, possibly null
      * @return <code>ArrayList</code> containing the enumerated
      * elements in the enumerated order, not null
