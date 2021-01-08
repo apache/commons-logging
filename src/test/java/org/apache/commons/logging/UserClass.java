@@ -16,7 +16,6 @@
  */
 package org.apache.commons.logging;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 
 public class UserClass {
