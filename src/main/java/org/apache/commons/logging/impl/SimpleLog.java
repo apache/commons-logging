@@ -86,7 +86,7 @@ public class SimpleLog implements Log, Serializable {
     static protected final String DEFAULT_DATE_TIME_FORMAT = "yyyy/MM/dd HH:mm:ss:SSS zzz";
 
     /** Include the instance name in the log message? */
-    static volatile protected boolean showLogName = false;
+    static volatile protected boolean showLogName;
 
     /** Include the short name ( last component ) of the logger in the log
      *  message. Defaults to true - otherwise we'll be lost in a flood of
@@ -95,7 +95,7 @@ public class SimpleLog implements Log, Serializable {
     static volatile protected boolean showShortName = true;
 
     /** Include the current time in the log message */
-    static volatile protected boolean showDateTime = false;
+    static volatile protected boolean showDateTime;
 
     /** The date and time format to use in the log message */
     static volatile protected String dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
@@ -193,11 +193,11 @@ public class SimpleLog implements Log, Serializable {
     // ------------------------------------------------------------- Attributes
 
     /** The name of this simple log instance */
-    protected volatile String logName = null;
+    protected volatile String logName;
     /** The current log level */
     protected volatile int currentLogLevel;
     /** The short name of this simple log instance */
-    private volatile String shortLogName = null;
+    private volatile String shortLogName;
 
     // ------------------------------------------------------------ Constructor
 

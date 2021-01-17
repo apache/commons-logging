@@ -68,6 +68,11 @@ public class LogSource {
     /** Constructor for current log class */
     static protected Constructor logImplctor;
 
+    /**
+     * An empty immutable {@code String} array.
+     */
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
     // ----------------------------------------------------- Class Initializers
 
     static {
@@ -215,6 +220,6 @@ public class LogSource {
      * all logs known to me.
      */
     static public String[] getLogNames() {
-        return (String[]) logs.keySet().toArray(new String[logs.size()]);
+        return (String[]) logs.keySet().toArray(EMPTY_STRING_ARRAY);
     }
 }
