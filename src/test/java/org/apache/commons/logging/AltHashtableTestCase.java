@@ -49,7 +49,7 @@ public class AltHashtableTestCase extends TestCase {
      * <p>
      * This does make the assumption that whatever JVM we are running in
      * doesn't initialise classes until they are actually referenced (ie the
-     * LogFactory class hasn't been initialised before this method is called).
+     * LogFactory class hasn't been initialized before this method is called).
      * This is true of all JVMs I know of; and if it isn't then this test will
      * fail and someone will tell us.
      */
@@ -67,10 +67,10 @@ public class AltHashtableTestCase extends TestCase {
      */
     public void testType() {
         // Here, the reference to the LogFactory class should cause the
-        // class to be loaded and initialised. It will see the property
+        // class to be loaded and initialized. It will see the property
         // set and use the AltHashtable class. If other tests in this
         // class have already been run within the same classloader then
-        // LogFactory will already have been initialised, but that
+        // LogFactory will already have been initialized, but that
         // doesn't change the effectiveness of this test.
         assertTrue(LogFactory.factories instanceof AltHashtable);
     }

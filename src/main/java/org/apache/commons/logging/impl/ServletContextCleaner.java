@@ -86,7 +86,7 @@ public class ServletContextCleaner implements ServletContextListener {
         // the LogFactory instance that is visible from the ancestor
         // classloader. However the concrete logging library it points
         // to is expected to have been loaded via the TCCL, so the
-        // underlying logging lib is only initialised/configured once.
+        // underlying logging lib is only initialized/configured once.
         // These references from ancestor LogFactory classes down to
         // TCCL classloaders are held via weak references and so should
         // be released but there are circumstances where they may not.
