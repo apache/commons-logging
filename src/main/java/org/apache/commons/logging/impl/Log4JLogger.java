@@ -64,7 +64,7 @@ public class Log4JLogger implements Log, Serializable {
     // Static Initializer.
     //
     // Note that this must come after the static variable declarations
-    // otherwise initialiser expressions associated with those variables
+    // otherwise initializer expressions associated with those variables
     // will override any settings done here.
     //
     // Verify that log4j is available, and that it is version 1.2.

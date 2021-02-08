@@ -48,7 +48,7 @@ public class AltHashtableTestCase extends TestCase {
      * Hashtable implementation for storing factories in.
      * <p>
      * This does make the assumption that whatever JVM we are running in
-     * doesn't initialise classes until they are actually referenced (ie the
+     * doesn't initialize classes until they are actually referenced (ie the
      * LogFactory class hasn't been initialized before this method is called).
      * This is true of all JVMs I know of; and if it isn't then this test will
      * fail and someone will tell us.

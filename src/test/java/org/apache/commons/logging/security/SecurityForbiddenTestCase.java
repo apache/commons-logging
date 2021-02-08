@@ -107,7 +107,7 @@ public class SecurityForbiddenTestCase extends TestCase
 
         try {
             // Use reflection so that we can control exactly when the static
-            // initialiser for the LogFactory class is executed.
+            // initializer for the LogFactory class is executed.
             final Class c = this.getClass().getClassLoader().loadClass(
                     "org.apache.commons.logging.LogFactory");
             final Method m = c.getMethod("getLog", new Class[] {Class.class});

@@ -36,7 +36,7 @@ public class Jdk14Logger implements Log, Serializable {
     private static final long serialVersionUID = 4784713551416303804L;
 
     /**
-     * This member variable simply ensures that any attempt to initialise
+     * This member variable simply ensures that any attempt to initialize
      * this class in a pre-1.4 JVM will result in an ExceptionInInitializerError.
      * It must not be private, as an optimising compiler could detect that it
      * is not used and optimise it away.

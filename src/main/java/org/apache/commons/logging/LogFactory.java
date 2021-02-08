@@ -1661,7 +1661,7 @@ public abstract class LogFactory {
     }
 
     // ----------------------------------------------------------------------
-    // Static initialiser block to perform initialisation at class load time.
+    // Static initializer block to perform initialisation at class load time.
     //
     // We can't do this in the class constructor, as there are many
     // static methods on this class that can be called before any
@@ -1669,8 +1669,8 @@ public abstract class LogFactory {
     // stuff having been set up.
     //
     // Note that this block must come after any variable declarations used
-    // by any methods called from this block, as we want any static initialiser
-    // associated with the variable to run first. If static initialisers for
+    // by any methods called from this block, as we want any static initializer
+    // associated with the variable to run first. If static initializers for
     // variables run after this code, then (a) their value might be needed
     // by methods called from here, and (b) they might *override* any value
     // computed here!
