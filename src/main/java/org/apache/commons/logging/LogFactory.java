@@ -419,13 +419,11 @@ public abstract class LogFactory {
         // Identify the class loader we will be using
         final ClassLoader contextClassLoader = getContextClassLoaderInternal();
 
-        if (contextClassLoader == null) {
-            // This is an odd enough situation to report about. This
-            // output will be a nuisance on JDK1.1, as the system
-            // classloader is null in that environment.
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Context classloader is null.");
-            }
+        // This is an odd enough situation to report about. This
+        // output will be a nuisance on JDK1.1, as the system
+        // classloader is null in that environment.
+        if (contextClassLoader == null && isDiagnosticsEnabled()) {
+            logDiagnostic("Context classloader is null.");
         }
 
         // Return any previously registered factory for this class loader
@@ -458,19 +456,17 @@ public abstract class LogFactory {
         ClassLoader baseClassLoader = contextClassLoader;
         if (props != null) {
             final String useTCCLStr = props.getProperty(TCCL_KEY);
-            if (useTCCLStr != null) {
-                // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
-                // is required for Java 1.2 compatibility.
-                if (Boolean.valueOf(useTCCLStr).booleanValue() == false) {
-                    // Don't use current context classloader when locating any
-                    // LogFactory or Log classes, just use the class that loaded
-                    // this abstract class. When this class is deployed in a shared
-                    // classpath of a container, it means webapps cannot deploy their
-                    // own logging implementations. It also means that it is up to the
-                    // implementation whether to load library-specific config files
-                    // from the TCCL or not.
-                    baseClassLoader = thisClassLoader;
-                }
+            // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
+            // is required for Java 1.2 compatibility.
+            if ((useTCCLStr != null) && (Boolean.valueOf(useTCCLStr).booleanValue() == false)) {
+                // Don't use current context classloader when locating any
+                // LogFactory or Log classes, just use the class that loaded
+                // this abstract class. When this class is deployed in a shared
+                // classpath of a container, it means webapps cannot deploy their
+                // own logging implementations. It also means that it is up to the
+                // implementation whether to load library-specific config files
+                // from the TCCL or not.
+                baseClassLoader = thisClassLoader;
             }
         }
 

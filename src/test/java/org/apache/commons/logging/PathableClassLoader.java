@@ -273,12 +273,10 @@ public class PathableClassLoader extends URLClassLoader {
                 filename = filename.substring(lastSlash+1);
             }
 
-            if (filename.startsWith(logicalLib)) {
-                // ok, this is a candidate
-                if (filename.length() < shortestMatchLen) {
-                    shortestMatch = u;
-                    shortestMatchLen = filename.length();
-                }
+            // ok, this is a candidate
+            if (filename.startsWith(logicalLib) && filename.length() < shortestMatchLen) {
+                shortestMatch = u;
+                shortestMatchLen = filename.length();
             }
         }
 
