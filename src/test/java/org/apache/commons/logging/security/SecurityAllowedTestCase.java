@@ -99,8 +99,8 @@ public class SecurityAllowedTestCase extends TestCase
             // initializer for the LogFactory class is executed.
             final Class c = this.getClass().getClassLoader().loadClass(
                     "org.apache.commons.logging.LogFactory");
-            final Method m = c.getMethod("getLog", new Class[] {Class.class});
-            final Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
+            final Method m = c.getMethod("getLog", Class.class);
+            final Log log = (Log) m.invoke(null, this.getClass());
 
             // Check whether we had any security exceptions so far (which were
             // caught by the code). We should not, as every secure operation

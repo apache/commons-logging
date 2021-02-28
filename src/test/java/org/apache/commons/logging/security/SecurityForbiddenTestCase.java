@@ -110,8 +110,8 @@ public class SecurityForbiddenTestCase extends TestCase
             // initializer for the LogFactory class is executed.
             final Class c = this.getClass().getClassLoader().loadClass(
                     "org.apache.commons.logging.LogFactory");
-            final Method m = c.getMethod("getLog", new Class[] {Class.class});
-            final Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
+            final Method m = c.getMethod("getLog", Class.class);
+            final Log log = (Log) m.invoke(null, this.getClass());
             log.info("testing");
 
             // check that the default map implementation was loaded, as JCL was

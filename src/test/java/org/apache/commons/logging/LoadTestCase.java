@@ -106,7 +106,7 @@ public class LoadTestCase extends TestCase{
     private void setAllowFlawedContext(final Class c, final String state) throws Exception {
         final Class[] params = {String.class};
         final java.lang.reflect.Method m = c.getDeclaredMethod("setAllowFlawedContext", params);
-        m.invoke(null, new Object[] {state});
+        m.invoke(null, state);
     }
 
     /**
