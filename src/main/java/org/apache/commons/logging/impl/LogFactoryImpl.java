@@ -366,7 +366,7 @@ public class LogFactoryImpl extends LogFactory {
         }
 
         if (name.equals(TCCL_KEY)) {
-            useTCCL = value != null && Boolean.valueOf(value.toString()).booleanValue();
+            useTCCL = value != null && Boolean.parseBoolean(value.toString());
         }
     }
 
@@ -762,7 +762,7 @@ public class LogFactoryImpl extends LogFactory {
         if (val == null) {
             return dflt;
         }
-        return Boolean.valueOf(val).booleanValue();
+        return Boolean.parseBoolean(val);
     }
 
     /**
