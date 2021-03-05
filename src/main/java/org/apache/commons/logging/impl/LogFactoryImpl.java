@@ -682,12 +682,11 @@ public class LogFactoryImpl extends LogFactory {
                     logDiagnostic("Did not find '" + name + "'.");
                 }
                 return false;
-            } else {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("Found '" + name + "'.");
-                }
-                return true;
             }
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Found '" + name + "'.");
+            }
+            return true;
         } catch (final LogConfigurationException e) {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("Logging system '" + name + "' is available but not useable.");
@@ -1166,22 +1165,20 @@ public class LogFactoryImpl extends LogFactory {
            // In some classloading setups (e.g. JBoss with its
            // UnifiedLoaderRepository) this can still work, so if user hasn't
            // forbidden it, just return the contextClassLoader.
-           if (allowFlawedContext) {
-              if (isDiagnosticsEnabled()) {
-                   logDiagnostic("[WARNING] the context classloader is not part of a" +
-                                 " parent-child relationship with the classloader that" +
-                                 " loaded LogFactoryImpl.");
-              }
-              // If contextClassLoader were null, getLowestClassLoader() would
-              // have returned thisClassLoader.  The fact we are here means
-              // contextClassLoader is not null, so we can just return it.
-              return contextClassLoader;
-           }
-           else {
+           if (!allowFlawedContext) {
             throw new LogConfigurationException("Bad classloader hierarchy; LogFactoryImpl was loaded via" +
                                                 " a classloader that is not related to the current context" +
                                                 " classloader.");
            }
+        if (isDiagnosticsEnabled()) {
+               logDiagnostic("[WARNING] the context classloader is not part of a" +
+                             " parent-child relationship with the classloader that" +
+                             " loaded LogFactoryImpl.");
+          }
+          // If contextClassLoader were null, getLowestClassLoader() would
+          // have returned thisClassLoader.  The fact we are here means
+          // contextClassLoader is not null, so we can just return it.
+          return contextClassLoader;
         }
 
         if (baseClassLoader != contextClassLoader) {
@@ -1190,20 +1187,19 @@ public class LogFactoryImpl extends LogFactory {
             // that there are a number of broken systems out there which create
             // custom classloaders but fail to set the context classloader so
             // we handle those flawed systems anyway.
-            if (allowFlawedContext) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic(
-                            "Warning: the context classloader is an ancestor of the" +
-                            " classloader that loaded LogFactoryImpl; it should be" +
-                            " the same or a descendant. The application using" +
-                            " commons-logging should ensure the context classloader" +
-                            " is used correctly.");
-                }
-            } else {
+            if (!allowFlawedContext) {
                 throw new LogConfigurationException(
                         "Bad classloader hierarchy; LogFactoryImpl was loaded via" +
                         " a classloader that is not related to the current context" +
                         " classloader.");
+            }
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic(
+                        "Warning: the context classloader is an ancestor of the" +
+                        " classloader that loaded LogFactoryImpl; it should be" +
+                        " the same or a descendant. The application using" +
+                        " commons-logging should ensure the context classloader" +
+                        " is used correctly.");
             }
         }
 

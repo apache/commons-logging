@@ -633,9 +633,7 @@ public class SimpleLog implements Log, Serializable {
                  * obtain a class loader) will trigger this exception where
                  * we can make a distinction.
                  */
-                if (e.getTargetException() instanceof SecurityException) {
-                    // ignore
-                } else {
+                if (!(e.getTargetException() instanceof SecurityException)) {
                     // Capture 'e.getTargetException()' exception for details
                     // alternate: log 'e.getTargetException()', and pass back 'e'.
                     throw new LogConfigurationException
@@ -664,9 +662,8 @@ public class SimpleLog implements Log, Serializable {
 
                     if (threadCL != null) {
                         return threadCL.getResourceAsStream(name);
-                    } else {
-                        return ClassLoader.getSystemResourceAsStream(name);
                     }
+                    return ClassLoader.getSystemResourceAsStream(name);
                 }
             });
     }

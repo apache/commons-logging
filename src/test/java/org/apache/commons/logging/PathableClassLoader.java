@@ -312,26 +312,18 @@ public class PathableClassLoader extends URLClassLoader {
 
         if (parentFirst) {
             return super.loadClass(name, resolve);
-        } else {
-            // Implement child-first.
-            //
-            // It appears that the findClass method doesn't check whether the
-            // class has already been loaded. This seems odd to me, but without
-            // first checking via findLoadedClass we can get java.lang.LinkageError
-            // with message "duplicate class definition" which isn't good.
-
-            try {
-                Class clazz = findLoadedClass(name);
-                if (clazz == null) {
-                    clazz = super.findClass(name);
-                }
-                if (resolve) {
-                    resolveClass(clazz);
-                }
-                return clazz;
-            } catch(final ClassNotFoundException e) {
-                return super.loadClass(name, resolve);
+        }
+        try {
+            Class clazz = findLoadedClass(name);
+            if (clazz == null) {
+                clazz = super.findClass(name);
             }
+            if (resolve) {
+                resolveClass(clazz);
+            }
+            return clazz;
+        } catch(final ClassNotFoundException e) {
+            return super.loadClass(name, resolve);
         }
     }
 
@@ -344,13 +336,12 @@ public class PathableClassLoader extends URLClassLoader {
     public URL getResource(final String name) {
         if (parentFirst) {
             return super.getResource(name);
-        } else {
-            final URL local = super.findResource(name);
-            if (local != null) {
-                return local;
-            }
-            return super.getResource(name);
         }
+        final URL local = super.findResource(name);
+        if (local != null) {
+            return local;
+        }
+        return super.getResource(name);
     }
 
     /**
@@ -364,30 +355,29 @@ public class PathableClassLoader extends URLClassLoader {
     public Enumeration getResourcesInOrder(final String name) throws IOException {
         if (parentFirst) {
             return super.getResources(name);
-        } else {
-            final Enumeration localUrls = super.findResources(name);
-
-            final ClassLoader parent = getParent();
-            if (parent == null) {
-                // Alas, there is no method to get matching resources
-                // from a null (BOOT) parent classloader. Calling
-                // ClassLoader.getSystemClassLoader isn't right. Maybe
-                // calling Class.class.getResources(name) would do?
-                //
-                // However for the purposes of unit tests, we can
-                // simply assume that no relevant resources are
-                // loadable from the parent; unit tests will never be
-                // putting any of their resources in a "boot" classloader
-                // path!
-                return localUrls;
-            }
-            final Enumeration parentUrls = parent.getResources(name);
-
-            final ArrayList localItems = toList(localUrls);
-            final ArrayList parentItems = toList(parentUrls);
-            localItems.addAll(parentItems);
-            return Collections.enumeration(localItems);
         }
+        final Enumeration localUrls = super.findResources(name);
+
+        final ClassLoader parent = getParent();
+        if (parent == null) {
+            // Alas, there is no method to get matching resources
+            // from a null (BOOT) parent classloader. Calling
+            // ClassLoader.getSystemClassLoader isn't right. Maybe
+            // calling Class.class.getResources(name) would do?
+            //
+            // However for the purposes of unit tests, we can
+            // simply assume that no relevant resources are
+            // loadable from the parent; unit tests will never be
+            // putting any of their resources in a "boot" classloader
+            // path!
+            return localUrls;
+        }
+        final Enumeration parentUrls = parent.getResources(name);
+
+        final ArrayList localItems = toList(localUrls);
+        final ArrayList parentItems = toList(parentUrls);
+        localItems.addAll(parentItems);
+        return Collections.enumeration(localItems);
     }
 
     /**
@@ -418,18 +408,17 @@ public class PathableClassLoader extends URLClassLoader {
     public InputStream getResourceAsStream(final String name) {
         if (parentFirst) {
             return super.getResourceAsStream(name);
-        } else {
-            final URL local = super.findResource(name);
-            if (local != null) {
-                try {
-                    return local.openStream();
-                } catch(final IOException e) {
-                    // TODO: check if this is right or whether we should
-                    // fall back to trying parent. The javadoc doesn't say...
-                    return null;
-                }
-            }
-            return super.getResourceAsStream(name);
         }
+        final URL local = super.findResource(name);
+        if (local != null) {
+            try {
+                return local.openStream();
+            } catch(final IOException e) {
+                // TODO: check if this is right or whether we should
+                // fall back to trying parent. The javadoc doesn't say...
+                return null;
+            }
+        }
+        return super.getResourceAsStream(name);
     }
 }

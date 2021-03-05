@@ -878,9 +878,8 @@ public abstract class LogFactory {
             //
             // nb: nullClassLoaderFactory might be null. That's ok.
             return nullClassLoaderFactory;
-        } else {
-            return (LogFactory) factories.get(contextClassLoader);
         }
+        return (LogFactory) factories.get(contextClassLoader);
     }
 
     /**
@@ -1239,9 +1238,8 @@ public abstract class LogFactory {
                 public Object run() {
                     if (loader != null) {
                         return loader.getResourceAsStream(name);
-                    } else {
-                        return ClassLoader.getSystemResourceAsStream(name);
                     }
+                    return ClassLoader.getSystemResourceAsStream(name);
                 }
             });
     }
@@ -1267,9 +1265,8 @@ public abstract class LogFactory {
                     try {
                         if (loader != null) {
                             return loader.getResources(name);
-                        } else {
-                            return ClassLoader.getSystemResources(name);
                         }
+                        return ClassLoader.getSystemResources(name);
                     } catch (final IOException e) {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Exception while trying to find configuration file " +
@@ -1475,17 +1472,17 @@ public abstract class LogFactory {
 
         if (dest.equals("STDOUT")) {
             return System.out;
-        } else if (dest.equals("STDERR")) {
+        }
+        if (dest.equals("STDERR")) {
             return System.err;
-        } else {
-            try {
-                // open the file in append mode
-                final FileOutputStream fos = new FileOutputStream(dest, true);
-                return new PrintStream(fos);
-            } catch (final IOException ex) {
-                // We should report this to the user - but how?
-                return null;
-            }
+        }
+        try {
+            // open the file in append mode
+            final FileOutputStream fos = new FileOutputStream(dest, true);
+            return new PrintStream(fos);
+        } catch (final IOException ex) {
+            // We should report this to the user - but how?
+            return null;
         }
     }
 
@@ -1651,9 +1648,8 @@ public abstract class LogFactory {
     public static String objectId(final Object o) {
         if (o == null) {
             return "null";
-        } else {
-            return o.getClass().getName() + "@" + System.identityHashCode(o);
         }
+        return o.getClass().getName() + "@" + System.identityHashCode(o);
     }
 
     // ----------------------------------------------------------------------

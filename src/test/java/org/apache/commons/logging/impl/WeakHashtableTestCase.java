@@ -251,11 +251,10 @@ public class WeakHashtableTestCase extends TestCase {
             if(weakHashtable.get(new Long(1)) == null) {
                 break;
 
-            } else {
-                // create garbage:
-                final byte[] b =  new byte[bytz];
-                bytz = bytz * 2;
             }
+            // create garbage:
+            final byte[] b =  new byte[bytz];
+            bytz = bytz * 2;
         }
 
         // some JVMs seem to take a little time to put references on

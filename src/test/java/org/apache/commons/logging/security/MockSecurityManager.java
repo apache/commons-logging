@@ -116,7 +116,8 @@ public class MockSecurityManager extends SecurityManager {
                 // the call stack.
                 System.out.println("Access controller found: returning");
                 return;
-            } else if (cname.startsWith("java.")
+            }
+            if (cname.startsWith("java.")
                 || cname.startsWith("javax.")
                 || cname.startsWith("junit.")
                 || cname.startsWith("org.apache.tools.ant.")
@@ -133,13 +134,12 @@ public class MockSecurityManager extends SecurityManager {
                 System.out.println("Untrusted code [testcase] found");
                 throw new SecurityException("Untrusted code [testcase] found");
             } else if (cname.startsWith("org.apache.commons.logging.")) {
-                if (permissions.implies(p)) {
-                    // Code here is trusted if the caller is trusted
-                    System.out.println("Permission in allowed set for JCL class");
-                } else {
+                if (!permissions.implies(p)) {
                     System.out.println("Permission refused:" + p.getClass() + ":" + p);
                     throw new SecurityException("Permission refused:" + p.getClass() + ":" + p);
                 }
+                // Code here is trusted if the caller is trusted
+                System.out.println("Permission in allowed set for JCL class");
             } else {
                 // we found some code that is not trusted to perform this operation.
                 System.out.println("Unexpected code: permission refused:" + p.getClass() + ":" + p);
