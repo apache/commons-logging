@@ -127,7 +127,7 @@ public final class WeakHashtable extends Hashtable {
     /* ReferenceQueue we check for gc'd keys */
     private final ReferenceQueue queue = new ReferenceQueue();
     /* Counter used to control how often we purge gc'd entries */
-    private int changeCount = 0;
+    private int changeCount;
 
     /**
      * Constructs a WeakHashtable with the Hashtable default

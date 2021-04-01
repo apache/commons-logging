@@ -254,7 +254,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     @Override
     public String[] getAttributeNames() {
-        return (String[]) attributes.keySet().toArray(new String[attributes.size()]);
+        return (String[]) attributes.keySet().toArray(new String[0]);
     }
 
     /**
@@ -1360,7 +1360,7 @@ public class LogFactoryImpl extends LogFactory {
             }
 
             if (!allowFlawedHierarchy) {
-                final StringBuffer msg = new StringBuffer();
+                final StringBuilder msg = new StringBuilder();
                 msg.append("Terminating logging for this context ");
                 msg.append("due to bad log hierarchy. ");
                 msg.append("You have more than one version of '");
@@ -1373,7 +1373,7 @@ public class LogFactoryImpl extends LogFactory {
             }
 
             if (isDiagnosticsEnabled()) {
-                final StringBuffer msg = new StringBuffer();
+                final StringBuilder msg = new StringBuilder();
                 msg.append("Warning: bad log hierarchy. ");
                 msg.append("You have more than one version of '");
                 msg.append(Log.class.getName());
@@ -1383,7 +1383,7 @@ public class LogFactoryImpl extends LogFactory {
         } else {
             // this is just a bad adapter class
             if (!allowFlawedDiscovery) {
-                final StringBuffer msg = new StringBuffer();
+                final StringBuilder msg = new StringBuilder();
                 msg.append("Terminating logging for this context. ");
                 msg.append("Log class '");
                 msg.append(badClass.getName());
@@ -1396,7 +1396,7 @@ public class LogFactoryImpl extends LogFactory {
             }
 
             if (isDiagnosticsEnabled()) {
-                final StringBuffer msg = new StringBuffer();
+                final StringBuilder msg = new StringBuilder();
                 msg.append("[WARNING] Log class '");
                 msg.append(badClass.getName());
                 msg.append("' does not implement the Log interface.");
