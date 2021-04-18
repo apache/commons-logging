@@ -63,13 +63,13 @@ public class DefaultConfigTestCase extends TestCase {
     /**
      * <p>The {@link LogFactory} implementation we have selected.</p>
      */
-    protected LogFactory factory = null;
+    protected LogFactory factory;
 
 
     /**
      * <p>The {@link Log} implementation we have selected.</p>
      */
-    protected Log log = null;
+    protected Log log;
 
 
     // ------------------------------------------- JUnit Infrastructure Methods

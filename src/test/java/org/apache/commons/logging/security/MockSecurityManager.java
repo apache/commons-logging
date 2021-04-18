@@ -32,7 +32,7 @@ public class MockSecurityManager extends SecurityManager {
     private static final Permission setSecurityManagerPerm =
         new RuntimePermission("setSecurityManager");
 
-    private int untrustedCodeCount = 0;
+    private int untrustedCodeCount;
 
     public MockSecurityManager() {
         permissions.add(setSecurityManagerPerm);

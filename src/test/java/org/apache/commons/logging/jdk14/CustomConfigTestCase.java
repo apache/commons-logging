@@ -67,25 +67,25 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * <p>The customized <code>Handler</code> we will be using.</p>
      */
-    protected TestHandler handler = null;
+    protected TestHandler handler;
 
 
     /**
      * <p>The underlying <code>Handler</code>s we will be using.</p>
      */
-    protected Handler handlers[] = null;
+    protected Handler handlers[];
 
 
     /**
      * <p>The underlying <code>Logger</code> we will be using.</p>
      */
-    protected Logger logger = null;
+    protected Logger logger;
 
 
     /**
      * <p>The underlying <code>LogManager</code> we will be using.</p>
      */
-    protected LogManager manager = null;
+    protected LogManager manager;
 
 
     /**
