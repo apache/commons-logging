@@ -18,13 +18,16 @@
 package org.apache.commons.logging;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Enumeration;
@@ -1478,7 +1481,7 @@ public abstract class LogFactory {
         }
         try {
             // open the file in append mode
-            final FileOutputStream fos = new FileOutputStream(dest, true);
+            final OutputStream fos = Files.newOutputStream(new File(dest).toPath(), StandardOpenOption.APPEND);
             return new PrintStream(fos);
         } catch (final IOException ex) {
             // We should report this to the user - but how?
