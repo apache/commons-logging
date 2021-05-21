@@ -551,7 +551,7 @@ public class LogFactoryImpl extends LogFactory {
      *  be created
      */
     protected Log newInstance(final String name) throws LogConfigurationException {
-        Log instance;
+        final Log instance;
         try {
             if (logConstructor == null) {
                 instance = discoverLogImplementation(name);
@@ -996,7 +996,7 @@ public class LogFactoryImpl extends LogFactory {
                     // in the classpath. This is the location that ClassLoader.loadClass
                     // will load the class from -- unless the classloader is doing
                     // something weird.
-                    URL url;
+                    final URL url;
                     final String resourceName = logAdapterClassName.replace('.', '/') + ".class";
                     if (currentCL != null) {
                         url = currentCL.getResource(resourceName );
