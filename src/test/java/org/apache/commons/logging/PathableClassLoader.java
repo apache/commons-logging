@@ -209,7 +209,7 @@ public class PathableClassLoader extends URLClassLoader {
         final String filename = System.getProperty(logicalLib);
         if (filename != null) {
             try {
-                final URL libUrl = new File(filename).toURL();
+                final URL libUrl = new File(filename).toURI().toURL();
                 addURL(libUrl);
                 return;
             } catch(final java.net.MalformedURLException e) {
