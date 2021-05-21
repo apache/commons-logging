@@ -1046,7 +1046,7 @@ public abstract class LogFactory {
                         }
                     }
 
-                    return (LogFactory) logFactoryClass.newInstance();
+                    return logFactoryClass.newInstance();
 
                 } catch (final ClassNotFoundException ex) {
                     if (classLoader == thisClassLoader) {
@@ -1146,7 +1146,7 @@ public abstract class LogFactory {
                               " - trying the classloader associated with this LogFactory.");
             }
             logFactoryClass = Class.forName(factoryClass);
-            return (LogFactory) logFactoryClass.newInstance();
+            return logFactoryClass.newInstance();
         } catch (final Exception e) {
             // Check to see if we've got a bad configuration
             if (isDiagnosticsEnabled()) {

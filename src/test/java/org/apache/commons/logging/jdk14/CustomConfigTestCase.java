@@ -152,8 +152,8 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             final Object[] args = new Object[4];
             args[0] = className;
             args[1] = classData;
-            args[2] = new Integer(0);
-            args[3] = new Integer(classData.length);
+            args[2] = 0;
+            args[3] = classData.length;
             m.setAccessible(true);
             m.invoke(targetCL, args);
         } catch(final Exception e) {
