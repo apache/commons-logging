@@ -83,7 +83,6 @@
   <property name="log4j12.jar"             value="log4j-1.2.12.jar"/>
   <property name="log4j13.jar"             value="log4j-1.3.0.jar"/>
   <property name="logkit.jar"              value="logkit-1.0.1.jar"/>
-  <property name="avalon-framework.jar"    value="avalon-framework-4.1.3.jar"/>
   <property name="servletapi.jar"          value="servletapi-2.3.jar"/>
 
 
@@ -119,7 +118,6 @@
     <pathelement location="${build.home}/classes"/>
     <pathelement location="${junit.jar}"/>
     <pathelement location="${logkit.jar}"/>
-    <pathelement location="${avalon-framework.jar}"/>
     <pathelement location="${servletapi.jar}"/>
   </path>
 
@@ -140,7 +138,6 @@
     <pathelement location="${build.home}/test-classes"/>
     <pathelement location="${junit.jar}"/>
     <pathelement location="${logkit.jar}"/>
-    <pathelement location="${avalon-framework.jar}"/>
     <pathelement location="${conf.home}"/>
     <pathelement location="${servletapi.jar}"/>
   </path>
@@ -192,7 +189,6 @@
     <mkdir dir="lib"/>
     <get dest="lib/junit-3.8.1.jar" src="${getlibs.base}/junit/jars/junit-3.8.1.jar"/>
     <get dest="lib/logkit-1.0.1.jar" src="${getlibs.base}/logkit/jars/logkit-1.0.1.jar"/>
-    <get dest="lib/avalon-framework-4.1.3.jar" src="${getlibs.base}/avalon-framework/jars/avalon-framework-4.1.3.jar"/>
     <get dest="lib/log4j-1.2.12.jar" src="${getlibs.base}/log4j/jars/log4j-1.2.12.jar"/>
     <get dest="lib/servletapi-2.3.jar" src="${getlibs.base}/servletapi/jars/servletapi-2.3.jar"/>
   </target>
@@ -213,7 +209,6 @@
     <!-- Note: log4j13 support is not available in the 1.1 release. -->
     <!--Log4j13: ${log4j13.jar}-->
     LogKit: ${logkit.jar}
-    Avalon-Framework: ${avalon-framework.jar}
     </echo>
 
     <mkdir dir="${build.home}"/>
@@ -230,10 +225,6 @@
     <available property="logkit.present"
                classpathref="compile.classpath"
                classname="org.apache.log.Logger"/>
-
-    <available property="avalon-framework.present"
-               classpathref="compile.classpath"
-               classname="org.apache.avalon.framework.logger.Logger"/>
 
     <available file="${log4j12.jar}" property="log4j12.present"/>
     <available file="${log4j13.jar}" property="log4j13.present"/>
@@ -253,7 +244,6 @@
     <!-- Note: log4j13 support is not available in the 1.1 release. -->
     <!--<echo  message="log4j13.present=${log4j13.present}"/>-->
     <echo  message="logkit.present=${logkit.present}"/>
-    <echo  message="avalon-framework.present=${avalon-framework.present}"/>
   </target>
 
 

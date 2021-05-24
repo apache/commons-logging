@@ -20,8 +20,7 @@ Bundle-Description: Commons Logging is a thin adapter allowing configu
  rable bridging to other,    well known logging systems.
 Bundle-DocURL: http://commons.apache.org/proper/commons-logging/
 Import-Package: javax.servlet;resolution:=optional;version="[2.1.0,3.0
- .0)",org.apache.avalon.framework.logger;resolution:=optional;version=
- "[4.1.3,4.1.5]",org.apache.log;resolution:=optional;version="[1.0.1,1
+ .0)",,org.apache.log;resolution:=optional;version="[1.0.1,1
  .0.1]",org.apache.log4j;resolution:=optional;version="[1.2.15,2.0.0)"
 Include-Resource: META-INF/NOTICE.txt=NOTICE.txt,META-INF/LICENSE.txt=
  LICENSE.txt

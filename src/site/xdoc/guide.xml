@@ -97,12 +97,10 @@ a specific logging implementation.
     </p>
 <p>JCL provides thin-wrapper <code>Log</code> implementations for
 other logging tools, including
-<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>
-(the Avalon Framework's logging infrastructure),
+<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a> and
 JDK 1.4, and an implementation of JDK 1.4 logging APIs (JSR-47) for pre-1.4
 systems.
-The interface maps closely to Log4J and LogKit.
+The interface maps closely to Log4J.
 </p>
         <p>
 Familiarity with high-level details of the relevant Logging implementations is presumed.
@@ -374,8 +372,7 @@ In addition to the logging methods, the following are provided for code guards:
     same logging library. Note that the same underlying logging library will be
     used on deserialization as was used in the original object, even if the
     application the object was deserialized into is using a different logging
-    library. There is one exception; LogKitLogger (adapter for the Avalon LogKit
-    library) is not Serializable for technical reasons.</p>
+    library.</p>
     <p>Custom Log implementations not distributed with commons-logging may
     or may not be Serializable. If you wish your code to be compatible with
     any arbitrary log adapter then you should follow the advice given above
@@ -388,9 +385,7 @@ In addition to the logging methods, the following are provided for code guards:
 The <code>commons-logging.jar</code> file includes the JCL API, the default 
 <code>LogFactory</code> implementation and thin-wrapper <code>Log</code> 
 implementations for
-<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>,
-the Avalon Framework's logging infrastructure,
+<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>, 
 JDK 1.4, as well as an implementation of JDK 1.4 logging APIs (JSR-47) for 
 pre-1.4 systems.
    </p>
@@ -406,7 +401,7 @@ The <code>commons-logging-api.jar</code> file includes the JCL API and the
 default <code>LogFactory</code> implementation as well as the built-in
 <code>Log</code> implementations SimpleLog and NoOpLog. However it does not
 include the wrapper <code>Log</code> implementations that require additional
-libraries such as <code>Log4j</code>, <code>Avalon</code> and
+libraries such as <code>Log4j</code> and
 <code>Lumberjack</code>. 
 </p>
 <p>
