@@ -488,7 +488,7 @@ under the License.
     <dependency>
       <groupId>logkit</groupId>
       <artifactId>logkit</artifactId>
-      <version>1.0.1</version>
+      <version>2.0</version>
       <optional>true</optional>
     </dependency>
     <dependency>
