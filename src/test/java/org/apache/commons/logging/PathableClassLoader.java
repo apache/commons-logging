@@ -64,7 +64,7 @@ public class PathableClassLoader extends URLClassLoader {
      * Normally, only a classloader created with a null parent needs to
      * have any lookasides defined.
      */
-    private HashMap lookasides = null;
+    private HashMap lookasides;
 
     /**
      * See setParentFirst.
