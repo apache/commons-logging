@@ -252,7 +252,7 @@ public class PathableClassLoader extends URLClassLoader {
      */
     private URL libFromClasspath(final String logicalLib) {
         final ClassLoader cl = this.getClass().getClassLoader();
-        if (cl instanceof URLClassLoader == false) {
+        if (!(cl instanceof URLClassLoader)) {
             return null;
         }
 
@@ -302,7 +302,7 @@ public class PathableClassLoader extends URLClassLoader {
             for (final Object element : lookasides.entrySet()) {
                 final Map.Entry entry = (Map.Entry) element;
                 final String prefix = (String) entry.getKey();
-                if (name.startsWith(prefix) == true) {
+                if (name.startsWith(prefix)) {
                     final ClassLoader loader = (ClassLoader) entry.getValue();
                     final Class clazz = Class.forName(name, resolve, loader);
                     return clazz;
