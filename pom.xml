@@ -572,7 +572,7 @@ under the License.
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC2</commons.rc.version>
     <commons.surefire.version>2.22.2</commons.surefire.version>
-    <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
+    <spotbugs.plugin.version>4.3.0</spotbugs.plugin.version>
     <spotbugs.impl.version>4.2.0</spotbugs.impl.version>    
     <skipSurefireReport>true</skipSurefireReport>
     <!-- Allow default test run order to be changed -->
