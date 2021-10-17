@@ -243,7 +243,7 @@ public class PathableClassLoader extends URLClassLoader {
      * The classpath of the classloader for this instance is scanned, and any
      * jarfile in the path whose name starts with the logicalLib string is
      * considered a match. For example, passing "foo" will match a url
-     * of <code>file:///some/where/foo-2.7.jar</code>.
+     * of {@code file:///some/where/foo-2.7.jar}.
      * <p>
      * When multiple classpath entries match the specified logicalLib string,
      * the one with the shortest filename component is returned. This means that
@@ -384,8 +384,8 @@ public class PathableClassLoader extends URLClassLoader {
      *
      * Clean implementation of list function of
      * {@link java.util.Collection} added in JDK 1.4
-     * @param en <code>Enumeration</code>, possibly null
-     * @return <code>ArrayList</code> containing the enumerated
+     * @param en {@code Enumeration}, possibly null
+     * @return {@code ArrayList} containing the enumerated
      * elements in the enumerated order, not null
      */
     private ArrayList toList(final Enumeration en) {

@@ -28,7 +28,7 @@ import java.io.StringWriter;
 import org.apache.commons.logging.Log;
 
 /**
- * Implementation of the <code>org.apache.commons.logging.Log</code>
+ * Implementation of the {@code org.apache.commons.logging.Log}
  * interface that wraps the standard JDK logging mechanisms that are
  * available in SourceForge's Lumberjack for JDKs prior to 1.4.
  *
@@ -123,7 +123,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.FINE</code>.
+     * Logs a message with {@code java.util.logging.Level.FINE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
@@ -134,7 +134,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.FINE</code>.
+     * Logs a message with {@code java.util.logging.Level.FINE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -146,7 +146,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@code java.util.logging.Level.SEVERE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
@@ -157,7 +157,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@code java.util.logging.Level.SEVERE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -169,7 +169,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@code java.util.logging.Level.SEVERE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
@@ -180,7 +180,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@code java.util.logging.Level.SEVERE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -202,7 +202,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.INFO</code>.
+     * Logs a message with {@code java.util.logging.Level.INFO}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
@@ -213,7 +213,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.INFO</code>.
+     * Logs a message with {@code java.util.logging.Level.INFO}.
      *
      * @param message to log
      * @param exception log this cause
@@ -273,7 +273,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.FINEST</code>.
+     * Logs a message with {@code java.util.logging.Level.FINEST}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
@@ -284,7 +284,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.FINEST</code>.
+     * Logs a message with {@code java.util.logging.Level.FINEST}.
      *
      * @param message to log
      * @param exception log this cause
@@ -296,7 +296,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.WARNING</code>.
+     * Logs a message with {@code java.util.logging.Level.WARNING}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
@@ -307,7 +307,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.WARNING</code>.
+     * Logs a message with {@code java.util.logging.Level.WARNING}.
      *
      * @param message to log
      * @param exception log this cause

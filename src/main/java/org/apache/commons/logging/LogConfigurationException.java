@@ -18,8 +18,8 @@
 package org.apache.commons.logging;
 
 /**
- * An exception that is thrown only if a suitable <code>LogFactory</code>
- * or <code>Log</code> instance cannot be created by the corresponding
+ * An exception that is thrown only if a suitable {@code LogFactory}
+ * or {@code Log} instance cannot be created by the corresponding
  * factory methods.
  *
  * @version $Id$
@@ -30,7 +30,7 @@ public class LogConfigurationException extends RuntimeException {
     private static final long serialVersionUID = 8486587136871052495L;
 
     /**
-     * Construct a new exception with <code>null</code> as its detail message.
+     * Construct a new exception with {@code null} as its detail message.
      */
     public LogConfigurationException() {
     }

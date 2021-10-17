@@ -25,7 +25,7 @@ import java.util.logging.LogRecord;
 
 
 /**
- * <p>Test implementation of <code>java.util.logging.Handler</code>.</p>
+ * <p>Test implementation of {@code java.util.logging.Handler}.</p>
  *
  * @author Craig R. McClanahan
  * @version $Revision$ $Date$

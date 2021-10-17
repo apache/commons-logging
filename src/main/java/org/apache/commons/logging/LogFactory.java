@@ -71,21 +71,21 @@ public abstract class LogFactory {
     // ----------------------------------------------------- Manifest Constants
 
     /**
-     * The name (<code>priority</code>) of the key in the config file used to
+     * The name ({@code priority}) of the key in the config file used to
      * specify the priority of that particular config file. The associated value
      * is a floating-point number; higher values take priority over lower values.
      */
     public static final String PRIORITY_KEY = "priority";
 
     /**
-     * The name (<code>use_tccl</code>) of the key in the config file used
+     * The name ({@code use_tccl}) of the key in the config file used
      * to specify whether logging classes should be loaded via the thread
      * context class loader (TCCL), or not. By default, the TCCL is used.
      */
     public static final String TCCL_KEY = "use_tccl";
 
     /**
-     * The name (<code>org.apache.commons.logging.LogFactory</code>) of the property
+     * The name ({@code org.apache.commons.logging.LogFactory}) of the property
      * used to identify the LogFactory implementation
      * class name. This can be used as a system property, or as an entry in a
      * configuration properties file.
@@ -93,13 +93,13 @@ public abstract class LogFactory {
     public static final String FACTORY_PROPERTY = "org.apache.commons.logging.LogFactory";
 
     /**
-     * The fully qualified class name of the fallback <code>LogFactory</code>
+     * The fully qualified class name of the fallback {@code LogFactory}
      * implementation class to use, if no other can be found.
      */
     public static final String FACTORY_DEFAULT = "org.apache.commons.logging.impl.LogFactoryImpl";
 
     /**
-     * The name (<code>commons-logging.properties</code>) of the properties file to search for.
+     * The name ({@code commons-logging.properties}) of the properties file to search for.
      */
     public static final String FACTORY_PROPERTIES = "commons-logging.properties";
 
@@ -111,7 +111,7 @@ public abstract class LogFactory {
         "META-INF/services/org.apache.commons.logging.LogFactory";
 
     /**
-     * The name (<code>org.apache.commons.logging.diagnostics.dest</code>)
+     * The name ({@code org.apache.commons.logging.diagnostics.dest})
      * of the property used to enable internal commons-logging
      * diagnostic output, in order to get information on what logging
      * implementations are being discovered, what classloaders they
@@ -144,18 +144,18 @@ public abstract class LogFactory {
 
     /**
      * Setting this system property
-     * (<code>org.apache.commons.logging.LogFactory.HashtableImpl</code>)
-     * value allows the <code>Hashtable</code> used to store
+     * ({@code org.apache.commons.logging.LogFactory.HashtableImpl})
+     * value allows the {@code Hashtable} used to store
      * classloaders to be substituted by an alternative implementation.
      * <p>
-     * <strong>Note:</strong> <code>LogFactory</code> will print:
+     * <strong>Note:</strong> {@code LogFactory} will print:
      * <pre>
      * [ERROR] LogFactory: Load of custom hashtable failed
      * </pre>
      * to system error and then continue using a standard Hashtable.
      * <p>
      * <strong>Usage:</strong> Set this property when Java is invoked
-     * and <code>LogFactory</code> will attempt to load a new instance
+     * and {@code LogFactory} will attempt to load a new instance
      * of the given implementation class.
      * For example, running the following ant scriplet:
      * <pre>
@@ -166,8 +166,8 @@ public abstract class LogFactory {
      *        value="org.apache.commons.logging.AltHashtable"/&gt;
      *  &lt;/java&gt;
      * </pre>
-     * will mean that <code>LogFactory</code> will load an instance of
-     * <code>org.apache.commons.logging.AltHashtable</code>.
+     * will mean that {@code LogFactory} will load an instance of
+     * {@code org.apache.commons.logging.AltHashtable}.
      * <p>
      * A typical use case is to allow a custom
      * Hashtable implementation using weak references to be substituted.
@@ -202,7 +202,7 @@ public abstract class LogFactory {
 
     /**
      * Return the configuration attribute with the specified name (if any),
-     * or <code>null</code> if there is no such attribute.
+     * or {@code null} if there is no such attribute.
      *
      * @param name Name of the attribute to return
      */
@@ -217,29 +217,29 @@ public abstract class LogFactory {
 
     /**
      * Convenience method to derive a name from the specified class and
-     * call <code>getInstance(String)</code> with it.
+     * call {@code getInstance(String)} with it.
      *
      * @param clazz Class for which a suitable Log name will be derived
-     * @throws LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable {@code Log}
      *  instance cannot be returned
      */
     public abstract Log getInstance(Class clazz)
         throws LogConfigurationException;
 
     /**
-     * Construct (if necessary) and return a <code>Log</code> instance,
+     * Construct (if necessary) and return a {@code Log} instance,
      * using the factory's current set of configuration attributes.
      * <p>
      * <strong>NOTE</strong> - Depending upon the implementation of
-     * the <code>LogFactory</code> you are using, the <code>Log</code>
+     * the {@code LogFactory} you are using, the {@code Log}
      * instance you are returned may or may not be local to the current
      * application, and may or may not be returned again on a subsequent
      * call with the same name argument.
      *
-     * @param name Logical name of the <code>Log</code> instance to be
+     * @param name Logical name of the {@code Log} instance to be
      *  returned (the meaning of this name is only known to the underlying
      *  logging implementation that is being wrapped)
-     * @throws LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable {@code Log}
      *  instance cannot be returned
      */
     public abstract Log getInstance(String name)
@@ -264,11 +264,11 @@ public abstract class LogFactory {
 
     /**
      * Set the configuration attribute with the specified name.  Calling
-     * this with a <code>null</code> value is equivalent to calling
-     * <code>removeAttribute(name)</code>.
+     * this with a {@code null} value is equivalent to calling
+     * {@code removeAttribute(name)}.
      *
      * @param name Name of the attribute to set
-     * @param value Value of the attribute to set, or <code>null</code>
+     * @param value Value of the attribute to set, or {@code null}
      *  to remove any setting for this attribute
      */
     public abstract void setAttribute(String name, Object value);
@@ -276,15 +276,15 @@ public abstract class LogFactory {
     // ------------------------------------------------------- Static Variables
 
     /**
-     * The previously constructed <code>LogFactory</code> instances, keyed by
-     * the <code>ClassLoader</code> with which it was created.
+     * The previously constructed {@code LogFactory} instances, keyed by
+     * the {@code ClassLoader} with which it was created.
      */
     protected static Hashtable factories;
 
     /**
-     * Previously constructed <code>LogFactory</code> instance as in the
-     * <code>factories</code> map, but for the case where
-     * <code>getClassLoader</code> returns <code>null</code>.
+     * Previously constructed {@code LogFactory} instance as in the
+     * {@code factories} map, but for the case where
+     * {@code getClassLoader} returns {@code null}.
      * This can happen when:
      * <ul>
      * <li>using JDK1.1 and the calling code is loaded via the system
@@ -292,7 +292,7 @@ public abstract class LogFactory {
      * <li>using JDK1.2+ and the calling code is loaded via the boot
      *  classloader (only likely for embedded systems work).</li>
      * </ul>
-     * Note that <code>factories</code> is a <i>Hashtable</i> (not a HashMap),
+     * Note that {@code factories} is a <i>Hashtable</i> (not a HashMap),
      * and hashtables don't allow null as a key.
      * @deprecated since 1.1.2
      */
@@ -386,27 +386,27 @@ public abstract class LogFactory {
     }
 
     /**
-     * Construct (if necessary) and return a <code>LogFactory</code>
+     * Construct (if necessary) and return a {@code LogFactory}
      * instance, using the following ordered lookup procedure to determine
      * the name of the implementation class to be loaded.
      * <p>
      * <ul>
-     * <li>The <code>org.apache.commons.logging.LogFactory</code> system
+     * <li>The {@code org.apache.commons.logging.LogFactory} system
      *     property.</li>
      * <li>The JDK 1.3 Service Discovery mechanism</li>
-     * <li>Use the properties file <code>commons-logging.properties</code>
+     * <li>Use the properties file {@code commons-logging.properties}
      *     file, if found in the class path of this class.  The configuration
-     *     file is in standard <code>java.util.Properties</code> format and
+     *     file is in standard {@code java.util.Properties} format and
      *     contains the fully qualified name of the implementation class
      *     with the key being the system property defined above.</li>
      * <li>Fall back to a default implementation class
-     *     (<code>org.apache.commons.logging.impl.LogFactoryImpl</code>).</li>
+     *     ({@code org.apache.commons.logging.impl.LogFactoryImpl}).</li>
      * </ul>
      * <p>
      * <em>NOTE</em> - If the properties file method of identifying the
-     * <code>LogFactory</code> implementation class is utilized, all of the
+     * {@code LogFactory} implementation class is utilized, all of the
      * properties defined in this file will be set as configuration attributes
-     * on the corresponding <code>LogFactory</code> instance.
+     * on the corresponding {@code LogFactory} instance.
      * <p>
      * <em>NOTE</em> - In a multi-threaded environment it is possible
      * that two different instances will be returned for the same
@@ -649,7 +649,7 @@ public abstract class LogFactory {
      * having to care about factories.
      *
      * @param clazz Class from which a log name will be derived
-     * @throws LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable {@code Log}
      *  instance cannot be returned
      */
     public static Log getLog(final Class clazz) throws LogConfigurationException {
@@ -660,10 +660,10 @@ public abstract class LogFactory {
      * Convenience method to return a named logger, without the application
      * having to care about factories.
      *
-     * @param name Logical name of the <code>Log</code> instance to be
+     * @param name Logical name of the {@code Log} instance to be
      *  returned (the meaning of this name is only known to the underlying
      *  logging implementation that is being wrapped)
-     * @throws LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable {@code Log}
      *  instance cannot be returned
      */
     public static Log getLog(final String name) throws LogConfigurationException {
@@ -673,7 +673,7 @@ public abstract class LogFactory {
     /**
      * Release any internal references to previously created {@link LogFactory}
      * instances that have been associated with the specified class loader
-     * (if any), after calling the instance method <code>release()</code> on
+     * (if any), after calling the instance method {@code release()} on
      * each of them.
      *
      * @param classLoader ClassLoader for which to release the LogFactory
@@ -702,7 +702,7 @@ public abstract class LogFactory {
 
     /**
      * Release any internal references to previously created {@link LogFactory}
-     * instances, after calling the instance method <code>release()</code> on
+     * instances, after calling the instance method {@code release()} on
      * each of them.  This is useful in environments like servlet containers,
      * which implement application reloading by throwing away a ClassLoader.
      * Dangling references to objects in that class loader would prevent
@@ -905,7 +905,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Return a new instance of the specified <code>LogFactory</code>
+     * Return a new instance of the specified {@code LogFactory}
      * implementation class, loaded by the specified class loader.
      * If that fails, try the class loader used to load this
      * (abstract) LogFactory.
@@ -939,7 +939,7 @@ public abstract class LogFactory {
      * long as the only LogFactory class it can find to bind to is in the
      * parent classloader.
      *
-     * @param factoryClass Fully qualified name of the <code>LogFactory</code>
+     * @param factoryClass Fully qualified name of the {@code LogFactory}
      *  implementation class
      * @param classLoader ClassLoader from which to load this class
      * @param contextClassLoader is the context that this new factory will
@@ -1162,16 +1162,16 @@ public abstract class LogFactory {
     }
 
     /**
-     * Determines whether the given class actually implements <code>LogFactory</code>.
+     * Determines whether the given class actually implements {@code LogFactory}.
      * Diagnostic information is also logged.
      * <p>
      * <strong>Usage:</strong> to diagnose whether a classloader conflict is the cause
      * of incompatibility. The test used is whether the class is assignable from
-     * the <code>LogFactory</code> class loaded by the class's classloader.
-     * @param logFactoryClass <code>Class</code> which may implement <code>LogFactory</code>
-     * @return true if the <code>logFactoryClass</code> does extend
-     * <code>LogFactory</code> when that class is loaded via the same
-     * classloader that loaded the <code>logFactoryClass</code>.
+     * the {@code LogFactory} class loaded by the class's classloader.
+     * @param logFactoryClass {@code Class} which may implement {@code LogFactory}
+     * @return true if the {@code logFactoryClass} does extend
+     * {@code LogFactory} when that class is loaded via the same
+     * classloader that loaded the {@code logFactoryClass}.
      */
     private static boolean implementsLogFactory(final Class logFactoryClass) {
         boolean implementsLogFactory = false;

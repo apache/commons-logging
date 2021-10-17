@@ -37,34 +37,34 @@ import org.apache.commons.logging.LogConfigurationException;
  * for all defined loggers, to System.err.  The following system properties
  * are supported to configure the behavior of this logger:
  * <ul>
- * <li><code>org.apache.commons.logging.simplelog.defaultlog</code> -
+ * <li>{@code org.apache.commons.logging.simplelog.defaultlog} -
  *     Default logging detail level for all instances of SimpleLog.
  *     Must be one of ("trace", "debug", "info", "warn", "error", or "fatal").
  *     If not specified, defaults to "info". </li>
- * <li><code>org.apache.commons.logging.simplelog.log.xxxxx</code> -
+ * <li>{@code org.apache.commons.logging.simplelog.log.xxxxx} -
  *     Logging detail level for a SimpleLog instance named "xxxxx".
  *     Must be one of ("trace", "debug", "info", "warn", "error", or "fatal").
  *     If not specified, the default logging detail level is used.</li>
- * <li><code>org.apache.commons.logging.simplelog.showlogname</code> -
- *     Set to <code>true</code> if you want the Log instance name to be
- *     included in output messages. Defaults to <code>false</code>.</li>
- * <li><code>org.apache.commons.logging.simplelog.showShortLogname</code> -
- *     Set to <code>true</code> if you want the last component of the name to be
- *     included in output messages. Defaults to <code>true</code>.</li>
- * <li><code>org.apache.commons.logging.simplelog.showdatetime</code> -
- *     Set to <code>true</code> if you want the current date and time
- *     to be included in output messages. Default is <code>false</code>.</li>
- * <li><code>org.apache.commons.logging.simplelog.dateTimeFormat</code> -
+ * <li>{@code org.apache.commons.logging.simplelog.showlogname} -
+ *     Set to {@code true} if you want the Log instance name to be
+ *     included in output messages. Defaults to {@code false}.</li>
+ * <li>{@code org.apache.commons.logging.simplelog.showShortLogname} -
+ *     Set to {@code true} if you want the last component of the name to be
+ *     included in output messages. Defaults to {@code true}.</li>
+ * <li>{@code org.apache.commons.logging.simplelog.showdatetime} -
+ *     Set to {@code true} if you want the current date and time
+ *     to be included in output messages. Default is {@code false}.</li>
+ * <li>{@code org.apache.commons.logging.simplelog.dateTimeFormat} -
  *     The date and time format to be used in the output messages.
  *     The pattern describing the date and time format is the same that is
- *     used in <code>java.text.SimpleDateFormat</code>. If the format is not
+ *     used in {@code java.text.SimpleDateFormat}. If the format is not
  *     specified or is invalid, the default format is used.
- *     The default format is <code>yyyy/MM/dd HH:mm:ss:SSS zzz</code>.</li>
+ *     The default format is {@code yyyy/MM/dd HH:mm:ss:SSS zzz}.</li>
  * </ul>
  * <p>
  * In addition to looking for system properties with the names specified
  * above, this implementation also checks for a class loader resource named
- * <code>"simplelog.properties"</code>, and includes any matching definitions
+ * {@code "simplelog.properties"}, and includes any matching definitions
  * from this resource (if it exists).
  *
  * @version $Id$
@@ -76,7 +76,7 @@ public class SimpleLog implements Log, Serializable {
 
     // ------------------------------------------------------- Class Attributes
 
-    /** All system properties used by <code>SimpleLog</code> start with this */
+    /** All system properties used by {@code SimpleLog} start with this */
     static protected final String systemPrefix = "org.apache.commons.logging.simplelog.";
 
     /** Properties loaded from simplelog.properties */
@@ -269,7 +269,7 @@ public class SimpleLog implements Log, Serializable {
     /**
      * Do the actual logging.
      * <p>
-     * This method assembles the message and then calls <code>write()</code>
+     * This method assembles the message and then calls {@code write()}
      * to cause it to be written.
      *
      * @param type One of the LOG_LEVEL_XXX constants defining the log level
@@ -335,10 +335,10 @@ public class SimpleLog implements Log, Serializable {
 
     /**
      * Write the content of the message accumulated in the specified
-     * <code>StringBuffer</code> to the appropriate output destination.  The
-     * default implementation writes to <code>System.err</code>.
+     * {@code StringBuffer} to the appropriate output destination.  The
+     * default implementation writes to {@code System.err}.
      *
-     * @param buffer A <code>StringBuffer</code> containing the accumulated
+     * @param buffer A {@code StringBuffer} containing the accumulated
      *  text to be logged
      */
     protected void write(final StringBuffer buffer) {
@@ -360,7 +360,7 @@ public class SimpleLog implements Log, Serializable {
 
     /**
      * Logs a message with
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG</code>.
+     * {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
@@ -374,7 +374,7 @@ public class SimpleLog implements Log, Serializable {
 
     /**
      * Logs a message with
-     * <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG</code>.
+     * {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG}.
      *
      * @param message to log
      * @param t log this cause
@@ -388,7 +388,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
@@ -401,7 +401,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE}.
      *
      * @param message to log
      * @param t log this cause
@@ -415,7 +415,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
@@ -428,7 +428,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO}.
      *
      * @param message to log
      * @param t log this cause
@@ -442,7 +442,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
@@ -455,7 +455,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN}.
      *
      * @param message to log
      * @param t log this cause
@@ -469,7 +469,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
@@ -482,7 +482,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR}.
      *
      * @param message to log
      * @param t log this cause
@@ -496,7 +496,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Log a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
+     * Log a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
@@ -509,7 +509,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL</code>.
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL}.
      *
      * @param message to log
      * @param t log this cause
@@ -525,7 +525,7 @@ public class SimpleLog implements Log, Serializable {
     /**
      * Are debug messages currently enabled?
      * <p>
-     * This allows expensive operations such as <code>String</code>
+     * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
@@ -537,7 +537,7 @@ public class SimpleLog implements Log, Serializable {
     /**
      * Are error messages currently enabled?
      * <p>
-     * This allows expensive operations such as <code>String</code>
+     * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
@@ -549,7 +549,7 @@ public class SimpleLog implements Log, Serializable {
     /**
      * Are fatal messages currently enabled?
      * <p>
-     * This allows expensive operations such as <code>String</code>
+     * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
@@ -561,7 +561,7 @@ public class SimpleLog implements Log, Serializable {
     /**
      * Are info messages currently enabled?
      * <p>
-     * This allows expensive operations such as <code>String</code>
+     * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
@@ -573,7 +573,7 @@ public class SimpleLog implements Log, Serializable {
     /**
      * Are trace messages currently enabled?
      * <p>
-     * This allows expensive operations such as <code>String</code>
+     * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */
@@ -585,7 +585,7 @@ public class SimpleLog implements Log, Serializable {
     /**
      * Are warn messages currently enabled?
      * <p>
-     * This allows expensive operations such as <code>String</code>
+     * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
      */

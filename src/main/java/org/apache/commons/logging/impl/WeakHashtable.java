@@ -29,37 +29,37 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Implementation of <code>Hashtable</code> that uses <code>WeakReference</code>'s
+ * Implementation of {@code Hashtable} that uses {@code WeakReference}'s
  * to hold its keys thus allowing them to be reclaimed by the garbage collector.
  * The associated values are retained using strong references.
  * <p>
- * This class follows the semantics of <code>Hashtable</code> as closely as
+ * This class follows the semantics of {@code Hashtable} as closely as
  * possible. It therefore does not accept null values or keys.
  * <p>
  * <strong>Note:</strong>
  * This is <em>not</em> intended to be a general purpose hash table replacement.
  * This implementation is also tuned towards a particular purpose: for use as a replacement
- * for <code>Hashtable</code> in <code>LogFactory</code>. This application requires
- * good liveliness for <code>get</code> and <code>put</code>. Various tradeoffs
+ * for {@code Hashtable} in {@code LogFactory}. This application requires
+ * good liveliness for {@code get} and {@code put}. Various tradeoffs
  * have been made with this in mind.
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement
- * for the <code>Hashtable</code> used in <code>LogFactory</code> for J2EE environments
+ * for the {@code Hashtable} used in {@code LogFactory} for J2EE environments
  * running 1.3+ JVMs. Use of this class <i>in most cases</i> (see below) will
  * allow classloaders to be collected by the garbage collector without the need
  * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
  * <p>
- * <code>org.apache.commons.logging.LogFactory</code> checks whether this class
+ * {@code org.apache.commons.logging.LogFactory} checks whether this class
  * can be supported by the current JVM, and if so then uses it to store
- * references to the <code>LogFactory</code> implementation it loads
+ * references to the {@code LogFactory} implementation it loads
  * (rather than using a standard Hashtable instance).
- * Having this class used instead of <code>Hashtable</code> solves
+ * Having this class used instead of {@code Hashtable} solves
  * certain issues related to dynamic reloading of applications in J2EE-style
  * environments. However this class requires java 1.3 or later (due to its use
- * of <code>java.lang.ref.WeakReference</code> and associates).
- * And by the way, this extends <code>Hashtable</code> rather than <code>HashMap</code>
+ * of {@code java.lang.ref.WeakReference} and associates).
+ * And by the way, this extends {@code Hashtable} rather than {@code HashMap}
  * for backwards compatibility reasons. See the documentation
- * for method <code>LogFactory.createFactoryStore</code> for more details.
+ * for method {@code LogFactory.createFactoryStore} for more details.
  * <p>
  * The reason all this is necessary is due to a issue which
  * arises during hot deploy in a J2EE-like containers.
@@ -71,7 +71,7 @@ import java.util.Set;
  * sets the component's classloader to null with the intent that all the
  * component's classes get garbage-collected. However there's still a
  * reference to the component's classloader from a key in the "global"
- * <code>LogFactory</code>'s factories member! If <code>LogFactory.release()</code>
+ * {@code LogFactory}'s factories member! If {@code LogFactory.release()}
  * is called whenever component is unloaded, the classloaders will be correctly
  * garbage collected; this <i>should</i> be done by any container that
  * bundles commons-logging by default. However, holding the classloader
@@ -83,24 +83,24 @@ import java.util.Set;
  * be correctly unloaded without an explicit release. Though weak references
  * are used for its keys, it is necessary to use strong references for its values.
  * <p>
- * If the abstract class <code>LogFactory</code> is
+ * If the abstract class {@code LogFactory} is
  * loaded by the container classloader but a subclass of
- * <code>LogFactory</code> [LogFactory1] is loaded by the component's
+ * {@code LogFactory} [LogFactory1] is loaded by the component's
  * classloader and an instance stored in the static map associated with the
  * base LogFactory class, then there is a strong reference from the LogFactory
  * class to the LogFactory1 instance (as normal) and a strong reference from
  * the LogFactory1 instance to the component classloader via
- * <code>getClass().getClassLoader()</code>. This chain of references will prevent
+ * {@code getClass().getClassLoader()}. This chain of references will prevent
  * collection of the child classloader.
  * <p>
  * Such a situation occurs when the commons-logging.jar is
  * loaded by a parent classloader (e.g. a server level classloader in a
- * servlet container) and a custom <code>LogFactory</code> implementation is
+ * servlet container) and a custom {@code LogFactory} implementation is
  * loaded by a child classloader (e.g. a web app classloader).
  * <p>
  * To avoid this scenario, ensure
  * that any custom LogFactory subclass is loaded by the same classloader as
- * the base <code>LogFactory</code>. Creating custom LogFactory subclasses is,
+ * the base {@code LogFactory}. Creating custom LogFactory subclasses is,
  * however, rare. The standard LogFactoryImpl class should be sufficient
  * for most or all users.
  *
@@ -420,7 +420,7 @@ public final class WeakHashtable extends Hashtable {
 
         /**
          *
-         * @throws NullPointerException if referant is <code>null</code>
+         * @throws NullPointerException if referant is {@code null}
          */
         private Referenced(final Object referant) {
             reference = new WeakReference(referant);
@@ -431,7 +431,7 @@ public final class WeakHashtable extends Hashtable {
 
         /**
          *
-         * @throws NullPointerException if key is <code>null</code>
+         * @throws NullPointerException if key is {@code null}
          */
         private Referenced(final Object key, final ReferenceQueue queue) {
             reference = new WeakKey(key, queue, this);
@@ -483,7 +483,7 @@ public final class WeakHashtable extends Hashtable {
 
     /**
      * WeakReference subclass that holds a hard reference to an
-     * associated <code>value</code> and also makes accessible
+     * associated {@code value} and also makes accessible
      * the Referenced object holding it.
      */
     private final static class WeakKey extends WeakReference {

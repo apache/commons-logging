@@ -37,16 +37,16 @@ import org.apache.commons.logging.LogFactory;
  * class to instantiate a wrapper for:
  * <ul>
  * <li>Use a factory configuration attribute named
- *     <code>org.apache.commons.logging.Log</code> to identify the
+ *     {@code org.apache.commons.logging.Log} to identify the
  *     requested implementation class.</li>
- * <li>Use the <code>org.apache.commons.logging.Log</code> system property
+ * <li>Use the {@code org.apache.commons.logging.Log} system property
  *     to identify the requested implementation class.</li>
  * <li>If <em>Log4J</em> is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
+ *     {@code org.apache.commons.logging.impl.Log4JLogger}.</li>
  * <li>If <em>JDK 1.4 or later</em> is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
+ *     {@code org.apache.commons.logging.impl.Jdk14Logger}.</li>
  * <li>Otherwise, return an instance of
- *     <code>org.apache.commons.logging.impl.SimpleLog</code>.</li>
+ *     {@code org.apache.commons.logging.impl.SimpleLog}.</li>
  * </ul>
  * <p>
  * If the selected {@link Log} implementation class has a
@@ -55,9 +55,9 @@ import org.apache.commons.logging.LogFactory;
  * to identify the associated factory.  This makes factory configuration
  * attributes available to the Log instance, if it so desires.
  * <p>
- * This factory will remember previously created <code>Log</code> instances
+ * This factory will remember previously created {@code Log} instances
  * for the same name, and will return them on repeated requests to the
- * <code>getInstance()</code> method.
+ * {@code getInstance()} method.
  *
  * @version $Id$
  */
@@ -97,7 +97,7 @@ public class LogFactoryImpl extends LogFactory {
     // ----------------------------------------------------- Manifest Constants
 
     /**
-     * The name (<code>org.apache.commons.logging.Log</code>) of the system
+     * The name ({@code org.apache.commons.logging.Log}) of the system
      * property identifying our {@link Log} implementation class.
      */
     public static final String LOG_PROPERTY = "org.apache.commons.logging.Log";
@@ -109,7 +109,7 @@ public class LogFactoryImpl extends LogFactory {
     protected static final String LOG_PROPERTY_OLD = "org.apache.commons.logging.log";
 
     /**
-     * The name (<code>org.apache.commons.logging.Log.allowFlawedContext</code>)
+     * The name ({@code org.apache.commons.logging.Log.allowFlawedContext})
      * of the system property which can be set true/false to
      * determine system behavior when a bad context-classloader is encountered.
      * When set to false, a LogConfigurationException is thrown if
@@ -124,7 +124,7 @@ public class LogFactoryImpl extends LogFactory {
         "org.apache.commons.logging.Log.allowFlawedContext";
 
     /**
-     * The name (<code>org.apache.commons.logging.Log.allowFlawedDiscovery</code>)
+     * The name ({@code org.apache.commons.logging.Log.allowFlawedDiscovery})
      * of the system property which can be set true/false to
      * determine system behavior when a bad logging adapter class is
      * encountered during logging discovery. When set to false, an
@@ -140,7 +140,7 @@ public class LogFactoryImpl extends LogFactory {
         "org.apache.commons.logging.Log.allowFlawedDiscovery";
 
     /**
-     * The name (<code>org.apache.commons.logging.Log.allowFlawedHierarchy</code>)
+     * The name ({@code org.apache.commons.logging.Log.allowFlawedHierarchy})
      * of the system property which can be set true/false to
      * determine system behavior when a logging adapter class is
      * encountered which has bound to the wrong Log class implementation.
@@ -203,7 +203,7 @@ public class LogFactoryImpl extends LogFactory {
      * The one-argument constructor of the
      * {@link org.apache.commons.logging.Log}
      * implementation class that will be used to create new instances.
-     * This value is initialized by <code>getLogConstructor()</code>,
+     * This value is initialized by {@code getLogConstructor()},
      * and then returned repeatedly.
      */
     protected Constructor logConstructor;
@@ -214,13 +214,13 @@ public class LogFactoryImpl extends LogFactory {
     protected Class logConstructorSignature[] = { java.lang.String.class };
 
     /**
-     * The one-argument <code>setLogFactory</code> method of the selected
+     * The one-argument {@code setLogFactory} method of the selected
      * {@link org.apache.commons.logging.Log} method, if it exists.
      */
     protected Method logMethod;
 
     /**
-     * The signature of the <code>setLogFactory</code> method to be used.
+     * The signature of the {@code setLogFactory} method to be used.
      */
     protected Class logMethodSignature[] = { LogFactory.class };
 
@@ -243,7 +243,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Return the configuration attribute with the specified name (if any),
-     * or <code>null</code> if there is no such attribute.
+     * or {@code null} if there is no such attribute.
      *
      * @param name Name of the attribute to return
      */
@@ -264,11 +264,11 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Convenience method to derive a name from the specified class and
-     * call <code>getInstance(String)</code> with it.
+     * call {@code getInstance(String)} with it.
      *
      * @param clazz Class for which a suitable Log name will be derived
      *
-     * @throws LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable {@code Log}
      *  instance cannot be returned
      */
     @Override
@@ -277,20 +277,20 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * <p>Construct (if necessary) and return a <code>Log</code> instance,
+     * <p>Construct (if necessary) and return a {@code Log} instance,
      * using the factory's current set of configuration attributes.</p>
      *
      * <p><strong>NOTE</strong> - Depending upon the implementation of
-     * the <code>LogFactory</code> you are using, the <code>Log</code>
+     * the {@code LogFactory} you are using, the {@code Log}
      * instance you are returned may or may not be local to the current
      * application, and may or may not be returned again on a subsequent
      * call with the same name argument.</p>
      *
-     * @param name Logical name of the <code>Log</code> instance to be
+     * @param name Logical name of the {@code Log} instance to be
      *  returned (the meaning of this name is only known to the underlying
      *  logging implementation that is being wrapped)
      *
-     * @throws LogConfigurationException if a suitable <code>Log</code>
+     * @throws LogConfigurationException if a suitable {@code Log}
      *  instance cannot be returned
      */
     @Override
@@ -331,8 +331,8 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Set the configuration attribute with the specified name.  Calling
-     * this with a <code>null</code> value is equivalent to calling
-     * <code>removeAttribute(name)</code>.
+     * this with a {@code null} value is equivalent to calling
+     * {@code removeAttribute(name)}.
      * <p>
      * This method can be used to set logging configuration programmatically
      * rather than via system properties. It can also be used in code running
@@ -350,7 +350,7 @@ public class LogFactoryImpl extends LogFactory {
      * automatically as an attribute here.
      *
      * @param name Name of the attribute to set
-     * @param value Value of the attribute to set, or <code>null</code>
+     * @param value Value of the attribute to set, or {@code null}
      *  to remove any setting for this attribute
      */
     @Override
@@ -473,12 +473,12 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * <p>Return the <code>Constructor</code> that can be called to instantiate
+     * <p>Return the {@code Constructor} that can be called to instantiate
      * new {@link org.apache.commons.logging.Log} instances.</p>
      *
      * <p><strong>IMPLEMENTATION NOTE</strong> - Race conditions caused by
      * calling this method from more than one thread are ignored, because
-     * the same <code>Constructor</code> instance will ultimately be derived
+     * the same {@code Constructor} instance will ultimately be derived
      * in all circumstances.</p>
      *
      * @throws LogConfigurationException if a suitable constructor
@@ -513,9 +513,9 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return <code>true</code> if <em>JDK 1.4 or later</em> logging
-     * is available.  Also checks that the <code>Throwable</code> class
-     * supports <code>getStackTrace()</code>, which is required by
+     * Return {@code true} if <em>JDK 1.4 or later</em> logging
+     * is available.  Also checks that the {@code Throwable} class
+     * supports {@code getStackTrace()}, which is required by
      * Jdk14Logger.
      *
      * @deprecated  Never invoked by this class; subclasses should not assume
@@ -872,7 +872,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Appends message if the given name is similar to the candidate.
-     * @param messageBuffer <code>StringBuffer</code> the message should be appended to,
+     * @param messageBuffer {@code StringBuffer} the message should be appended to,
      * not null
      * @param name the (trimmed) name to be test against the candidate, not null
      * @param candidate the candidate name (not null)
@@ -900,7 +900,7 @@ public class LogFactoryImpl extends LogFactory {
      * a Log implementation specified by the user under the
      * property names {@link #LOG_PROPERTY} or {@link #LOG_PROPERTY_OLD}.
      *
-     * @return classname specified by the user, or <code>null</code>
+     * @return classname specified by the user, or {@code null}
      */
     private String findUserSpecifiedLogClassName() {
         if (isDiagnosticsEnabled()) {
@@ -962,8 +962,8 @@ public class LogFactoryImpl extends LogFactory {
      *
      * @param logAdapterClassName classname of the Log implementation
      * @param logCategory  argument to pass to the Log implementation's constructor
-     * @param affectState  <code>true</code> if this object's state should
-     *  be affected by this method call, <code>false</code> otherwise.
+     * @param affectState  {@code true} if this object's state should
+     *  be affected by this method call, {@code false} otherwise.
      * @return  an instance of the given class, or null if the logging
      *  library associated with the specified adapter is not available.
      * @throws LogConfigurationException if there was a serious error with
@@ -1112,7 +1112,7 @@ public class LogFactoryImpl extends LogFactory {
             this.logClassName   = logAdapterClassName;
             this.logConstructor = constructor;
 
-            // Identify the <code>setLogFactory</code> method (if there is one)
+            // Identify the {@code setLogFactory} method (if there is one)
             try {
                 this.logMethod = logAdapterClass.getMethod("setLogFactory", logMethodSignature);
                 logDiagnostic("Found method setLogFactory(LogFactory) in '" + logAdapterClassName + "'");
@@ -1254,11 +1254,11 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Generates an internal diagnostic logging of the discovery failure and
-     * then throws a <code>LogConfigurationException</code> that wraps
-     * the passed <code>Throwable</code>.
+     * then throws a {@code LogConfigurationException} that wraps
+     * the passed {@code Throwable}.
      *
      * @param logAdapterClassName is the class name of the Log implementation
-     * that could not be instantiated. Cannot be <code>null</code>.
+     * that could not be instantiated. Cannot be {@code null}.
      *
      * @param classLoader is the classloader that we were trying to load the
      * logAdapterClassName from when the exception occurred.

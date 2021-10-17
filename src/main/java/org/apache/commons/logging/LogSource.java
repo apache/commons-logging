@@ -24,27 +24,27 @@ import org.apache.commons.logging.impl.NoOpLog;
 
 /**
  * Factory for creating {@link Log} instances.  Applications should call
- * the <code>makeNewLogInstance()</code> method to instantiate new instances
+ * the {@code makeNewLogInstance()} method to instantiate new instances
  * of the configured {@link Log} implementation class.
  * <p>
- * By default, calling <code>getInstance()</code> will use the following
+ * By default, calling {@code getInstance()} will use the following
  * algorithm:
  * <ul>
  * <li>If Log4J is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
+ *     {@code org.apache.commons.logging.impl.Log4JLogger}.</li>
  * <li>If JDK 1.4 or later is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
+ *     {@code org.apache.commons.logging.impl.Jdk14Logger}.</li>
  * <li>Otherwise, return an instance of
- *     <code>org.apache.commons.logging.impl.NoOpLog</code>.</li>
+ *     {@code org.apache.commons.logging.impl.NoOpLog}.</li>
  * </ul>
  * <p>
  * You can change the default behavior in one of two ways:
  * <ul>
  * <li>On the startup command line, set the system property
- *     <code>org.apache.commons.logging.log</code> to the name of the
- *     <code>org.apache.commons.logging.Log</code> implementation class
+ *     {@code org.apache.commons.logging.log} to the name of the
+ *     {@code org.apache.commons.logging.Log} implementation class
  *     you want to use.</li>
- * <li>At runtime, call <code>LogSource.setLogImplementation()</code>.</li>
+ * <li>At runtime, call {@code LogSource.setLogImplementation()}.</li>
  * </ul>
  *
  * @deprecated Use {@link LogFactory} instead - The default factory
@@ -169,7 +169,7 @@ public class LogSource {
         logImplctor = logclass.getConstructor(argtypes);
     }
 
-    /** Get a <code>Log</code> instance by class name. */
+    /** Get a {@code Log} instance by class name. */
     static public Log getInstance(final String name) {
         Log log = (Log) logs.get(name);
         if (null == log) {
@@ -179,7 +179,7 @@ public class LogSource {
         return log;
     }
 
-    /** Get a <code>Log</code> instance by class. */
+    /** Get a {@code Log} instance by class. */
     static public Log getInstance(final Class clazz) {
         return getInstance(clazz.getName());
     }

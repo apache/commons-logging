@@ -121,9 +121,9 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.TRACE</code>.
-     * When using a log4j version that does not support the <code>TRACE</code>
-     * level, the message will be logged at the <code>DEBUG</code> level.
+     * Logs a message with {@code org.apache.log4j.Priority.TRACE}.
+     * When using a log4j version that does not support the {@code TRACE}
+     * level, the message will be logged at the {@code DEBUG} level.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
@@ -134,9 +134,9 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.TRACE</code>.
-     * When using a log4j version that does not support the <code>TRACE</code>
-     * level, the message will be logged at the <code>DEBUG</code> level.
+     * Logs a message with {@code org.apache.log4j.Priority.TRACE}.
+     * When using a log4j version that does not support the {@code TRACE}
+     * level, the message will be logged at the {@code DEBUG} level.
      *
      * @param message to log
      * @param t log this cause
@@ -148,7 +148,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.DEBUG</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.DEBUG}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
@@ -159,7 +159,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.DEBUG</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.DEBUG}.
      *
      * @param message to log
      * @param t log this cause
@@ -171,7 +171,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.INFO</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.INFO}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
@@ -182,7 +182,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.INFO</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.INFO}.
      *
      * @param message to log
      * @param t log this cause
@@ -194,7 +194,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.WARN</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.WARN}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
@@ -205,7 +205,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.WARN</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.WARN}.
      *
      * @param message to log
      * @param t log this cause
@@ -217,7 +217,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.ERROR</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.ERROR}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
@@ -228,7 +228,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.ERROR</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.ERROR}.
      *
      * @param message to log
      * @param t log this cause
@@ -240,7 +240,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.FATAL</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.FATAL}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
@@ -251,7 +251,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>org.apache.log4j.Priority.FATAL</code>.
+     * Logs a message with {@code org.apache.log4j.Priority.FATAL}.
      *
      * @param message to log
      * @param t log this cause
@@ -279,7 +279,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for <code>DEBUG</code> priority.
+     * Check whether the Log4j Logger used is enabled for {@code DEBUG} priority.
      */
     @Override
     public boolean isDebugEnabled() {
@@ -287,7 +287,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for <code>ERROR</code> priority.
+     * Check whether the Log4j Logger used is enabled for {@code ERROR} priority.
      */
     @Override
     public boolean isErrorEnabled() {
@@ -295,7 +295,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for <code>FATAL</code> priority.
+     * Check whether the Log4j Logger used is enabled for {@code FATAL} priority.
      */
     @Override
     public boolean isFatalEnabled() {
@@ -303,7 +303,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for <code>INFO</code> priority.
+     * Check whether the Log4j Logger used is enabled for {@code INFO} priority.
      */
     @Override
     public boolean isInfoEnabled() {
@@ -311,9 +311,9 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for <code>TRACE</code> priority.
+     * Check whether the Log4j Logger used is enabled for {@code TRACE} priority.
      * When using a log4j version that does not support the TRACE level, this call
-     * will report whether <code>DEBUG</code> is enabled or not.
+     * will report whether {@code DEBUG} is enabled or not.
      */
     @Override
     public boolean isTraceEnabled() {
@@ -321,7 +321,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for <code>WARN</code> priority.
+     * Check whether the Log4j Logger used is enabled for {@code WARN} priority.
      */
     @Override
     public boolean isWarnEnabled() {

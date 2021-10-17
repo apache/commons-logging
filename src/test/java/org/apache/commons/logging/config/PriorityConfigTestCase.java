@@ -42,7 +42,7 @@ import org.apache.commons.logging.PathableTestSuite;
  * The result should be that the third file is used.
  * <p>
  * Note that parentFirst=true is used in this test because method
- * <code>PathableClassLoader.getResources</code> always behaves as if
+ * {@code PathableClassLoader.getResources} always behaves as if
  * parentFirst=true; see the PathableClassLoader javadoc for details.
  */
 
