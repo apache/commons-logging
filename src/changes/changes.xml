@@ -61,7 +61,7 @@ The <action> type attribute can be add,update,fix,remove.
         Add more entries to .gitignore file #25.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump junit from 3.8.1 to 4.13.1 #23.
+        Bump junit from 3.8.1 to 4.13.2 #23, #38.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump clirr-maven-plugin from 2.2.2 to 2.8 #14.
