@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.AccessController;
@@ -188,7 +189,7 @@ public abstract class LogFactory {
      * AccessControllers etc. It's more efficient to compute it once and
      * cache it here.
      */
-    private static final ClassLoader thisClassLoader;
+    private static final WeakReference<ClassLoader> thisClassLoaderRef;
 
     // ----------------------------------------------------------- Constructors
 
@@ -419,6 +420,7 @@ public abstract class LogFactory {
         // Identify the class loader we will be using
         final ClassLoader contextClassLoader = getContextClassLoaderInternal();
 
+
         // This is an odd enough situation to report about. This
         // output will be a nuisance on JDK1.1, as the system
         // classloader is null in that environment.
@@ -466,7 +468,7 @@ public abstract class LogFactory {
                 // own logging implementations. It also means that it is up to the
                 // implementation whether to load library-specific config files
                 // from the TCCL or not.
-                baseClassLoader = thisClassLoader;
+                baseClassLoader = thisClassLoaderRef.get();
             }
         }
 
@@ -622,7 +624,7 @@ public abstract class LogFactory {
             // version of the LogFactoryImpl class and have it used dynamically
             // by an old LogFactory class in the parent, but that isn't
             // necessarily a good idea anyway.
-            factory = newFactory(FACTORY_DEFAULT, thisClassLoader, contextClassLoader);
+            factory = newFactory(FACTORY_DEFAULT, thisClassLoaderRef.get(), contextClassLoader);
         }
 
         if (factory != null) {
@@ -1049,7 +1051,7 @@ public abstract class LogFactory {
                     return (LogFactory) logFactoryClass.newInstance();
 
                 } catch (final ClassNotFoundException ex) {
-                    if (classLoader == thisClassLoader) {
+                    if (classLoader == thisClassLoaderRef.get()) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Unable to locate any class called '" + factoryClass +
@@ -1059,7 +1061,7 @@ public abstract class LogFactory {
                     }
                     // ignore exception, continue
                 } catch (final NoClassDefFoundError e) {
-                    if (classLoader == thisClassLoader) {
+                    if (classLoader == thisClassLoaderRef.get()) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("Class '" + factoryClass + "' cannot be loaded" +
@@ -1070,9 +1072,9 @@ public abstract class LogFactory {
                     }
                     // ignore exception, continue
                 } catch (final ClassCastException e) {
-                    if (classLoader == thisClassLoader) {
+                    if (classLoader == thisClassLoaderRef.get()) {
                         // There's no point in falling through to the code below that
-                        // tries again with thisClassLoader, because we've just tried
+                        // tries again with thisClassLoaderRef, because we've just tried
                         // loading with that loader (not the TCCL). Just throw an
                         // appropriate exception here.
 
@@ -1111,7 +1113,7 @@ public abstract class LogFactory {
                     }
 
                     // Ignore exception, continue. Presumably the classloader was the
-                    // TCCL; the code below will try to load the class via thisClassLoader.
+                    // TCCL; the code below will try to load the class via thisClassLoaderRef.
                     // This will handle the case where the original calling class is in
                     // a shared classpath but the TCCL has a copy of LogFactory and the
                     // specified LogFactory implementation; we will fall back to using the
@@ -1674,7 +1676,8 @@ public abstract class LogFactory {
     static {
         // note: it's safe to call methods before initDiagnostics (though
         // diagnostic output gets discarded).
-        thisClassLoader = getClassLoader(LogFactory.class);
+        ClassLoader thisClassLoader = getClassLoader(LogFactory.class);
+        thisClassLoaderRef = new WeakReference<ClassLoader>(thisClassLoader);
         // In order to avoid confusion where multiple instances of JCL are
         // being used via different classloaders within the same app, we
         // ensure each logged message has a prefix of form
@@ -1686,11 +1689,10 @@ public abstract class LogFactory {
         // output diagnostics from this class are static.
         String classLoaderName;
         try {
-            final ClassLoader classLoader = thisClassLoader;
             if (thisClassLoader == null) {
                 classLoaderName = "BOOTLOADER";
             } else {
-                classLoaderName = objectId(classLoader);
+                classLoaderName = objectId(thisClassLoader);
             }
         } catch (final SecurityException e) {
             classLoaderName = "UNKNOWN";
