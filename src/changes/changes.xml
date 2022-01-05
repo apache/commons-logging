@@ -54,6 +54,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action issue="LOGGING-177" dev="ggregory" type="fix" due-to="Arturo Bernal">
         Remove redundant initializer #46
       </action>
+      <action dev="ggregory" type="fix" due-to="Jakob van Kruijssen, Bruno P. Kinoshita, Gary Gregory">
+        Use a weak reference for the cached class loader #71.
+      </action>
       <!-- UPDATES -->
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump actions/checkout from v2.3.1 to v2.4.0, #24, #63.
