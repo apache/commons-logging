@@ -59,7 +59,7 @@ The <action> type attribute can be add,update,fix,remove.
       </action>
       <!-- UPDATES -->
       <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump actions/checkout from v2.3.1 to v2.4.0, #24, #63.
+        Bump actions/checkout from 2.3.1 to 3, #24, #63, #75.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
         Bump actions/setup-java from v1.4.0 to v2, #21.
