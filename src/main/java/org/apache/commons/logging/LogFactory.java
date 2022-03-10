@@ -41,7 +41,6 @@ import java.util.Properties;
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.
  *
- * @version $Id$
  */
 public abstract class LogFactory {
     // Implementation note re AccessController usage

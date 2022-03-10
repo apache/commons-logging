@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 /**
  * testcase to emulate container and application isolated from container
  * @author  baliuka
- * @version $Id$
  */
 public class LoadTestCase extends TestCase{
     //TODO: need some way to add service provider packages

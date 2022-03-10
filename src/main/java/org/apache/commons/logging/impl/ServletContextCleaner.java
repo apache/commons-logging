@@ -44,7 +44,6 @@ import org.apache.commons.logging.LogFactory;
  * every accessible LogFactory class that the entry in its map for the
  * current webapp's context classloader should be cleared.
  *
- * @version $Id$
  * @since 1.1
  */
 public class ServletContextCleaner implements ServletContextListener {

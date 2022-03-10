@@ -32,7 +32,6 @@ import org.apache.commons.logging.Log;
  * interface that wraps the standard JDK logging mechanisms that are
  * available in SourceForge's Lumberjack for JDKs prior to 1.4.
  *
- * @version $Id$
  * @since 1.1
  */
 public class Jdk13LumberjackLogger implements Log, Serializable {

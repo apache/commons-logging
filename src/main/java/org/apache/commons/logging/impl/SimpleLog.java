@@ -67,7 +67,6 @@ import org.apache.commons.logging.LogConfigurationException;
  * {@code "simplelog.properties"}, and includes any matching definitions
  * from this resource (if it exists).
  *
- * @version $Id$
  */
 public class SimpleLog implements Log, Serializable {
 

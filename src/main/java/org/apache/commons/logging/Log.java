@@ -54,7 +54,6 @@ package org.apache.commons.logging;
  * external to the Logging APIs, through whatever mechanism is supported by
  * that system.
  *
- * @version $Id$
  */
 public interface Log {
 

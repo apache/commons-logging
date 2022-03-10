@@ -24,7 +24,6 @@ import org.apache.commons.logging.Log;
  * Trivial implementation of Log that throws away all messages.  No
  * configurable system properties are supported.
  *
- * @version $Id$
  */
 public class NoOpLog implements Log, Serializable {
 

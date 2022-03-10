@@ -59,7 +59,6 @@ import org.apache.commons.logging.LogFactory;
  * for the same name, and will return them on repeated requests to the
  * {@code getInstance()} method.
  *
- * @version $Id$
  */
 public class LogFactoryImpl extends LogFactory {
 

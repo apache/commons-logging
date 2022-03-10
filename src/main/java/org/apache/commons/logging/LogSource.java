@@ -50,7 +50,6 @@ import org.apache.commons.logging.impl.NoOpLog;
  * @deprecated Use {@link LogFactory} instead - The default factory
  *  implementation performs exactly the same algorithm as this class did
  *
- * @version $Id$
  */
 @Deprecated
 public class LogSource {

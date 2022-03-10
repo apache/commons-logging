@@ -104,7 +104,6 @@ import java.util.Set;
  * however, rare. The standard LogFactoryImpl class should be sufficient
  * for most or all users.
  *
- * @version $Id$
  * @since 1.1
  */
 public final class WeakHashtable extends Hashtable {

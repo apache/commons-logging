@@ -31,7 +31,6 @@ import org.apache.commons.logging.Log;
  * Therefore, this implementation converts object messages into strings
  * by called their {@code toString()} method before logging them.
  *
- * @version $Id$
  */
 public class LogKitLogger implements Log, Serializable {
 
