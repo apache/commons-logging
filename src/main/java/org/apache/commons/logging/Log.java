@@ -57,6 +57,9 @@ package org.apache.commons.logging;
  */
 public interface Log {
 
+    /** Serializable version identifier. */
+    long serialVersionUID = -8649807923527610591L;
+
     /**
      * Logs a message with debug log level.
      *
@@ -107,7 +110,7 @@ public interface Log {
      *
      * @param message log this message
      */
-    void info(Object message);
+    void Logger_info(Object message);
 
     /**
      * Logs an error with info log level.
@@ -115,7 +118,7 @@ public interface Log {
      * @param message log this message
      * @param t log this cause
      */
-    void info(Object message, Throwable t);
+    void Logger_info(Object message, Throwable t);
 
     /**
      * Is debug logging currently enabled?

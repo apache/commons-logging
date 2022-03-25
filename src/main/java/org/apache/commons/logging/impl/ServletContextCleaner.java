@@ -57,14 +57,14 @@ public class ServletContextCleaner implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(final ServletContextEvent sce) {
-        final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
+        final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
         final Object[] params = new Object[1];
-        params[0] = tccl;
+        params[0] = contextClassLoader;
 
         // Walk up the tree of classloaders, finding all the available
         // LogFactory classes and releasing any objects associated with
-        // the tccl (ie the webapp).
+        // the contextClassLoader (ie the webapp).
         //
         // When there is only one LogFactory in the classpath, and it
         // is within the webapp being undeployed then there is no problem;
@@ -75,13 +75,13 @@ public class ServletContextCleaner implements ServletContextListener {
         // short. The first instance of LogFactory found will
         // be the highest in the classpath, and then no more will be found.
         // This is ok, as with this setup this will be the only LogFactory
-        // holding any data associated with the tccl being released.
+        // holding any data associated with the contextClassLoader being released.
         //
         // When there are multiple LogFactory classes in the classpath and
         // child-first classloading is used in any classloader, then multiple
         // LogFactory instances may hold info about this TCCL; whenever the
         // webapp makes a call into a class loaded via an ancestor classloader
-        // and that class calls LogFactory the tccl gets registered in
+        // and that class calls LogFactory the contextClassLoader gets registered in
         // the LogFactory instance that is visible from the ancestor
         // classloader. However the concrete logging library it points
         // to is expected to have been loaded via the TCCL, so the
@@ -90,9 +90,9 @@ public class ServletContextCleaner implements ServletContextListener {
         // TCCL classloaders are held via weak references and so should
         // be released but there are circumstances where they may not.
         // Walking up the classloader ancestry ladder releasing
-        // the current tccl at each level tree, though, will definitely
+        // the current contextClassLoader at each level tree, though, will definitely
         // clear any problem references.
-        ClassLoader loader = tccl;
+        ClassLoader loader = contextClassLoader;
         while (loader != null) {
             // Load via the current loader. Note that if the class is not accessible
             // via this loader, but is accessible via some ancestor then that class
@@ -124,7 +124,7 @@ public class ServletContextCleaner implements ServletContextListener {
         // Just to be sure, invoke release on the LogFactory that is visible from
         // this ServletContextCleaner class too. This should already have been caught
         // by the above loop but just in case...
-        LogFactory.release(tccl);
+        LogFactory.release(contextClassLoader);
     }
 
     /**

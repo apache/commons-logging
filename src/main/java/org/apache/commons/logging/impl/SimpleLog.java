@@ -417,10 +417,10 @@ public class SimpleLog implements Log, Serializable {
      * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO}.
      *
      * @param message to log
-     * @see org.apache.commons.logging.Log#info(Object)
+     * @see org.apache.commons.logging.Log#Logger_info(Object)
      */
     @Override
-    public final void info(final Object message) {
+    public final void Logger_info(final Object message) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO,message,null);
         }
@@ -431,10 +431,10 @@ public class SimpleLog implements Log, Serializable {
      *
      * @param message to log
      * @param t log this cause
-     * @see org.apache.commons.logging.Log#info(Object, Throwable)
+     * @see org.apache.commons.logging.Log#Logger_info(Object, Throwable)
      */
     @Override
-    public final void info(final Object message, final Throwable t) {
+    public final void Logger_info(final Object message, final Throwable t) {
         if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
             log(SimpleLog.LOG_LEVEL_INFO, message, t);
         }

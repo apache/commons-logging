@@ -112,7 +112,7 @@ public class SecurityForbiddenTestCase extends TestCase
                     "org.apache.commons.logging.LogFactory");
             final Method m = c.getMethod("getLog", Class.class);
             final Log log = (Log) m.invoke(null, this.getClass());
-            log.info("testing");
+            log.Logger_info("testing");
 
             // check that the default map implementation was loaded, as JCL was
             // forbidden from reading the HASHTABLE_IMPLEMENTATION_PROPERTY property.

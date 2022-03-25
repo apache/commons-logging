@@ -197,7 +197,7 @@ public abstract class StandardTests extends TestCase {
     private void logPlainMessages(final Log log) {
         log.trace("trace"); // Should not actually get logged
         log.debug("debug"); // Should not actually get logged
-        log.info("info");
+        log.Logger_info("info");
         log.warn("warn");
         log.error("error");
         log.fatal("fatal");
@@ -210,7 +210,7 @@ public abstract class StandardTests extends TestCase {
         final Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
         log.debug("debug", t); // Should not actually get logged
-        log.info("info", t);
+        log.Logger_info("info", t);
         log.warn("warn", t);
         log.error("error", t);
         log.fatal("fatal", t);

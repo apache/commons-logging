@@ -65,13 +65,13 @@ public abstract class AbstractLogTest extends TestCase {
         log.fatal(log.getClass().getName() + ": fatal statement w/ null exception", new RuntimeException());
 
 
-        log.info(null);
+        log.Logger_info(null);
 
-        log.info(null, null);
+        log.Logger_info(null, null);
 
-        log.info(log.getClass().getName() + ": info statement");
+        log.Logger_info(log.getClass().getName() + ": info statement");
 
-        log.info(log.getClass().getName() + ": info statement w/ null exception", new RuntimeException());
+        log.Logger_info(log.getClass().getName() + ": info statement w/ null exception", new RuntimeException());
 
 
         log.trace(null);

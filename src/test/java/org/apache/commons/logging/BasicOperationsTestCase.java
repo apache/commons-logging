@@ -75,7 +75,7 @@ public class BasicOperationsTestCase extends TestCase
         {
             log.trace("Hello, Mum");
             log.debug("Hello, Mum");
-            log.info("Hello, Mum");
+            log.Logger_info("Hello, Mum");
             log.warn("Hello, Mum");
             log.error("Hello, Mum");
             log.fatal("Hello, Mum");
@@ -105,7 +105,7 @@ public class BasicOperationsTestCase extends TestCase
         {
             log.trace("Hello, Mum", new ArithmeticException());
             log.debug("Hello, Mum", new ArithmeticException());
-            log.info("Hello, Mum", new ArithmeticException());
+            log.Logger_info("Hello, Mum", new ArithmeticException());
             log.warn("Hello, Mum", new ArithmeticException());
             log.error("Hello, Mum", new ArithmeticException());
             log.fatal("Hello, Mum", new ArithmeticException());

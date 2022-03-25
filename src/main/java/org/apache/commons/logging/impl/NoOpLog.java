@@ -48,10 +48,10 @@ public class NoOpLog implements Log, Serializable {
     public void debug(final Object message, final Throwable t) { }
     /** Do nothing */
     @Override
-    public void info(final Object message) { }
+    public void Logger_info(final Object message) { }
     /** Do nothing */
     @Override
-    public void info(final Object message, final Throwable t) { }
+    public void Logger_info(final Object message, final Throwable t) { }
     /** Do nothing */
     @Override
     public void warn(final Object message) { }

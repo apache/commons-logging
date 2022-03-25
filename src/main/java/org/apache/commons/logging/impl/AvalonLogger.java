@@ -184,10 +184,10 @@ public class AvalonLogger implements Log {
      *
      * @param message to log
      * @param t log this cause
-     * @see org.apache.commons.logging.Log#info(Object, Throwable)
+     * @see org.apache.commons.logging.Log#Logger_info(Object, Throwable)
      */
     @Override
-    public void info(final Object message, final Throwable t) {
+    public void Logger_info(final Object message, final Throwable t) {
         if (getLogger().isInfoEnabled()) {
             getLogger().info(String.valueOf(message), t);
         }
@@ -197,10 +197,10 @@ public class AvalonLogger implements Log {
      * Logs a message with {@code org.apache.avalon.framework.logger.Logger.info}.
      *
      * @param message to log
-     * @see org.apache.commons.logging.Log#info(Object)
+     * @see org.apache.commons.logging.Log#Logger_info(Object)
      */
     @Override
-    public void info(final Object message) {
+    public void Logger_info(final Object message) {
         if (getLogger().isInfoEnabled()) {
             getLogger().info(String.valueOf(message));
         }

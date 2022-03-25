@@ -36,9 +36,6 @@ import org.apache.commons.logging.Log;
  */
 public class Jdk13LumberjackLogger implements Log, Serializable {
 
-    /** Serializable version identifier. */
-    private static final long serialVersionUID = -8649807923527610591L;
-
     // ----------------------------------------------------- Instance Variables
 
     /**
@@ -204,10 +201,10 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * Logs a message with {@code java.util.logging.Level.INFO}.
      *
      * @param message to log
-     * @see org.apache.commons.logging.Log#info(Object)
+     * @see org.apache.commons.logging.Log#Logger_info(Object)
      */
     @Override
-    public void info(final Object message) {
+    public void Logger_info(final Object message) {
         log(Level.INFO, String.valueOf(message), null);
     }
 
@@ -216,10 +213,10 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      *
      * @param message to log
      * @param exception log this cause
-     * @see org.apache.commons.logging.Log#info(Object, Throwable)
+     * @see org.apache.commons.logging.Log#Logger_info(Object, Throwable)
      */
     @Override
-    public void info(final Object message, final Throwable exception) {
+    public void Logger_info(final Object message, final Throwable exception) {
         log(Level.INFO, String.valueOf(message), exception);
     }
 

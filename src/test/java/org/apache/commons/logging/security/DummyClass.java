@@ -16,6 +16,6 @@ public class DummyClass {
 
     public DummyClass() {
         final Log log = LogFactory.getLog(DummyClass.class);
-        log.info("Some log message");
+        log.Logger_info("Some log message");
     }
 }

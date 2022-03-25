@@ -173,10 +173,10 @@ public class Log4JLogger implements Log, Serializable {
      * Logs a message with {@code org.apache.log4j.Priority.INFO}.
      *
      * @param message to log
-     * @see org.apache.commons.logging.Log#info(Object)
+     * @see org.apache.commons.logging.Log#Logger_info(Object)
      */
     @Override
-    public void info(final Object message) {
+    public void Logger_info(final Object message) {
         getLogger().log(FQCN, Level.INFO, message, null);
     }
 
@@ -185,10 +185,10 @@ public class Log4JLogger implements Log, Serializable {
      *
      * @param message to log
      * @param t log this cause
-     * @see org.apache.commons.logging.Log#info(Object, Throwable)
+     * @see org.apache.commons.logging.Log#Logger_info(Object, Throwable)
      */
     @Override
-    public void info(final Object message, final Throwable t) {
+    public void Logger_info(final Object message, final Throwable t) {
         getLogger().log(FQCN, Level.INFO, message, t);
     }
 

@@ -244,7 +244,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         final Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
         log.debug("debug", t);
-        log.info("info", t);
+        log.Logger_info("info", t);
         log.warn("warn", t);
         log.error("error", t);
         log.fatal("fatal", t);
@@ -265,7 +265,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         // Generate log records
         log.trace("trace"); // Should not actually get logged
         log.debug("debug");
-        log.info("info");
+        log.Logger_info("info");
         log.warn("warn");
         log.error("error");
         log.fatal("fatal");

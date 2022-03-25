@@ -114,7 +114,7 @@ public class SecurityAllowedTestCase extends TestCase
             // a log file *should* only be permitted if the original caller is
             // trusted to access that file.
             final int untrustedCodeCount = mySecurityManager.getUntrustedCodeCount();
-            log.info("testing");
+            log.Logger_info("testing");
 
             // check that the default map implementation was loaded, as JCL was
             // forbidden from reading the HASHTABLE_IMPLEMENTATION_PROPERTY property.

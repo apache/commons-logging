@@ -796,7 +796,7 @@ public class LogFactoryImpl extends LogFactory {
         Log result = null;
 
         // See if the user specified the Log implementation to use
-        final String specifiedLogClassName = findUserSpecifiedLogClassName();
+        final String specifiedLogClassName = getString();
 
         if (specifiedLogClassName != null) {
             if (isDiagnosticsEnabled()) {
@@ -867,6 +867,11 @@ public class LogFactoryImpl extends LogFactory {
         }
 
         return result;
+    }
+
+    private String getString() {
+        final String specifiedLogClassName = findUserSpecifiedLogClassName();
+        return specifiedLogClassName;
     }
 
     /**
