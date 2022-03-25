@@ -104,7 +104,7 @@ The <action> type attribute can be add,update,fix,remove.
         Minor Improvements #34.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump actions/cache from 2 to 2.1.5 #50.
+        Bump actions/cache from 2 to 3 #50, #77.
       </action>
     </release>
     <release version="1.2" date="2014-07-11" description="This is a maintenance release containing bug fixes. Java 1.2 or later is required.">
