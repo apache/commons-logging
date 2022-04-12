@@ -58,8 +58,8 @@ The <action> type attribute can be add,update,fix,remove.
         Use a weak reference for the cached class loader #71.
       </action>
       <!-- UPDATES -->
-      <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump actions/cache from 2 to 3 #50, #77.
+      <action dev="ggregory" type="update" due-to="Dependabot, Gary Gregory">
+        Bump actions/cache from 2 to 3.0.2 #50, #77.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump actions/checkout from 2.3.1 to 3, #24, #63, #75.
