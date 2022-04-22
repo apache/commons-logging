@@ -103,10 +103,10 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
                 new StringTokenizer( traceString, "\n" );
             tokenizer.nextToken();
             String line = tokenizer.nextToken();
-            while ( line.indexOf( this.getClass().getName() )  == -1 ) {
+            while (!line.contains(this.getClass().getName())) {
                 line = tokenizer.nextToken();
             }
-            while ( line.indexOf( this.getClass().getName() ) >= 0 ) {
+            while (line.contains(this.getClass().getName())) {
                 line = tokenizer.nextToken();
             }
             final int start = line.indexOf( "at " ) + 3;
