@@ -167,7 +167,10 @@ under the License.
         <role>Avalon logging abstraction</role>
       </roles>
     </contributor>
-    
+    <contributor>
+      <name>Arturo Bernal</name>
+      <email>arturobernalg@yahoo.com</email>
+    </contributor>
   </contributors>
   
   <scm>

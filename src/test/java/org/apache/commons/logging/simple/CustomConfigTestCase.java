@@ -183,7 +183,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertTrue(log.isErrorEnabled());
         assertTrue(log.isFatalEnabled());
         assertTrue(log.isInfoEnabled());
-        assertTrue(!log.isTraceEnabled());
+        assertFalse(log.isTraceEnabled());
         assertTrue(log.isWarnEnabled());
 
         // Can we retrieve the current log level?
@@ -200,7 +200,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     /** Hook for subclassses */
     protected void checkShowDateTime() {
-        assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());
+        assertFalse(((DecoratedSimpleLog) log).getShowDateTime());
     }
 
     /** Hook for subclasses */

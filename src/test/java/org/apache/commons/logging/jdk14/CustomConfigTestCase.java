@@ -254,8 +254,8 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertTrue(logger.isLoggable(Level.INFO));
         assertTrue(logger.isLoggable(Level.CONFIG));
         assertTrue(logger.isLoggable(Level.FINE));
-        assertTrue(!logger.isLoggable(Level.FINER));
-        assertTrue(!logger.isLoggable(Level.FINEST));
+        assertFalse(logger.isLoggable(Level.FINER));
+        assertFalse(logger.isLoggable(Level.FINEST));
 
     }
 
@@ -288,7 +288,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertTrue(log.isWarnEnabled());
         assertTrue(log.isInfoEnabled());
         assertTrue(log.isDebugEnabled());
-        assertTrue(!log.isTraceEnabled());
+        assertFalse(log.isTraceEnabled());
 
     }
 
@@ -324,7 +324,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
                            record.getThrown());
             }
         }
-        assertTrue(!records.hasNext());
+        assertFalse(records.hasNext());
         handler.flush();
     }
 
