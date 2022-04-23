@@ -187,11 +187,11 @@ public class DefaultConfigTestCase extends TestCase {
                      log.getClass().getName());
 
         // Can we call level checkers with no exceptions?
-        assertTrue(!log.isDebugEnabled());
+        assertFalse(log.isDebugEnabled());
         assertTrue(log.isErrorEnabled());
         assertTrue(log.isFatalEnabled());
         assertTrue(log.isInfoEnabled());
-        assertTrue(!log.isTraceEnabled());
+        assertFalse(log.isTraceEnabled());
         assertTrue(log.isWarnEnabled());
 
         // Can we retrieve the current log level?
@@ -202,7 +202,7 @@ public class DefaultConfigTestCase extends TestCase {
                      ((DecoratedSimpleLog) log).getDateTimeFormat());
         assertEquals("DecoratedLogger",
                      ((DecoratedSimpleLog) log).getLogName());
-        assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());
+        assertFalse(((DecoratedSimpleLog) log).getShowDateTime());
         assertTrue(((DecoratedSimpleLog) log).getShowShortName());
 
     }
@@ -217,11 +217,11 @@ public class DefaultConfigTestCase extends TestCase {
                      log.getClass().getName());
 
         // Can we call level checkers with no exceptions?
-        assertTrue(!log.isDebugEnabled());
+        assertFalse(log.isDebugEnabled());
         assertTrue(log.isErrorEnabled());
         assertTrue(log.isFatalEnabled());
         assertTrue(log.isInfoEnabled());
-        assertTrue(!log.isTraceEnabled());
+        assertFalse(log.isTraceEnabled());
         assertTrue(log.isWarnEnabled());
 
         // Can we retrieve the current log level?

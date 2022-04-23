@@ -196,7 +196,7 @@ public class LoadTestCase extends TestCase{
             fail("AppClassLoader failed ");
         }
 
-        assertTrue( "app isolated" ,testObjCls.getClassLoader() == appLoader );
+        assertSame("app isolated", testObjCls.getClassLoader(), appLoader);
 
 
         return testObjCls;
