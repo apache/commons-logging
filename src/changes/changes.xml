@@ -112,6 +112,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="kinow" type="update" due-to="Dependabot">
         Bump commons-parent from 52 to 53 #82.
       </action>
+      <action dev="kinow" type="update" due-to="Dependabot">
+        Bump github/codeql-action from 1 to 2 #86.
+      </action>
     </release>
     <release version="1.2" date="2014-07-11" description="This is a maintenance release containing bug fixes. Java 1.2 or later is required.">
       <action issue="LOGGING-37" dev="tn" type="fix" due-to="Matthias Ernst,Archie Cobbs">
