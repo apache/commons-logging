@@ -17,6 +17,8 @@
 
 package org.apache.commons.logging.impl;
 
+import java.util.Objects;
+
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 
@@ -73,9 +75,7 @@ public class AvalonLogger implements Log {
      * @param name the name of the avalon logger implementation to delegate to
      */
     public AvalonLogger(final String name) {
-        if (defaultLogger == null) {
-            throw new NullPointerException("default logger has to be specified if this constructor is used!");
-        }
+        Objects.requireNonNull(defaultLogger, "default logger has to be specified if this constructor is used!");
         this.logger = defaultLogger.getChildLogger(name);
     }
 

@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -228,12 +229,8 @@ public final class WeakHashtable extends Hashtable {
     @Override
     public synchronized Object put(final Object key, final Object value) {
         // check for nulls, ensuring semantics match superclass
-        if (key == null) {
-            throw new NullPointerException("Null keys are not allowed");
-        }
-        if (value == null) {
-            throw new NullPointerException("Null values are not allowed");
-        }
+        Objects.requireNonNull(key, "key");
+        Objects.requireNonNull(value, "value");
 
         // for performance reasons, only purge every
         // MAX_CHANGES_BEFORE_PURGE times
