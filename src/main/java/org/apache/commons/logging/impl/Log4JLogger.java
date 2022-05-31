@@ -46,8 +46,6 @@ public class Log4JLogger implements Log, Serializable {
     /** Serializable version identifier. */
     private static final long serialVersionUID = 5160705895411730424L;
 
-    // ------------------------------------------------------------- Attributes
-
     /** The fully qualified name of the Log4JLogger class. */
     private static final String FQCN = Log4JLogger.class.getName();
 

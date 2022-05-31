@@ -51,10 +51,6 @@ public abstract class StandardTests extends TestCase {
         public Throwable throwable;
     }
 
-    // -------------------------------------------------------------------
-    // JUnit Infrastructure Methods
-    // -------------------------------------------------------------------
-
     /**
      * Set up instance variables required by this test case.
      */
@@ -71,10 +67,6 @@ public abstract class StandardTests extends TestCase {
         LogFactory.releaseAll();
     }
 
-    // -----------------------------------------------------------
-    // abstract methods
-    // -----------------------------------------------------------
-
     /**
      * Modify log4j's setup so that all messages actually logged get redirected
      * into the specified list.
@@ -83,8 +75,6 @@ public abstract class StandardTests extends TestCase {
      * can test whether messages are getting properly filtered.
      */
     public abstract void setUpTestAppender(List logEvents) throws Exception;
-
-    // ----------------------------------------------------------- Test Methods
 
     /**
      * Test that a LogFactory gets created as expected.
@@ -145,8 +135,6 @@ public abstract class StandardTests extends TestCase {
         logExceptionMessages(newLog);
         checkLoggingEvents(logEvents, true);
     }
-
-    // -------------------------------------------------------- Support Methods
 
     /**
      * Verify that the TestAppender has received the expected
