@@ -282,7 +282,7 @@ public class SimpleLog implements Log, Serializable {
         // Append date-time if so configured
         if(showDateTime) {
             final Date now = new Date();
-            String dateText;
+            final String dateText;
             synchronized(dateFormatter) {
                 dateText = dateFormatter.format(now);
             }

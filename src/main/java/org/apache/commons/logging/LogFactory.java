@@ -1459,7 +1459,7 @@ public abstract class LogFactory {
      * a filename, or the special values STDOUT or STDERR.
      */
     private static PrintStream initDiagnostics() {
-        String dest;
+        final String dest;
         try {
             dest = getSystemProperty(DIAGNOSTICS_DEST_PROPERTY, null);
             if (dest == null) {
@@ -1572,7 +1572,7 @@ public abstract class LogFactory {
         }
 
         final String className = clazz.getName();
-        ClassLoader classLoader;
+        final ClassLoader classLoader;
 
         try {
             classLoader = getClassLoader(clazz);
@@ -1597,7 +1597,7 @@ public abstract class LogFactory {
         if (!isDiagnosticsEnabled()) {
             return;
         }
-        ClassLoader systemClassLoader;
+        final ClassLoader systemClassLoader;
         if (classLoader != null) {
             final String classLoaderString = classLoader.toString();
             logDiagnostic(prefix + objectId(classLoader) + " == '" + classLoaderString + "'");
