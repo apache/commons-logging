@@ -40,10 +40,10 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
      * We need to use a PathableClassLoader here because the SimpleLog class
      * is a pile of junk and chock-full of static variables. Any other test
      * (like simple.CustomConfigTestCase) that has used the SimpleLog class
-     * will already have caused it to do once-only initialisation that we
+     * will already have caused it to do once-only initialization that we
      * can't reset, even by calling LogFactory.releaseAll, because of those
      * ugly statics. The only clean solution is to load a clean copy of
-     * commons-logging including SimpleLog via a nice clean classloader.
+     * commons-logging including SimpleLog via a nice clean class loader.
      * Or we could fix SimpleLog to be sane...
      */
     public static Test suite() throws Exception {

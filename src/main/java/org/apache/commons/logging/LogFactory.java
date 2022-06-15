@@ -1654,7 +1654,7 @@ public abstract class LogFactory {
     }
 
     // ----------------------------------------------------------------------
-    // Static initializer block to perform initialisation at class load time.
+    // Static initializer block to perform initialization at class load time.
     //
     // We can't do this in the class constructor, as there are many
     // static methods on this class that can be called before any
