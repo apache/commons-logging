@@ -576,7 +576,7 @@ under the License.
     <commons.rc.version>RC2</commons.rc.version>
     <commons.surefire.version>3.0.0-M5</commons.surefire.version>
     <spotbugs.plugin.version>4.6.0.0</spotbugs.plugin.version>
-    <spotbugs.impl.version>4.7.0</spotbugs.impl.version>    
+    <spotbugs.impl.version>4.7.1</spotbugs.impl.version>    
     <skipSurefireReport>true</skipSurefireReport>
     <!-- Allow default test run order to be changed -->
     <failsafe.runorder>filesystem</failsafe.runorder>
