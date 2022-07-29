@@ -98,7 +98,7 @@ The <action> type attribute can be add,update,fix,remove.
         Bump maven-pmd-plugin from 3.3 to 3.17.0 #28, #90.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump maven-assembly-plugin from 2.5 to 3.3.0 #30.
+        Bump maven-assembly-plugin from 2.5 to 3.4.1 #30, #94.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump servlet-api from 2.3 to 2.5 #27.
