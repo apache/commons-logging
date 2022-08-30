@@ -36,16 +36,8 @@ import org.apache.commons.logging.PathableTestSuite;
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
  * zero configuration, and with Log4J not present (so JDK 1.4 logging
  * should be automatically configured.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
  */
-
 public class DefaultConfigTestCase extends TestCase {
-
-
-    // ----------------------------------------------------------- Constructors
-
 
     /**
      * <p>Construct a new instance of this test case.</p>
@@ -56,24 +48,15 @@ public class DefaultConfigTestCase extends TestCase {
         super(name);
     }
 
-
-    // ----------------------------------------------------- Instance Variables
-
-
     /**
      * <p>The {@link LogFactory} implementation we have selected.</p>
      */
     protected LogFactory factory;
 
-
     /**
      * <p>The {@link Log} implementation we have selected.</p>
      */
     protected Log log;
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
 
     /**
      * Set up instance variables required by this test case.
@@ -83,7 +66,6 @@ public class DefaultConfigTestCase extends TestCase {
         setUpFactory();
         setUpLog("TestLogger");
     }
-
 
     /**
      * Return the tests included in this test suite.
@@ -108,21 +90,13 @@ public class DefaultConfigTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-
-    // ----------------------------------------------------------- Test Methods
-
-
     // Test pristine Log instance
     public void testPristineLog() {
-
         checkLog();
-
     }
-
 
     // Test pristine LogFactory instance
     public void testPristineFactory() {
-
         assertNotNull("LogFactory exists", factory);
         assertEquals("LogFactory class",
                      "org.apache.commons.logging.impl.LogFactoryImpl",
@@ -131,7 +105,6 @@ public class DefaultConfigTestCase extends TestCase {
         final String names[] = factory.getAttributeNames();
         assertNotNull("Names exists", names);
         assertEquals("Names empty", 0, names.length);
-
     }
 
 
@@ -154,11 +127,6 @@ public class DefaultConfigTestCase extends TestCase {
 
     }
 
-
-    // -------------------------------------------------------- Support Methods
-
-
-
     // Check the log instance
     protected void checkLog() {
 
@@ -177,17 +145,14 @@ public class DefaultConfigTestCase extends TestCase {
 
     }
 
-
     // Set up factory instance
     protected void setUpFactory() throws Exception {
         factory = LogFactory.getFactory();
     }
 
-
     // Set up log instance
     protected void setUpLog(final String name) throws Exception {
         log = LogFactory.getLog(name);
     }
-
 
 }

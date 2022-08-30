@@ -25,8 +25,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision$ $Date$
  */
 public class AvalonLoggerTestCase extends AbstractLogTest {
 

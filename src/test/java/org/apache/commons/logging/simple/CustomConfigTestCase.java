@@ -34,21 +34,13 @@ import org.apache.commons.logging.impl.SimpleLog;
 /**
  * <p>TestCase for simple logging when running with custom configuration
  * properties.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
  */
 public class CustomConfigTestCase extends DefaultConfigTestCase {
-
-
-    // ----------------------------------------------------- Instance Variables
-
 
     /**
      * <p>The expected log records.</p>
      */
     protected List expected;
-
 
     /**
      * <p>The message levels that should have been logged.</p>
@@ -58,15 +50,11 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     { Level.FINE, Level.INFO, Level.WARNING, Level.SEVERE, Level.SEVERE };
     */
 
-
     /**
      * <p>The message strings that should have been logged.</p>
      */
     protected String testMessages[] =
     { "debug", "info", "warn", "error", "fatal" };
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
 
     /**
      * Set system properties that will control the LogFactory/Log objects
@@ -94,7 +82,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         setUpFactory();
         setUpLog("DecoratedLogger");
     }
-
 
     /**
      * Return the tests included in this test suite.
@@ -129,45 +116,29 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         expected = null;
     }
 
-
-    // ----------------------------------------------------------- Test Methods
-
-
     // Test logging message strings with exceptions
     public void testExceptionMessages() throws Exception {
-
         ((DecoratedSimpleLog) log).clearCache();
         logExceptionMessages();
         checkExpected();
-
     }
-
 
     // Test logging plain message strings
     public void testPlainMessages() throws Exception {
-
         ((DecoratedSimpleLog) log).clearCache();
         logPlainMessages();
         checkExpected();
-
     }
-
 
     // Test Serializability of standard instance
     @Override
     public void testSerializable() throws Exception {
-
         ((DecoratedSimpleLog) log).clearCache();
         logPlainMessages();
         super.testSerializable();
         logExceptionMessages();
         checkExpected();
-
     }
-
-
-    // -------------------------------------------------------- Support Methods
-
 
     // Check the decorated log instance
     @Override
@@ -213,7 +184,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     // Check the actual log records against the expected ones
     protected void checkExpected() {
-
         final List acts = ((DecoratedSimpleLog) log).getCache();
         final Iterator exps = expected.iterator();
         int n = 0;
@@ -224,22 +194,18 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             assertEquals("Row " + n + " message", exp.message, act.message);
             assertEquals("Row " + n + " throwable", exp.t, act.t);
         }
-
     }
 
 
     // Check the standard log instance
     @Override
     protected void checkStandard() {
-
         checkDecorated();
-
     }
 
 
     // Log the messages with exceptions
     protected void logExceptionMessages() {
-
         // Generate log records
         final Throwable t = new DummyException();
         log.trace("trace", t); // Should not actually get logged
@@ -255,13 +221,11 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_WARN, "warn", t));
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_ERROR, "error", t));
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_FATAL, "fatal", t));
-
     }
 
 
     // Log the plain messages
     protected void logPlainMessages() {
-
         // Generate log records
         log.trace("trace"); // Should not actually get logged
         log.debug("debug");
@@ -276,8 +240,5 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_WARN, "warn", null));
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_ERROR, "error", null));
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_FATAL, "fatal", null));
-
     }
-
-
 }

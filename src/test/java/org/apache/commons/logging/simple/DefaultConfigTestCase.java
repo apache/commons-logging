@@ -36,31 +36,19 @@ import org.apache.commons.logging.impl.SimpleLog;
 /**
  * <p>TestCase for simple logging when running with zero configuration
  * other than selecting the SimpleLog implementation.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
  */
 
 public class DefaultConfigTestCase extends TestCase {
-
-
-    // ----------------------------------------------------- Instance Variables
-
 
     /**
      * <p>The {@link LogFactory} implementation we have selected.</p>
      */
     protected LogFactory factory;
 
-
     /**
      * <p>The {@link Log} implementation we have selected.</p>
      */
     protected Log log;
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
 
     /**
      * Return the tests included in this test suite.
@@ -118,30 +106,19 @@ public class DefaultConfigTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-
-    // ----------------------------------------------------------- Test Methods
-
-
     // Test pristine DecoratedSimpleLog instance
     public void testPristineDecorated() {
-
         setUpDecorated("DecoratedLogger");
         checkDecorated();
-
     }
-
 
     // Test pristine Log instance
     public void testPristineLog() {
-
         checkStandard();
-
     }
-
 
     // Test pristine LogFactory instance
     public void testPristineFactory() {
-
         assertNotNull("LogFactory exists", factory);
         assertEquals("LogFactory class",
                      "org.apache.commons.logging.impl.LogFactoryImpl",
@@ -150,9 +127,7 @@ public class DefaultConfigTestCase extends TestCase {
         final String names[] = factory.getAttributeNames();
         assertNotNull("Names exists", names);
         assertEquals("Names empty", 0, names.length);
-
     }
-
 
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
@@ -173,14 +148,8 @@ public class DefaultConfigTestCase extends TestCase {
 
     }
 
-
-    // -------------------------------------------------------- Support Methods
-
-
-
     // Check the decorated log instance
     protected void checkDecorated() {
-
         assertNotNull("Log exists", log);
         assertEquals("Log class",
                      "org.apache.commons.logging.simple.DecoratedSimpleLog",
@@ -204,13 +173,11 @@ public class DefaultConfigTestCase extends TestCase {
                      ((DecoratedSimpleLog) log).getLogName());
         assertFalse(((DecoratedSimpleLog) log).getShowDateTime());
         assertTrue(((DecoratedSimpleLog) log).getShowShortName());
-
     }
 
 
     // Check the standard log instance
     protected void checkStandard() {
-
         assertNotNull("Log exists", log);
         assertEquals("Log class",
                      "org.apache.commons.logging.impl.SimpleLog",
@@ -226,7 +193,6 @@ public class DefaultConfigTestCase extends TestCase {
 
         // Can we retrieve the current log level?
         assertEquals(SimpleLog.LOG_LEVEL_INFO, ((SimpleLog) log).getLevel());
-
     }
 
 
@@ -246,6 +212,5 @@ public class DefaultConfigTestCase extends TestCase {
     protected void setUpLog(final String name) throws Exception {
         log = LogFactory.getLog(name);
     }
-
 
 }

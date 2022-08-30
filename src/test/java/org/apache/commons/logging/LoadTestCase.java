@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 
 /**
  * testcase to emulate container and application isolated from container
- * @author  baliuka
  */
 public class LoadTestCase extends TestCase{
     //TODO: need some way to add service provider packages
@@ -36,58 +35,55 @@ public class LoadTestCase extends TestCase{
      * to be set up with a classpath, as it simply uses the same classpath
      * as the classloader that loaded it.
      */
-    static class AppClassLoader extends ClassLoader{
+    static class AppClassLoader extends ClassLoader {
 
         java.util.Map classes = new java.util.HashMap();
 
-        AppClassLoader(final ClassLoader parent){
+        AppClassLoader(final ClassLoader parent) {
             super(parent);
         }
 
-        private Class def(final String name)throws ClassNotFoundException{
+        private Class def(final String name) throws ClassNotFoundException {
 
-            Class result = (Class)classes.get(name);
-            if(result != null){
+            Class result = (Class) classes.get(name);
+            if (result != null) {
                 return result;
             }
 
-            try{
+            try {
 
                 final ClassLoader cl = this.getClass().getClassLoader();
-                final String classFileName = name.replace('.','/') + ".class";
+                final String classFileName = name.replace('.', '/') + ".class";
                 final java.io.InputStream is = cl.getResourceAsStream(classFileName);
                 final java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
 
-                while(is.available() > 0){
+                while (is.available() > 0) {
                     out.write(is.read());
                 }
 
-                final byte data [] = out.toByteArray();
+                final byte data[] = out.toByteArray();
 
-                result = super.defineClass(name, data, 0, data.length );
-                classes.put(name,result);
+                result = super.defineClass(name, data, 0, data.length);
+                classes.put(name, result);
 
                 return result;
 
-            }catch(final java.io.IOException ioe){
+            } catch (final java.io.IOException ioe) {
 
-                throw new ClassNotFoundException( name + " caused by "
-                + ioe.getMessage() );
+                throw new ClassNotFoundException(name + " caused by " + ioe.getMessage());
             }
-
 
         }
 
         // not very trivial to emulate we must implement "findClass",
         // but it will delegete to junit class loder first
         @Override
-        public Class loadClass(final String name)throws ClassNotFoundException{
+        public Class loadClass(final String name) throws ClassNotFoundException {
 
-            //isolates all logging classes, application in the same classloader too.
-            //filters exeptions to simlify handling in test
+            // isolates all logging classes, application in the same classloader too.
+            // filters exeptions to simlify handling in test
             for (final String element : LOG_PCKG) {
-                if( name.startsWith( element ) &&
-                name.indexOf("Exception") == -1   ){
+                if (name.startsWith(element) && name.indexOf("Exception") == -1) {
                     return def(name);
                 }
             }
@@ -179,36 +175,29 @@ public class LoadTestCase extends TestCase{
      * Load class UserClass via a temporary classloader which is a child of
      * the classloader used to load this test class.
      */
-    private Class reload()throws Exception{
-
+    private Class reload() throws Exception {
         Class testObjCls = null;
-
-        final AppClassLoader appLoader = new AppClassLoader(
-                this.getClass().getClassLoader());
-        try{
+        final AppClassLoader appLoader = new AppClassLoader(this.getClass().getClassLoader());
+        try {
 
             testObjCls = appLoader.loadClass(UserClass.class.getName());
 
-        }catch(final ClassNotFoundException cnfe){
+        } catch (final ClassNotFoundException cnfe) {
             throw cnfe;
-        }catch(final Throwable t){
+        } catch (final Throwable t) {
             t.printStackTrace();
             fail("AppClassLoader failed ");
         }
 
         assertSame("app isolated", testObjCls.getClassLoader(), appLoader);
 
-
         return testObjCls;
-
 
     }
 
 
-    private void execute(final Class cls)throws Exception{
-
-            cls.newInstance();
-
+    private void execute(final Class cls) throws Exception {
+        cls.newInstance();
     }
 
     @Override

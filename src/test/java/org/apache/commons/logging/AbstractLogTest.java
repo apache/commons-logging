@@ -23,9 +23,6 @@ import junit.framework.TestCase;
   * Generic tests that can be applied to any log adapter by
   * subclassing this class and defining method getLogObject
   * appropriately.
-  *
-  * @author Sean C. Sullivan
-  * @version $Revision$
   */
 public abstract class AbstractLogTest extends TestCase {
 
@@ -34,61 +31,36 @@ public abstract class AbstractLogTest extends TestCase {
     public void testLoggingWithNullParameters()
     {
         final Log log = this.getLogObject();
-
         assertNotNull(log);
 
-
         log.debug(null);
-
         log.debug(null, null);
-
         log.debug(log.getClass().getName() + ": debug statement");
-
         log.debug(log.getClass().getName() + ": debug statement w/ null exception", new RuntimeException());
 
-
         log.error(null);
-
         log.error(null, null);
-
         log.error(log.getClass().getName() + ": error statement");
-
         log.error(log.getClass().getName() + ": error statement w/ null exception", new RuntimeException());
 
-
         log.fatal(null);
-
         log.fatal(null, null);
-
         log.fatal(log.getClass().getName() + ": fatal statement");
-
         log.fatal(log.getClass().getName() + ": fatal statement w/ null exception", new RuntimeException());
 
-
         log.info(null);
-
         log.info(null, null);
-
         log.info(log.getClass().getName() + ": info statement");
-
         log.info(log.getClass().getName() + ": info statement w/ null exception", new RuntimeException());
 
-
         log.trace(null);
-
         log.trace(null, null);
-
         log.trace(log.getClass().getName() + ": trace statement");
-
         log.trace(log.getClass().getName() + ": trace statement w/ null exception", new RuntimeException());
 
-
         log.warn(null);
-
         log.warn(null, null);
-
         log.warn(log.getClass().getName() + ": warn statement");
-
         log.warn(log.getClass().getName() + ": warn statement w/ null exception", new RuntimeException());
     }
 }

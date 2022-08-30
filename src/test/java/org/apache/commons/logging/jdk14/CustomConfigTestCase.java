@@ -39,9 +39,6 @@ import org.apache.commons.logging.PathableTestSuite;
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
  * custom configuration, so that JDK 1.4 should be selected and an appropriate
  * logger configured per the configuration properties.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
  */
 
 public class CustomConfigTestCase extends DefaultConfigTestCase {

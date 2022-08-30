@@ -26,48 +26,28 @@ import java.util.logging.LogRecord;
 
 /**
  * <p>Test implementation of {@code java.util.logging.Handler}.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
  */
-
 public class TestHandler extends Handler {
-
-
-
-    // ----------------------------------------------------- Instance Variables
-
 
     // The set of logged records for this handler
     private final List records = new ArrayList();
-
-
-    // --------------------------------------------------------- Public Methods
-
 
     public Iterator records() {
         return records.iterator();
     }
 
-
-    // -------------------------------------------------------- Handler Methods
-
-
     @Override
     public void close() {
     }
-
 
     @Override
     public void flush() {
         records.clear();
     }
 
-
     @Override
     public void publish(final LogRecord record) {
         records.add(record);
     }
-
 
 }
