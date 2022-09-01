@@ -44,7 +44,7 @@ Apache Commons Logging
 ===================
 
 [![Build Status](https://travis-ci.org/apache/commons-logging.svg?branch=trunk)](https://travis-ci.org/apache/commons-logging)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/badge.svg)](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/?gav=true)
 [![CodeQL](https://github.com/apache/commons-logging/workflows/CodeQL/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL)
 
 Apache Commons Logging is a thin adapter allowing configurable bridging to other, well known logging systems.
