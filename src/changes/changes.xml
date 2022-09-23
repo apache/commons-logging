@@ -113,7 +113,7 @@ The <action> type attribute can be add,update,fix,remove.
         Bump spotbugs from 4.5.3 to 4.7.2 #81, #87, #92, #104.
       </action>
       <action dev="kinow" type="update" due-to="Dependabot">
-        Bump commons-parent from 52 to 53 #82.
+        Bump commons-parent from 52 to 54 #82, #106.
       </action>
       <action dev="kinow" type="update" due-to="Dependabot">
         Bump github/codeql-action from 1 to 2 #86.
