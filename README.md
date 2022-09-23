@@ -42,8 +42,7 @@
 --->
 Apache Commons Logging
 ===================
-
-[![Build Status](https://travis-ci.org/apache/commons-logging.svg?branch=trunk)](https://travis-ci.org/apache/commons-logging)
+[![GitHub Actions Status](https://github.com/apache/commons-logging/workflows/Java%20CI/badge.svg)](https://github.com/apache/commons-logging/actions)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/?gav=true)
 [![CodeQL](https://github.com/apache/commons-logging/workflows/CodeQL/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml?query=workflow%3ACodeQL)
 
