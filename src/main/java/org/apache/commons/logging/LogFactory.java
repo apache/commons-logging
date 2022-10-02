@@ -544,7 +544,7 @@ public abstract class LogFactory {
                         rd.close();
                     }
 
-                    if (factoryClassName != null && ! "".equals(factoryClassName)) {
+                    if (factoryClassName != null && ! factoryClassName.isEmpty()) {
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("[LOOKUP]  Creating an instance of LogFactory class " +
                                           factoryClassName +
