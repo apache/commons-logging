@@ -81,7 +81,7 @@ public class LoadTestCase extends TestCase{
         public Class loadClass(final String name) throws ClassNotFoundException {
 
             // isolates all logging classes, application in the same classloader too.
-            // filters exeptions to simlify handling in test
+            // filters exceptions to simlify handling in test
             for (final String element : LOG_PCKG) {
                 if (name.startsWith(element) && name.indexOf("Exception") == -1) {
                     return def(name);
