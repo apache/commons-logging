@@ -530,8 +530,7 @@ under the License.
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.19.0</version>
         <configuration>
-          <!-- targetJdk 1.1, 1.2 is not supported -->
-          <targetJdk>1.3</targetJdk>
+          <targetJdk>1.8</targetJdk>
           <linkXref>true</linkXref>
           <rulesets>
             <ruleset>${basedir}/pmd.xml</ruleset>
