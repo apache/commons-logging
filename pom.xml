@@ -182,7 +182,7 @@ under the License.
   <build>
     <!-- TODO spotbugs:check -->
     <!-- TODO replace clirr:check with japicmp:cmp -->
-    <defaultGoal>clean apache-rat:check clirr:check javadoc:javadoc checkstyle:check package</defaultGoal>
+    <defaultGoal>clean package apache-rat:check japicmp:cmp javadoc:javadoc checkstyle:check</defaultGoal>
     <plugins>
 
       <!--
@@ -569,6 +569,9 @@ under the License.
     <commons.componentid>logging</commons.componentid>
     <commons.module.name>org.apache.commons.logging</commons.module.name>
     <commons.release.version>1.2</commons.release.version>
+    <commons.bc.version>1.1.3</commons.bc.version>
+    <commons.rc.version>RC1</commons.rc.version>
+    <commons.release.isDistModule>true</commons.release.isDistModule>
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
