@@ -92,7 +92,7 @@ The <action> type attribute can be add,update,fix,remove.
         Bump spotbugs-surefire-plugin from 2.22.2 to 3.0.0-M5.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
-        Bump maven-dependency-plugin from 2.4 to 3.3.0 #29, #79.
+        Bump maven-dependency-plugin from 2.4 to 3.4.0 #29, #79, #117.
       </action>
       <action dev="ggregory" type="update" due-to="Dependabot">
         Bump maven-pmd-plugin from 3.3 to 3.19.0 #28, #90, #100, #103.
