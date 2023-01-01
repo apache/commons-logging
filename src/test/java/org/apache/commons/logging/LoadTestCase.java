@@ -19,7 +19,7 @@ package org.apache.commons.logging;
 import junit.framework.TestCase;
 
 /**
- * testcase to emulate container and application isolated from container
+ * test to emulate container and application isolated from container
  */
 public class LoadTestCase extends TestCase{
     //TODO: need some way to add service provider packages

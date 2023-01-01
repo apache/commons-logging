@@ -74,7 +74,7 @@ public class TcclDisabledTestCase extends TestCase {
         parentLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         parentLoader.addLogicalLib("commons-logging");
         parentLoader.addLogicalLib("testclasses");
-        // hack to ensure that the testcase classloader can't see
+        // hack to ensure that the test classloader can't see
         // the custom MyLog
         parentLoader.useExplicitLoader(MY_LOG_PKG + ".", emptyLoader);
 

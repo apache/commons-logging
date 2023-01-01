@@ -131,8 +131,8 @@ public class MockSecurityManager extends SecurityManager {
                 // this is the unit test code; treat this like an untrusted client
                 // app that is using JCL
                 ++untrustedCodeCount;
-                System.out.println("Untrusted code [testcase] found");
-                throw new SecurityException("Untrusted code [testcase] found");
+                System.out.println("Untrusted code [test] found");
+                throw new SecurityException("Untrusted code [test] found");
             } else if (cname.startsWith("org.apache.commons.logging.")) {
                 if (!permissions.implies(p)) {
                     System.out.println("Permission refused:" + p.getClass() + ":" + p);

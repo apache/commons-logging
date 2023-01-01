@@ -57,8 +57,8 @@ public class PathableClassLoader extends URLClassLoader {
      * <p>
      * This is necessary in order for the rest of the world to communicate
      * with classes loaded via a custom classloader. As an example, junit
-     * testcases which are loaded via a custom classloader needs to see
-     * the same junit classes as the code invoking the testcase, otherwise
+     * tests which are loaded via a custom classloader needs to see
+     * the same junit classes as the code invoking the test, otherwise
      * they can't pass result objects back.
      * <p>
      * Normally, only a classloader created with a null parent needs to
@@ -79,7 +79,7 @@ public class PathableClassLoader extends URLClassLoader {
      * totally clean; nothing but the standard java library will be
      * present.
      * <p>
-     * When using a null parent classloader with a junit testcase, it *is*
+     * When using a null parent classloader with a junit test, it *is*
      * necessary for the junit library to also be visible. In this case, it
      * is recommended that the following code be used:
      * <pre>

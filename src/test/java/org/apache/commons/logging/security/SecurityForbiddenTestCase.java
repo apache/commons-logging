@@ -44,7 +44,7 @@ import org.apache.commons.logging.PathableTestSuite;
  * the static block of the LogFactory class. As that class cannot be unloaded after
  * being loaded into a classloader, the only workaround is to use the
  * PathableClassLoader approach to ensure each test is run in its own
- * classloader, and use a separate testcase class for each test.
+ * classloader, and use a separate test class for each test.
  */
 public class SecurityForbiddenTestCase extends TestCase
 {

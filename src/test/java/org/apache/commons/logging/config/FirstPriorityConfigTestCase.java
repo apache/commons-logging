@@ -63,7 +63,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
         final URL baseUrl = dummy.findResource(thisClassPath);
 
         // Now set up the desired classloader hierarchy. We'll put JCL
-        // in the container path, the testcase in a webapp path, and
+        // in the container path, the test in a webapp path, and
         // both config files into the webapp path too.
         final PathableClassLoader containerLoader = new PathableClassLoader(null);
         containerLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
