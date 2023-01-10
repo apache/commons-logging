@@ -562,7 +562,6 @@ under the License.
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC2</commons.rc.version>
-    <commons.junit.version>5.9.1</commons.junit.version>
     <commons.surefire.version>3.0.0-M7</commons.surefire.version>
     <spotbugs.plugin.version>4.7.2.1</spotbugs.plugin.version>
     <spotbugs.impl.version>4.7.3</spotbugs.impl.version>    
