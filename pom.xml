@@ -381,7 +381,6 @@ under the License.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>${commons.surefire.version}</version>        
         <executions>
           <execution>
             <id>integration-test</id>
