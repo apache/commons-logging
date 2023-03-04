@@ -19,7 +19,9 @@ package org.apache.commons.logging.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
@@ -277,7 +279,7 @@ public class SimpleLog implements Log, Serializable {
      */
     protected void log(final int type, final Object message, final Throwable t) {
         // Use a string buffer for better performance
-        final StringBuffer buf = new StringBuffer();
+        final StringBuilder buf = new StringBuilder();
 
         // Append date-time if so configured
         if(showDateTime) {
@@ -321,8 +323,8 @@ public class SimpleLog implements Log, Serializable {
             buf.append(t.toString());
             buf.append(">");
 
-            final java.io.StringWriter sw = new java.io.StringWriter(1024);
-            final java.io.PrintWriter pw = new java.io.PrintWriter(sw);
+            final StringWriter sw = new StringWriter(1024);
+            final PrintWriter pw = new PrintWriter(sw);
             t.printStackTrace(pw);
             pw.close();
             buf.append(sw.toString());
@@ -341,6 +343,18 @@ public class SimpleLog implements Log, Serializable {
      *  text to be logged
      */
     protected void write(final StringBuffer buffer) {
+        System.err.println(buffer.toString());
+    }
+
+    /**
+     * Write the content of the message accumulated in the specified
+     * {@code StringBuffer} to the appropriate output destination.  The
+     * default implementation writes to {@code System.err}.
+     *
+     * @param buffer A {@code StringBuffer} containing the accumulated
+     *  text to be logged
+     */
+    private void write(final Object buffer) {
         System.err.println(buffer.toString());
     }
 
@@ -612,7 +626,7 @@ public class SimpleLog implements Log, Serializable {
 
             // Get the thread context class loader (if there is one)
             try {
-                classLoader = (ClassLoader)method.invoke(Thread.currentThread(), (Class[]) null);
+                classLoader = (ClassLoader) method.invoke(Thread.currentThread(), (Class[]) null);
             } catch (final IllegalAccessException e) {
                 // ignore
             } catch (final InvocationTargetException e) {

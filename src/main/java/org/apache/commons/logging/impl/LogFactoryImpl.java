@@ -808,7 +808,7 @@ public class LogFactoryImpl extends LogFactory {
                                         logCategory,
                                         true);
             if (result == null) {
-                final StringBuffer messageBuffer =  new StringBuffer("User-specified log class '");
+                final StringBuilder messageBuffer =  new StringBuilder("User-specified log class '");
                 messageBuffer.append(specifiedLogClassName);
                 messageBuffer.append("' cannot be found or is not useable.");
 
@@ -876,7 +876,7 @@ public class LogFactoryImpl extends LogFactory {
      * @param name the (trimmed) name to be test against the candidate, not null
      * @param candidate the candidate name (not null)
      */
-    private void informUponSimilarName(final StringBuffer messageBuffer, final String name,
+    private void informUponSimilarName(final StringBuilder messageBuffer, final String name,
             final String candidate) {
         if (name.equals(candidate)) {
             // Don't suggest a name that is exactly the same as the one the
