@@ -40,7 +40,6 @@ import java.util.Properties;
  * <strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.
- *
  */
 public abstract class LogFactory {
     // Implementation note re AccessController usage

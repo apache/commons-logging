@@ -48,7 +48,6 @@ import org.apache.commons.logging.Log;
  * commons-logging, but this never actually worked (a NullPointerException would
  * be thrown as soon as the deserialized object was used), so removing this marker
  * is not considered to be an incompatible change.
- *
  */
 public class AvalonLogger implements Log {
 

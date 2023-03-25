@@ -68,7 +68,6 @@ import org.apache.commons.logging.LogConfigurationException;
  * above, this implementation also checks for a class loader resource named
  * {@code "simplelog.properties"}, and includes any matching definitions
  * from this resource (if it exists).
- *
  */
 public class SimpleLog implements Log, Serializable {
 

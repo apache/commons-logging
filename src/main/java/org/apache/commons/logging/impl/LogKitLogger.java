@@ -30,7 +30,6 @@ import org.apache.commons.logging.Log;
  * {@code LogKit} accepts only {@code String} messages.
  * Therefore, this implementation converts object messages into strings
  * by called their {@code toString()} method before logging them.
- *
  */
 public class LogKitLogger implements Log, Serializable {
 

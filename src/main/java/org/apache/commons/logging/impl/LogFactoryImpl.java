@@ -58,7 +58,6 @@ import org.apache.commons.logging.LogFactory;
  * This factory will remember previously created {@code Log} instances
  * for the same name, and will return them on repeated requests to the
  * {@code getInstance()} method.
- *
  */
 public class LogFactoryImpl extends LogFactory {
 

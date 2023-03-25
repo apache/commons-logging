@@ -53,7 +53,6 @@ package org.apache.commons.logging;
  * Configuration of the underlying logging system will generally be done
  * external to the Logging APIs, through whatever mechanism is supported by
  * that system.
- *
  */
 public interface Log {
 
