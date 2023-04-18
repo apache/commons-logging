@@ -83,7 +83,7 @@ public class Log4JLogger implements Log, Serializable {
         Priority _traceLevel;
         try {
             _traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
-        } catch(final Exception ex) {
+        } catch (final Exception ex) {
             // ok, trace not available
             _traceLevel = Level.DEBUG;
         }

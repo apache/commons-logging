@@ -122,7 +122,7 @@ public class TcclDisabledTestCase extends TestCase {
             final Class clazz = thisClassLoader.loadClass(MY_LOG_IMPL);
             fail("Unexpectedly able to load MyLog via test class classloader");
             assertNotNull(clazz); // silence warnings about unused var
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             // ok, expected
         }
 
@@ -130,7 +130,7 @@ public class TcclDisabledTestCase extends TestCase {
         try {
             final Class clazz = tcclLoader.loadClass(MY_LOG_IMPL);
             assertNotNull(clazz);
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             fail("Unexpectedly unable to load MyLog via tccl classloader");
         }
     }
@@ -153,7 +153,7 @@ public class TcclDisabledTestCase extends TestCase {
             fail("Unexpectedly succeeded in loading a custom Log class"
                 + " that is only accessable via the tccl.");
             assertNotNull(log); // silence compiler warning about unused var
-        } catch(final LogConfigurationException ex) {
+        } catch (final LogConfigurationException ex) {
             // ok, expected
             final int index = ex.getMessage().indexOf(MY_LOG_IMPL);
             assertTrue("MyLog not found", index >= 0);

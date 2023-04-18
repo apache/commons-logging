@@ -182,7 +182,7 @@ public class SimpleLog implements Log, Serializable {
                                                dateTimeFormat);
             try {
                 dateFormatter = new SimpleDateFormat(dateTimeFormat);
-            } catch(final IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 // If the format pattern is invalid - use the default format
                 dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
                 dateFormatter = new SimpleDateFormat(dateTimeFormat);

@@ -119,7 +119,7 @@ public class TcclEnabledTestCase extends TestCase {
                 "org.apache.commons.logging.tccl.custom.MyLogFactoryImpl");
             fail("Unexpectedly able to load MyLogFactoryImpl via test class classloader");
             assertNotNull(clazz); // silence warning about unused var
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             // ok, expected
         }
 
@@ -128,7 +128,7 @@ public class TcclEnabledTestCase extends TestCase {
             final Class clazz = tcclLoader.loadClass(
                 "org.apache.commons.logging.tccl.custom.MyLogFactoryImpl");
             assertNotNull(clazz);
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             fail("Unexpectedly unable to load MyLogFactoryImpl via tccl classloader");
         }
     }

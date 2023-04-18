@@ -124,7 +124,7 @@ public class TcclDisabledTestCase extends TestCase {
             final Class clazz = thisClassLoader.loadClass(MY_LOG_FACTORY_IMPL);
             fail("Unexpectedly able to load MyLogFactoryImpl via test class classloader");
             assertNotNull(clazz); // silence warning about unused var
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             // ok, expected
         }
 
@@ -132,7 +132,7 @@ public class TcclDisabledTestCase extends TestCase {
         try {
             final Class clazz = tcclLoader.loadClass(MY_LOG_FACTORY_IMPL);
             assertNotNull(clazz);
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             fail("Unexpectedly unable to load MyLogFactoryImpl via tccl classloader");
         }
     }
@@ -148,7 +148,7 @@ public class TcclDisabledTestCase extends TestCase {
             final LogFactory instance = LogFactory.getFactory();
             fail("Unexpectedly succeeded in loading custom factory, though TCCL disabled.");
             assertNotNull(instance); // silence warning about unused var
-        } catch(final org.apache.commons.logging.LogConfigurationException ex) {
+        } catch (final org.apache.commons.logging.LogConfigurationException ex) {
             // ok, custom MyLogFactoryImpl as specified in props_disable_tccl
             // could not be found.
             final int index = ex.getMessage().indexOf(MY_LOG_FACTORY_IMPL);

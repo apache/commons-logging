@@ -177,7 +177,7 @@ public class ParentFirstTestCase extends TestCase {
             final Class noSuchClass = contextLoader.loadClass("no.such.class");
             fail("Class no.such.class is unexpectedly available");
             assertNotNull(noSuchClass); // silence warning about unused var
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             // ok
         }
 

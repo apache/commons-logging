@@ -128,7 +128,7 @@ public class SecurityAllowedTestCase extends TestCase
             // we better compare that we have no security exception during the call to log
             // IBM JVM tries to load bundles during the invoke call, which increase the count
             assertEquals("Untrusted code count", untrustedCodeCount, mySecurityManager.getUntrustedCodeCount());
-        } catch(final Throwable t) {
+        } catch (final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.

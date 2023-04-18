@@ -141,7 +141,7 @@ public class LoadTestCase extends TestCase{
             setAllowFlawedContext(cls, "false");
             execute(cls);
             fail("Logging config succeeded when context classloader was null!");
-        } catch(final LogConfigurationException ex) {
+        } catch (final LogConfigurationException ex) {
             // expected; the boot classloader doesn't *have* JCL available
         }
 
@@ -166,7 +166,7 @@ public class LoadTestCase extends TestCase{
             execute(cls);
             fail("Error: somehow downcast a Logger loaded via system classloader"
                     + " to the Log interface loaded via a custom classloader");
-        } catch(final LogConfigurationException ex) {
+        } catch (final LogConfigurationException ex) {
             // expected
         }
     }

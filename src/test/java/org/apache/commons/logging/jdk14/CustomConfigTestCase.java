@@ -135,7 +135,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             targetCL.loadClass(className);
             // fail("Class already in target classloader");
             return;
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             // ok, go ahead and load it
         }
 
@@ -153,7 +153,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             args[3] = new Integer(classData.length);
             m.setAccessible(true);
             m.invoke(targetCL, args);
-        } catch(final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             fail("Unable to load class " + className);
         }

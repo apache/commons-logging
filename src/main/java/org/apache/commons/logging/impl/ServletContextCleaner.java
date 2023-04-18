@@ -102,19 +102,19 @@ public class ServletContextCleaner implements ServletContextListener {
                 final Method releaseMethod = logFactoryClass.getMethod("release", RELEASE_SIGNATURE);
                 releaseMethod.invoke(null, params);
                 loader = logFactoryClass.getClassLoader().getParent();
-            } catch(final ClassNotFoundException ex) {
+            } catch (final ClassNotFoundException ex) {
                 // Neither the current classloader nor any of its ancestors could find
                 // the LogFactory class, so we can stop now.
                 loader = null;
-            } catch(final NoSuchMethodException ex) {
+            } catch (final NoSuchMethodException ex) {
                 // This is not expected; every version of JCL has this method
                 System.err.println("LogFactory instance found which does not support release method!");
                 loader = null;
-            } catch(final IllegalAccessException ex) {
+            } catch (final IllegalAccessException ex) {
                 // This is not expected; every ancestor class should be accessible
                 System.err.println("LogFactory instance found which is not accessable!");
                 loader = null;
-            } catch(final InvocationTargetException ex) {
+            } catch (final InvocationTargetException ex) {
                 // This is not expected
                 System.err.println("LogFactory instance release method failed!");
                 loader = null;

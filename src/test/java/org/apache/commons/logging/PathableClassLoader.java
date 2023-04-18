@@ -212,7 +212,7 @@ public class PathableClassLoader extends URLClassLoader {
                 final URL libUrl = new File(filename).toURL();
                 addURL(libUrl);
                 return;
-            } catch(final java.net.MalformedURLException e) {
+            } catch (final java.net.MalformedURLException e) {
                 throw new UnknownError(
                     "Invalid file [" + filename + "] for logical lib [" + logicalLib + "]");
             }
@@ -322,7 +322,7 @@ public class PathableClassLoader extends URLClassLoader {
                 resolveClass(clazz);
             }
             return clazz;
-        } catch(final ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             return super.loadClass(name, resolve);
         }
     }
@@ -413,7 +413,7 @@ public class PathableClassLoader extends URLClassLoader {
         if (local != null) {
             try {
                 return local.openStream();
-            } catch(final IOException e) {
+            } catch (final IOException e) {
                 // TODO: check if this is right or whether we should
                 // fall back to trying parent. The javadoc doesn't say...
                 return null;

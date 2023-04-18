@@ -131,7 +131,7 @@ public class SecurityForbiddenTestCase extends TestCase
                     CustomHashtable.class.getName(), ftClassName);
 
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
-        } catch(final Throwable t) {
+        } catch (final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
@@ -164,7 +164,7 @@ public class SecurityForbiddenTestCase extends TestCase
 
             System.setSecurityManager(oldSecMgr);
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
-        } catch(final Throwable t) {
+        } catch (final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
