@@ -408,7 +408,7 @@ public final class WeakHashtable extends Hashtable {
         }
     }
 
-    /** Wrapper giving correct symantics for equals and hashcode */
+    /** Wrapper giving correct symantics for equals and hash code */
     private final static class Referenced {
 
         private final WeakReference reference;
@@ -456,12 +456,12 @@ public final class WeakHashtable extends Hashtable {
                 if (thisKeyValue == null) {
                     result = otherKeyValue == null;
 
-                    // Since our hashcode was calculated from the original
+                    // Since our hash code was calculated from the original
                     // non-null referant, the above check breaks the
-                    // hashcode/equals contract, as two cleared Referenced
-                    // objects could test equal but have different hashcodes.
+                    // hash code/equals contract, as two cleared Referenced
+                    // objects could test equal but have different hash codes.
                     // We can reduce (not eliminate) the chance of this
-                    // happening by comparing hashcodes.
+                    // happening by comparing hash codes.
                     result = result && this.hashCode() == otherKey.hashCode();
                     // In any case, as our c'tor does not allow null referants
                     // and Hashtable does not do equality checks between
