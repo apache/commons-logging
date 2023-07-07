@@ -169,12 +169,7 @@ public class LogSource {
 
     /** Get a {@code Log} instance by class name. */
     static public Log getInstance(final String name) {
-        Log log = (Log) logs.get(name);
-        if (null == log) {
-            log = makeNewLogInstance(name);
-            logs.put(name, log);
-        }
-        return log;
+        return (Log) logs.computeIfAbsent(name, k -> makeNewLogInstance(name));
     }
 
     /** Get a {@code Log} instance by class. */
