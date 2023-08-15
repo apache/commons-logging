@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Export-Package: org.apache.commons.logging;version="1.2.0",org.apache.
  commons.logging.impl;version="1.2.0"
+Automatic-Module-Name: org.apache.commons.logging
 Implementation-Title: Commons Logging
 Implementation-Vendor: The Apache Software Foundation
 Implementation-Vendor-Id: org.apache
