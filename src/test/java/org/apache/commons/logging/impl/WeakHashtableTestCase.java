@@ -244,11 +244,11 @@ public class WeakHashtableTestCase extends TestCase {
         int bytz = 2;
         while(true) {
             System.gc();
-            if(iterations++ > MAX_GC_ITERATIONS){
+            if (iterations++ > MAX_GC_ITERATIONS){
                 fail("Max iterations reached before resource released.");
             }
 
-            if(weakHashtable.get(new Long(1)) == null) {
+            if (weakHashtable.get(new Long(1)) == null) {
                 break;
 
             }
@@ -276,8 +276,8 @@ public class WeakHashtableTestCase extends TestCase {
         @Override
         public void run() {
             for (int i = 0; i < RUN_LOOPS; i++) {
-                hashtable.put("key" + ":" + i%10, Boolean.TRUE);
-                if(i%50 == 0) {
+                hashtable.put("key" + ":" + i % 10, Boolean.TRUE);
+                if (i % 50 == 0) {
                     yield();
                 }
             }

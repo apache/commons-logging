@@ -77,11 +77,11 @@ public class Jdk14Logger implements Log, Serializable {
             final String cname = name;
             String method = "unknown";
             // Caller will be the third element
-            if( locations != null && locations.length > 2 ) {
+            if ( locations != null && locations.length > 2 ) {
                 final StackTraceElement caller = locations[2];
                 method = caller.getMethodName();
             }
-            if( ex == null ) {
+            if ( ex == null ) {
                 logger.logp( level, cname, method, msg );
             } else {
                 logger.logp( level, cname, method, msg, ex );
