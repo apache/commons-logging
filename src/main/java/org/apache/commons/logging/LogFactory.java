@@ -526,7 +526,7 @@ public abstract class LogFactory {
             try {
                 final InputStream is = getResourceAsStream(contextClassLoader, SERVICE_ID);
 
-                if( is != null ) {
+                if ( is != null ) {
                     // This code is needed by EBCDIC and other strange systems.
                     // It's a fix for bugs reported in xerces
                     BufferedReader rd;

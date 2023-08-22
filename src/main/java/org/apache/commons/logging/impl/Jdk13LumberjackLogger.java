@@ -73,14 +73,14 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     // --------------------------------------------------------- Public Methods
 
     private void log( final Level level, final String msg, final Throwable ex ) {
-        if( getLogger().isLoggable(level) ) {
+        if ( getLogger().isLoggable(level) ) {
             final LogRecord record = new LogRecord(level, msg);
-            if( !classAndMethodFound ) {
+            if ( !classAndMethodFound ) {
                 getClassAndMethod();
             }
             record.setSourceClassName(sourceClassName);
             record.setSourceMethodName(sourceMethodName);
-            if( ex != null ) {
+            if ( ex != null ) {
                 record.setThrown(ex);
             }
             getLogger().log(record);

@@ -177,7 +177,7 @@ public class SimpleLog implements Log, Serializable {
         showShortName = getBooleanProperty(systemPrefix + "showShortLogname", showShortName);
         showDateTime = getBooleanProperty(systemPrefix + "showdatetime", showDateTime);
 
-        if(showDateTime) {
+        if (showDateTime) {
             dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat",
                                                dateTimeFormat);
             try {
@@ -223,25 +223,25 @@ public class SimpleLog implements Log, Serializable {
             i = String.valueOf(name).lastIndexOf(".");
         }
 
-        if(null == lvl) {
+        if (null == lvl) {
             lvl =  getStringProperty(systemPrefix + "defaultlog");
         }
 
-        if("all".equalsIgnoreCase(lvl)) {
+        if ("all".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_ALL);
-        } else if("trace".equalsIgnoreCase(lvl)) {
+        } else if ("trace".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_TRACE);
-        } else if("debug".equalsIgnoreCase(lvl)) {
+        } else if ("debug".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_DEBUG);
-        } else if("info".equalsIgnoreCase(lvl)) {
+        } else if ("info".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_INFO);
-        } else if("warn".equalsIgnoreCase(lvl)) {
+        } else if ("warn".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_WARN);
-        } else if("error".equalsIgnoreCase(lvl)) {
+        } else if ("error".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_ERROR);
-        } else if("fatal".equalsIgnoreCase(lvl)) {
+        } else if ("fatal".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_FATAL);
-        } else if("off".equalsIgnoreCase(lvl)) {
+        } else if ("off".equalsIgnoreCase(lvl)) {
             setLevel(SimpleLog.LOG_LEVEL_OFF);
         }
     }
@@ -281,7 +281,7 @@ public class SimpleLog implements Log, Serializable {
         final StringBuilder buf = new StringBuilder();
 
         // Append date-time if so configured
-        if(showDateTime) {
+        if (showDateTime) {
             final Date now = new Date();
             String dateText;
             synchronized(dateFormatter) {
@@ -302,14 +302,14 @@ public class SimpleLog implements Log, Serializable {
         }
 
         // Append the name of the log instance if so configured
-        if(showShortName) {
-            if(shortLogName == null) {
+        if (showShortName) {
+            if (shortLogName == null) {
                 // Cut all but the last component of the name for both styles
                 final String slName = logName.substring(logName.lastIndexOf(".") + 1);
                 shortLogName = slName.substring(slName.lastIndexOf("/") + 1);
             }
             buf.append(String.valueOf(shortLogName)).append(" - ");
-        } else if(showLogName) {
+        } else if (showLogName) {
             buf.append(String.valueOf(logName)).append(" - ");
         }
 
@@ -317,7 +317,7 @@ public class SimpleLog implements Log, Serializable {
         buf.append(String.valueOf(message));
 
         // Append stack trace if not null
-        if(t != null) {
+        if (t != null) {
             buf.append(" <");
             buf.append(t.toString());
             buf.append(">");
