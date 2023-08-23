@@ -46,14 +46,14 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * <p>The message levels that should have been logged.</p>
      */
     /*
-    protected Level testLevels[] =
+    protected Level[] testLevels =
     { Level.FINE, Level.INFO, Level.WARNING, Level.SEVERE, Level.SEVERE };
     */
 
     /**
      * <p>The message strings that should have been logged.</p>
      */
-    protected String testMessages[] =
+    protected String[] testMessages =
     { "debug", "info", "warn", "error", "fatal" };
 
     /**

@@ -209,7 +209,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The signature of the Constructor to be used.
      */
-    protected Class logConstructorSignature[] = { java.lang.String.class };
+    protected Class[] logConstructorSignature = { java.lang.String.class };
 
     /**
      * The one-argument {@code setLogFactory} method of the selected
@@ -220,7 +220,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The signature of the {@code setLogFactory} method to be used.
      */
-    protected Class logMethodSignature[] = { LogFactory.class };
+    protected Class[] logMethodSignature = { LogFactory.class };
 
     /**
      * See getBaseClassLoader and initConfiguration.
@@ -555,12 +555,12 @@ public class LogFactoryImpl extends LogFactory {
                 instance = discoverLogImplementation(name);
             }
             else {
-                final Object params[] = { name };
+                final Object[] params = { name };
                 instance = (Log) logConstructor.newInstance(params);
             }
 
             if (logMethod != null) {
-                final Object params[] = { this };
+                final Object[] params = { this };
                 logMethod.invoke(instance, params);
             }
 
@@ -1335,7 +1335,7 @@ public class LogFactoryImpl extends LogFactory {
 
         boolean implementsLog = false;
         final String logInterfaceName = Log.class.getName();
-        final Class interfaces[] = badClass.getInterfaces();
+        final Class[] interfaces = badClass.getInterfaces();
         for (final Class element : interfaces) {
             if (logInterfaceName.equals(element.getName())) {
                 implementsLog = true;

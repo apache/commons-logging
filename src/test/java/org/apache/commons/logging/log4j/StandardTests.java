@@ -86,7 +86,7 @@ public abstract class StandardTests extends TestCase {
                      "org.apache.commons.logging.impl.LogFactoryImpl",
                      factory.getClass().getName());
 
-        final String names[] = factory.getAttributeNames();
+        final String[] names = factory.getAttributeNames();
         assertNotNull("Names exists", names);
         assertEquals("Names empty", 0, names.length);
     }

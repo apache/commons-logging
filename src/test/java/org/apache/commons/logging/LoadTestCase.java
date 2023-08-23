@@ -23,7 +23,7 @@ import junit.framework.TestCase;
  */
 public class LoadTestCase extends TestCase{
     //TODO: need some way to add service provider packages
-    static private String LOG_PCKG[] = {"org.apache.commons.logging",
+    static private String[] LOG_PCKG = {"org.apache.commons.logging",
                                         "org.apache.commons.logging.impl"};
 
     /**
@@ -61,7 +61,7 @@ public class LoadTestCase extends TestCase{
                     out.write(is.read());
                 }
 
-                final byte data[] = out.toByteArray();
+                final byte[] data = out.toByteArray();
 
                 result = super.defineClass(name, data, 0, data.length);
                 classes.put(name, result);
