@@ -33,7 +33,9 @@ import org.apache.commons.logging.Log;
  * available in SourceForge's Lumberjack for JDKs prior to 1.4.
  *
  * @since 1.1
+ * @deprecated Due to be removed as Lumberjack is no longer maintained
  */
+@Deprecated
 public class Jdk13LumberjackLogger implements Log, Serializable {
 
     /** Serializable version identifier. */
