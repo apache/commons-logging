@@ -355,7 +355,7 @@ public abstract class LogFactory {
     // --------------------------------------------------------- Static Methods
 
     /** Utility method to safely trim a string. */
-    private static String trim(final String src) {
+    protected static String trim(final String src) {
         if (src == null) {
             return null;
         }

@@ -1018,7 +1018,7 @@ public class LogFactoryImpl extends LogFactory {
                     // trying higher up in the hierarchy in this case..
                     String msg = originalClassNotFoundException.getMessage();
                     logDiagnostic("The log adapter '" + logAdapterClassName + "' is not available via classloader " +
-                                  objectId(currentCL) + ": " + msg.trim());
+                                  objectId(currentCL) + ": " + trim(msg));
                     try {
                         // Try the class classloader.
                         // This may work in cases where the TCCL
@@ -1032,7 +1032,7 @@ public class LogFactoryImpl extends LogFactory {
                         // no point continuing: this adapter isn't available
                         msg = secondaryClassNotFoundException.getMessage();
                         logDiagnostic("The log adapter '" + logAdapterClassName +
-                                      "' is not available via the LogFactoryImpl class classloader: " + msg.trim());
+                                      "' is not available via the LogFactoryImpl class classloader: " + trim(msg));
                         break;
                     }
                 }
