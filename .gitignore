@@ -3,6 +3,7 @@
 /.project
 /.settings/
 /bin/
+.attach_pid*
 
 ### STS ###
 .apt_generated
