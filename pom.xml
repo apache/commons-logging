@@ -183,7 +183,7 @@ under the License.
   <build>
     <!-- TODO spotbugs:check -->
     <!-- TODO replace clirr:check with japicmp:cmp -->
-    <defaultGoal>clean package apache-rat:check japicmp:cmp javadoc:javadoc checkstyle:check</defaultGoal>
+    <defaultGoal>clean verify apache-rat:check japicmp:cmp javadoc:javadoc checkstyle:check</defaultGoal>
     <plugins>
 
       <!--
@@ -402,8 +402,8 @@ under the License.
                   <logkit>${logkit:logkit:jar}</logkit>
                   <servlet-api>${javax.servlet:servlet-api:jar}</servlet-api>
                   <commons-logging>target/${project.build.finalName}.jar</commons-logging>
-                  <commons-logging-api>target/${project.artifactId}-api-${project.version}.jar</commons-logging-api>
-                  <commons-logging-adapters>target/${project.artifactId}-adapters-${project.version}.jar</commons-logging-adapters>
+                  <commons-logging-api>target/${project.artifactId}-api-${project.version}-api.jar</commons-logging-api>
+                  <commons-logging-adapters>target/${project.artifactId}-adapters-${project.version}-adapters.jar</commons-logging-adapters>
                   <testclasses>target/commons-logging-tests.jar</testclasses>
               </systemPropertyVariables>
             </configuration>

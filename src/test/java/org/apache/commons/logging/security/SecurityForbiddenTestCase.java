@@ -17,8 +17,6 @@
 
 package org.apache.commons.logging.security;
 
-import static org.junit.Assert.assertNotEquals;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -127,8 +125,8 @@ public class SecurityForbiddenTestCase extends TestCase
             final Object factoryTable = factoryField.get(null);
             assertNotNull(factoryTable);
             final String ftClassName = factoryTable.getClass().getName();
-            assertNotEquals("Custom hashtable unexpectedly used",
-                    CustomHashtable.class.getName(), ftClassName);
+            assertFalse("Custom hashtable unexpectedly used",
+                    CustomHashtable.class.getName().equals(ftClassName));
 
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
         } catch (final Throwable t) {

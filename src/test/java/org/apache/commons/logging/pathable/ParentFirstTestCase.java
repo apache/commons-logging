@@ -16,8 +16,6 @@
  */
 package org.apache.commons.logging.pathable;
 
-import static org.junit.Assert.assertNotEquals;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,8 +143,9 @@ public class ParentFirstTestCase extends TestCase {
         // (context, child, parent).
         final ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
         assertNotNull("System classloader is null", systemLoader);
-        assertNotEquals("System classloader has unexpected type", PathableClassLoader.class.getName(),
-                systemLoader.getClass().getName());
+        assertFalse("System classloader has unexpected type",
+                PathableClassLoader.class.getName().equals(
+                        systemLoader.getClass().getName()));
 
         // junit classes should be visible; their classloader is not
         // in the hierarchy of parent classloaders for this class,
