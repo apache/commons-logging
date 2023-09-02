@@ -208,7 +208,7 @@ under the License.
               <goal>test-jar</goal>
             </goals>
             <configuration>
-              <jarName>commons-logging</jarName>
+              <finalName>commons-logging</finalName>
             </configuration>
           </execution>
 
@@ -219,7 +219,7 @@ under the License.
               <goal>jar</goal>
             </goals>
             <configuration>
-              <jarName>${project.artifactId}-api-${project.version}</jarName>
+              <finalName>${project.artifactId}-api-${project.version}</finalName>
               <classifier>api</classifier>
               <includes>
                 <include>org/apache/commons/logging/*.class</include>
@@ -244,7 +244,7 @@ under the License.
               <goal>jar</goal>
             </goals>
             <configuration>
-              <jarName>${project.artifactId}-adapters-${project.version}</jarName>
+              <finalName>${project.artifactId}-adapters-${project.version}</finalName>
               <classifier>adapters</classifier>
               <includes>
                 <include>org/apache/commons/logging/impl/**.class</include>
@@ -269,7 +269,7 @@ under the License.
               <goal>jar</goal>
             </goals>
             <configuration>
-              <jarName>${project.artifactId}-${project.version}</jarName>
+              <finalName>${project.artifactId}-${project.version}</finalName>
               <classifier>full</classifier>
             </configuration>
           </execution>
