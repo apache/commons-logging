@@ -197,7 +197,7 @@ public class LoadTestCase extends TestCase{
 
 
     private void execute(final Class cls) throws Exception {
-        cls.newInstance();
+        cls.getConstructor().newInstance();
     }
 
     @Override

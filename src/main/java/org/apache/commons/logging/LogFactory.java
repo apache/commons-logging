@@ -329,7 +329,7 @@ public abstract class LogFactory {
         }
         try {
             final Class implementationClass = Class.forName(storeImplementationClass);
-            result = (Hashtable) implementationClass.newInstance();
+            result = (Hashtable) implementationClass.getConstructor().newInstance();
         } catch (final Throwable t) {
             handleThrowable(t); // may re-throw t
 
@@ -1046,7 +1046,7 @@ public abstract class LogFactory {
                         }
                     }
 
-                    return (LogFactory) logFactoryClass.newInstance();
+                    return (LogFactory) logFactoryClass.getConstructor().newInstance();
 
                 } catch (final ClassNotFoundException ex) {
                     if (classLoader == thisClassLoaderRef.get()) {
