@@ -31,7 +31,7 @@ import org.apache.commons.logging.Log;
  * Therefore, this implementation converts object messages into strings
  * by called their {@code toString()} method before logging them.
  * 
- * @deprecated Due to be removed as the Apache Avalon Project no longer exists
+ * @deprecated Scheduled for removal because the Apache Avalon Project has been discontinued.
  */
 @Deprecated
 public class LogKitLogger implements Log, Serializable {
