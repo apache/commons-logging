@@ -124,9 +124,10 @@ public final class WeakHashtable extends Hashtable {
      */
     private static final int PARTIAL_PURGE_COUNT     = 10;
 
-    /* ReferenceQueue we check for gc'd keys */
+    /** ReferenceQueue we check for GC'd keys. */
     private final ReferenceQueue queue = new ReferenceQueue();
-    /* Counter used to control how often we purge gc'd entries */
+
+    /** Counter used to control how often we purge gc'd entries. */
     private int changeCount;
 
     /**

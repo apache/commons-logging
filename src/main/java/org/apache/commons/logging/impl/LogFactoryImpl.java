@@ -78,7 +78,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * An empty immutable {@code String} array.
      */
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final String[] EMPTY_STRING_ARRAY = {};
 
     // ----------------------------------------------------------- Constructors
 
@@ -376,8 +376,10 @@ public class LogFactoryImpl extends LogFactory {
     // ------------------------------------------------------
 
     /**
-     * Gets the context classloader.
+     * Gets the context ClassLoader.
      * This method is a workaround for a java 1.2 compiler bug.
+     *
+     * @return the context ClassLoader
      * @since 1.1
      */
     protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
@@ -386,15 +388,19 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Workaround for bug in Java1.2; in theory this method is not needed.
-     * See LogFactory.isDiagnosticsEnabled.
+     *
+     * @return Same as {@link LogFactory#isDiagnosticsEnabled()}.
+     * @see LogFactory#isDiagnosticsEnabled()
      */
     protected static boolean isDiagnosticsEnabled() {
         return LogFactory.isDiagnosticsEnabled();
     }
 
     /**
-     * Workaround for bug in Java1.2; in theory this method is not needed.
-     * See LogFactory.getClassLoader.
+     * Workaround for bug in Java1.2; in theory this method is not needed. {@link LogFactory#getClassLoader(Class)}.
+     *
+     * @param clazz See {@link LogFactory#getClassLoader(Class)}.
+     * @return See {@link LogFactory#getClassLoader(Class)}.
      * @since 1.1
      */
     protected static ClassLoader getClassLoader(final Class clazz) {
@@ -454,11 +460,10 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return the fully qualified Java classname of the {@link Log}
-     * implementation we will be using.
+     * Return the fully qualified Java classname of the {@link Log} implementation we will be using.
      *
-     * @deprecated  Never invoked by this class; subclasses should not assume
-     *              it will be.
+     * @return the fully qualified Java classname of the {@link Log} implementation we will be using.
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
     protected String getLogClassName() {
@@ -471,19 +476,20 @@ public class LogFactoryImpl extends LogFactory {
 
 
     /**
-     * <p>Return the {@code Constructor} that can be called to instantiate
-     * new {@link org.apache.commons.logging.Log} instances.</p>
+     * <p>
+     * Return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
+     * </p>
      *
-     * <p><strong>IMPLEMENTATION NOTE</strong> - Race conditions caused by
-     * calling this method from more than one thread are ignored, because
-     * the same {@code Constructor} instance will ultimately be derived
-     * in all circumstances.</p>
+     * <p>
+     * <strong>IMPLEMENTATION NOTE</strong> - Race conditions caused by calling this method from more than one thread are ignored, because the same
+     * {@code Constructor} instance will ultimately be derived in all circumstances.
+     * </p>
      *
-     * @throws LogConfigurationException if a suitable constructor
-     *  cannot be returned
+     * @return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
      *
-     * @deprecated  Never invoked by this class; subclasses should not assume
-     *              it will be.
+     * @throws LogConfigurationException if a suitable constructor cannot be returned
+     *
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
     protected Constructor getLogConstructor()
@@ -498,10 +504,10 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Is <em>JDK 1.3 with Lumberjack</em> logging available?
+     * Tests whether <em>JDK 1.3 with Lumberjack</em> logging available.
      *
-     * @deprecated  Never invoked by this class; subclasses should not assume
-     *              it will be.
+     * @return whether <em>JDK 1.3 with Lumberjack</em> logging available.
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
     protected boolean isJdk13LumberjackAvailable() {
@@ -511,42 +517,37 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return {@code true} if <em>JDK 1.4 or later</em> logging
-     * is available.  Also checks that the {@code Throwable} class
-     * supports {@code getStackTrace()}, which is required by
-     * Jdk14Logger.
+     * Tests {@code true} whether <em>JDK 1.4 or later</em> logging is available. Also checks that the {@code Throwable} class supports {@code getStackTrace()},
+     * which is required by Jdk14Logger.
      *
-     * @deprecated  Never invoked by this class; subclasses should not assume
-     *              it will be.
+     * @return Whether <em>JDK 1.4 or later</em> logging is available.
+     *
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
     protected boolean isJdk14Available() {
-        return isLogLibraryAvailable(
-                "Jdk14",
-                "org.apache.commons.logging.impl.Jdk14Logger");
+        return isLogLibraryAvailable("Jdk14", "org.apache.commons.logging.impl.Jdk14Logger");
     }
 
     /**
-     * Is a <em>Log4J</em> implementation available?
+     * Tests whether a <em>Log4J</em> implementation available.
      *
-     * @deprecated  Never invoked by this class; subclasses should not assume
-     *              it will be.
+     * @return whether a <em>Log4J</em> implementation available.
+     *
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
     protected boolean isLog4JAvailable() {
-        return isLogLibraryAvailable(
-                "Log4J",
-                LOGGING_IMPL_LOG4J_LOGGER);
+        return isLogLibraryAvailable("Log4J", LOGGING_IMPL_LOG4J_LOGGER);
     }
 
     /**
-     * Create and return a new {@link org.apache.commons.logging.Log}
-     * instance for the specified name.
+     * Create and return a new {@link org.apache.commons.logging.Log} instance for the specified name.
      *
      * @param name Name of the new logger
+     * @return a new {@link org.apache.commons.logging.Log}
      *
-     * @throws LogConfigurationException if a new instance cannot
-     *  be created
+     * @throws LogConfigurationException if a new instance cannot be created
      */
     protected Log newInstance(final String name) throws LogConfigurationException {
         Log instance;
@@ -609,12 +610,7 @@ public class LogFactoryImpl extends LogFactory {
     private static ClassLoader getContextClassLoaderInternal()
         throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
-            new PrivilegedAction() {
-                @Override
-                public Object run() {
-                    return LogFactory.directGetContextClassLoader();
-                }
-            });
+            (PrivilegedAction) LogFactory::directGetContextClassLoader);
     }
 
     /**
@@ -629,12 +625,7 @@ public class LogFactoryImpl extends LogFactory {
     private static String getSystemProperty(final String key, final String def)
         throws SecurityException {
         return (String) AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    @Override
-                    public Object run() {
-                        return System.getProperty(key, def);
-                    }
-                });
+                (PrivilegedAction) () -> System.getProperty(key, def));
     }
 
     /**
@@ -647,12 +638,7 @@ public class LogFactoryImpl extends LogFactory {
     private ClassLoader getParentClassLoader(final ClassLoader cl) {
         try {
             return (ClassLoader)AccessController.doPrivileged(
-                    new PrivilegedAction() {
-                        @Override
-                        public Object run() {
-                            return cl.getParent();
-                        }
-                    });
+                    (PrivilegedAction) () -> cl.getParent());
         } catch (final SecurityException ex) {
             logDiagnostic("[SECURITY] Unable to obtain parent classloader");
             return null;

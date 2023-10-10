@@ -63,7 +63,9 @@ public class LogKitLogger implements Log, Serializable {
     // --------------------------------------------------------- Public Methods
 
     /**
-     * Return the underlying Logger we are using.
+     * Gets the underlying Logger we are using.
+     *
+     * @return the underlying Logger we are using.
      */
     public Logger getLogger() {
         Logger result = logger;

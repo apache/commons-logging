@@ -55,6 +55,9 @@ public class LogSource {
 
     // ------------------------------------------------------- Class Attributes
 
+    /**
+     * Logs.
+     */
     static protected Hashtable logs = new Hashtable();
 
     /** Is log4j available (in the current classpath) */
@@ -138,15 +141,21 @@ public class LogSource {
     // ---------------------------------------------------------- Class Methods
 
     /**
-     * Set the log implementation/log implementation factory
-     * by the name of the class.  The given class must implement {@link Log},
-     * and provide a constructor that takes a single {@link String} argument
-     * (containing the name of the log).
+     * Set the log implementation/log implementation factory by the name of the class. The given class must implement {@link Log}, and provide a constructor
+     * that takes a single {@link String} argument (containing the name of the log).
+     *
+     * @param className class name.
+     * @throws LinkageError           if there is missing dependency.
+     * @throws NoSuchMethodException  if a matching method is not found.
+     * @throws SecurityException      If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the class
+     *                                loader for the current class and invocation of {@link SecurityManager#checkPackageAccess s.checkPackageAccess()} denies
+     *                                access to the package of this class.
+     * @throws ClassNotFoundException if the class cannot be located
      */
-    static public void setLogImplementation(final String classname)
+    static public void setLogImplementation(final String className)
         throws LinkageError, NoSuchMethodException, SecurityException, ClassNotFoundException {
         try {
-            final Class logclass = Class.forName(classname);
+            final Class logclass = Class.forName(className);
             final Class[] argtypes = new Class[1];
             argtypes[0] = "".getClass();
             logImplctor = logclass.getConstructor(argtypes);
@@ -156,9 +165,16 @@ public class LogSource {
     }
 
     /**
-     * Set the log implementation/log implementation factory by class.
-     * The given class must implement {@link Log}, and provide a constructor
-     * that takes a single {@link String} argument (containing the name of the log).
+     * Set the log implementation/log implementation factory by class. The given class must implement {@link Log}, and provide a constructor that takes a single
+     * {@link String} argument (containing the name of the log).
+     *
+     * @param logclass class.
+     * @throws LinkageError                if there is missing dependency.
+     * @throws ExceptionInInitializerError unexpected exception has occurred in a static initializer.
+     * @throws NoSuchMethodException       if a matching method is not found.
+     * @throws SecurityException           If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the
+     *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
+     *                                     s.checkPackageAccess()} denies access to the package of this class.
      */
     static public void setLogImplementation(final Class logclass)
         throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
@@ -167,12 +183,22 @@ public class LogSource {
         logImplctor = logclass.getConstructor(argtypes);
     }
 
-    /** Get a {@code Log} instance by class name. */
+    /**
+     * Get a {@code Log} instance by class name.
+     *
+     * @param name Class name.
+     * @return a {@code Log} instance.
+     */
     static public Log getInstance(final String name) {
         return (Log) logs.computeIfAbsent(name, k -> makeNewLogInstance(name));
     }
 
-    /** Get a {@code Log} instance by class. */
+    /**
+     * Get a {@code Log} instance by class.
+     *
+     * @param clazz a Class.
+     * @return a {@code Log} instance.
+     */
     static public Log getInstance(final Class clazz) {
         return getInstance(clazz.getName());
     }
@@ -193,6 +219,7 @@ public class LogSource {
      * are on a JDK 1.4 or later system, or NoOpLog if neither of the above conditions is true.
      *
      * @param name the log name (or category)
+     * @return a new instance.
      */
     static public Log makeNewLogInstance(final String name) {
         Log log;
@@ -210,6 +237,9 @@ public class LogSource {
 
     /**
      * Returns a {@link String} array containing the names of
+     * all logs known to me.
+     *
+     * @return a {@link String} array containing the names of
      * all logs known to me.
      */
     static public String[] getLogNames() {

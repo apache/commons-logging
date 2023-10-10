@@ -90,14 +90,17 @@ public class Log4JLogger implements Log, Serializable {
         traceLevel = _traceLevel;
     }
 
-    // ------------------------------------------------------------ Constructor
-
+    /**
+     * Constructs a new instance.
+     */
     public Log4JLogger() {
         name = null;
     }
 
     /**
      * Base constructor.
+     *
+     * @param name name.
      */
     public Log4JLogger(final String name) {
         this.name = name;
@@ -106,6 +109,8 @@ public class Log4JLogger implements Log, Serializable {
 
     /**
      * For use with a log4j factory.
+     *
+     * @param logger Logger.
      */
     public Log4JLogger(final Logger logger) {
         if (logger == null) {
@@ -259,7 +264,9 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Return the native Logger instance we are using.
+     * Gets the native Logger instance we are using.
+     *
+     * @return the native Logger instance we are using.
      */
     public Logger getLogger() {
         Logger result = logger;
@@ -275,7 +282,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for {@code DEBUG} priority.
+     * Tests whether the Log4j Logger used is enabled for {@code DEBUG} priority.
      */
     @Override
     public boolean isDebugEnabled() {
@@ -283,7 +290,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for {@code ERROR} priority.
+     * Tests whether the Log4j Logger used is enabled for {@code ERROR} priority.
      */
     @Override
     public boolean isErrorEnabled() {
@@ -291,7 +298,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for {@code FATAL} priority.
+     * Tests whether the Log4j Logger used is enabled for {@code FATAL} priority.
      */
     @Override
     public boolean isFatalEnabled() {
@@ -299,7 +306,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for {@code INFO} priority.
+     * Tests whether the Log4j Logger used is enabled for {@code INFO} priority.
      */
     @Override
     public boolean isInfoEnabled() {
@@ -307,7 +314,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for {@code TRACE} priority.
+     * Tests whether the Log4j Logger used is enabled for {@code TRACE} priority.
      * When using a log4j version that does not support the TRACE level, this call
      * will report whether {@code DEBUG} is enabled or not.
      */
@@ -317,7 +324,7 @@ public class Log4JLogger implements Log, Serializable {
     }
 
     /**
-     * Check whether the Log4j Logger used is enabled for {@code WARN} priority.
+     * Tests whether the Log4j Logger used is enabled for {@code WARN} priority.
      */
     @Override
     public boolean isWarnEnabled() {

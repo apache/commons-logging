@@ -259,6 +259,8 @@ public class SimpleLog implements Log, Serializable {
 
     /**
      * Get logging level.
+     *
+     * @return  logging level.
      */
     public int getLevel() {
         return currentLogLevel;
@@ -358,9 +360,10 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Is the given log level currently enabled?
+     * Tests whether the given log level currently enabled.
      *
      * @param logLevel is this level enabled?
+     * @return whether the given log level currently enabled. 
      */
     protected boolean isLevelEnabled(final int logLevel) {
         // log level are numerically ordered so can use simple numeric

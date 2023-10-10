@@ -47,9 +47,19 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * The underlying Logger implementation we are using.
      */
     protected transient Logger logger;
+
+    /**
+     * Name.
+     */
     protected String name;
+    
+    /** Source class name. */
     private String sourceClassName = "unknown";
+    
+    /** Source method name. */
     private String sourceMethodName = "unknown";
+    
+    /** Class and method found flag. */
     private boolean classAndMethodFound;
 
     /**
@@ -194,6 +204,8 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
 
     /**
      * Return the native Logger instance we are using.
+     *
+     * @return the native Logger instance we are using.
      */
     public Logger getLogger() {
         if (logger == null) {

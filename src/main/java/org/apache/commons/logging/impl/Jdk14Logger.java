@@ -53,8 +53,6 @@ public class Jdk14Logger implements Log, Serializable {
         logger = getLogger();
     }
 
-    // ----------------------------------------------------- Instance Variables
-
     /**
      * The underlying Logger implementation we are using.
      */
@@ -65,9 +63,13 @@ public class Jdk14Logger implements Log, Serializable {
      */
     protected String name;
 
-    // --------------------------------------------------------- Protected Methods
-
-    protected void log( final Level level, final String msg, final Throwable ex ) {
+    /**
+     * Logs a message at the given level. 
+     * @param level The level.
+     * @param msg The message.
+     * @param ex The exception.
+     */
+    protected void log(final Level level, final String msg, final Throwable ex) {
         final Logger logger = getLogger();
         if (logger.isLoggable(level)) {
             // Hack (?) to get the stack trace.
@@ -77,19 +79,17 @@ public class Jdk14Logger implements Log, Serializable {
             final String cname = name;
             String method = "unknown";
             // Caller will be the third element
-            if ( locations != null && locations.length > 2 ) {
+            if (locations != null && locations.length > 2) {
                 final StackTraceElement caller = locations[2];
                 method = caller.getMethodName();
             }
-            if ( ex == null ) {
-                logger.logp( level, cname, method, msg );
+            if (ex == null) {
+                logger.logp(level, cname, method, msg);
             } else {
-                logger.logp( level, cname, method, msg, ex );
+                logger.logp(level, cname, method, msg, ex);
             }
         }
     }
-
-    // --------------------------------------------------------- Public Methods
 
     /**
      * Logs a message with {@code java.util.logging.Level.FINE}.
@@ -162,6 +162,8 @@ public class Jdk14Logger implements Log, Serializable {
 
     /**
      * Return the native Logger instance we are using.
+     *
+     * @return  the native Logger instance we are using.
      */
     public Logger getLogger() {
         if (logger == null) {
