@@ -18,9 +18,10 @@
 package org.apache.commons.logging.simple;
 
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.text.DateFormat;
+
 import org.apache.commons.logging.impl.SimpleLog;
 
 

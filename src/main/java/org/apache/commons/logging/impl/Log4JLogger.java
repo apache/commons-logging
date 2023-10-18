@@ -18,10 +18,11 @@
 package org.apache.commons.logging.impl;
 
 import java.io.Serializable;
+
 import org.apache.commons.logging.Log;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.apache.log4j.Level;
 
 /**
  * Implementation of {@link Log} that maps directly to a

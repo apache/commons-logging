@@ -17,8 +17,9 @@
 
 package org.apache.commons.logging;
 
-import junit.framework.TestCase;
 import java.util.Hashtable;
+
+import junit.framework.TestCase;
 
 /**
  * Tests behavior when the property is misconfigured.

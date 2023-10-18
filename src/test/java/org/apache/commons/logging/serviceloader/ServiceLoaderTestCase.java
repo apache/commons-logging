@@ -17,6 +17,7 @@
 package org.apache.commons.logging.serviceloader;
 
 import junit.framework.TestCase;
+
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.serviceloader.internal.DummyLogFactory;
 

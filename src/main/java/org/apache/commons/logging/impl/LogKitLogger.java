@@ -18,9 +18,10 @@
 package org.apache.commons.logging.impl;
 
 import java.io.Serializable;
-import org.apache.log.Logger;
-import org.apache.log.Hierarchy;
+
 import org.apache.commons.logging.Log;
+import org.apache.log.Hierarchy;
+import org.apache.log.Logger;
 
 /**
  * Implementation of {@code org.apache.commons.logging.Log}

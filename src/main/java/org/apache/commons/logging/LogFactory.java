@@ -17,11 +17,9 @@
 
 package org.apache.commons.logging;
 
-import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.ref.WeakReference;
 import java.net.URL;
