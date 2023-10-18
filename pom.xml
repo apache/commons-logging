@@ -391,6 +391,9 @@ under the License.
             </goals>
             <configuration>
               <runOrder>${failsafe.runorder}</runOrder>
+              <excludes>
+                <exclude>org/apache/commons/logging/serviceloader/**</exclude>
+              </excludes>
               <includes>
                 <include>**/*TestCase.java</include>
               </includes>
@@ -406,6 +409,24 @@ under the License.
                   <commons-logging-adapters>target/${project.artifactId}-adapters-${project.version}.jar</commons-logging-adapters>
                   <testclasses>target/commons-logging-tests.jar</testclasses>
               </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <!--
+            - The ServiceLoaderTestCase uses an alternative implementation of LogFactory,
+            - therefore it requires a separate execution.
+            -->
+          <execution>
+            <id>serviceLoader-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <additionalClasspathElements>
+                <additionalClasspathElement>${project.build.testOutputDirectory}/serviceloader</additionalClasspathElement>
+              </additionalClasspathElements>
+              <includes>
+                <include>org/apache/commons/logging/serviceloader/*TestCase.java</include>
+              </includes>
             </configuration>
           </execution>
         </executions>

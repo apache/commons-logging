@@ -30,7 +30,10 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
 
 /**
  * Factory for creating {@link Log} instances, with discovery and
@@ -188,6 +191,12 @@ public abstract class LogFactory {
      * cache it here.
      */
     private static final WeakReference<ClassLoader> thisClassLoaderRef;
+
+    /**
+     * Maximum number of {@link ServiceLoader} errors to ignore, while
+     * looking for an implementation.
+     */
+    private static final int MAX_BROKEN_SERVICES = 3;
 
     // ----------------------------------------------------------- Constructors
 
@@ -507,42 +516,25 @@ public abstract class LogFactory {
 
         if (factory == null) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("[LOOKUP] Looking for a resource file of name [" + SERVICE_ID +
-                              "] to define the LogFactory subclass to use...");
+                logDiagnostic("[LOOKUP] Using ServiceLoader  to define the LogFactory subclass to use...");
             }
             try {
-                final InputStream is = getResourceAsStream(contextClassLoader, SERVICE_ID);
+                final ServiceLoader<LogFactory> serviceLoader = ServiceLoader.load(LogFactory.class);
+                final Iterator<LogFactory> iterator = serviceLoader.iterator();
 
-                if ( is != null ) {
-                    // This code is needed by EBCDIC and other strange systems.
-                    // It's a fix for bugs reported in xerces
-                    BufferedReader rd;
+                int i = MAX_BROKEN_SERVICES;
+                while (factory == null && i-- > 0) {
                     try {
-                        rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                    } catch (final java.io.UnsupportedEncodingException e) {
-                        rd = new BufferedReader(new InputStreamReader(is));
-                    }
-
-                    String factoryClassName;
-                    try {
-                        factoryClassName = rd.readLine();
-                    } finally {
-                        rd.close();
-                    }
-
-                    if (factoryClassName != null && ! factoryClassName.isEmpty()) {
-                        if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP]  Creating an instance of LogFactory class " +
-                                          factoryClassName +
-                                          " as specified by file '" + SERVICE_ID +
-                                          "' which was present in the path of the context classloader.");
+                        if (iterator.hasNext()) {
+                            factory = iterator.next();
                         }
-                        factory = newFactory(factoryClassName, baseClassLoader, contextClassLoader );
-                    }
-                } else {
-                    // is == null
-                    if (isDiagnosticsEnabled()) {
-                        logDiagnostic("[LOOKUP] No resource file with name '" + SERVICE_ID + "' found.");
+                    } catch (final ServiceConfigurationError | LinkageError ex) {
+                        if (isDiagnosticsEnabled()) {
+                            logDiagnostic("[LOOKUP] An exception occurred while trying to find an" +
+                                    " instance of LogFactory" +
+                                    ": [" + trim(ex.getMessage()) +
+                                    "]. Trying alternative implementations...");
+                        }
                     }
                 }
             } catch (final Exception ex) {
