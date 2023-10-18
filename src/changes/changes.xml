@@ -65,7 +65,10 @@ The <action> type attribute can be add,update,fix,remove.
       </action>
       <action type="fix" dev="ggregory" due-to="step-security-bot, Gary Gregory">
         [StepSecurity] ci: Harden GitHub Actions #145.
-      </action>            
+      </action>
+      <action issue="LOGGING-185" type="fix" dev="pkarwasz" due-to="Piotr P. Karwasz">
+        Replace custom code with `ServiceLoader` call.
+      </action>
       <!-- UPDATES -->
       <action dev="ggregory" type="update" due-to="Gary Gregory">
         Bump Java from 6 to 8.
