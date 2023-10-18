@@ -889,7 +889,7 @@ public abstract class LogFactory {
     /**
      * Return a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
      * used to load this (abstract) LogFactory.
-     * <h4>ClassLoader conflicts</h4>
+     * <p><b>ClassLoader conflicts</b></p>
      * <p>
      * Note that there can be problems if the specified ClassLoader is not the same as the classloader that loaded this class, ie when loading a concrete
      * LogFactory subclass via a context classloader.
