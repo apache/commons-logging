@@ -34,6 +34,33 @@ import org.apache.commons.logging.AbstractLogTest;
  */
 public class NoOpLogTestCase extends AbstractLogTest
 {
+    private void checkLog(final Log log) {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.NoOpLog",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        // Note that *everything* is permanently disabled for NoOpLog
+        assertFalse(log.isTraceEnabled());
+        assertFalse(log.isDebugEnabled());
+        assertFalse(log.isInfoEnabled());
+        assertFalse(log.isWarnEnabled());
+        assertFalse(log.isErrorEnabled());
+        assertFalse(log.isFatalEnabled());
+    }
+
+    /**
+     * Override the abstract method from the parent class so that the
+     * inherited tests can access the right Log object type.
+     */
+    @Override
+    public Log getLogObject()
+    {
+        return new NoOpLog(this.getClass().getName());
+    }
+
     /**
      * Set up instance variables required by this test case.
      */
@@ -55,15 +82,8 @@ public class NoOpLogTestCase extends AbstractLogTest
         System.getProperties().remove("org.apache.commons.logging.Log");
     }
 
-    /**
-     * Override the abstract method from the parent class so that the
-     * inherited tests can access the right Log object type.
-     */
-    @Override
-    public Log getLogObject()
-    {
-        return new NoOpLog(this.getClass().getName());
-    }
+
+    // -------------------------------------------------------- Support Methods
 
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
@@ -82,25 +102,5 @@ public class NoOpLogTestCase extends AbstractLogTest
         ois.close();
 
         checkLog(log);
-    }
-
-
-    // -------------------------------------------------------- Support Methods
-
-    private void checkLog(final Log log) {
-
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.impl.NoOpLog",
-                     log.getClass().getName());
-
-        // Can we call level checkers with no exceptions?
-        // Note that *everything* is permanently disabled for NoOpLog
-        assertFalse(log.isTraceEnabled());
-        assertFalse(log.isDebugEnabled());
-        assertFalse(log.isInfoEnabled());
-        assertFalse(log.isWarnEnabled());
-        assertFalse(log.isErrorEnabled());
-        assertFalse(log.isFatalEnabled());
     }
 }

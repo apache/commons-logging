@@ -83,22 +83,12 @@ public class LogFactoryImpl extends LogFactory {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Public no-arguments constructor required by the lookup mechanism.
-     */
-    public LogFactoryImpl() {
-        initDiagnostics();  // method on this object
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("Instance created.");
-        }
-    }
-
-    // ----------------------------------------------------- Manifest Constants
-
-    /**
      * The name ({@code org.apache.commons.logging.Log}) of the system
      * property identifying our {@link Log} implementation class.
      */
     public static final String LOG_PROPERTY = "org.apache.commons.logging.Log";
+
+    // ----------------------------------------------------- Manifest Constants
 
     /**
      * The deprecated system property used for backwards compatibility with
@@ -168,7 +158,78 @@ public class LogFactoryImpl extends LogFactory {
             "org.apache.commons.logging.impl.SimpleLog"
     };
 
+    /**
+     * Workaround for bug in Java1.2; in theory this method is not needed. {@link LogFactory#getClassLoader(Class)}.
+     *
+     * @param clazz See {@link LogFactory#getClassLoader(Class)}.
+     * @return See {@link LogFactory#getClassLoader(Class)}.
+     * @since 1.1
+     */
+    protected static ClassLoader getClassLoader(final Class clazz) {
+        return LogFactory.getClassLoader(clazz);
+    }
+
     // ----------------------------------------------------- Instance Variables
+
+    /**
+     * Gets the context ClassLoader.
+     * This method is a workaround for a java 1.2 compiler bug.
+     *
+     * @return the context ClassLoader
+     * @since 1.1
+     */
+    protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
+        return LogFactory.getContextClassLoader();
+    }
+
+    /**
+     * Calls LogFactory.directGetContextClassLoader under the control of an
+     * AccessController class. This means that java code running under a
+     * security manager that forbids access to ClassLoaders will still work
+     * if this class is given appropriate privileges, even when the caller
+     * doesn't have such privileges. Without using an AccessController, the
+     * the entire call stack must have the privilege before the call is
+     * allowed.
+     *
+     * @return the context classloader associated with the current thread,
+     * or null if security doesn't allow it.
+     *
+     * @throws LogConfigurationException if there was some weird error while
+     * attempting to get the context classloader.
+     *
+     * @throws SecurityException if the current java security policy doesn't
+     * allow this class to access the context classloader.
+     */
+    private static ClassLoader getContextClassLoaderInternal()
+        throws LogConfigurationException {
+        return (ClassLoader)AccessController.doPrivileged(
+            (PrivilegedAction) LogFactory::directGetContextClassLoader);
+    }
+
+    /**
+     * Read the specified system property, using an AccessController so that
+     * the property can be read if JCL has been granted the appropriate
+     * security rights even if the calling code has not.
+     * <p>
+     * Take care not to expose the value returned by this method to the
+     * calling application in any way; otherwise the calling app can use that
+     * info to access data that should not be available to it.
+     */
+    private static String getSystemProperty(final String key, final String def)
+        throws SecurityException {
+        return (String) AccessController.doPrivileged(
+                (PrivilegedAction) () -> System.getProperty(key, def));
+    }
+
+    /**
+     * Workaround for bug in Java1.2; in theory this method is not needed.
+     *
+     * @return Same as {@link LogFactory#isDiagnosticsEnabled()}.
+     * @see LogFactory#isDiagnosticsEnabled()
+     */
+    protected static boolean isDiagnosticsEnabled() {
+        return LogFactory.isDiagnosticsEnabled();
+    }
 
     /**
      * Determines whether logging classes should be loaded using the thread-context
@@ -217,6 +278,8 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Method logMethod;
 
+    // --------------------------------------------------------- Public Methods
+
     /**
      * The signature of the {@code setLogFactory} method to be used.
      */
@@ -237,707 +300,14 @@ public class LogFactoryImpl extends LogFactory {
      */
     private boolean allowFlawedHierarchy;
 
-    // --------------------------------------------------------- Public Methods
-
     /**
-     * Return the configuration attribute with the specified name (if any),
-     * or {@code null} if there is no such attribute.
-     *
-     * @param name Name of the attribute to return
+     * Public no-arguments constructor required by the lookup mechanism.
      */
-    @Override
-    public Object getAttribute(final String name) {
-        return attributes.get(name);
-    }
-
-    /**
-     * Return an array containing the names of all currently defined
-     * configuration attributes.  If there are no such attributes, a zero
-     * length array is returned.
-     */
-    @Override
-    public String[] getAttributeNames() {
-        return (String[]) attributes.keySet().toArray(EMPTY_STRING_ARRAY);
-    }
-
-    /**
-     * Convenience method to derive a name from the specified class and
-     * call {@code getInstance(String)} with it.
-     *
-     * @param clazz Class for which a suitable Log name will be derived
-     *
-     * @throws LogConfigurationException if a suitable {@code Log}
-     *  instance cannot be returned
-     */
-    @Override
-    public Log getInstance(final Class clazz) throws LogConfigurationException {
-        return getInstance(clazz.getName());
-    }
-
-    /**
-     * <p>Construct (if necessary) and return a {@code Log} instance,
-     * using the factory's current set of configuration attributes.</p>
-     *
-     * <p><strong>NOTE</strong> - Depending upon the implementation of
-     * the {@code LogFactory} you are using, the {@code Log}
-     * instance you are returned may or may not be local to the current
-     * application, and may or may not be returned again on a subsequent
-     * call with the same name argument.</p>
-     *
-     * @param name Logical name of the {@code Log} instance to be
-     *  returned (the meaning of this name is only known to the underlying
-     *  logging implementation that is being wrapped)
-     *
-     * @throws LogConfigurationException if a suitable {@code Log}
-     *  instance cannot be returned
-     */
-    @Override
-    public Log getInstance(final String name) throws LogConfigurationException {
-        Log instance = (Log) instances.get(name);
-        if (instance == null) {
-            instance = newInstance(name);
-            instances.put(name, instance);
-        }
-        return instance;
-    }
-
-    /**
-     * Release any internal references to previously created
-     * {@link org.apache.commons.logging.Log}
-     * instances returned by this factory.  This is useful in environments
-     * like servlet containers, which implement application reloading by
-     * throwing away a ClassLoader.  Dangling references to objects in that
-     * class loader would prevent garbage collection.
-     */
-    @Override
-    public void release() {
-
-        logDiagnostic("Releasing all known loggers");
-        instances.clear();
-    }
-
-    /**
-     * Remove any configuration attribute associated with the specified name.
-     * If there is no such attribute, no action is taken.
-     *
-     * @param name Name of the attribute to remove
-     */
-    @Override
-    public void removeAttribute(final String name) {
-        attributes.remove(name);
-    }
-
-    /**
-     * Set the configuration attribute with the specified name.  Calling
-     * this with a {@code null} value is equivalent to calling
-     * {@code removeAttribute(name)}.
-     * <p>
-     * This method can be used to set logging configuration programmatically
-     * rather than via system properties. It can also be used in code running
-     * within a container (such as a webapp) to configure behavior on a
-     * per-component level instead of globally as system properties would do.
-     * To use this method instead of a system property, call
-     * <pre>
-     * LogFactory.getFactory().setAttribute(...)
-     * </pre>
-     * This must be done before the first Log object is created; configuration
-     * changes after that point will be ignored.
-     * <p>
-     * This method is also called automatically if LogFactory detects a
-     * commons-logging.properties file; every entry in that file is set
-     * automatically as an attribute here.
-     *
-     * @param name Name of the attribute to set
-     * @param value Value of the attribute to set, or {@code null}
-     *  to remove any setting for this attribute
-     */
-    @Override
-    public void setAttribute(final String name, final Object value) {
-        if (logConstructor != null) {
-            logDiagnostic("setAttribute: call too late; configuration already performed.");
-        }
-
-        if (value == null) {
-            attributes.remove(name);
-        } else {
-            attributes.put(name, value);
-        }
-
-        if (name.equals(TCCL_KEY)) {
-            useTCCL = value != null && Boolean.parseBoolean(value.toString());
-        }
-    }
-
-    // ------------------------------------------------------
-    // Static Methods
-    //
-    // These methods only defined as workarounds for a java 1.2 bug;
-    // theoretically none of these are needed.
-    // ------------------------------------------------------
-
-    /**
-     * Gets the context ClassLoader.
-     * This method is a workaround for a java 1.2 compiler bug.
-     *
-     * @return the context ClassLoader
-     * @since 1.1
-     */
-    protected static ClassLoader getContextClassLoader() throws LogConfigurationException {
-        return LogFactory.getContextClassLoader();
-    }
-
-    /**
-     * Workaround for bug in Java1.2; in theory this method is not needed.
-     *
-     * @return Same as {@link LogFactory#isDiagnosticsEnabled()}.
-     * @see LogFactory#isDiagnosticsEnabled()
-     */
-    protected static boolean isDiagnosticsEnabled() {
-        return LogFactory.isDiagnosticsEnabled();
-    }
-
-    /**
-     * Workaround for bug in Java1.2; in theory this method is not needed. {@link LogFactory#getClassLoader(Class)}.
-     *
-     * @param clazz See {@link LogFactory#getClassLoader(Class)}.
-     * @return See {@link LogFactory#getClassLoader(Class)}.
-     * @since 1.1
-     */
-    protected static ClassLoader getClassLoader(final Class clazz) {
-        return LogFactory.getClassLoader(clazz);
-    }
-
-    // ------------------------------------------------------ Protected Methods
-
-    /**
-     * Calculate and cache a string that uniquely identifies this instance,
-     * including which classloader the object was loaded from.
-     * <p>
-     * This string will later be prefixed to each "internal logging" message
-     * emitted, so that users can clearly see any unexpected behavior.
-     * <p>
-     * Note that this method does not detect whether internal logging is
-     * enabled or not, nor where to output stuff if it is; that is all
-     * handled by the parent LogFactory class. This method just computes
-     * its own unique prefix for log messages.
-     */
-    private void initDiagnostics() {
-        // It would be nice to include an identifier of the context classloader
-        // that this LogFactoryImpl object is responsible for. However that
-        // isn't possible as that information isn't available. It is possible
-        // to figure this out by looking at the logging from LogFactory to
-        // see the context & impl ids from when this object was instantiated,
-        // in order to link the impl id output as this object's prefix back to
-        // the context it is intended to manage.
-        // Note that this prefix should be kept consistent with that
-        // in LogFactory.
-        final Class clazz = this.getClass();
-        final ClassLoader classLoader = getClassLoader(clazz);
-        String classLoaderName;
-        try {
-            if (classLoader == null) {
-                classLoaderName = "BOOTLOADER";
-            } else {
-                classLoaderName = objectId(classLoader);
-            }
-        } catch (final SecurityException e) {
-            classLoaderName = "UNKNOWN";
-        }
-        diagnosticPrefix = "[LogFactoryImpl@" + System.identityHashCode(this) + " from " + classLoaderName + "] ";
-    }
-
-    /**
-     * Output a diagnostic message to a user-specified destination (if the
-     * user has enabled diagnostic logging).
-     *
-     * @param msg diagnostic message
-     * @since 1.1
-     */
-    protected void logDiagnostic(final String msg) {
+    public LogFactoryImpl() {
+        initDiagnostics();  // method on this object
         if (isDiagnosticsEnabled()) {
-            logRawDiagnostic(diagnosticPrefix + msg);
+            logDiagnostic("Instance created.");
         }
-    }
-
-    /**
-     * Return the fully qualified Java classname of the {@link Log} implementation we will be using.
-     *
-     * @return the fully qualified Java classname of the {@link Log} implementation we will be using.
-     * @deprecated Never invoked by this class; subclasses should not assume it will be.
-     */
-    @Deprecated
-    protected String getLogClassName() {
-        if (logClassName == null) {
-            discoverLogImplementation(getClass().getName());
-        }
-
-        return logClassName;
-    }
-
-
-    /**
-     * <p>
-     * Return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
-     * </p>
-     *
-     * <p>
-     * <strong>IMPLEMENTATION NOTE</strong> - Race conditions caused by calling this method from more than one thread are ignored, because the same
-     * {@code Constructor} instance will ultimately be derived in all circumstances.
-     * </p>
-     *
-     * @return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
-     *
-     * @throws LogConfigurationException if a suitable constructor cannot be returned
-     *
-     * @deprecated Never invoked by this class; subclasses should not assume it will be.
-     */
-    @Deprecated
-    protected Constructor getLogConstructor()
-        throws LogConfigurationException {
-
-        // Return the previously identified Constructor (if any)
-        if (logConstructor == null) {
-            discoverLogImplementation(getClass().getName());
-        }
-
-        return logConstructor;
-    }
-
-    /**
-     * Tests whether <em>JDK 1.3 with Lumberjack</em> logging available.
-     *
-     * @return whether <em>JDK 1.3 with Lumberjack</em> logging available.
-     * @deprecated Never invoked by this class; subclasses should not assume it will be.
-     */
-    @Deprecated
-    protected boolean isJdk13LumberjackAvailable() {
-        return isLogLibraryAvailable(
-                "Jdk13Lumberjack",
-                "org.apache.commons.logging.impl.Jdk13LumberjackLogger");
-    }
-
-    /**
-     * Tests {@code true} whether <em>JDK 1.4 or later</em> logging is available. Also checks that the {@code Throwable} class supports {@code getStackTrace()},
-     * which is required by Jdk14Logger.
-     *
-     * @return Whether <em>JDK 1.4 or later</em> logging is available.
-     *
-     * @deprecated Never invoked by this class; subclasses should not assume it will be.
-     */
-    @Deprecated
-    protected boolean isJdk14Available() {
-        return isLogLibraryAvailable("Jdk14", "org.apache.commons.logging.impl.Jdk14Logger");
-    }
-
-    /**
-     * Tests whether a <em>Log4J</em> implementation available.
-     *
-     * @return whether a <em>Log4J</em> implementation available.
-     *
-     * @deprecated Never invoked by this class; subclasses should not assume it will be.
-     */
-    @Deprecated
-    protected boolean isLog4JAvailable() {
-        return isLogLibraryAvailable("Log4J", LOGGING_IMPL_LOG4J_LOGGER);
-    }
-
-    /**
-     * Create and return a new {@link org.apache.commons.logging.Log} instance for the specified name.
-     *
-     * @param name Name of the new logger
-     * @return a new {@link org.apache.commons.logging.Log}
-     *
-     * @throws LogConfigurationException if a new instance cannot be created
-     */
-    protected Log newInstance(final String name) throws LogConfigurationException {
-        Log instance;
-        try {
-            if (logConstructor == null) {
-                instance = discoverLogImplementation(name);
-            }
-            else {
-                final Object[] params = { name };
-                instance = (Log) logConstructor.newInstance(params);
-            }
-
-            if (logMethod != null) {
-                final Object[] params = { this };
-                logMethod.invoke(instance, params);
-            }
-
-            return instance;
-
-        } catch (final LogConfigurationException lce) {
-
-            // this type of exception means there was a problem in discovery
-            // and we've already output diagnostics about the issue, etc.;
-            // just pass it on
-            throw lce;
-
-        } catch (final InvocationTargetException e) {
-            // A problem occurred invoking the Constructor or Method
-            // previously discovered
-            final Throwable c = e.getTargetException();
-            throw new LogConfigurationException(c == null ? e : c);
-        } catch (final Throwable t) {
-            handleThrowable(t); // may re-throw t
-            // A problem occurred invoking the Constructor or Method
-            // previously discovered
-            throw new LogConfigurationException(t);
-        }
-    }
-
-    //  ------------------------------------------------------ Private Methods
-
-    /**
-     * Calls LogFactory.directGetContextClassLoader under the control of an
-     * AccessController class. This means that java code running under a
-     * security manager that forbids access to ClassLoaders will still work
-     * if this class is given appropriate privileges, even when the caller
-     * doesn't have such privileges. Without using an AccessController, the
-     * the entire call stack must have the privilege before the call is
-     * allowed.
-     *
-     * @return the context classloader associated with the current thread,
-     * or null if security doesn't allow it.
-     *
-     * @throws LogConfigurationException if there was some weird error while
-     * attempting to get the context classloader.
-     *
-     * @throws SecurityException if the current java security policy doesn't
-     * allow this class to access the context classloader.
-     */
-    private static ClassLoader getContextClassLoaderInternal()
-        throws LogConfigurationException {
-        return (ClassLoader)AccessController.doPrivileged(
-            (PrivilegedAction) LogFactory::directGetContextClassLoader);
-    }
-
-    /**
-     * Read the specified system property, using an AccessController so that
-     * the property can be read if JCL has been granted the appropriate
-     * security rights even if the calling code has not.
-     * <p>
-     * Take care not to expose the value returned by this method to the
-     * calling application in any way; otherwise the calling app can use that
-     * info to access data that should not be available to it.
-     */
-    private static String getSystemProperty(final String key, final String def)
-        throws SecurityException {
-        return (String) AccessController.doPrivileged(
-                (PrivilegedAction) () -> System.getProperty(key, def));
-    }
-
-    /**
-     * Fetch the parent classloader of a specified classloader.
-     * <p>
-     * If a SecurityException occurs, null is returned.
-     * <p>
-     * Note that this method is non-static merely so logDiagnostic is available.
-     */
-    private ClassLoader getParentClassLoader(final ClassLoader cl) {
-        try {
-            return (ClassLoader)AccessController.doPrivileged(
-                    (PrivilegedAction) () -> cl.getParent());
-        } catch (final SecurityException ex) {
-            logDiagnostic("[SECURITY] Unable to obtain parent classloader");
-            return null;
-        }
-
-    }
-
-    /**
-     * Utility method to check whether a particular logging library is
-     * present and available for use. Note that this does <i>not</i>
-     * affect the future behavior of this class.
-     */
-    private boolean isLogLibraryAvailable(final String name, final String classname) {
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("Checking for '" + name + "'.");
-        }
-        try {
-            final Log log = createLogFromClass(
-                        classname,
-                        this.getClass().getName(), // dummy category
-                        false);
-
-            if (log == null) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("Did not find '" + name + "'.");
-                }
-                return false;
-            }
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Found '" + name + "'.");
-            }
-            return true;
-        } catch (final LogConfigurationException e) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Logging system '" + name + "' is available but not useable.");
-            }
-            return false;
-        }
-    }
-
-    /**
-     * Attempt to find an attribute (see method setAttribute) or a
-     * system property with the provided name and return its value.
-     * <p>
-     * The attributes associated with this object are checked before
-     * system properties in case someone has explicitly called setAttribute,
-     * or a configuration property has been set in a commons-logging.properties
-     * file.
-     *
-     * @return the value associated with the property, or null.
-     */
-    private String getConfigurationValue(final String property) {
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("[ENV] Trying to get configuration for item " + property);
-        }
-
-        final Object valueObj =  getAttribute(property);
-        if (valueObj != null) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("[ENV] Found LogFactory attribute [" + valueObj + "] for " + property);
-            }
-            return valueObj.toString();
-        }
-
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("[ENV] No LogFactory attribute found for " + property);
-        }
-
-        try {
-            // warning: minor security hole here, in that we potentially read a system
-            // property that the caller cannot, then output it in readable form as a
-            // diagnostic message. However it's only ever JCL-specific properties
-            // involved here, so the harm is truly trivial.
-            final String value = getSystemProperty(property, null);
-            if (value != null) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("[ENV] Found system property [" + value + "] for " + property);
-                }
-                return value;
-            }
-
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("[ENV] No system property found for property " + property);
-            }
-        } catch (final SecurityException e) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("[ENV] Security prevented reading system property " + property);
-            }
-        }
-
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("[ENV] No configuration defined for item " + property);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the setting for the user-configurable behavior specified by key.
-     * If nothing has explicitly been set, then return dflt.
-     */
-    private boolean getBooleanConfiguration(final String key, final boolean dflt) {
-        final String val = getConfigurationValue(key);
-        if (val == null) {
-            return dflt;
-        }
-        return Boolean.parseBoolean(val);
-    }
-
-    /**
-     * Initialize a number of variables that control the behavior of this
-     * class and that can be tweaked by the user. This is done when the first
-     * logger is created, not in the constructor of this class, because we
-     * need to give the user a chance to call method setAttribute in order to
-     * configure this object.
-     */
-    private void initConfiguration() {
-        allowFlawedContext = getBooleanConfiguration(ALLOW_FLAWED_CONTEXT_PROPERTY, true);
-        allowFlawedDiscovery = getBooleanConfiguration(ALLOW_FLAWED_DISCOVERY_PROPERTY, true);
-        allowFlawedHierarchy = getBooleanConfiguration(ALLOW_FLAWED_HIERARCHY_PROPERTY, true);
-    }
-
-    /**
-     * Attempts to create a Log instance for the given category name.
-     * Follows the discovery process described in the class javadoc.
-     *
-     * @param logCategory the name of the log category
-     *
-     * @throws LogConfigurationException if an error in discovery occurs,
-     * or if no adapter at all can be instantiated
-     */
-    private Log discoverLogImplementation(final String logCategory)
-        throws LogConfigurationException {
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("Discovering a Log implementation...");
-        }
-
-        initConfiguration();
-
-        Log result = null;
-
-        // See if the user specified the Log implementation to use
-        final String specifiedLogClassName = findUserSpecifiedLogClassName();
-
-        if (specifiedLogClassName != null) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Attempting to load user-specified log class '" +
-                    specifiedLogClassName + "'...");
-            }
-
-            result = createLogFromClass(specifiedLogClassName,
-                                        logCategory,
-                                        true);
-            if (result == null) {
-                final StringBuilder messageBuffer =  new StringBuilder("User-specified log class '");
-                messageBuffer.append(specifiedLogClassName);
-                messageBuffer.append("' cannot be found or is not useable.");
-
-                // Mistyping or misspelling names is a common fault.
-                // Construct a good error message, if we can
-                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_LOG4J_LOGGER);
-                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_JDK14_LOGGER);
-                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_LUMBERJACK_LOGGER);
-                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_SIMPLE_LOGGER);
-                throw new LogConfigurationException(messageBuffer.toString());
-            }
-
-            return result;
-        }
-
-        // No user specified log; try to discover what's on the classpath
-        //
-        // Note that we deliberately loop here over classesToDiscover and
-        // expect method createLogFromClass to loop over the possible source
-        // classloaders. The effect is:
-        //   for each discoverable log adapter
-        //      for each possible classloader
-        //          see if it works
-        //
-        // It appears reasonable at first glance to do the opposite:
-        //   for each possible classloader
-        //     for each discoverable log adapter
-        //        see if it works
-        //
-        // The latter certainly has advantages for user-installable logging
-        // libraries such as log4j; in a webapp for example this code should
-        // first check whether the user has provided any of the possible
-        // logging libraries before looking in the parent classloader.
-        // Unfortunately, however, Jdk14Logger will always work in jvm>=1.4,
-        // and SimpleLog will always work in any JVM. So the loop would never
-        // ever look for logging libraries in the parent classpath. Yet many
-        // users would expect that putting log4j there would cause it to be
-        // detected (and this is the historical JCL behavior). So we go with
-        // the first approach. A user that has bundled a specific logging lib
-        // in a webapp should use a commons-logging.properties file or a
-        // service file in META-INF to force use of that logging lib anyway,
-        // rather than relying on discovery.
-
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic(
-                "No user-specified Log implementation; performing discovery" +
-                " using the standard supported logging implementations...");
-        }
-        for(int i=0; i<classesToDiscover.length && result == null; ++i) {
-            result = createLogFromClass(classesToDiscover[i], logCategory, true);
-        }
-
-        if (result == null) {
-            throw new LogConfigurationException
-                        ("No suitable Log implementation");
-        }
-
-        return result;
-    }
-
-    /**
-     * Appends message if the given name is similar to the candidate.
-     * @param messageBuffer {@code StringBuffer} the message should be appended to,
-     * not null
-     * @param name the (trimmed) name to be test against the candidate, not null
-     * @param candidate the candidate name (not null)
-     */
-    private void informUponSimilarName(final StringBuilder messageBuffer, final String name,
-            final String candidate) {
-        if (name.equals(candidate)) {
-            // Don't suggest a name that is exactly the same as the one the
-            // user tried...
-            return;
-        }
-
-        // If the user provides a name that is in the right package, and gets
-        // the first 5 characters of the adapter class right (ignoring case),
-        // then suggest the candidate adapter class name.
-        if (name.regionMatches(true, 0, candidate, 0, PKG_LEN + 5)) {
-            messageBuffer.append(" Did you mean '");
-            messageBuffer.append(candidate);
-            messageBuffer.append("'?");
-        }
-    }
-
-    /**
-     * Checks system properties and the attribute map for
-     * a Log implementation specified by the user under the
-     * property names {@link #LOG_PROPERTY} or {@link #LOG_PROPERTY_OLD}.
-     *
-     * @return classname specified by the user, or {@code null}
-     */
-    private String findUserSpecifiedLogClassName() {
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("Trying to get log class from attribute '" + LOG_PROPERTY + "'");
-        }
-        String specifiedClass = (String) getAttribute(LOG_PROPERTY);
-
-        if (specifiedClass == null) { // @deprecated
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Trying to get log class from attribute '" +
-                              LOG_PROPERTY_OLD + "'");
-            }
-            specifiedClass = (String) getAttribute(LOG_PROPERTY_OLD);
-        }
-
-        if (specifiedClass == null) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Trying to get log class from system property '" +
-                          LOG_PROPERTY + "'");
-            }
-            try {
-                specifiedClass = getSystemProperty(LOG_PROPERTY, null);
-            } catch (final SecurityException e) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("No access allowed to system property '" +
-                        LOG_PROPERTY + "' - " + e.getMessage());
-                }
-            }
-        }
-
-        if (specifiedClass == null) { // @deprecated
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Trying to get log class from system property '" +
-                          LOG_PROPERTY_OLD + "'");
-            }
-            try {
-                specifiedClass = getSystemProperty(LOG_PROPERTY_OLD, null);
-            } catch (final SecurityException e) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("No access allowed to system property '" +
-                        LOG_PROPERTY_OLD + "' - " + e.getMessage());
-                }
-            }
-        }
-
-        // Remove any whitespace; it's never valid in a classname so its
-        // presence just means a user mistake. As we know what they meant,
-        // we may as well strip the spaces.
-        if (specifiedClass != null) {
-            specifiedClass = specifiedClass.trim();
-        }
-
-        return specifiedClass;
     }
 
     /**
@@ -1115,6 +485,190 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
+     * Attempts to create a Log instance for the given category name.
+     * Follows the discovery process described in the class javadoc.
+     *
+     * @param logCategory the name of the log category
+     *
+     * @throws LogConfigurationException if an error in discovery occurs,
+     * or if no adapter at all can be instantiated
+     */
+    private Log discoverLogImplementation(final String logCategory)
+        throws LogConfigurationException {
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Discovering a Log implementation...");
+        }
+
+        initConfiguration();
+
+        Log result = null;
+
+        // See if the user specified the Log implementation to use
+        final String specifiedLogClassName = findUserSpecifiedLogClassName();
+
+        if (specifiedLogClassName != null) {
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Attempting to load user-specified log class '" +
+                    specifiedLogClassName + "'...");
+            }
+
+            result = createLogFromClass(specifiedLogClassName,
+                                        logCategory,
+                                        true);
+            if (result == null) {
+                final StringBuilder messageBuffer =  new StringBuilder("User-specified log class '");
+                messageBuffer.append(specifiedLogClassName);
+                messageBuffer.append("' cannot be found or is not useable.");
+
+                // Mistyping or misspelling names is a common fault.
+                // Construct a good error message, if we can
+                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_LOG4J_LOGGER);
+                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_JDK14_LOGGER);
+                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_LUMBERJACK_LOGGER);
+                informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_SIMPLE_LOGGER);
+                throw new LogConfigurationException(messageBuffer.toString());
+            }
+
+            return result;
+        }
+
+        // No user specified log; try to discover what's on the classpath
+        //
+        // Note that we deliberately loop here over classesToDiscover and
+        // expect method createLogFromClass to loop over the possible source
+        // classloaders. The effect is:
+        //   for each discoverable log adapter
+        //      for each possible classloader
+        //          see if it works
+        //
+        // It appears reasonable at first glance to do the opposite:
+        //   for each possible classloader
+        //     for each discoverable log adapter
+        //        see if it works
+        //
+        // The latter certainly has advantages for user-installable logging
+        // libraries such as log4j; in a webapp for example this code should
+        // first check whether the user has provided any of the possible
+        // logging libraries before looking in the parent classloader.
+        // Unfortunately, however, Jdk14Logger will always work in jvm>=1.4,
+        // and SimpleLog will always work in any JVM. So the loop would never
+        // ever look for logging libraries in the parent classpath. Yet many
+        // users would expect that putting log4j there would cause it to be
+        // detected (and this is the historical JCL behavior). So we go with
+        // the first approach. A user that has bundled a specific logging lib
+        // in a webapp should use a commons-logging.properties file or a
+        // service file in META-INF to force use of that logging lib anyway,
+        // rather than relying on discovery.
+
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic(
+                "No user-specified Log implementation; performing discovery" +
+                " using the standard supported logging implementations...");
+        }
+        for(int i=0; i<classesToDiscover.length && result == null; ++i) {
+            result = createLogFromClass(classesToDiscover[i], logCategory, true);
+        }
+
+        if (result == null) {
+            throw new LogConfigurationException
+                        ("No suitable Log implementation");
+        }
+
+        return result;
+    }
+
+    // ------------------------------------------------------
+    // Static Methods
+    //
+    // These methods only defined as workarounds for a java 1.2 bug;
+    // theoretically none of these are needed.
+    // ------------------------------------------------------
+
+    /**
+     * Checks system properties and the attribute map for
+     * a Log implementation specified by the user under the
+     * property names {@link #LOG_PROPERTY} or {@link #LOG_PROPERTY_OLD}.
+     *
+     * @return classname specified by the user, or {@code null}
+     */
+    private String findUserSpecifiedLogClassName() {
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Trying to get log class from attribute '" + LOG_PROPERTY + "'");
+        }
+        String specifiedClass = (String) getAttribute(LOG_PROPERTY);
+
+        if (specifiedClass == null) { // @deprecated
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Trying to get log class from attribute '" +
+                              LOG_PROPERTY_OLD + "'");
+            }
+            specifiedClass = (String) getAttribute(LOG_PROPERTY_OLD);
+        }
+
+        if (specifiedClass == null) {
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Trying to get log class from system property '" +
+                          LOG_PROPERTY + "'");
+            }
+            try {
+                specifiedClass = getSystemProperty(LOG_PROPERTY, null);
+            } catch (final SecurityException e) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("No access allowed to system property '" +
+                        LOG_PROPERTY + "' - " + e.getMessage());
+                }
+            }
+        }
+
+        if (specifiedClass == null) { // @deprecated
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Trying to get log class from system property '" +
+                          LOG_PROPERTY_OLD + "'");
+            }
+            try {
+                specifiedClass = getSystemProperty(LOG_PROPERTY_OLD, null);
+            } catch (final SecurityException e) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("No access allowed to system property '" +
+                        LOG_PROPERTY_OLD + "' - " + e.getMessage());
+                }
+            }
+        }
+
+        // Remove any whitespace; it's never valid in a classname so its
+        // presence just means a user mistake. As we know what they meant,
+        // we may as well strip the spaces.
+        if (specifiedClass != null) {
+            specifiedClass = specifiedClass.trim();
+        }
+
+        return specifiedClass;
+    }
+
+    /**
+     * Return the configuration attribute with the specified name (if any),
+     * or {@code null} if there is no such attribute.
+     *
+     * @param name Name of the attribute to return
+     */
+    @Override
+    public Object getAttribute(final String name) {
+        return attributes.get(name);
+    }
+
+    /**
+     * Return an array containing the names of all currently defined
+     * configuration attributes.  If there are no such attributes, a zero
+     * length array is returned.
+     */
+    @Override
+    public String[] getAttributeNames() {
+        return (String[]) attributes.keySet().toArray(EMPTY_STRING_ARRAY);
+    }
+
+    // ------------------------------------------------------ Protected Methods
+
+    /**
      * Return the classloader from which we should try to load the logging
      * adapter classes.
      * <p>
@@ -1191,6 +745,160 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
+     * Get the setting for the user-configurable behavior specified by key.
+     * If nothing has explicitly been set, then return dflt.
+     */
+    private boolean getBooleanConfiguration(final String key, final boolean dflt) {
+        final String val = getConfigurationValue(key);
+        if (val == null) {
+            return dflt;
+        }
+        return Boolean.parseBoolean(val);
+    }
+
+    /**
+     * Attempt to find an attribute (see method setAttribute) or a
+     * system property with the provided name and return its value.
+     * <p>
+     * The attributes associated with this object are checked before
+     * system properties in case someone has explicitly called setAttribute,
+     * or a configuration property has been set in a commons-logging.properties
+     * file.
+     *
+     * @return the value associated with the property, or null.
+     */
+    private String getConfigurationValue(final String property) {
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("[ENV] Trying to get configuration for item " + property);
+        }
+
+        final Object valueObj =  getAttribute(property);
+        if (valueObj != null) {
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("[ENV] Found LogFactory attribute [" + valueObj + "] for " + property);
+            }
+            return valueObj.toString();
+        }
+
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("[ENV] No LogFactory attribute found for " + property);
+        }
+
+        try {
+            // warning: minor security hole here, in that we potentially read a system
+            // property that the caller cannot, then output it in readable form as a
+            // diagnostic message. However it's only ever JCL-specific properties
+            // involved here, so the harm is truly trivial.
+            final String value = getSystemProperty(property, null);
+            if (value != null) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("[ENV] Found system property [" + value + "] for " + property);
+                }
+                return value;
+            }
+
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("[ENV] No system property found for property " + property);
+            }
+        } catch (final SecurityException e) {
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("[ENV] Security prevented reading system property " + property);
+            }
+        }
+
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("[ENV] No configuration defined for item " + property);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convenience method to derive a name from the specified class and
+     * call {@code getInstance(String)} with it.
+     *
+     * @param clazz Class for which a suitable Log name will be derived
+     *
+     * @throws LogConfigurationException if a suitable {@code Log}
+     *  instance cannot be returned
+     */
+    @Override
+    public Log getInstance(final Class clazz) throws LogConfigurationException {
+        return getInstance(clazz.getName());
+    }
+
+    /**
+     * <p>Construct (if necessary) and return a {@code Log} instance,
+     * using the factory's current set of configuration attributes.</p>
+     *
+     * <p><strong>NOTE</strong> - Depending upon the implementation of
+     * the {@code LogFactory} you are using, the {@code Log}
+     * instance you are returned may or may not be local to the current
+     * application, and may or may not be returned again on a subsequent
+     * call with the same name argument.</p>
+     *
+     * @param name Logical name of the {@code Log} instance to be
+     *  returned (the meaning of this name is only known to the underlying
+     *  logging implementation that is being wrapped)
+     *
+     * @throws LogConfigurationException if a suitable {@code Log}
+     *  instance cannot be returned
+     */
+    @Override
+    public Log getInstance(final String name) throws LogConfigurationException {
+        Log instance = (Log) instances.get(name);
+        if (instance == null) {
+            instance = newInstance(name);
+            instances.put(name, instance);
+        }
+        return instance;
+    }
+
+    /**
+     * Return the fully qualified Java classname of the {@link Log} implementation we will be using.
+     *
+     * @return the fully qualified Java classname of the {@link Log} implementation we will be using.
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
+     */
+    @Deprecated
+    protected String getLogClassName() {
+        if (logClassName == null) {
+            discoverLogImplementation(getClass().getName());
+        }
+
+        return logClassName;
+    }
+
+    /**
+     * <p>
+     * Return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
+     * </p>
+     *
+     * <p>
+     * <strong>IMPLEMENTATION NOTE</strong> - Race conditions caused by calling this method from more than one thread are ignored, because the same
+     * {@code Constructor} instance will ultimately be derived in all circumstances.
+     * </p>
+     *
+     * @return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
+     *
+     * @throws LogConfigurationException if a suitable constructor cannot be returned
+     *
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
+     */
+    @Deprecated
+    protected Constructor getLogConstructor()
+        throws LogConfigurationException {
+
+        // Return the previously identified Constructor (if any)
+        if (logConstructor == null) {
+            discoverLogImplementation(getClass().getName());
+        }
+
+        return logConstructor;
+    }
+
+    /**
      * Given two related classloaders, return the one which is a child of
      * the other.
      * <p>
@@ -1234,6 +942,26 @@ public class LogFactoryImpl extends LogFactory {
         }
 
         return null;
+    }
+
+    //  ------------------------------------------------------ Private Methods
+
+    /**
+     * Fetch the parent classloader of a specified classloader.
+     * <p>
+     * If a SecurityException occurs, null is returned.
+     * <p>
+     * Note that this method is non-static merely so logDiagnostic is available.
+     */
+    private ClassLoader getParentClassLoader(final ClassLoader cl) {
+        try {
+            return (ClassLoader)AccessController.doPrivileged(
+                    (PrivilegedAction) () -> cl.getParent());
+        } catch (final SecurityException ex) {
+            logDiagnostic("[SECURITY] Unable to obtain parent classloader");
+            return null;
+        }
+
     }
 
     /**
@@ -1387,6 +1115,278 @@ public class LogFactoryImpl extends LogFactory {
                 msg.append("' does not implement the Log interface.");
                 logDiagnostic(msg.toString());
             }
+        }
+    }
+
+    /**
+     * Appends message if the given name is similar to the candidate.
+     * @param messageBuffer {@code StringBuffer} the message should be appended to,
+     * not null
+     * @param name the (trimmed) name to be test against the candidate, not null
+     * @param candidate the candidate name (not null)
+     */
+    private void informUponSimilarName(final StringBuilder messageBuffer, final String name,
+            final String candidate) {
+        if (name.equals(candidate)) {
+            // Don't suggest a name that is exactly the same as the one the
+            // user tried...
+            return;
+        }
+
+        // If the user provides a name that is in the right package, and gets
+        // the first 5 characters of the adapter class right (ignoring case),
+        // then suggest the candidate adapter class name.
+        if (name.regionMatches(true, 0, candidate, 0, PKG_LEN + 5)) {
+            messageBuffer.append(" Did you mean '");
+            messageBuffer.append(candidate);
+            messageBuffer.append("'?");
+        }
+    }
+
+    /**
+     * Initialize a number of variables that control the behavior of this
+     * class and that can be tweaked by the user. This is done when the first
+     * logger is created, not in the constructor of this class, because we
+     * need to give the user a chance to call method setAttribute in order to
+     * configure this object.
+     */
+    private void initConfiguration() {
+        allowFlawedContext = getBooleanConfiguration(ALLOW_FLAWED_CONTEXT_PROPERTY, true);
+        allowFlawedDiscovery = getBooleanConfiguration(ALLOW_FLAWED_DISCOVERY_PROPERTY, true);
+        allowFlawedHierarchy = getBooleanConfiguration(ALLOW_FLAWED_HIERARCHY_PROPERTY, true);
+    }
+
+    /**
+     * Calculate and cache a string that uniquely identifies this instance,
+     * including which classloader the object was loaded from.
+     * <p>
+     * This string will later be prefixed to each "internal logging" message
+     * emitted, so that users can clearly see any unexpected behavior.
+     * <p>
+     * Note that this method does not detect whether internal logging is
+     * enabled or not, nor where to output stuff if it is; that is all
+     * handled by the parent LogFactory class. This method just computes
+     * its own unique prefix for log messages.
+     */
+    private void initDiagnostics() {
+        // It would be nice to include an identifier of the context classloader
+        // that this LogFactoryImpl object is responsible for. However that
+        // isn't possible as that information isn't available. It is possible
+        // to figure this out by looking at the logging from LogFactory to
+        // see the context & impl ids from when this object was instantiated,
+        // in order to link the impl id output as this object's prefix back to
+        // the context it is intended to manage.
+        // Note that this prefix should be kept consistent with that
+        // in LogFactory.
+        final Class clazz = this.getClass();
+        final ClassLoader classLoader = getClassLoader(clazz);
+        String classLoaderName;
+        try {
+            if (classLoader == null) {
+                classLoaderName = "BOOTLOADER";
+            } else {
+                classLoaderName = objectId(classLoader);
+            }
+        } catch (final SecurityException e) {
+            classLoaderName = "UNKNOWN";
+        }
+        diagnosticPrefix = "[LogFactoryImpl@" + System.identityHashCode(this) + " from " + classLoaderName + "] ";
+    }
+
+    /**
+     * Tests whether <em>JDK 1.3 with Lumberjack</em> logging available.
+     *
+     * @return whether <em>JDK 1.3 with Lumberjack</em> logging available.
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
+     */
+    @Deprecated
+    protected boolean isJdk13LumberjackAvailable() {
+        return isLogLibraryAvailable(
+                "Jdk13Lumberjack",
+                "org.apache.commons.logging.impl.Jdk13LumberjackLogger");
+    }
+
+    /**
+     * Tests {@code true} whether <em>JDK 1.4 or later</em> logging is available. Also checks that the {@code Throwable} class supports {@code getStackTrace()},
+     * which is required by Jdk14Logger.
+     *
+     * @return Whether <em>JDK 1.4 or later</em> logging is available.
+     *
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
+     */
+    @Deprecated
+    protected boolean isJdk14Available() {
+        return isLogLibraryAvailable("Jdk14", "org.apache.commons.logging.impl.Jdk14Logger");
+    }
+
+    /**
+     * Tests whether a <em>Log4J</em> implementation available.
+     *
+     * @return whether a <em>Log4J</em> implementation available.
+     *
+     * @deprecated Never invoked by this class; subclasses should not assume it will be.
+     */
+    @Deprecated
+    protected boolean isLog4JAvailable() {
+        return isLogLibraryAvailable("Log4J", LOGGING_IMPL_LOG4J_LOGGER);
+    }
+
+    /**
+     * Utility method to check whether a particular logging library is
+     * present and available for use. Note that this does <i>not</i>
+     * affect the future behavior of this class.
+     */
+    private boolean isLogLibraryAvailable(final String name, final String classname) {
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("Checking for '" + name + "'.");
+        }
+        try {
+            final Log log = createLogFromClass(
+                        classname,
+                        this.getClass().getName(), // dummy category
+                        false);
+
+            if (log == null) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("Did not find '" + name + "'.");
+                }
+                return false;
+            }
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Found '" + name + "'.");
+            }
+            return true;
+        } catch (final LogConfigurationException e) {
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Logging system '" + name + "' is available but not useable.");
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Output a diagnostic message to a user-specified destination (if the
+     * user has enabled diagnostic logging).
+     *
+     * @param msg diagnostic message
+     * @since 1.1
+     */
+    protected void logDiagnostic(final String msg) {
+        if (isDiagnosticsEnabled()) {
+            logRawDiagnostic(diagnosticPrefix + msg);
+        }
+    }
+
+    /**
+     * Create and return a new {@link org.apache.commons.logging.Log} instance for the specified name.
+     *
+     * @param name Name of the new logger
+     * @return a new {@link org.apache.commons.logging.Log}
+     *
+     * @throws LogConfigurationException if a new instance cannot be created
+     */
+    protected Log newInstance(final String name) throws LogConfigurationException {
+        Log instance;
+        try {
+            if (logConstructor == null) {
+                instance = discoverLogImplementation(name);
+            }
+            else {
+                final Object[] params = { name };
+                instance = (Log) logConstructor.newInstance(params);
+            }
+
+            if (logMethod != null) {
+                final Object[] params = { this };
+                logMethod.invoke(instance, params);
+            }
+
+            return instance;
+
+        } catch (final LogConfigurationException lce) {
+
+            // this type of exception means there was a problem in discovery
+            // and we've already output diagnostics about the issue, etc.;
+            // just pass it on
+            throw lce;
+
+        } catch (final InvocationTargetException e) {
+            // A problem occurred invoking the Constructor or Method
+            // previously discovered
+            final Throwable c = e.getTargetException();
+            throw new LogConfigurationException(c == null ? e : c);
+        } catch (final Throwable t) {
+            handleThrowable(t); // may re-throw t
+            // A problem occurred invoking the Constructor or Method
+            // previously discovered
+            throw new LogConfigurationException(t);
+        }
+    }
+
+    /**
+     * Release any internal references to previously created
+     * {@link org.apache.commons.logging.Log}
+     * instances returned by this factory.  This is useful in environments
+     * like servlet containers, which implement application reloading by
+     * throwing away a ClassLoader.  Dangling references to objects in that
+     * class loader would prevent garbage collection.
+     */
+    @Override
+    public void release() {
+
+        logDiagnostic("Releasing all known loggers");
+        instances.clear();
+    }
+
+    /**
+     * Remove any configuration attribute associated with the specified name.
+     * If there is no such attribute, no action is taken.
+     *
+     * @param name Name of the attribute to remove
+     */
+    @Override
+    public void removeAttribute(final String name) {
+        attributes.remove(name);
+    }
+
+    /**
+     * Set the configuration attribute with the specified name.  Calling
+     * this with a {@code null} value is equivalent to calling
+     * {@code removeAttribute(name)}.
+     * <p>
+     * This method can be used to set logging configuration programmatically
+     * rather than via system properties. It can also be used in code running
+     * within a container (such as a webapp) to configure behavior on a
+     * per-component level instead of globally as system properties would do.
+     * To use this method instead of a system property, call
+     * <pre>
+     * LogFactory.getFactory().setAttribute(...)
+     * </pre>
+     * This must be done before the first Log object is created; configuration
+     * changes after that point will be ignored.
+     * <p>
+     * This method is also called automatically if LogFactory detects a
+     * commons-logging.properties file; every entry in that file is set
+     * automatically as an attribute here.
+     *
+     * @param name Name of the attribute to set
+     * @param value Value of the attribute to set, or {@code null}
+     *  to remove any setting for this attribute
+     */
+    @Override
+    public void setAttribute(final String name, final Object value) {
+        if (logConstructor != null) {
+            logDiagnostic("setAttribute: call too late; configuration already performed.");
+        }
+
+        if (value == null) {
+            attributes.remove(name);
+        } else {
+            attributes.put(name, value);
+        }
+
+        if (name.equals(TCCL_KEY)) {
+            useTCCL = value != null && Boolean.parseBoolean(value.toString());
         }
     }
 }

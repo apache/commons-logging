@@ -134,54 +134,17 @@ public class LogSource {
 
     // ------------------------------------------------------------ Constructor
 
-    /** Don't allow others to create instances. */
-    private LogSource() {
+    /**
+     * Get a {@code Log} instance by class.
+     *
+     * @param clazz a Class.
+     * @return a {@code Log} instance.
+     */
+    static public Log getInstance(final Class clazz) {
+        return getInstance(clazz.getName());
     }
 
     // ---------------------------------------------------------- Class Methods
-
-    /**
-     * Set the log implementation/log implementation factory by the name of the class. The given class must implement {@link Log}, and provide a constructor
-     * that takes a single {@link String} argument (containing the name of the log).
-     *
-     * @param className class name.
-     * @throws LinkageError           if there is missing dependency.
-     * @throws NoSuchMethodException  if a matching method is not found.
-     * @throws SecurityException      If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the class
-     *                                loader for the current class and invocation of {@link SecurityManager#checkPackageAccess s.checkPackageAccess()} denies
-     *                                access to the package of this class.
-     * @throws ClassNotFoundException if the class cannot be located
-     */
-    static public void setLogImplementation(final String className)
-        throws LinkageError, NoSuchMethodException, SecurityException, ClassNotFoundException {
-        try {
-            final Class logclass = Class.forName(className);
-            final Class[] argtypes = new Class[1];
-            argtypes[0] = "".getClass();
-            logImplctor = logclass.getConstructor(argtypes);
-        } catch (final Throwable t) {
-            logImplctor = null;
-        }
-    }
-
-    /**
-     * Set the log implementation/log implementation factory by class. The given class must implement {@link Log}, and provide a constructor that takes a single
-     * {@link String} argument (containing the name of the log).
-     *
-     * @param logclass class.
-     * @throws LinkageError                if there is missing dependency.
-     * @throws ExceptionInInitializerError unexpected exception has occurred in a static initializer.
-     * @throws NoSuchMethodException       if a matching method is not found.
-     * @throws SecurityException           If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the
-     *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
-     *                                     s.checkPackageAccess()} denies access to the package of this class.
-     */
-    static public void setLogImplementation(final Class logclass)
-        throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
-        final Class[] argtypes = new Class[1];
-        argtypes[0] = "".getClass();
-        logImplctor = logclass.getConstructor(argtypes);
-    }
 
     /**
      * Get a {@code Log} instance by class name.
@@ -194,13 +157,14 @@ public class LogSource {
     }
 
     /**
-     * Get a {@code Log} instance by class.
+     * Returns a {@link String} array containing the names of
+     * all logs known to me.
      *
-     * @param clazz a Class.
-     * @return a {@code Log} instance.
+     * @return a {@link String} array containing the names of
+     * all logs known to me.
      */
-    static public Log getInstance(final Class clazz) {
-        return getInstance(clazz.getName());
+    static public String[] getLogNames() {
+        return (String[]) logs.keySet().toArray(EMPTY_STRING_ARRAY);
     }
 
     /**
@@ -236,13 +200,49 @@ public class LogSource {
     }
 
     /**
-     * Returns a {@link String} array containing the names of
-     * all logs known to me.
+     * Set the log implementation/log implementation factory by class. The given class must implement {@link Log}, and provide a constructor that takes a single
+     * {@link String} argument (containing the name of the log).
      *
-     * @return a {@link String} array containing the names of
-     * all logs known to me.
+     * @param logclass class.
+     * @throws LinkageError                if there is missing dependency.
+     * @throws ExceptionInInitializerError unexpected exception has occurred in a static initializer.
+     * @throws NoSuchMethodException       if a matching method is not found.
+     * @throws SecurityException           If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the
+     *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
+     *                                     s.checkPackageAccess()} denies access to the package of this class.
      */
-    static public String[] getLogNames() {
-        return (String[]) logs.keySet().toArray(EMPTY_STRING_ARRAY);
+    static public void setLogImplementation(final Class logclass)
+        throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
+        final Class[] argtypes = new Class[1];
+        argtypes[0] = "".getClass();
+        logImplctor = logclass.getConstructor(argtypes);
+    }
+
+    /**
+     * Set the log implementation/log implementation factory by the name of the class. The given class must implement {@link Log}, and provide a constructor
+     * that takes a single {@link String} argument (containing the name of the log).
+     *
+     * @param className class name.
+     * @throws LinkageError           if there is missing dependency.
+     * @throws NoSuchMethodException  if a matching method is not found.
+     * @throws SecurityException      If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the class
+     *                                loader for the current class and invocation of {@link SecurityManager#checkPackageAccess s.checkPackageAccess()} denies
+     *                                access to the package of this class.
+     * @throws ClassNotFoundException if the class cannot be located
+     */
+    static public void setLogImplementation(final String className)
+        throws LinkageError, NoSuchMethodException, SecurityException, ClassNotFoundException {
+        try {
+            final Class logclass = Class.forName(className);
+            final Class[] argtypes = new Class[1];
+            argtypes[0] = "".getClass();
+            logImplctor = logclass.getConstructor(argtypes);
+        } catch (final Throwable t) {
+            logImplctor = null;
+        }
+    }
+
+    /** Don't allow others to create instances. */
+    private LogSource() {
     }
 }

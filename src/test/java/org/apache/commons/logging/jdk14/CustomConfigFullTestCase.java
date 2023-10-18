@@ -32,11 +32,6 @@ import org.apache.commons.logging.PathableClassLoader;
 public class CustomConfigFullTestCase extends CustomConfigTestCase {
 
 
-    public CustomConfigFullTestCase(final String name) {
-        super(name);
-    }
-
-
     /**
      * Return the tests included in this test suite.
      */
@@ -59,5 +54,10 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
 
         final Class testClass = child.loadClass(CustomConfigFullTestCase.class.getName());
         return new PathableTestSuite(testClass, child);
+    }
+
+
+    public CustomConfigFullTestCase(final String name) {
+        super(name);
     }
 }

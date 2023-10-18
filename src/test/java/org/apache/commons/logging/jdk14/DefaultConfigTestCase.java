@@ -40,34 +40,6 @@ import org.apache.commons.logging.PathableTestSuite;
 public class DefaultConfigTestCase extends TestCase {
 
     /**
-     * <p>Construct a new instance of this test case.</p>
-     *
-     * @param name Name of the test case
-     */
-    public DefaultConfigTestCase(final String name) {
-        super(name);
-    }
-
-    /**
-     * <p>The {@link LogFactory} implementation we have selected.</p>
-     */
-    protected LogFactory factory;
-
-    /**
-     * <p>The {@link Log} implementation we have selected.</p>
-     */
-    protected Log log;
-
-    /**
-     * Set up instance variables required by this test case.
-     */
-    @Override
-    public void setUp() throws Exception {
-        setUpFactory();
-        setUpLog("TestLogger");
-    }
-
-    /**
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
@@ -81,50 +53,22 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
     /**
-     * Tear down instance variables required by this test case.
+     * <p>The {@link LogFactory} implementation we have selected.</p>
      */
-    @Override
-    public void tearDown() {
-        log = null;
-        factory = null;
-        LogFactory.releaseAll();
-    }
+    protected LogFactory factory;
 
-    // Test pristine Log instance
-    public void testPristineLog() {
-        checkLog();
-    }
+    /**
+     * <p>The {@link Log} implementation we have selected.</p>
+     */
+    protected Log log;
 
-    // Test pristine LogFactory instance
-    public void testPristineFactory() {
-        assertNotNull("LogFactory exists", factory);
-        assertEquals("LogFactory class",
-                     "org.apache.commons.logging.impl.LogFactoryImpl",
-                     factory.getClass().getName());
-
-        final String[] names = factory.getAttributeNames();
-        assertNotNull("Names exists", names);
-        assertEquals("Names empty", 0, names.length);
-    }
-
-
-    // Test Serializability of Log instance
-    public void testSerializable() throws Exception {
-
-        // Serialize and deserialize the instance
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(log);
-        oos.close();
-        final ByteArrayInputStream bais =
-            new ByteArrayInputStream(baos.toByteArray());
-        final ObjectInputStream ois = new ObjectInputStream(bais);
-        log = (Log) ois.readObject();
-        ois.close();
-
-        // Check the characteristics of the resulting object
-        checkLog();
-
+    /**
+     * <p>Construct a new instance of this test case.</p>
+     *
+     * @param name Name of the test case
+     */
+    public DefaultConfigTestCase(final String name) {
+        super(name);
     }
 
     // Check the log instance
@@ -145,6 +89,15 @@ public class DefaultConfigTestCase extends TestCase {
 
     }
 
+    /**
+     * Set up instance variables required by this test case.
+     */
+    @Override
+    public void setUp() throws Exception {
+        setUpFactory();
+        setUpLog("TestLogger");
+    }
+
     // Set up factory instance
     protected void setUpFactory() throws Exception {
         factory = LogFactory.getFactory();
@@ -153,6 +106,53 @@ public class DefaultConfigTestCase extends TestCase {
     // Set up log instance
     protected void setUpLog(final String name) throws Exception {
         log = LogFactory.getLog(name);
+    }
+
+
+    /**
+     * Tear down instance variables required by this test case.
+     */
+    @Override
+    public void tearDown() {
+        log = null;
+        factory = null;
+        LogFactory.releaseAll();
+    }
+
+    // Test pristine LogFactory instance
+    public void testPristineFactory() {
+        assertNotNull("LogFactory exists", factory);
+        assertEquals("LogFactory class",
+                     "org.apache.commons.logging.impl.LogFactoryImpl",
+                     factory.getClass().getName());
+
+        final String[] names = factory.getAttributeNames();
+        assertNotNull("Names exists", names);
+        assertEquals("Names empty", 0, names.length);
+    }
+
+    // Test pristine Log instance
+    public void testPristineLog() {
+        checkLog();
+    }
+
+    // Test Serializability of Log instance
+    public void testSerializable() throws Exception {
+
+        // Serialize and deserialize the instance
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(log);
+        oos.close();
+        final ByteArrayInputStream bais =
+            new ByteArrayInputStream(baos.toByteArray());
+        final ObjectInputStream ois = new ObjectInputStream(bais);
+        log = (Log) ois.readObject();
+        ois.close();
+
+        // Check the characteristics of the resulting object
+        checkLog();
+
     }
 
 }

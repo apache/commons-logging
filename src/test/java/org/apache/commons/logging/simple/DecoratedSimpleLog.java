@@ -40,15 +40,26 @@ public class DecoratedSimpleLog extends SimpleLog {
      */
     private static final long serialVersionUID = 196544280770017153L;
 
+    // Cache of logged records
+    protected ArrayList cache = new ArrayList();
+
+
+    // ------------------------------------------------------------- Properties
+
     public DecoratedSimpleLog(final String name) {
         super(name);
     }
 
 
-    // ------------------------------------------------------------- Properties
+    // Clear cache
+    public void clearCache() {
+        cache.clear();
+    }
 
-    public DateFormat getDateTimeFormatter() {
-        return dateFormatter;
+
+    // Return cache
+    public List getCache() {
+        return this.cache;
     }
 
 
@@ -57,9 +68,20 @@ public class DecoratedSimpleLog extends SimpleLog {
     }
 
 
+    public DateFormat getDateTimeFormatter() {
+        return dateFormatter;
+    }
+
+
+    // ------------------------------------------------------- Protected Methods
+
+
     public String getLogName() {
         return logName;
     }
+
+
+    // ---------------------------------------------------------- Public Methods
 
 
     public boolean getShowDateTime() {
@@ -72,9 +94,6 @@ public class DecoratedSimpleLog extends SimpleLog {
     }
 
 
-    // ------------------------------------------------------- Protected Methods
-
-
     // Cache logged messages
     @Override
     protected void log(final int type, final Object message, final Throwable t) {
@@ -82,25 +101,6 @@ public class DecoratedSimpleLog extends SimpleLog {
         super.log(type, message, t);
         cache.add(new LogRecord(type, message, t));
 
-    }
-
-
-    // ---------------------------------------------------------- Public Methods
-
-
-    // Cache of logged records
-    protected ArrayList cache = new ArrayList();
-
-
-    // Clear cache
-    public void clearCache() {
-        cache.clear();
-    }
-
-
-    // Return cache
-    public List getCache() {
-        return this.cache;
     }
 
 

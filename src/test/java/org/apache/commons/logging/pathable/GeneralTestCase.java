@@ -32,6 +32,31 @@ import org.apache.commons.logging.PathableTestSuite;
 public class GeneralTestCase extends TestCase {
 
     /**
+     * Verify that the context classloader is a custom one, then reset it to
+     * a non-custom one.
+     */
+    private static void checkAndSetContext() {
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        assertEquals("ContextLoader is of unexpected type",
+                contextLoader.getClass().getName(),
+                PathableClassLoader.class.getName());
+
+        final URL[] noUrls = new URL[0];
+        Thread.currentThread().setContextClassLoader(new URLClassLoader(noUrls));
+    }
+
+    /**
+     * Verify that a certain system property is not set, then set it.
+     */
+    private static void checkAndSetProperties() {
+        String prop = System.getProperty("no.such.property");
+        assertNull("no.such.property is unexpectedly defined", prop);
+        System.setProperty("no.such.property", "dummy value");
+        prop = System.getProperty("no.such.property");
+        assertNotNull("no.such.property is unexpectedly undefined", prop);
+    }
+
+    /**
      * Set up a custom classloader hierarchy for this test case.
      */
     public static Test suite() throws Exception {
@@ -47,53 +72,6 @@ public class GeneralTestCase extends TestCase {
 
         // and return our custom TestSuite class
         return new PathableTestSuite(testClass, loader);
-    }
-
-    /**
-     * Verify that a certain system property is not set, then set it.
-     */
-    private static void checkAndSetProperties() {
-        String prop = System.getProperty("no.such.property");
-        assertNull("no.such.property is unexpectedly defined", prop);
-        System.setProperty("no.such.property", "dummy value");
-        prop = System.getProperty("no.such.property");
-        assertNotNull("no.such.property is unexpectedly undefined", prop);
-    }
-
-    /**
-     * Verify that when a test method modifies the system properties they are
-     * reset before the next test is run.
-     * <p>
-     * This method works in conjunction with testResetProps2. There is no
-     * way of knowing which test method junit will run first, but it doesn't
-     * matter; whichever one of them runs first will modify the system properties.
-     * If the PathableTestSuite isn't resetting the system properties then whichever
-     * of them runs second will fail. Of course if other methods are run in-between
-     * then those methods might also fail...
-     */
-    public void testResetProps1() {
-        checkAndSetProperties();
-    }
-
-    /**
-     * See testResetProps1.
-     */
-    public void testResetProps2() {
-        checkAndSetProperties();
-    }
-
-    /**
-     * Verify that the context classloader is a custom one, then reset it to
-     * a non-custom one.
-     */
-    private static void checkAndSetContext() {
-        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
-        assertEquals("ContextLoader is of unexpected type",
-                contextLoader.getClass().getName(),
-                PathableClassLoader.class.getName());
-
-        final URL[] noUrls = new URL[0];
-        Thread.currentThread().setContextClassLoader(new URLClassLoader(noUrls));
     }
 
     /**
@@ -116,5 +94,27 @@ public class GeneralTestCase extends TestCase {
      */
     public void testResetContext2() {
         checkAndSetContext();
+    }
+
+    /**
+     * Verify that when a test method modifies the system properties they are
+     * reset before the next test is run.
+     * <p>
+     * This method works in conjunction with testResetProps2. There is no
+     * way of knowing which test method junit will run first, but it doesn't
+     * matter; whichever one of them runs first will modify the system properties.
+     * If the PathableTestSuite isn't resetting the system properties then whichever
+     * of them runs second will fail. Of course if other methods are run in-between
+     * then those methods might also fail...
+     */
+    public void testResetProps1() {
+        checkAndSetProperties();
+    }
+
+    /**
+     * See testResetProps1.
+     */
+    public void testResetProps2() {
+        checkAndSetProperties();
     }
 }

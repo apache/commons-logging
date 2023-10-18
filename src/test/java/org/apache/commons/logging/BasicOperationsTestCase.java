@@ -27,18 +27,6 @@ import junit.framework.TestCase;
  */
 public class BasicOperationsTestCase extends TestCase
 {
-    public void testIsEnabledClassLog()
-    {
-        final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
-        executeIsEnabledTest(log);
-    }
-
-    public void testIsEnabledNamedLog()
-    {
-        final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
-        executeIsEnabledTest(log);
-    }
-
     public void executeIsEnabledTest(final Log log)
     {
         try
@@ -57,16 +45,22 @@ public class BasicOperationsTestCase extends TestCase
         }
     }
 
-    public void testMessageWithoutExceptionClassLog()
+    public void executeMessageWithExceptionTest(final Log log)
     {
-        final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
-        executeMessageWithoutExceptionTest(log);
-    }
-
-    public void testMessageWithoutExceptionNamedLog()
-    {
-        final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
-        executeMessageWithoutExceptionTest(log);
+        try
+        {
+            log.trace("Hello, Mum", new ArithmeticException());
+            log.debug("Hello, Mum", new ArithmeticException());
+            log.info("Hello, Mum", new ArithmeticException());
+            log.warn("Hello, Mum", new ArithmeticException());
+            log.error("Hello, Mum", new ArithmeticException());
+            log.fatal("Hello, Mum", new ArithmeticException());
+        }
+        catch (final Throwable t)
+        {
+            t.printStackTrace();
+            fail("Exception thrown: " + t);
+        }
     }
 
     public void executeMessageWithoutExceptionTest(final Log log)
@@ -87,6 +81,18 @@ public class BasicOperationsTestCase extends TestCase
         }
     }
 
+    public void testIsEnabledClassLog()
+    {
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
+        executeIsEnabledTest(log);
+    }
+
+    public void testIsEnabledNamedLog()
+    {
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
+        executeIsEnabledTest(log);
+    }
+
     public void testMessageWithExceptionClassLog()
     {
         final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
@@ -99,21 +105,15 @@ public class BasicOperationsTestCase extends TestCase
         executeMessageWithExceptionTest(log);
     }
 
-    public void executeMessageWithExceptionTest(final Log log)
+    public void testMessageWithoutExceptionClassLog()
     {
-        try
-        {
-            log.trace("Hello, Mum", new ArithmeticException());
-            log.debug("Hello, Mum", new ArithmeticException());
-            log.info("Hello, Mum", new ArithmeticException());
-            log.warn("Hello, Mum", new ArithmeticException());
-            log.error("Hello, Mum", new ArithmeticException());
-            log.fatal("Hello, Mum", new ArithmeticException());
-        }
-        catch (final Throwable t)
-        {
-            t.printStackTrace();
-            fail("Exception thrown: " + t);
-        }
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
+        executeMessageWithoutExceptionTest(log);
+    }
+
+    public void testMessageWithoutExceptionNamedLog()
+    {
+        final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
+        executeMessageWithoutExceptionTest(log);
     }
 }

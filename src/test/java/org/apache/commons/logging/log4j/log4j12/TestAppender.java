@@ -33,18 +33,18 @@ import org.apache.log4j.spi.LoggingEvent;
 
 public class TestAppender extends AppenderSkeleton {
 
+    // The set of logged events for this appender
+    private final List events;
+
+    // ----------------------------------------------------- Instance Variables
+
+
     /**
      * Constructor.
      */
     public TestAppender(final List logEvents) {
         events = logEvents;
     }
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    // The set of logged events for this appender
-    private final List events;
 
 
     // ------------------------------------------------------- Appender Methods

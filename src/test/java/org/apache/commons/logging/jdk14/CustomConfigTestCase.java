@@ -49,82 +49,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
 
     /**
-     * <p>Construct a new instance of this test case.</p>
-     *
-     * @param name Name of the test case
-     */
-    public CustomConfigTestCase(final String name) {
-        super(name);
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * <p>The customized {@code Handler} we will be using.</p>
-     */
-    protected TestHandler handler;
-
-
-    /**
-     * <p>The underlying {@code Handler}s we will be using.</p>
-     */
-    protected Handler handlers[];
-
-
-    /**
-     * <p>The underlying {@code Logger} we will be using.</p>
-     */
-    protected Logger logger;
-
-
-    /**
-     * <p>The underlying {@code LogManager} we will be using.</p>
-     */
-    protected LogManager manager;
-
-
-    /**
-     * <p>The message levels that should have been logged.</p>
-     */
-    protected Level[] testLevels =
-    { Level.FINE, Level.INFO, Level.WARNING, Level.SEVERE, Level.SEVERE };
-
-
-    /**
-     * <p>The message strings that should have been logged.</p>
-     */
-    protected String[] testMessages =
-    { "debug", "info", "warn", "error", "fatal" };
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
-
-    /**
-     * Given the name of a class that is somewhere in the classpath of the provided
-     * classloader, return the contents of the corresponding .class file.
-     */
-    protected static byte[] readClass(final String name, final ClassLoader srcCL) throws Exception {
-        final String resName = name.replace('.', '/') + ".class";
-        System.err.println("Trying to load resource [" + resName + "]");
-        final InputStream is = srcCL.getResourceAsStream(resName);
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        System.err.println("Reading resource [" + resName + "]");
-        final byte[] buf = new byte[1000];
-        for(;;) {
-            final int read = is.read(buf);
-            if (read <= 0) {
-                break;
-            }
-            baos.write(buf, 0, read);
-        }
-        is.close();
-        return baos.toByteArray();
-    }
-
-    /**
      * Make a class available in the system classloader even when its classfile is
      * not present in the classpath configured for that classloader. This only
      * works for classes for which all dependencies are already loaded in
@@ -159,17 +83,30 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         }
     }
 
+
+    // ----------------------------------------------------- Instance Variables
+
+
     /**
-     * Set up instance variables required by this test case.
+     * Given the name of a class that is somewhere in the classpath of the provided
+     * classloader, return the contents of the corresponding .class file.
      */
-    @Override
-    public void setUp() throws Exception {
-        setUpManager
-            ("org/apache/commons/logging/jdk14/CustomConfig.properties");
-        setUpLogger(this.getClass().getName());
-        setUpHandlers();
-        setUpFactory();
-        setUpLog(this.getClass().getName());
+    protected static byte[] readClass(final String name, final ClassLoader srcCL) throws Exception {
+        final String resName = name.replace('.', '/') + ".class";
+        System.err.println("Trying to load resource [" + resName + "]");
+        final InputStream is = srcCL.getResourceAsStream(resName);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        System.err.println("Reading resource [" + resName + "]");
+        final byte[] buf = new byte[1000];
+        for(;;) {
+            final int read = is.read(buf);
+            if (read <= 0) {
+                break;
+            }
+            baos.write(buf, 0, read);
+        }
+        is.close();
+        return baos.toByteArray();
     }
 
 
@@ -195,6 +132,198 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         return new PathableTestSuite(testClass, cl);
     }
 
+
+    /**
+     * <p>The customized {@code Handler} we will be using.</p>
+     */
+    protected TestHandler handler;
+
+
+    /**
+     * <p>The underlying {@code Handler}s we will be using.</p>
+     */
+    protected Handler handlers[];
+
+
+    /**
+     * <p>The underlying {@code Logger} we will be using.</p>
+     */
+    protected Logger logger;
+
+
+    /**
+     * <p>The underlying {@code LogManager} we will be using.</p>
+     */
+    protected LogManager manager;
+
+
+    // ------------------------------------------- JUnit Infrastructure Methods
+
+
+    /**
+     * <p>The message levels that should have been logged.</p>
+     */
+    protected Level[] testLevels =
+    { Level.FINE, Level.INFO, Level.WARNING, Level.SEVERE, Level.SEVERE };
+
+    /**
+     * <p>The message strings that should have been logged.</p>
+     */
+    protected String[] testMessages =
+    { "debug", "info", "warn", "error", "fatal" };
+
+    /**
+     * <p>Construct a new instance of this test case.</p>
+     *
+     * @param name Name of the test case
+     */
+    public CustomConfigTestCase(final String name) {
+        super(name);
+    }
+
+
+    // Check the log instance
+    @Override
+    protected void checkLog() {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.Jdk14Logger",
+                     log.getClass().getName());
+
+        // Assert which logging levels have been enabled
+        assertTrue(log.isFatalEnabled());
+        assertTrue(log.isErrorEnabled());
+        assertTrue(log.isWarnEnabled());
+        assertTrue(log.isInfoEnabled());
+        assertTrue(log.isDebugEnabled());
+        assertFalse(log.isTraceEnabled());
+
+    }
+
+    // Check the recorded messages
+    protected void checkLogRecords(final boolean thrown) {
+        final Iterator records = handler.records();
+        for (int i = 0; i < testMessages.length; i++) {
+            assertTrue(records.hasNext());
+            final LogRecord record = (LogRecord) records.next();
+            assertEquals("LogRecord level",
+                         testLevels[i], record.getLevel());
+            assertEquals("LogRecord message",
+                         testMessages[i], record.getMessage());
+            assertTrue("LogRecord class",
+                         record.getSourceClassName().startsWith(
+                                 "org.apache.commons.logging.jdk14.CustomConfig"));
+            if (thrown) {
+                assertEquals("LogRecord method",
+                             "logExceptionMessages",
+                             record.getSourceMethodName());
+            } else {
+                assertEquals("LogRecord method",
+                             "logPlainMessages",
+                             record.getSourceMethodName());
+            }
+            if (thrown) {
+                assertNotNull("LogRecord thrown", record.getThrown());
+                assertTrue("LogRecord thrown type",
+                           record.getThrown() instanceof DummyException);
+            } else {
+                assertNull("LogRecord thrown",
+                           record.getThrown());
+            }
+        }
+        assertFalse(records.hasNext());
+        handler.flush();
+    }
+
+
+    // ----------------------------------------------------------- Test Methods
+
+
+    // Log the messages with exceptions
+    protected void logExceptionMessages() {
+        final Throwable t = new DummyException();
+        log.trace("trace", t); // Should not actually get logged
+        log.debug("debug", t);
+        log.info("info", t);
+        log.warn("warn", t);
+        log.error("error", t);
+        log.fatal("fatal", t);
+    }
+
+
+    // Log the plain messages
+    protected void logPlainMessages() {
+        log.trace("trace"); // Should not actually get logged
+        log.debug("debug");
+        log.info("info");
+        log.warn("warn");
+        log.error("error");
+        log.fatal("fatal");
+    }
+
+
+    /**
+     * Set up instance variables required by this test case.
+     */
+    @Override
+    public void setUp() throws Exception {
+        setUpManager
+            ("org/apache/commons/logging/jdk14/CustomConfig.properties");
+        setUpLogger(this.getClass().getName());
+        setUpHandlers();
+        setUpFactory();
+        setUpLog(this.getClass().getName());
+    }
+
+
+    // Set up handlers instance
+    protected void setUpHandlers() throws Exception {
+        Logger parent = logger;
+        while (parent.getParent() != null) {
+            parent = parent.getParent();
+        }
+        handlers = parent.getHandlers();
+
+        // The CustomConfig.properties file explicitly defines one handler class
+        // to be attached to the root logger, so if it isn't there then
+        // something is badly wrong...
+        //
+        // Yes this testing is also done in testPristineHandlers but
+        // unfortunately:
+        //  * we need to set up the handlers variable here,
+        //  * we don't want that to be set up incorrectly, as that can
+        //    produce weird error messages in other tests, and
+        //  * we can't rely on testPristineHandlers being the first
+        //    test to run.
+        // so we need to test things here too.
+        assertNotNull("No Handlers defined for JDK14 logging", handlers);
+        assertEquals("Unexpected number of handlers for JDK14 logging", 1, handlers.length);
+        assertNotNull("Handler is null", handlers[0]);
+        assertTrue("Handler not of expected type", handlers[0] instanceof TestHandler);
+        handler = (TestHandler) handlers[0];
+    }
+
+
+    // Set up logger instance
+    protected void setUpLogger(final String name) throws Exception {
+        logger = Logger.getLogger(name);
+    }
+
+
+    // -------------------------------------------------------- Support Methods
+
+
+    // Set up LogManager instance
+    protected void setUpManager(final String config) throws Exception {
+        manager = LogManager.getLogManager();
+        final InputStream is =
+            this.getClass().getClassLoader().getResourceAsStream(config);
+        manager.readConfiguration(is);
+        is.close();
+    }
+
+
     /**
      * Tear down instance variables required by this test case.
      */
@@ -205,9 +334,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         logger = null;
         manager = null;
     }
-
-
-    // ----------------------------------------------------------- Test Methods
 
 
     // Test logging message strings with exceptions
@@ -264,132 +390,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         super.testSerializable();
         testExceptionMessages();
 
-    }
-
-
-    // -------------------------------------------------------- Support Methods
-
-
-    // Check the log instance
-    @Override
-    protected void checkLog() {
-
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.impl.Jdk14Logger",
-                     log.getClass().getName());
-
-        // Assert which logging levels have been enabled
-        assertTrue(log.isFatalEnabled());
-        assertTrue(log.isErrorEnabled());
-        assertTrue(log.isWarnEnabled());
-        assertTrue(log.isInfoEnabled());
-        assertTrue(log.isDebugEnabled());
-        assertFalse(log.isTraceEnabled());
-
-    }
-
-
-    // Check the recorded messages
-    protected void checkLogRecords(final boolean thrown) {
-        final Iterator records = handler.records();
-        for (int i = 0; i < testMessages.length; i++) {
-            assertTrue(records.hasNext());
-            final LogRecord record = (LogRecord) records.next();
-            assertEquals("LogRecord level",
-                         testLevels[i], record.getLevel());
-            assertEquals("LogRecord message",
-                         testMessages[i], record.getMessage());
-            assertTrue("LogRecord class",
-                         record.getSourceClassName().startsWith(
-                                 "org.apache.commons.logging.jdk14.CustomConfig"));
-            if (thrown) {
-                assertEquals("LogRecord method",
-                             "logExceptionMessages",
-                             record.getSourceMethodName());
-            } else {
-                assertEquals("LogRecord method",
-                             "logPlainMessages",
-                             record.getSourceMethodName());
-            }
-            if (thrown) {
-                assertNotNull("LogRecord thrown", record.getThrown());
-                assertTrue("LogRecord thrown type",
-                           record.getThrown() instanceof DummyException);
-            } else {
-                assertNull("LogRecord thrown",
-                           record.getThrown());
-            }
-        }
-        assertFalse(records.hasNext());
-        handler.flush();
-    }
-
-
-    // Log the messages with exceptions
-    protected void logExceptionMessages() {
-        final Throwable t = new DummyException();
-        log.trace("trace", t); // Should not actually get logged
-        log.debug("debug", t);
-        log.info("info", t);
-        log.warn("warn", t);
-        log.error("error", t);
-        log.fatal("fatal", t);
-    }
-
-
-    // Log the plain messages
-    protected void logPlainMessages() {
-        log.trace("trace"); // Should not actually get logged
-        log.debug("debug");
-        log.info("info");
-        log.warn("warn");
-        log.error("error");
-        log.fatal("fatal");
-    }
-
-
-    // Set up handlers instance
-    protected void setUpHandlers() throws Exception {
-        Logger parent = logger;
-        while (parent.getParent() != null) {
-            parent = parent.getParent();
-        }
-        handlers = parent.getHandlers();
-
-        // The CustomConfig.properties file explicitly defines one handler class
-        // to be attached to the root logger, so if it isn't there then
-        // something is badly wrong...
-        //
-        // Yes this testing is also done in testPristineHandlers but
-        // unfortunately:
-        //  * we need to set up the handlers variable here,
-        //  * we don't want that to be set up incorrectly, as that can
-        //    produce weird error messages in other tests, and
-        //  * we can't rely on testPristineHandlers being the first
-        //    test to run.
-        // so we need to test things here too.
-        assertNotNull("No Handlers defined for JDK14 logging", handlers);
-        assertEquals("Unexpected number of handlers for JDK14 logging", 1, handlers.length);
-        assertNotNull("Handler is null", handlers[0]);
-        assertTrue("Handler not of expected type", handlers[0] instanceof TestHandler);
-        handler = (TestHandler) handlers[0];
-    }
-
-
-    // Set up logger instance
-    protected void setUpLogger(final String name) throws Exception {
-        logger = Logger.getLogger(name);
-    }
-
-
-    // Set up LogManager instance
-    protected void setUpManager(final String config) throws Exception {
-        manager = LogManager.getLogManager();
-        final InputStream is =
-            this.getClass().getClassLoader().getResourceAsStream(config);
-        manager.readConfiguration(is);
-        is.close();
     }
 
 

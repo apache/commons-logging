@@ -25,11 +25,11 @@ import java.util.Hashtable;
  */
 public class BadHashtablePropertyTestCase extends TestCase {
 
-    public void testType()  {
-        assertTrue(LogFactory.factories instanceof Hashtable);
-    }
-
     public void testPutCalled() throws Exception {
         LogFactory.getLog(BadHashtablePropertyTestCase.class);
+    }
+
+    public void testType()  {
+        assertTrue(LogFactory.factories instanceof Hashtable);
     }
 }

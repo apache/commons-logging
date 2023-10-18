@@ -59,6 +59,28 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     }
 
 
+    /** Checks that the date time format has been successfully set */
+    @Override
+    protected void checkDecoratedDateTime() {
+        assertEquals("Expected date format to be set", "dd.mm.yyyy",
+                     ((DecoratedSimpleLog) log).getDateTimeFormat());
+        // try the formatter
+        final Date now = new Date();
+        final DateFormat formatter = ((DecoratedSimpleLog) log).getDateTimeFormatter();
+        final SimpleDateFormat sampleFormatter = new SimpleDateFormat("dd.mm.yyyy");
+        assertEquals("Date should be formatters to pattern dd.mm.yyyy",
+                     sampleFormatter.format(now), formatter.format(now));
+    }
+
+    /** Hook for subclassses */
+    @Override
+    protected void checkShowDateTime() {
+        assertTrue(((DecoratedSimpleLog) log).getShowDateTime());
+    }
+
+
+    // ----------------------------------------------------------- Methods
+
     /**
      * Set up system properties required by this unit test. Here, we
      * set up the props defined in the parent class setProperties method,
@@ -82,28 +104,6 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-    }
-
-
-    // ----------------------------------------------------------- Methods
-
-    /** Checks that the date time format has been successfully set */
-    @Override
-    protected void checkDecoratedDateTime() {
-        assertEquals("Expected date format to be set", "dd.mm.yyyy",
-                     ((DecoratedSimpleLog) log).getDateTimeFormat());
-        // try the formatter
-        final Date now = new Date();
-        final DateFormat formatter = ((DecoratedSimpleLog) log).getDateTimeFormatter();
-        final SimpleDateFormat sampleFormatter = new SimpleDateFormat("dd.mm.yyyy");
-        assertEquals("Date should be formatters to pattern dd.mm.yyyy",
-                     sampleFormatter.format(now), formatter.format(now));
-    }
-
-    /** Hook for subclassses */
-    @Override
-    protected void checkShowDateTime() {
-        assertTrue(((DecoratedSimpleLog) log).getShowDateTime());
     }
 
 }

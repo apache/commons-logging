@@ -91,6 +91,19 @@ public class ChildFirstTestCase extends TestCase {
     }
 
     /**
+     * Utility method to convert an enumeration-of-URLs into an array of URLs.
+     */
+    private static URL[] toURLArray(final Enumeration e) {
+        final ArrayList l = new ArrayList();
+        while (e.hasMoreElements()) {
+            final URL u = (URL) e.nextElement();
+            l.add(u);
+        }
+        final URL[] tmp = new URL[l.size()];
+        return (URL[]) l.toArray(tmp);
+    }
+
+    /**
      * Utility method to return the set of all classloaders in the
      * parent chain starting from the one that loaded the class for
      * this object instance.
@@ -221,6 +234,34 @@ public class ChildFirstTestCase extends TestCase {
     }
 
     /**
+     * Test that getResourceAsStream works.
+     */
+    public void testResourceAsStream() throws Exception {
+        java.io.InputStream is;
+
+        // verify the classloader hierarchy
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        final ClassLoader childLoader = contextLoader.getParent();
+        final ClassLoader parentLoader = childLoader.getParent();
+        final ClassLoader bootLoader = parentLoader.getParent();
+        assertNull("Unexpected classloader hierarchy", bootLoader);
+
+        // getResourceAsStream where no instances exist
+        is = childLoader.getResourceAsStream("nosuchfile");
+        assertNull("Invalid resource returned non-null stream", is);
+
+        // getResourceAsStream where resource does exist
+        is = childLoader.getResourceAsStream("org/apache/commons/logging/Log.class");
+        assertNotNull("Null returned for valid resource", is);
+        is.close();
+
+        // It would be nice to test parent-first ordering here, but that would require
+        // having a resource with the same name in both the parent and child loaders,
+        // but with different contents. That's a little tricky to set up so we'll
+        // skip that for now.
+    }
+
+    /**
      * Test that the various flavours of ClassLoader.getResources work as expected.
      */
     public void testResources() throws Exception {
@@ -272,46 +313,5 @@ public class ChildFirstTestCase extends TestCase {
                 urlsToStrings[0].indexOf("/commons-logging-1.") > 0);
         assertTrue("Incorrect source for Log4JLogger class",
                 urlsToStrings[1].indexOf("/commons-logging-adapters-1.") > 0);
-    }
-
-    /**
-     * Utility method to convert an enumeration-of-URLs into an array of URLs.
-     */
-    private static URL[] toURLArray(final Enumeration e) {
-        final ArrayList l = new ArrayList();
-        while (e.hasMoreElements()) {
-            final URL u = (URL) e.nextElement();
-            l.add(u);
-        }
-        final URL[] tmp = new URL[l.size()];
-        return (URL[]) l.toArray(tmp);
-    }
-
-    /**
-     * Test that getResourceAsStream works.
-     */
-    public void testResourceAsStream() throws Exception {
-        java.io.InputStream is;
-
-        // verify the classloader hierarchy
-        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
-        final ClassLoader childLoader = contextLoader.getParent();
-        final ClassLoader parentLoader = childLoader.getParent();
-        final ClassLoader bootLoader = parentLoader.getParent();
-        assertNull("Unexpected classloader hierarchy", bootLoader);
-
-        // getResourceAsStream where no instances exist
-        is = childLoader.getResourceAsStream("nosuchfile");
-        assertNull("Invalid resource returned non-null stream", is);
-
-        // getResourceAsStream where resource does exist
-        is = childLoader.getResourceAsStream("org/apache/commons/logging/Log.class");
-        assertNotNull("Null returned for valid resource", is);
-        is.close();
-
-        // It would be nice to test parent-first ordering here, but that would require
-        // having a resource with the same name in both the parent and child loaders,
-        // but with different contents. That's a little tricky to set up so we'll
-        // skip that for now.
     }
 }

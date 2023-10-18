@@ -22,10 +22,6 @@ import junit.framework.TestCase;
  * test to emulate container and application isolated from container
  */
 public class LoadTestCase extends TestCase{
-    //TODO: need some way to add service provider packages
-    static private String[] LOG_PCKG = {"org.apache.commons.logging",
-                                        "org.apache.commons.logging.impl"};
-
     /**
      * A custom classloader which "duplicates" logging classes available
      * in the parent classloader into itself.
@@ -92,6 +88,41 @@ public class LoadTestCase extends TestCase{
 
     }
 
+    //TODO: need some way to add service provider packages
+    static private String[] LOG_PCKG = {"org.apache.commons.logging",
+                                        "org.apache.commons.logging.impl"};
+
+
+    private ClassLoader origContextClassLoader;
+
+    private void execute(final Class cls) throws Exception {
+        cls.getConstructor().newInstance();
+    }
+
+    /**
+     * Load class UserClass via a temporary classloader which is a child of
+     * the classloader used to load this test class.
+     */
+    private Class reload() throws Exception {
+        Class testObjCls = null;
+        final AppClassLoader appLoader = new AppClassLoader(this.getClass().getClassLoader());
+        try {
+
+            testObjCls = appLoader.loadClass(UserClass.class.getName());
+
+        } catch (final ClassNotFoundException cnfe) {
+            throw cnfe;
+        } catch (final Throwable t) {
+            t.printStackTrace();
+            fail("AppClassLoader failed ");
+        }
+
+        assertSame("app isolated", testObjCls.getClassLoader(), appLoader);
+
+        return testObjCls;
+
+    }
+
 
     /**
      * Call the static setAllowFlawedContext method on the specified class
@@ -102,6 +133,18 @@ public class LoadTestCase extends TestCase{
         final Class[] params = {String.class};
         final java.lang.reflect.Method m = c.getDeclaredMethod("setAllowFlawedContext", params);
         m.invoke(null, state);
+    }
+
+    @Override
+    public void setUp() {
+        // save state before test starts so we can restore it when test ends
+        origContextClassLoader = Thread.currentThread().getContextClassLoader();
+    }
+
+    @Override
+    public void tearDown() {
+        // restore original state so a test can't stuff up later tests.
+        Thread.currentThread().setContextClassLoader(origContextClassLoader);
     }
 
     /**
@@ -170,47 +213,4 @@ public class LoadTestCase extends TestCase{
             // expected
         }
     }
-
-    /**
-     * Load class UserClass via a temporary classloader which is a child of
-     * the classloader used to load this test class.
-     */
-    private Class reload() throws Exception {
-        Class testObjCls = null;
-        final AppClassLoader appLoader = new AppClassLoader(this.getClass().getClassLoader());
-        try {
-
-            testObjCls = appLoader.loadClass(UserClass.class.getName());
-
-        } catch (final ClassNotFoundException cnfe) {
-            throw cnfe;
-        } catch (final Throwable t) {
-            t.printStackTrace();
-            fail("AppClassLoader failed ");
-        }
-
-        assertSame("app isolated", testObjCls.getClassLoader(), appLoader);
-
-        return testObjCls;
-
-    }
-
-
-    private void execute(final Class cls) throws Exception {
-        cls.getConstructor().newInstance();
-    }
-
-    @Override
-    public void setUp() {
-        // save state before test starts so we can restore it when test ends
-        origContextClassLoader = Thread.currentThread().getContextClassLoader();
-    }
-
-    @Override
-    public void tearDown() {
-        // restore original state so a test can't stuff up later tests.
-        Thread.currentThread().setContextClassLoader(origContextClassLoader);
-    }
-
-    private ClassLoader origContextClassLoader;
 }

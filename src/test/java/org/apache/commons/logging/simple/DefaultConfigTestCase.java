@@ -41,16 +41,6 @@ import org.apache.commons.logging.impl.SimpleLog;
 public class DefaultConfigTestCase extends TestCase {
 
     /**
-     * <p>The {@link LogFactory} implementation we have selected.</p>
-     */
-    protected LogFactory factory;
-
-    /**
-     * <p>The {@link Log} implementation we have selected.</p>
-     */
-    protected Log log;
-
-    /**
      * Return the tests included in this test suite.
      * <p>
      * We need to use a PathableClassLoader here because the SimpleLog class
@@ -75,78 +65,14 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
     /**
-     * Set system properties that will control the LogFactory/Log objects
-     * when they are created. Subclasses can override this method to
-     * define properties that suit them.
+     * <p>The {@link LogFactory} implementation we have selected.</p>
      */
-    public void setProperties() {
-        System.setProperty(
-            "org.apache.commons.logging.Log",
-            "org.apache.commons.logging.impl.SimpleLog");
-    }
+    protected LogFactory factory;
 
     /**
-     * Set up instance variables required by this test case.
+     * <p>The {@link Log} implementation we have selected.</p>
      */
-    @Override
-    public void setUp() throws Exception {
-        LogFactory.releaseAll();
-        setProperties();
-        setUpFactory();
-        setUpLog("TestLogger");
-    }
-
-    /**
-     * Tear down instance variables required by this test case.
-     */
-    @Override
-    public void tearDown() {
-        log = null;
-        factory = null;
-        LogFactory.releaseAll();
-    }
-
-    // Test pristine DecoratedSimpleLog instance
-    public void testPristineDecorated() {
-        setUpDecorated("DecoratedLogger");
-        checkDecorated();
-    }
-
-    // Test pristine Log instance
-    public void testPristineLog() {
-        checkStandard();
-    }
-
-    // Test pristine LogFactory instance
-    public void testPristineFactory() {
-        assertNotNull("LogFactory exists", factory);
-        assertEquals("LogFactory class",
-                     "org.apache.commons.logging.impl.LogFactoryImpl",
-                     factory.getClass().getName());
-
-        final String[] names = factory.getAttributeNames();
-        assertNotNull("Names exists", names);
-        assertEquals("Names empty", 0, names.length);
-    }
-
-    // Test Serializability of standard instance
-    public void testSerializable() throws Exception {
-
-        // Serialize and deserialize the instance
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(log);
-        oos.close();
-        final ByteArrayInputStream bais =
-            new ByteArrayInputStream(baos.toByteArray());
-        final ObjectInputStream ois = new ObjectInputStream(bais);
-        log = (Log) ois.readObject();
-        ois.close();
-
-        // Check the characteristics of the resulting object
-        checkStandard();
-
-    }
+    protected Log log;
 
     // Check the decorated log instance
     protected void checkDecorated() {
@@ -175,7 +101,6 @@ public class DefaultConfigTestCase extends TestCase {
         assertTrue(((DecoratedSimpleLog) log).getShowShortName());
     }
 
-
     // Check the standard log instance
     protected void checkStandard() {
         assertNotNull("Log exists", log);
@@ -195,22 +120,97 @@ public class DefaultConfigTestCase extends TestCase {
         assertEquals(SimpleLog.LOG_LEVEL_INFO, ((SimpleLog) log).getLevel());
     }
 
+    /**
+     * Set system properties that will control the LogFactory/Log objects
+     * when they are created. Subclasses can override this method to
+     * define properties that suit them.
+     */
+    public void setProperties() {
+        System.setProperty(
+            "org.apache.commons.logging.Log",
+            "org.apache.commons.logging.impl.SimpleLog");
+    }
+
+    /**
+     * Set up instance variables required by this test case.
+     */
+    @Override
+    public void setUp() throws Exception {
+        LogFactory.releaseAll();
+        setProperties();
+        setUpFactory();
+        setUpLog("TestLogger");
+    }
 
     // Set up decorated log instance
     protected void setUpDecorated(final String name) {
         log = new DecoratedSimpleLog(name);
     }
 
-
     // Set up factory instance
     protected void setUpFactory() throws Exception {
         factory = LogFactory.getFactory();
     }
 
-
     // Set up log instance
     protected void setUpLog(final String name) throws Exception {
         log = LogFactory.getLog(name);
+    }
+
+    /**
+     * Tear down instance variables required by this test case.
+     */
+    @Override
+    public void tearDown() {
+        log = null;
+        factory = null;
+        LogFactory.releaseAll();
+    }
+
+
+    // Test pristine DecoratedSimpleLog instance
+    public void testPristineDecorated() {
+        setUpDecorated("DecoratedLogger");
+        checkDecorated();
+    }
+
+
+    // Test pristine LogFactory instance
+    public void testPristineFactory() {
+        assertNotNull("LogFactory exists", factory);
+        assertEquals("LogFactory class",
+                     "org.apache.commons.logging.impl.LogFactoryImpl",
+                     factory.getClass().getName());
+
+        final String[] names = factory.getAttributeNames();
+        assertNotNull("Names exists", names);
+        assertEquals("Names empty", 0, names.length);
+    }
+
+
+    // Test pristine Log instance
+    public void testPristineLog() {
+        checkStandard();
+    }
+
+
+    // Test Serializability of standard instance
+    public void testSerializable() throws Exception {
+
+        // Serialize and deserialize the instance
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(log);
+        oos.close();
+        final ByteArrayInputStream bais =
+            new ByteArrayInputStream(baos.toByteArray());
+        final ObjectInputStream ois = new ObjectInputStream(bais);
+        log = (Log) ois.readObject();
+        ois.close();
+
+        // Check the characteristics of the resulting object
+        checkStandard();
+
     }
 
 }

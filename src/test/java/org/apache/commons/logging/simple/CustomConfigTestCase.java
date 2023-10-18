@@ -38,52 +38,6 @@ import org.apache.commons.logging.impl.SimpleLog;
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     /**
-     * <p>The expected log records.</p>
-     */
-    protected List expected;
-
-    /**
-     * <p>The message levels that should have been logged.</p>
-     */
-    /*
-    protected Level[] testLevels =
-    { Level.FINE, Level.INFO, Level.WARNING, Level.SEVERE, Level.SEVERE };
-    */
-
-    /**
-     * <p>The message strings that should have been logged.</p>
-     */
-    protected String[] testMessages =
-    { "debug", "info", "warn", "error", "fatal" };
-
-    /**
-     * Set system properties that will control the LogFactory/Log objects
-     * when they are created. Subclasses can override this method to
-     * define properties that suit them.
-     */
-    @Override
-    public void setProperties() {
-        System.setProperty(
-            "org.apache.commons.logging.Log",
-            "org.apache.commons.logging.simple.DecoratedSimpleLog");
-        System.setProperty(
-            "org.apache.commons.logging.simplelog.defaultlog",
-            "debug");
-    }
-
-    /**
-     * Set up instance variables required by this test case.
-     */
-    @Override
-    public void setUp() throws Exception {
-        LogFactory.releaseAll();
-        setProperties();
-        expected = new ArrayList();
-        setUpFactory();
-        setUpLog("DecoratedLogger");
-    }
-
-    /**
      * Return the tests included in this test suite.
      * <p>
      * We need to use a PathableClassLoader here because the SimpleLog class
@@ -108,37 +62,23 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     }
 
     /**
-     * Tear down instance variables required by this test case.
+     * <p>The message levels that should have been logged.</p>
      */
-    @Override
-    public void tearDown() {
-        super.tearDown();
-        expected = null;
-    }
+    /*
+    protected Level[] testLevels =
+    { Level.FINE, Level.INFO, Level.WARNING, Level.SEVERE, Level.SEVERE };
+    */
 
-    // Test logging message strings with exceptions
-    public void testExceptionMessages() throws Exception {
-        ((DecoratedSimpleLog) log).clearCache();
-        logExceptionMessages();
-        checkExpected();
-    }
+    /**
+     * <p>The expected log records.</p>
+     */
+    protected List expected;
 
-    // Test logging plain message strings
-    public void testPlainMessages() throws Exception {
-        ((DecoratedSimpleLog) log).clearCache();
-        logPlainMessages();
-        checkExpected();
-    }
-
-    // Test Serializability of standard instance
-    @Override
-    public void testSerializable() throws Exception {
-        ((DecoratedSimpleLog) log).clearCache();
-        logPlainMessages();
-        super.testSerializable();
-        logExceptionMessages();
-        checkExpected();
-    }
+    /**
+     * <p>The message strings that should have been logged.</p>
+     */
+    protected String[] testMessages =
+    { "debug", "info", "warn", "error", "fatal" };
 
     // Check the decorated log instance
     @Override
@@ -169,18 +109,11 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     }
 
-    /** Hook for subclassses */
-    protected void checkShowDateTime() {
-        assertFalse(((DecoratedSimpleLog) log).getShowDateTime());
-    }
-
     /** Hook for subclasses */
     protected void checkDecoratedDateTime() {
             assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
                      ((DecoratedSimpleLog) log).getDateTimeFormat());
     }
-
-
 
     // Check the actual log records against the expected ones
     protected void checkExpected() {
@@ -196,13 +129,16 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         }
     }
 
+    /** Hook for subclassses */
+    protected void checkShowDateTime() {
+        assertFalse(((DecoratedSimpleLog) log).getShowDateTime());
+    }
 
     // Check the standard log instance
     @Override
     protected void checkStandard() {
         checkDecorated();
     }
-
 
     // Log the messages with exceptions
     protected void logExceptionMessages() {
@@ -223,7 +159,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_FATAL, "fatal", t));
     }
 
-
     // Log the plain messages
     protected void logPlainMessages() {
         // Generate log records
@@ -240,5 +175,70 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_WARN, "warn", null));
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_ERROR, "error", null));
         expected.add(new LogRecord(SimpleLog.LOG_LEVEL_FATAL, "fatal", null));
+    }
+
+    /**
+     * Set system properties that will control the LogFactory/Log objects
+     * when they are created. Subclasses can override this method to
+     * define properties that suit them.
+     */
+    @Override
+    public void setProperties() {
+        System.setProperty(
+            "org.apache.commons.logging.Log",
+            "org.apache.commons.logging.simple.DecoratedSimpleLog");
+        System.setProperty(
+            "org.apache.commons.logging.simplelog.defaultlog",
+            "debug");
+    }
+
+    /**
+     * Set up instance variables required by this test case.
+     */
+    @Override
+    public void setUp() throws Exception {
+        LogFactory.releaseAll();
+        setProperties();
+        expected = new ArrayList();
+        setUpFactory();
+        setUpLog("DecoratedLogger");
+    }
+
+
+
+    /**
+     * Tear down instance variables required by this test case.
+     */
+    @Override
+    public void tearDown() {
+        super.tearDown();
+        expected = null;
+    }
+
+
+    // Test logging message strings with exceptions
+    public void testExceptionMessages() throws Exception {
+        ((DecoratedSimpleLog) log).clearCache();
+        logExceptionMessages();
+        checkExpected();
+    }
+
+
+    // Test logging plain message strings
+    public void testPlainMessages() throws Exception {
+        ((DecoratedSimpleLog) log).clearCache();
+        logPlainMessages();
+        checkExpected();
+    }
+
+
+    // Test Serializability of standard instance
+    @Override
+    public void testSerializable() throws Exception {
+        ((DecoratedSimpleLog) log).clearCache();
+        logPlainMessages();
+        super.testSerializable();
+        logExceptionMessages();
+        checkExpected();
     }
 }

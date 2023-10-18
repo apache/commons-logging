@@ -31,22 +31,39 @@ import junit.framework.TestCase;
 
 public class WeakHashtableTestCase extends TestCase {
 
+    public static class StupidThread extends Thread {
+
+        public StupidThread(final String name) {
+            super(name);
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < RUN_LOOPS; i++) {
+                hashtable.put("key" + ":" + i % 10, Boolean.TRUE);
+                if (i % 50 == 0) {
+                    yield();
+                }
+            }
+        }
+    }
     private static final int WAIT_FOR_THREAD_COMPLETION = 5000; // 5 seconds
     private static final int RUN_LOOPS = 3000;
     private static final int OUTER_LOOP = 400;
+
     private static final int THREAD_COUNT = 10;
 
     private static WeakHashtable hashtable;
 
     /** Maximum number of iterations before our test fails */
     private static final int MAX_GC_ITERATIONS = 50;
-
     private WeakHashtable weakHashtable;
     private Long keyOne;
     private Long keyTwo;
     private Long keyThree;
     private Long valueOne;
     private Long valueTwo;
+
     private Long valueThree;
 
     public WeakHashtableTestCase(final String testName) {
@@ -162,6 +179,33 @@ public class WeakHashtableTestCase extends TestCase {
         assertTrue(keySet.contains(keyThree));
     }
 
+    public void testLOGGING_119() throws Exception {
+        final Thread [] t = new Thread[THREAD_COUNT];
+        for (int j=1; j <= OUTER_LOOP; j++) {
+            hashtable = new WeakHashtable();
+            for (int i = 0; i < t.length; i++) {
+                t[i] = new StupidThread("Thread:" + i);
+                t[i].setDaemon(true); // Otherwise we cannot exit
+                t[i].start();
+            }
+            for (final Thread element : t) {
+                element.join(WAIT_FOR_THREAD_COMPLETION);
+                if (element.isAlive()) {
+                    break; // at least one thread is stuck
+                }
+            }
+            int active=0;
+            for (final Thread element : t) {
+                if (element.isAlive()) {
+                    active++;
+                }
+            }
+            if (active > 0) {
+                fail("Attempt: " + j + " Stuck threads: " + active);
+            }
+        }
+    }
+
     /** Tests public Object put(Object key, Object value) */
     public void testPut() throws Exception {
         final Long anotherKey = new Long(2004);
@@ -265,49 +309,5 @@ public class WeakHashtableTestCase extends TestCase {
 
         // Test that the released objects are not taking space in the table
         assertEquals("underlying table not emptied", 0, weakHashtable.size());
-    }
-
-    public static class StupidThread extends Thread {
-
-        public StupidThread(final String name) {
-            super(name);
-        }
-
-        @Override
-        public void run() {
-            for (int i = 0; i < RUN_LOOPS; i++) {
-                hashtable.put("key" + ":" + i % 10, Boolean.TRUE);
-                if (i % 50 == 0) {
-                    yield();
-                }
-            }
-        }
-    }
-
-    public void testLOGGING_119() throws Exception {
-        final Thread [] t = new Thread[THREAD_COUNT];
-        for (int j=1; j <= OUTER_LOOP; j++) {
-            hashtable = new WeakHashtable();
-            for (int i = 0; i < t.length; i++) {
-                t[i] = new StupidThread("Thread:" + i);
-                t[i].setDaemon(true); // Otherwise we cannot exit
-                t[i].start();
-            }
-            for (final Thread element : t) {
-                element.join(WAIT_FOR_THREAD_COMPLETION);
-                if (element.isAlive()) {
-                    break; // at least one thread is stuck
-                }
-            }
-            int active=0;
-            for (final Thread element : t) {
-                if (element.isAlive()) {
-                    active++;
-                }
-            }
-            if (active > 0) {
-                fail("Attempt: " + j + " Stuck threads: " + active);
-            }
-        }
     }
 }

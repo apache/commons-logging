@@ -43,8 +43,6 @@ import org.apache.commons.logging.PathableTestSuite;
  */
 public class SecurityAllowedTestCase extends TestCase
 {
-    private SecurityManager oldSecMgr;
-
     // Dummy special hashtable, so we can tell JCL to use this instead of
     // the standard one.
     public static class CustomHashtable extends Hashtable {
@@ -68,6 +66,8 @@ public class SecurityAllowedTestCase extends TestCase
             "org.apache.commons.logging.security.SecurityAllowedTestCase");
         return new PathableTestSuite(testClass, parent);
     }
+
+    private SecurityManager oldSecMgr;
 
     @Override
     public void setUp() {

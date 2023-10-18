@@ -42,42 +42,12 @@ public class NoOpLog implements Log, Serializable {
 
     /** Do nothing */
     @Override
-    public void trace(final Object message) {
-    }
-
-    /** Do nothing */
-    @Override
-    public void trace(final Object message, final Throwable t) {
-    }
-
-    /** Do nothing */
-    @Override
     public void debug(final Object message) {
     }
 
     /** Do nothing */
     @Override
     public void debug(final Object message, final Throwable t) {
-    }
-
-    /** Do nothing */
-    @Override
-    public void info(final Object message) {
-    }
-
-    /** Do nothing */
-    @Override
-    public void info(final Object message, final Throwable t) {
-    }
-
-    /** Do nothing */
-    @Override
-    public void warn(final Object message) {
-    }
-
-    /** Do nothing */
-    @Override
-    public void warn(final Object message, final Throwable t) {
     }
 
     /** Do nothing */
@@ -98,6 +68,16 @@ public class NoOpLog implements Log, Serializable {
     /** Do nothing */
     @Override
     public void fatal(final Object message, final Throwable t) {
+    }
+
+    /** Do nothing */
+    @Override
+    public void info(final Object message) {
+    }
+
+    /** Do nothing */
+    @Override
+    public void info(final Object message, final Throwable t) {
     }
 
     /**
@@ -158,5 +138,25 @@ public class NoOpLog implements Log, Serializable {
     @Override
     public final boolean isWarnEnabled() {
         return false;
+    }
+
+    /** Do nothing */
+    @Override
+    public void trace(final Object message) {
+    }
+
+    /** Do nothing */
+    @Override
+    public void trace(final Object message, final Throwable t) {
+    }
+
+    /** Do nothing */
+    @Override
+    public void warn(final Object message) {
+    }
+
+    /** Do nothing */
+    @Override
+    public void warn(final Object message, final Throwable t) {
     }
 }

@@ -48,9 +48,6 @@ import org.apache.commons.logging.PathableTestSuite;
  */
 public class SecurityForbiddenTestCase extends TestCase
 {
-    private SecurityManager oldSecMgr;
-    private ClassLoader otherClassLoader;
-
     // Dummy special hashtable, so we can tell JCL to use this instead of
     // the standard one.
     public static class CustomHashtable extends Hashtable {
@@ -60,7 +57,6 @@ public class SecurityForbiddenTestCase extends TestCase
          */
         private static final long serialVersionUID = 7224652794746236024L;
     }
-
     /**
      * Return the tests included in this test suite.
      */
@@ -73,6 +69,27 @@ public class SecurityForbiddenTestCase extends TestCase
         final Class testClass = parent.loadClass(
             "org.apache.commons.logging.security.SecurityForbiddenTestCase");
         return new PathableTestSuite(testClass, parent);
+    }
+
+    private SecurityManager oldSecMgr;
+
+    private ClassLoader otherClassLoader;
+
+    /**
+     * Loads a class with the given classloader.
+     */
+    private Object loadClass(final String name, final ClassLoader classLoader) {
+        try {
+            final Class clazz = classLoader.loadClass(name);
+            final Object obj = clazz.getConstructor().newInstance();
+            return obj;
+        } catch ( final Exception e ) {
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            fail("Unexpected exception:" + e.getMessage() + ":" + sw.toString());
+        }
+        return null;
     }
 
     @Override
@@ -174,22 +191,5 @@ public class SecurityForbiddenTestCase extends TestCase
             t.printStackTrace(pw);
             fail("Unexpected exception:" + t.getMessage() + ":" + sw.toString());
         }
-    }
-
-    /**
-     * Loads a class with the given classloader.
-     */
-    private Object loadClass(final String name, final ClassLoader classLoader) {
-        try {
-            final Class clazz = classLoader.loadClass(name);
-            final Object obj = clazz.getConstructor().newInstance();
-            return obj;
-        } catch ( final Exception e ) {
-            final StringWriter sw = new StringWriter();
-            final PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            fail("Unexpected exception:" + e.getMessage() + ":" + sw.toString());
-        }
-        return null;
     }
 }

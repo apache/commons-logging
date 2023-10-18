@@ -133,26 +133,6 @@ public class SimpleLog implements Log, Serializable {
 
     // ------------------------------------------------------------ Initializer
 
-    private static String getStringProperty(final String name) {
-        String prop = null;
-        try {
-            prop = System.getProperty(name);
-        } catch (final SecurityException e) {
-            // Ignore
-        }
-        return prop == null ? simpleLogProps.getProperty(name) : prop;
-    }
-
-    private static String getStringProperty(final String name, final String dephault) {
-        final String prop = getStringProperty(name);
-        return prop == null ? dephault : prop;
-    }
-
-    private static boolean getBooleanProperty(final String name, final boolean dephault) {
-        final String prop = getStringProperty(name);
-        return prop == null ? dephault : "true".equalsIgnoreCase(prop);
-    }
-
     // Initialize class attributes.
     // Load properties file, if found.
     // Override with system properties.
@@ -190,423 +170,9 @@ public class SimpleLog implements Log, Serializable {
         }
     }
 
-    // ------------------------------------------------------------- Attributes
-
-    /** The name of this simple log instance */
-    protected volatile String logName;
-    /** The current log level */
-    protected volatile int currentLogLevel;
-    /** The short name of this simple log instance */
-    private volatile String shortLogName;
-
-    // ------------------------------------------------------------ Constructor
-
-    /**
-     * Construct a simple log with given name.
-     *
-     * @param name log name
-     */
-    public SimpleLog(String name) {
-        logName = name;
-
-        // Set initial log level
-        // Used to be: set default log level to ERROR
-        // IMHO it should be lower, but at least info ( costin ).
-        setLevel(SimpleLog.LOG_LEVEL_INFO);
-
-        // Set log level from properties
-        String lvl = getStringProperty(systemPrefix + "log." + logName);
-        int i = String.valueOf(name).lastIndexOf(".");
-        while(null == lvl && i > -1) {
-            name = name.substring(0,i);
-            lvl = getStringProperty(systemPrefix + "log." + name);
-            i = String.valueOf(name).lastIndexOf(".");
-        }
-
-        if (null == lvl) {
-            lvl =  getStringProperty(systemPrefix + "defaultlog");
-        }
-
-        if ("all".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_ALL);
-        } else if ("trace".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_TRACE);
-        } else if ("debug".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_DEBUG);
-        } else if ("info".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_INFO);
-        } else if ("warn".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_WARN);
-        } else if ("error".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_ERROR);
-        } else if ("fatal".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_FATAL);
-        } else if ("off".equalsIgnoreCase(lvl)) {
-            setLevel(SimpleLog.LOG_LEVEL_OFF);
-        }
-    }
-
-    // -------------------------------------------------------- Properties
-
-    /**
-     * Set logging level.
-     *
-     * @param currentLogLevel new logging level
-     */
-    public void setLevel(final int currentLogLevel) {
-        this.currentLogLevel = currentLogLevel;
-    }
-
-    /**
-     * Get logging level.
-     *
-     * @return  logging level.
-     */
-    public int getLevel() {
-        return currentLogLevel;
-    }
-
-    // -------------------------------------------------------- Logging Methods
-
-    /**
-     * Do the actual logging.
-     * <p>
-     * This method assembles the message and then calls {@code write()}
-     * to cause it to be written.
-     *
-     * @param type One of the LOG_LEVEL_XXX constants defining the log level
-     * @param message The message itself (typically a String)
-     * @param t The exception whose stack trace should be logged
-     */
-    protected void log(final int type, final Object message, final Throwable t) {
-        // Use a string buffer for better performance
-        final StringBuilder buf = new StringBuilder();
-
-        // Append date-time if so configured
-        if (showDateTime) {
-            final Date now = new Date();
-            String dateText;
-            synchronized(dateFormatter) {
-                dateText = dateFormatter.format(now);
-            }
-            buf.append(dateText);
-            buf.append(" ");
-        }
-
-        // Append a readable representation of the log level
-        switch(type) {
-            case SimpleLog.LOG_LEVEL_TRACE: buf.append("[TRACE] "); break;
-            case SimpleLog.LOG_LEVEL_DEBUG: buf.append("[DEBUG] "); break;
-            case SimpleLog.LOG_LEVEL_INFO:  buf.append("[INFO] ");  break;
-            case SimpleLog.LOG_LEVEL_WARN:  buf.append("[WARN] ");  break;
-            case SimpleLog.LOG_LEVEL_ERROR: buf.append("[ERROR] "); break;
-            case SimpleLog.LOG_LEVEL_FATAL: buf.append("[FATAL] "); break;
-        }
-
-        // Append the name of the log instance if so configured
-        if (showShortName) {
-            if (shortLogName == null) {
-                // Cut all but the last component of the name for both styles
-                final String slName = logName.substring(logName.lastIndexOf(".") + 1);
-                shortLogName = slName.substring(slName.lastIndexOf("/") + 1);
-            }
-            buf.append(String.valueOf(shortLogName)).append(" - ");
-        } else if (showLogName) {
-            buf.append(String.valueOf(logName)).append(" - ");
-        }
-
-        // Append the message
-        buf.append(String.valueOf(message));
-
-        // Append stack trace if not null
-        if (t != null) {
-            buf.append(" <");
-            buf.append(t.toString());
-            buf.append(">");
-
-            final StringWriter sw = new StringWriter(1024);
-            final PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            pw.close();
-            buf.append(sw.toString());
-        }
-
-        // Print to the appropriate destination
-        write(buf);
-    }
-
-    /**
-     * Write the content of the message accumulated in the specified
-     * {@code StringBuffer} to the appropriate output destination.  The
-     * default implementation writes to {@code System.err}.
-     *
-     * @param buffer A {@code StringBuffer} containing the accumulated
-     *  text to be logged
-     */
-    protected void write(final StringBuffer buffer) {
-        System.err.println(buffer.toString());
-    }
-
-    /**
-     * Write the content of the message accumulated in the specified
-     * {@code StringBuffer} to the appropriate output destination.  The
-     * default implementation writes to {@code System.err}.
-     *
-     * @param buffer A {@code StringBuffer} containing the accumulated
-     *  text to be logged
-     */
-    private void write(final Object buffer) {
-        System.err.println(buffer.toString());
-    }
-
-    /**
-     * Tests whether the given log level currently enabled.
-     *
-     * @param logLevel is this level enabled?
-     * @return whether the given log level currently enabled. 
-     */
-    protected boolean isLevelEnabled(final int logLevel) {
-        // log level are numerically ordered so can use simple numeric
-        // comparison
-        return logLevel >= currentLogLevel;
-    }
-
-    // -------------------------------------------------------- Log Implementation
-
-    /**
-     * Logs a message with
-     * {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#debug(Object)
-     */
-    @Override
-    public final void debug(final Object message) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
-            log(SimpleLog.LOG_LEVEL_DEBUG, message, null);
-        }
-    }
-
-    /**
-     * Logs a message with
-     * {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
-     */
-    @Override
-    public final void debug(final Object message, final Throwable t) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
-            log(SimpleLog.LOG_LEVEL_DEBUG, message, t);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#trace(Object)
-     */
-    @Override
-    public final void trace(final Object message) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
-            log(SimpleLog.LOG_LEVEL_TRACE, message, null);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
-     */
-    @Override
-    public final void trace(final Object message, final Throwable t) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
-            log(SimpleLog.LOG_LEVEL_TRACE, message, t);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#info(Object)
-     */
-    @Override
-    public final void info(final Object message) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
-            log(SimpleLog.LOG_LEVEL_INFO,message,null);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#info(Object, Throwable)
-     */
-    @Override
-    public final void info(final Object message, final Throwable t) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
-            log(SimpleLog.LOG_LEVEL_INFO, message, t);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#warn(Object)
-     */
-    @Override
-    public final void warn(final Object message) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
-            log(SimpleLog.LOG_LEVEL_WARN, message, null);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
-     */
-    @Override
-    public final void warn(final Object message, final Throwable t) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
-            log(SimpleLog.LOG_LEVEL_WARN, message, t);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#error(Object)
-     */
-    @Override
-    public final void error(final Object message) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
-            log(SimpleLog.LOG_LEVEL_ERROR, message, null);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#error(Object, Throwable)
-     */
-    @Override
-    public final void error(final Object message, final Throwable t) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
-            log(SimpleLog.LOG_LEVEL_ERROR, message, t);
-        }
-    }
-
-    /**
-     * Log a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#fatal(Object)
-     */
-    @Override
-    public final void fatal(final Object message) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
-            log(SimpleLog.LOG_LEVEL_FATAL, message, null);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
-     */
-    @Override
-    public final void fatal(final Object message, final Throwable t) {
-        if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
-            log(SimpleLog.LOG_LEVEL_FATAL, message, t);
-        }
-    }
-
-    /**
-     * Are debug messages currently enabled?
-     * <p>
-     * This allows expensive operations such as {@code String}
-     * concatenation to be avoided when the message will be ignored by the
-     * logger.
-     */
-    @Override
-    public final boolean isDebugEnabled() {
-        return isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG);
-    }
-
-    /**
-     * Are error messages currently enabled?
-     * <p>
-     * This allows expensive operations such as {@code String}
-     * concatenation to be avoided when the message will be ignored by the
-     * logger.
-     */
-    @Override
-    public final boolean isErrorEnabled() {
-        return isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR);
-    }
-
-    /**
-     * Are fatal messages currently enabled?
-     * <p>
-     * This allows expensive operations such as {@code String}
-     * concatenation to be avoided when the message will be ignored by the
-     * logger.
-     */
-    @Override
-    public final boolean isFatalEnabled() {
-        return isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL);
-    }
-
-    /**
-     * Are info messages currently enabled?
-     * <p>
-     * This allows expensive operations such as {@code String}
-     * concatenation to be avoided when the message will be ignored by the
-     * logger.
-     */
-    @Override
-    public final boolean isInfoEnabled() {
-        return isLevelEnabled(SimpleLog.LOG_LEVEL_INFO);
-    }
-
-    /**
-     * Are trace messages currently enabled?
-     * <p>
-     * This allows expensive operations such as {@code String}
-     * concatenation to be avoided when the message will be ignored by the
-     * logger.
-     */
-    @Override
-    public final boolean isTraceEnabled() {
-        return isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE);
-    }
-
-    /**
-     * Are warn messages currently enabled?
-     * <p>
-     * This allows expensive operations such as {@code String}
-     * concatenation to be avoided when the message will be ignored by the
-     * logger.
-     */
-    @Override
-    public final boolean isWarnEnabled() {
-        return isLevelEnabled(SimpleLog.LOG_LEVEL_WARN);
+    private static boolean getBooleanProperty(final String name, final boolean dephault) {
+        final String prop = getStringProperty(name);
+        return prop == null ? dephault : "true".equalsIgnoreCase(prop);
     }
 
     /**
@@ -681,6 +247,440 @@ public class SimpleLog implements Log, Serializable {
                     return ClassLoader.getSystemResourceAsStream(name);
                 }
             });
+    }
+
+    // ------------------------------------------------------------- Attributes
+
+    private static String getStringProperty(final String name) {
+        String prop = null;
+        try {
+            prop = System.getProperty(name);
+        } catch (final SecurityException e) {
+            // Ignore
+        }
+        return prop == null ? simpleLogProps.getProperty(name) : prop;
+    }
+    private static String getStringProperty(final String name, final String dephault) {
+        final String prop = getStringProperty(name);
+        return prop == null ? dephault : prop;
+    }
+    /** The name of this simple log instance */
+    protected volatile String logName;
+
+    // ------------------------------------------------------------ Constructor
+
+    /** The current log level */
+    protected volatile int currentLogLevel;
+
+    // -------------------------------------------------------- Properties
+
+    /** The short name of this simple log instance */
+    private volatile String shortLogName;
+
+    /**
+     * Construct a simple log with given name.
+     *
+     * @param name log name
+     */
+    public SimpleLog(String name) {
+        logName = name;
+
+        // Set initial log level
+        // Used to be: set default log level to ERROR
+        // IMHO it should be lower, but at least info ( costin ).
+        setLevel(SimpleLog.LOG_LEVEL_INFO);
+
+        // Set log level from properties
+        String lvl = getStringProperty(systemPrefix + "log." + logName);
+        int i = String.valueOf(name).lastIndexOf(".");
+        while(null == lvl && i > -1) {
+            name = name.substring(0,i);
+            lvl = getStringProperty(systemPrefix + "log." + name);
+            i = String.valueOf(name).lastIndexOf(".");
+        }
+
+        if (null == lvl) {
+            lvl =  getStringProperty(systemPrefix + "defaultlog");
+        }
+
+        if ("all".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_ALL);
+        } else if ("trace".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_TRACE);
+        } else if ("debug".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_DEBUG);
+        } else if ("info".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_INFO);
+        } else if ("warn".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_WARN);
+        } else if ("error".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_ERROR);
+        } else if ("fatal".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_FATAL);
+        } else if ("off".equalsIgnoreCase(lvl)) {
+            setLevel(SimpleLog.LOG_LEVEL_OFF);
+        }
+    }
+
+    // -------------------------------------------------------- Logging Methods
+
+    /**
+     * Logs a message with
+     * {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#debug(Object)
+     */
+    @Override
+    public final void debug(final Object message) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
+            log(SimpleLog.LOG_LEVEL_DEBUG, message, null);
+        }
+    }
+
+    /**
+     * Logs a message with
+     * {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#debug(Object, Throwable)
+     */
+    @Override
+    public final void debug(final Object message, final Throwable t) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG)) {
+            log(SimpleLog.LOG_LEVEL_DEBUG, message, t);
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#error(Object)
+     */
+    @Override
+    public final void error(final Object message) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
+            log(SimpleLog.LOG_LEVEL_ERROR, message, null);
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_ERROR}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#error(Object, Throwable)
+     */
+    @Override
+    public final void error(final Object message, final Throwable t) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR)) {
+            log(SimpleLog.LOG_LEVEL_ERROR, message, t);
+        }
+    }
+
+    // -------------------------------------------------------- Log Implementation
+
+    /**
+     * Log a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#fatal(Object)
+     */
+    @Override
+    public final void fatal(final Object message) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
+            log(SimpleLog.LOG_LEVEL_FATAL, message, null);
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#fatal(Object, Throwable)
+     */
+    @Override
+    public final void fatal(final Object message, final Throwable t) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL)) {
+            log(SimpleLog.LOG_LEVEL_FATAL, message, t);
+        }
+    }
+
+    /**
+     * Get logging level.
+     *
+     * @return  logging level.
+     */
+    public int getLevel() {
+        return currentLogLevel;
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#info(Object)
+     */
+    @Override
+    public final void info(final Object message) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
+            log(SimpleLog.LOG_LEVEL_INFO,message,null);
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_INFO}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#info(Object, Throwable)
+     */
+    @Override
+    public final void info(final Object message, final Throwable t) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_INFO)) {
+            log(SimpleLog.LOG_LEVEL_INFO, message, t);
+        }
+    }
+
+    /**
+     * Are debug messages currently enabled?
+     * <p>
+     * This allows expensive operations such as {@code String}
+     * concatenation to be avoided when the message will be ignored by the
+     * logger.
+     */
+    @Override
+    public final boolean isDebugEnabled() {
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_DEBUG);
+    }
+
+    /**
+     * Are error messages currently enabled?
+     * <p>
+     * This allows expensive operations such as {@code String}
+     * concatenation to be avoided when the message will be ignored by the
+     * logger.
+     */
+    @Override
+    public final boolean isErrorEnabled() {
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_ERROR);
+    }
+
+    /**
+     * Are fatal messages currently enabled?
+     * <p>
+     * This allows expensive operations such as {@code String}
+     * concatenation to be avoided when the message will be ignored by the
+     * logger.
+     */
+    @Override
+    public final boolean isFatalEnabled() {
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_FATAL);
+    }
+
+    /**
+     * Are info messages currently enabled?
+     * <p>
+     * This allows expensive operations such as {@code String}
+     * concatenation to be avoided when the message will be ignored by the
+     * logger.
+     */
+    @Override
+    public final boolean isInfoEnabled() {
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_INFO);
+    }
+
+    /**
+     * Tests whether the given log level currently enabled.
+     *
+     * @param logLevel is this level enabled?
+     * @return whether the given log level currently enabled. 
+     */
+    protected boolean isLevelEnabled(final int logLevel) {
+        // log level are numerically ordered so can use simple numeric
+        // comparison
+        return logLevel >= currentLogLevel;
+    }
+
+    /**
+     * Are trace messages currently enabled?
+     * <p>
+     * This allows expensive operations such as {@code String}
+     * concatenation to be avoided when the message will be ignored by the
+     * logger.
+     */
+    @Override
+    public final boolean isTraceEnabled() {
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE);
+    }
+
+    /**
+     * Are warn messages currently enabled?
+     * <p>
+     * This allows expensive operations such as {@code String}
+     * concatenation to be avoided when the message will be ignored by the
+     * logger.
+     */
+    @Override
+    public final boolean isWarnEnabled() {
+        return isLevelEnabled(SimpleLog.LOG_LEVEL_WARN);
+    }
+
+    /**
+     * Do the actual logging.
+     * <p>
+     * This method assembles the message and then calls {@code write()}
+     * to cause it to be written.
+     *
+     * @param type One of the LOG_LEVEL_XXX constants defining the log level
+     * @param message The message itself (typically a String)
+     * @param t The exception whose stack trace should be logged
+     */
+    protected void log(final int type, final Object message, final Throwable t) {
+        // Use a string buffer for better performance
+        final StringBuilder buf = new StringBuilder();
+
+        // Append date-time if so configured
+        if (showDateTime) {
+            final Date now = new Date();
+            String dateText;
+            synchronized(dateFormatter) {
+                dateText = dateFormatter.format(now);
+            }
+            buf.append(dateText);
+            buf.append(" ");
+        }
+
+        // Append a readable representation of the log level
+        switch(type) {
+            case SimpleLog.LOG_LEVEL_TRACE: buf.append("[TRACE] "); break;
+            case SimpleLog.LOG_LEVEL_DEBUG: buf.append("[DEBUG] "); break;
+            case SimpleLog.LOG_LEVEL_INFO:  buf.append("[INFO] ");  break;
+            case SimpleLog.LOG_LEVEL_WARN:  buf.append("[WARN] ");  break;
+            case SimpleLog.LOG_LEVEL_ERROR: buf.append("[ERROR] "); break;
+            case SimpleLog.LOG_LEVEL_FATAL: buf.append("[FATAL] "); break;
+        }
+
+        // Append the name of the log instance if so configured
+        if (showShortName) {
+            if (shortLogName == null) {
+                // Cut all but the last component of the name for both styles
+                final String slName = logName.substring(logName.lastIndexOf(".") + 1);
+                shortLogName = slName.substring(slName.lastIndexOf("/") + 1);
+            }
+            buf.append(String.valueOf(shortLogName)).append(" - ");
+        } else if (showLogName) {
+            buf.append(String.valueOf(logName)).append(" - ");
+        }
+
+        // Append the message
+        buf.append(String.valueOf(message));
+
+        // Append stack trace if not null
+        if (t != null) {
+            buf.append(" <");
+            buf.append(t.toString());
+            buf.append(">");
+
+            final StringWriter sw = new StringWriter(1024);
+            final PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            pw.close();
+            buf.append(sw.toString());
+        }
+
+        // Print to the appropriate destination
+        write(buf);
+    }
+
+    /**
+     * Set logging level.
+     *
+     * @param currentLogLevel new logging level
+     */
+    public void setLevel(final int currentLogLevel) {
+        this.currentLogLevel = currentLogLevel;
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#trace(Object)
+     */
+    @Override
+    public final void trace(final Object message) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
+            log(SimpleLog.LOG_LEVEL_TRACE, message, null);
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_TRACE}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
+     */
+    @Override
+    public final void trace(final Object message, final Throwable t) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_TRACE)) {
+            log(SimpleLog.LOG_LEVEL_TRACE, message, t);
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#warn(Object)
+     */
+    @Override
+    public final void warn(final Object message) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
+            log(SimpleLog.LOG_LEVEL_WARN, message, null);
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_WARN}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
+     */
+    @Override
+    public final void warn(final Object message, final Throwable t) {
+        if (isLevelEnabled(SimpleLog.LOG_LEVEL_WARN)) {
+            log(SimpleLog.LOG_LEVEL_WARN, message, t);
+        }
+    }
+
+    /**
+     * Write the content of the message accumulated in the specified
+     * {@code StringBuffer} to the appropriate output destination.  The
+     * default implementation writes to {@code System.err}.
+     *
+     * @param buffer A {@code StringBuffer} containing the accumulated
+     *  text to be logged
+     */
+    private void write(final Object buffer) {
+        System.err.println(buffer.toString());
+    }
+
+    /**
+     * Write the content of the message accumulated in the specified
+     * {@code StringBuffer} to the appropriate output destination.  The
+     * default implementation writes to {@code System.err}.
+     *
+     * @param buffer A {@code StringBuffer} containing the accumulated
+     *  text to be logged
+     */
+    protected void write(final StringBuffer buffer) {
+        System.err.println(buffer.toString());
     }
 }
 

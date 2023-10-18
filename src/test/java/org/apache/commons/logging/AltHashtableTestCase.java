@@ -61,21 +61,6 @@ public class AltHashtableTestCase extends TestCase {
     }
 
     /**
-     * Verify that initialising the LogFactory class will cause it
-     * to instantiate an object of type specified in system property
-     * "org.apache.commons.logging.LogFactory.HashtableImpl".
-     */
-    public void testType() {
-        // Here, the reference to the LogFactory class should cause the
-        // class to be loaded and initialized. It will see the property
-        // set and use the AltHashtable class. If other tests in this
-        // class have already been run within the same classloader then
-        // LogFactory will already have been initialized, but that
-        // doesn't change the effectiveness of this test.
-        assertTrue(LogFactory.factories instanceof AltHashtable);
-    }
-
-    /**
      * Verify that when LogFactory sees a context-classloader for the
      * first time that it creates a new entry in the LogFactory.factories
      * hashmap. In particular, this checks that this process works ok when
@@ -90,5 +75,20 @@ public class AltHashtableTestCase extends TestCase {
         final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         assertEquals(contextLoader, AltHashtable.lastKey);
         assertNotNull(AltHashtable.lastValue);
+    }
+
+    /**
+     * Verify that initialising the LogFactory class will cause it
+     * to instantiate an object of type specified in system property
+     * "org.apache.commons.logging.LogFactory.HashtableImpl".
+     */
+    public void testType() {
+        // Here, the reference to the LogFactory class should cause the
+        // class to be loaded and initialized. It will see the property
+        // set and use the AltHashtable class. If other tests in this
+        // class have already been run within the same classloader then
+        // LogFactory will already have been initialized, but that
+        // doesn't change the effectiveness of this test.
+        assertTrue(LogFactory.factories instanceof AltHashtable);
     }
 }

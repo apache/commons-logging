@@ -32,10 +32,6 @@ public class TestHandler extends Handler {
     // The set of logged records for this handler
     private final List records = new ArrayList();
 
-    public Iterator records() {
-        return records.iterator();
-    }
-
     @Override
     public void close() {
     }
@@ -48,6 +44,10 @@ public class TestHandler extends Handler {
     @Override
     public void publish(final LogRecord record) {
         records.add(record);
+    }
+
+    public Iterator records() {
+        return records.iterator();
     }
 
 }

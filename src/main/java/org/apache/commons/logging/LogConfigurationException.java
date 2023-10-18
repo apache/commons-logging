@@ -28,6 +28,11 @@ public class LogConfigurationException extends RuntimeException {
     private static final long serialVersionUID = 8486587136871052495L;
 
     /**
+     * The underlying cause of this exception.
+     */
+    protected Throwable cause;
+
+    /**
      * Construct a new exception with {@code null} as its detail message.
      */
     public LogConfigurationException() {
@@ -43,16 +48,6 @@ public class LogConfigurationException extends RuntimeException {
     }
 
     /**
-     * Construct a new exception with the specified cause and a derived
-     * detail message.
-     *
-     * @param cause The underlying cause
-     */
-    public LogConfigurationException(final Throwable cause) {
-        this(cause == null ? null : cause.toString(), cause);
-    }
-
-    /**
      * Construct a new exception with the specified detail message and cause.
      *
      * @param message The detail message
@@ -64,9 +59,14 @@ public class LogConfigurationException extends RuntimeException {
     }
 
     /**
-     * The underlying cause of this exception.
+     * Construct a new exception with the specified cause and a derived
+     * detail message.
+     *
+     * @param cause The underlying cause
      */
-    protected Throwable cause;
+    public LogConfigurationException(final Throwable cause) {
+        this(cause == null ? null : cause.toString(), cause);
+    }
 
     /**
      * Return the underlying cause of this exception (if any).

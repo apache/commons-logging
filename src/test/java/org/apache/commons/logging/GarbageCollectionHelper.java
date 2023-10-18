@@ -27,23 +27,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 // after: https://github.com/apache/logging-log4j2/blob/c47e98423b461731f7791fcb9ea1079cd451f365/log4j-core/src/test/java/org/apache/logging/log4j/core/GarbageCollectionHelper.java
 public final class GarbageCollectionHelper implements Closeable, Runnable {
-    private static final OutputStream SINK = new OutputStream() {
-        @Override
-        public void write(int b) {
-        }
-
-        @Override
-        public void write(byte[] b) {
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
-        }
-    };
-    private final AtomicBoolean running = new AtomicBoolean();
-    private final CountDownLatch latch = new CountDownLatch(1);
-    private final Thread gcThread = new Thread(new GcTask());
-
     class GcTask implements Runnable {
         @Override
         public void run() {
@@ -64,13 +47,23 @@ public final class GarbageCollectionHelper implements Closeable, Runnable {
             }
         }
     }
-
-    @Override
-    public void run() {
-        if (running.compareAndSet(false, true)) {
-            gcThread.start();
+    private static final OutputStream SINK = new OutputStream() {
+        @Override
+        public void write(byte[] b) {
         }
-    }
+
+        @Override
+        public void write(byte[] b, int off, int len) {
+        }
+
+        @Override
+        public void write(int b) {
+        }
+    };
+    private final AtomicBoolean running = new AtomicBoolean();
+    private final CountDownLatch latch = new CountDownLatch(1);
+
+    private final Thread gcThread = new Thread(new GcTask());
 
     @Override
     public void close() {
@@ -80,6 +73,13 @@ public final class GarbageCollectionHelper implements Closeable, Runnable {
                     latch.await(10, TimeUnit.SECONDS));
         } catch (final InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void run() {
+        if (running.compareAndSet(false, true)) {
+            gcThread.start();
         }
     }
 }

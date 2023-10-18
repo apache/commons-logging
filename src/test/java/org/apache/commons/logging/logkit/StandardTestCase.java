@@ -43,21 +43,6 @@ public class StandardTestCase extends AbstractLogTest {
 
 
     /**
-     * <p>The {@link LogFactory} implementation we have selected.</p>
-     */
-    protected LogFactory factory;
-
-
-    /**
-     * <p>The {@link Log} implementation we have selected.</p>
-     */
-    protected Log log;
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
-
-    /**
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
@@ -72,6 +57,51 @@ public class StandardTestCase extends AbstractLogTest {
         final Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
+
+
+    /**
+     * <p>The {@link LogFactory} implementation we have selected.</p>
+     */
+    protected LogFactory factory;
+
+
+    // ------------------------------------------- JUnit Infrastructure Methods
+
+
+    /**
+     * <p>The {@link Log} implementation we have selected.</p>
+     */
+    protected Log log;
+
+    // Check the standard log instance
+    protected void checkStandard() {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.LogKitLogger",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        // Note that by default *everything* is enabled for LogKit
+        assertTrue(log.isTraceEnabled());
+        assertTrue(log.isDebugEnabled());
+        assertTrue(log.isInfoEnabled());
+        assertTrue(log.isWarnEnabled());
+        assertTrue(log.isErrorEnabled());
+        assertTrue(log.isFatalEnabled());
+    }
+
+    /**
+     * Override the abstract method from the parent class so that the
+     * inherited tests can access the right Log object type.
+     */
+    @Override
+    public Log getLogObject()
+    {
+        return new LogKitLogger(this.getClass().getName());
+    }
+
+    // ----------------------------------------------------------- Test Methods
 
     /**
      * Set up instance variables required by this test case.
@@ -98,18 +128,6 @@ public class StandardTestCase extends AbstractLogTest {
         LogFactory.releaseAll();
     }
 
-    // ----------------------------------------------------------- Test Methods
-
-    /**
-     * Override the abstract method from the parent class so that the
-     * inherited tests can access the right Log object type.
-     */
-    @Override
-    public Log getLogObject()
-    {
-        return new LogKitLogger(this.getClass().getName());
-    }
-
     // Test pristine LogFactory instance
     public void testPristineFactory() {
 
@@ -128,6 +146,9 @@ public class StandardTestCase extends AbstractLogTest {
         checkStandard();
     }
 
+
+    // -------------------------------------------------------- Support Methods
+
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
         checkStandard();
@@ -144,26 +165,5 @@ public class StandardTestCase extends AbstractLogTest {
         ois.close();
 
         checkStandard();
-    }
-
-
-    // -------------------------------------------------------- Support Methods
-
-    // Check the standard log instance
-    protected void checkStandard() {
-
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.impl.LogKitLogger",
-                     log.getClass().getName());
-
-        // Can we call level checkers with no exceptions?
-        // Note that by default *everything* is enabled for LogKit
-        assertTrue(log.isTraceEnabled());
-        assertTrue(log.isDebugEnabled());
-        assertTrue(log.isInfoEnabled());
-        assertTrue(log.isWarnEnabled());
-        assertTrue(log.isErrorEnabled());
-        assertTrue(log.isFatalEnabled());
     }
 }

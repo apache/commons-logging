@@ -63,49 +63,6 @@ public class LogKitLogger implements Log, Serializable {
     // --------------------------------------------------------- Public Methods
 
     /**
-     * Gets the underlying Logger we are using.
-     *
-     * @return the underlying Logger we are using.
-     */
-    public Logger getLogger() {
-        Logger result = logger;
-        if (result == null) {
-            synchronized(this) {
-                result = logger;
-                if (result == null) {
-                    logger = result = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
-                }
-            }
-        }
-        return result;
-    }
-
-    // ----------------------------------------------------- Log Implementation
-
-    /**
-     * Logs a message with {@code org.apache.log.Priority.DEBUG}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#trace(Object)
-    */
-    @Override
-    public void trace(final Object message) {
-        debug(message);
-    }
-
-    /**
-     * Logs a message with {@code org.apache.log.Priority.DEBUG}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
-     */
-    @Override
-    public void trace(final Object message, final Throwable t) {
-        debug(message, t);
-    }
-
-    /**
      * Logs a message with {@code org.apache.log.Priority.DEBUG}.
      *
      * @param message to log
@@ -118,6 +75,8 @@ public class LogKitLogger implements Log, Serializable {
         }
     }
 
+    // ----------------------------------------------------- Log Implementation
+
     /**
      * Logs a message with {@code org.apache.log.Priority.DEBUG}.
      *
@@ -129,60 +88,6 @@ public class LogKitLogger implements Log, Serializable {
     public void debug(final Object message, final Throwable t) {
         if (message != null) {
             getLogger().debug(String.valueOf(message), t);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.log.Priority.INFO}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#info(Object)
-     */
-    @Override
-    public void info(final Object message) {
-        if (message != null) {
-            getLogger().info(String.valueOf(message));
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.log.Priority.INFO}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#info(Object, Throwable)
-     */
-    @Override
-    public void info(final Object message, final Throwable t) {
-        if (message != null) {
-            getLogger().info(String.valueOf(message), t);
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.log.Priority.WARN}.
-     *
-     * @param message to log
-     * @see org.apache.commons.logging.Log#warn(Object)
-     */
-    @Override
-    public void warn(final Object message) {
-        if (message != null) {
-            getLogger().warn(String.valueOf(message));
-        }
-    }
-
-    /**
-     * Logs a message with {@code org.apache.log.Priority.WARN}.
-     *
-     * @param message to log
-     * @param t log this cause
-     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
-     */
-    @Override
-    public void warn(final Object message, final Throwable t) {
-        if (message != null) {
-            getLogger().warn(String.valueOf(message), t);
         }
     }
 
@@ -241,6 +146,51 @@ public class LogKitLogger implements Log, Serializable {
     }
 
     /**
+     * Gets the underlying Logger we are using.
+     *
+     * @return the underlying Logger we are using.
+     */
+    public Logger getLogger() {
+        Logger result = logger;
+        if (result == null) {
+            synchronized(this) {
+                result = logger;
+                if (result == null) {
+                    logger = result = Hierarchy.getDefaultHierarchy().getLoggerFor(name);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Logs a message with {@code org.apache.log.Priority.INFO}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#info(Object)
+     */
+    @Override
+    public void info(final Object message) {
+        if (message != null) {
+            getLogger().info(String.valueOf(message));
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.log.Priority.INFO}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#info(Object, Throwable)
+     */
+    @Override
+    public void info(final Object message, final Throwable t) {
+        if (message != null) {
+            getLogger().info(String.valueOf(message), t);
+        }
+    }
+
+    /**
      * Checks whether the {@code LogKit} logger will log messages of priority {@code DEBUG}.
      */
     @Override
@@ -286,5 +236,55 @@ public class LogKitLogger implements Log, Serializable {
     @Override
     public boolean isWarnEnabled() {
         return getLogger().isWarnEnabled();
+    }
+
+    /**
+     * Logs a message with {@code org.apache.log.Priority.DEBUG}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#trace(Object)
+    */
+    @Override
+    public void trace(final Object message) {
+        debug(message);
+    }
+
+    /**
+     * Logs a message with {@code org.apache.log.Priority.DEBUG}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#trace(Object, Throwable)
+     */
+    @Override
+    public void trace(final Object message, final Throwable t) {
+        debug(message, t);
+    }
+
+    /**
+     * Logs a message with {@code org.apache.log.Priority.WARN}.
+     *
+     * @param message to log
+     * @see org.apache.commons.logging.Log#warn(Object)
+     */
+    @Override
+    public void warn(final Object message) {
+        if (message != null) {
+            getLogger().warn(String.valueOf(message));
+        }
+    }
+
+    /**
+     * Logs a message with {@code org.apache.log.Priority.WARN}.
+     *
+     * @param message to log
+     * @param t log this cause
+     * @see org.apache.commons.logging.Log#warn(Object, Throwable)
+     */
+    @Override
+    public void warn(final Object message, final Throwable t) {
+        if (message != null) {
+            getLogger().warn(String.valueOf(message), t);
+        }
     }
 }

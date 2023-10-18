@@ -52,91 +52,6 @@ public abstract class StandardTests extends TestCase {
     }
 
     /**
-     * Set up instance variables required by this test case.
-     */
-    @Override
-    public void setUp() throws Exception {
-        LogFactory.releaseAll();
-    }
-
-    /**
-     * Tear down instance variables required by this test case.
-     */
-    @Override
-    public void tearDown() {
-        LogFactory.releaseAll();
-    }
-
-    /**
-     * Modify log4j's setup so that all messages actually logged get redirected
-     * into the specified list.
-     * <p>
-     * This method also sets the logging level to INFO so that we
-     * can test whether messages are getting properly filtered.
-     */
-    public abstract void setUpTestAppender(List logEvents) throws Exception;
-
-    /**
-     * Test that a LogFactory gets created as expected.
-     */
-    public void testCreateFactory() {
-        final LogFactory factory = LogFactory.getFactory();
-        assertNotNull("LogFactory exists", factory);
-        assertEquals("LogFactory class",
-                     "org.apache.commons.logging.impl.LogFactoryImpl",
-                     factory.getClass().getName());
-
-        final String[] names = factory.getAttributeNames();
-        assertNotNull("Names exists", names);
-        assertEquals("Names empty", 0, names.length);
-    }
-
-    /**
-     * Verify that we can log messages without exceptions.
-     */
-    public void testPlainMessages() throws Exception {
-        final List logEvents = new ArrayList();
-        setUpTestAppender(logEvents);
-        final Log log = LogFactory.getLog("test-category");
-        logPlainMessages(log);
-        checkLoggingEvents(logEvents, false);
-    }
-
-    /**
-     * Verify that we can log exception messages.
-     */
-    public void testExceptionMessages() throws Exception {
-        final List logEvents = new ArrayList();
-        setUpTestAppender(logEvents);
-        final Log log = LogFactory.getLog("test-category");
-        logExceptionMessages(log);
-        checkLoggingEvents(logEvents, true);
-    }
-
-    /**
-     * Test Serializability of Log instance
-     */
-    public void testSerializable() throws Exception {
-        final List logEvents = new ArrayList();
-        setUpTestAppender(logEvents);
-        final Log log = LogFactory.getLog("test-category");
-
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(log);
-        oos.close();
-        final ByteArrayInputStream bais =
-            new ByteArrayInputStream(baos.toByteArray());
-        final ObjectInputStream ois = new ObjectInputStream(bais);
-        final Log newLog = (Log) ois.readObject();
-        ois.close();
-
-        // Check the characteristics of the resulting object
-        logExceptionMessages(newLog);
-        checkLoggingEvents(logEvents, true);
-    }
-
-    /**
      * Verify that the TestAppender has received the expected
      * number of messages. This assumes that:
      * <ul>
@@ -178,6 +93,18 @@ public abstract class StandardTests extends TestCase {
         assertEquals("Exception data incorrect", ev.throwable!=null, thrown);
     }
 
+    /**
+     * Log messages with exceptions
+     */
+    private void logExceptionMessages(final Log log) {
+        final Throwable t = new DummyException();
+        log.trace("trace", t); // Should not actually get logged
+        log.debug("debug", t); // Should not actually get logged
+        log.info("info", t);
+        log.warn("warn", t);
+        log.error("error", t);
+        log.fatal("fatal", t);
+    }
 
     /**
      * Log plain messages.
@@ -192,15 +119,88 @@ public abstract class StandardTests extends TestCase {
     }
 
     /**
-     * Log messages with exceptions
+     * Set up instance variables required by this test case.
      */
-    private void logExceptionMessages(final Log log) {
-        final Throwable t = new DummyException();
-        log.trace("trace", t); // Should not actually get logged
-        log.debug("debug", t); // Should not actually get logged
-        log.info("info", t);
-        log.warn("warn", t);
-        log.error("error", t);
-        log.fatal("fatal", t);
+    @Override
+    public void setUp() throws Exception {
+        LogFactory.releaseAll();
+    }
+
+    /**
+     * Modify log4j's setup so that all messages actually logged get redirected
+     * into the specified list.
+     * <p>
+     * This method also sets the logging level to INFO so that we
+     * can test whether messages are getting properly filtered.
+     */
+    public abstract void setUpTestAppender(List logEvents) throws Exception;
+
+    /**
+     * Tear down instance variables required by this test case.
+     */
+    @Override
+    public void tearDown() {
+        LogFactory.releaseAll();
+    }
+
+    /**
+     * Test that a LogFactory gets created as expected.
+     */
+    public void testCreateFactory() {
+        final LogFactory factory = LogFactory.getFactory();
+        assertNotNull("LogFactory exists", factory);
+        assertEquals("LogFactory class",
+                     "org.apache.commons.logging.impl.LogFactoryImpl",
+                     factory.getClass().getName());
+
+        final String[] names = factory.getAttributeNames();
+        assertNotNull("Names exists", names);
+        assertEquals("Names empty", 0, names.length);
+    }
+
+    /**
+     * Verify that we can log exception messages.
+     */
+    public void testExceptionMessages() throws Exception {
+        final List logEvents = new ArrayList();
+        setUpTestAppender(logEvents);
+        final Log log = LogFactory.getLog("test-category");
+        logExceptionMessages(log);
+        checkLoggingEvents(logEvents, true);
+    }
+
+
+    /**
+     * Verify that we can log messages without exceptions.
+     */
+    public void testPlainMessages() throws Exception {
+        final List logEvents = new ArrayList();
+        setUpTestAppender(logEvents);
+        final Log log = LogFactory.getLog("test-category");
+        logPlainMessages(log);
+        checkLoggingEvents(logEvents, false);
+    }
+
+    /**
+     * Test Serializability of Log instance
+     */
+    public void testSerializable() throws Exception {
+        final List logEvents = new ArrayList();
+        setUpTestAppender(logEvents);
+        final Log log = LogFactory.getLog("test-category");
+
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(log);
+        oos.close();
+        final ByteArrayInputStream bais =
+            new ByteArrayInputStream(baos.toByteArray());
+        final ObjectInputStream ois = new ObjectInputStream(bais);
+        final Log newLog = (Log) ois.readObject();
+        ois.close();
+
+        // Check the characteristics of the resulting object
+        logExceptionMessages(newLog);
+        checkLoggingEvents(logEvents, true);
     }
 }

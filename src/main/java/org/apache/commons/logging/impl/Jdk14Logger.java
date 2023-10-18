@@ -44,16 +44,6 @@ public class Jdk14Logger implements Log, Serializable {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Construct a named instance of this Logger.
-     *
-     * @param name Name of the logger to be constructed
-     */
-    public Jdk14Logger(final String name) {
-        this.name = name;
-        logger = getLogger();
-    }
-
-    /**
      * The underlying Logger implementation we are using.
      */
     protected transient Logger logger;
@@ -64,31 +54,13 @@ public class Jdk14Logger implements Log, Serializable {
     protected String name;
 
     /**
-     * Logs a message at the given level. 
-     * @param level The level.
-     * @param msg The message.
-     * @param ex The exception.
+     * Construct a named instance of this Logger.
+     *
+     * @param name Name of the logger to be constructed
      */
-    protected void log(final Level level, final String msg, final Throwable ex) {
-        final Logger logger = getLogger();
-        if (logger.isLoggable(level)) {
-            // Hack (?) to get the stack trace.
-            final Throwable dummyException = new Throwable();
-            final StackTraceElement[] locations = dummyException.getStackTrace();
-            // LOGGING-132: use the provided logger name instead of the class name
-            final String cname = name;
-            String method = "unknown";
-            // Caller will be the third element
-            if (locations != null && locations.length > 2) {
-                final StackTraceElement caller = locations[2];
-                method = caller.getMethodName();
-            }
-            if (ex == null) {
-                logger.logp(level, cname, method, msg);
-            } else {
-                logger.logp(level, cname, method, msg, ex);
-            }
-        }
+    public Jdk14Logger(final String name) {
+        this.name = name;
+        logger = getLogger();
     }
 
     /**
@@ -241,6 +213,34 @@ public class Jdk14Logger implements Log, Serializable {
     @Override
     public boolean isWarnEnabled() {
         return getLogger().isLoggable(Level.WARNING);
+    }
+
+    /**
+     * Logs a message at the given level. 
+     * @param level The level.
+     * @param msg The message.
+     * @param ex The exception.
+     */
+    protected void log(final Level level, final String msg, final Throwable ex) {
+        final Logger logger = getLogger();
+        if (logger.isLoggable(level)) {
+            // Hack (?) to get the stack trace.
+            final Throwable dummyException = new Throwable();
+            final StackTraceElement[] locations = dummyException.getStackTrace();
+            // LOGGING-132: use the provided logger name instead of the class name
+            final String cname = name;
+            String method = "unknown";
+            // Caller will be the third element
+            if (locations != null && locations.length > 2) {
+                final StackTraceElement caller = locations[2];
+                method = caller.getMethodName();
+            }
+            if (ex == null) {
+                logger.logp(level, cname, method, msg);
+            } else {
+                logger.logp(level, cname, method, msg, ex);
+            }
+        }
     }
 
     /**

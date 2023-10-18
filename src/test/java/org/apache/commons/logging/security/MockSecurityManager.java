@@ -28,9 +28,9 @@ import java.security.Permissions;
  */
 public class MockSecurityManager extends SecurityManager {
 
-    private final Permissions permissions = new Permissions();
     private static final Permission setSecurityManagerPerm =
         new RuntimePermission("setSecurityManager");
+    private final Permissions permissions = new Permissions();
 
     private int untrustedCodeCount;
 
@@ -44,18 +44,6 @@ public class MockSecurityManager extends SecurityManager {
      */
     public void addPermission(final Permission p) {
         permissions.add(p);
-    }
-
-    /**
-     * This returns the number of times that a check of a permission failed
-     * due to stack-walking tracing up into untrusted code. Any non-zero
-     * value indicates a bug in JCL, ie a situation where code was not
-     * correctly wrapped in an AccessController block. The result of such a
-     * bug is that signing JCL is not sufficient to allow JCL to perform
-     * the operation; the caller would need to be signed too.
-     */
-    public int getUntrustedCodeCount() {
-        return untrustedCodeCount;
     }
 
     @Override
@@ -146,5 +134,17 @@ public class MockSecurityManager extends SecurityManager {
                 throw new SecurityException("Unexpected code: permission refused:" + p.getClass() + ":" + p);
             }
         }
+    }
+
+    /**
+     * This returns the number of times that a check of a permission failed
+     * due to stack-walking tracing up into untrusted code. Any non-zero
+     * value indicates a bug in JCL, ie a situation where code was not
+     * correctly wrapped in an AccessController block. The result of such a
+     * bug is that signing JCL is not sufficient to allow JCL to perform
+     * the operation; the caller would need to be signed too.
+     */
+    public int getUntrustedCodeCount() {
+        return untrustedCodeCount;
     }
 }

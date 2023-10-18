@@ -44,10 +44,18 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     // ----------------------------------------------------- Instance Variables
 
     /**
+     * This member variable simply ensures that any attempt to initialize
+     * this class in a pre-1.4 JVM will result in an ExceptionInInitializerError.
+     * It must not be private, as an optimising compiler could detect that it
+     * is not used and optimise it away.
+     */
+    protected static final Level dummyLevel = Level.FINE;
+
+    /**
      * The underlying Logger implementation we are using.
      */
     protected transient Logger logger;
-
+    
     /**
      * Name.
      */
@@ -58,17 +66,9 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     
     /** Source method name. */
     private String sourceMethodName = "unknown";
-    
+
     /** Class and method found flag. */
     private boolean classAndMethodFound;
-
-    /**
-     * This member variable simply ensures that any attempt to initialize
-     * this class in a pre-1.4 JVM will result in an ExceptionInInitializerError.
-     * It must not be private, as an optimising compiler could detect that it
-     * is not used and optimise it away.
-     */
-    protected static final Level dummyLevel = Level.FINE;
 
     // ----------------------------------------------------------- Constructors
 
@@ -83,55 +83,6 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     }
 
     // --------------------------------------------------------- Public Methods
-
-    private void log( final Level level, final String msg, final Throwable ex ) {
-        if ( getLogger().isLoggable(level) ) {
-            final LogRecord record = new LogRecord(level, msg);
-            if ( !classAndMethodFound ) {
-                getClassAndMethod();
-            }
-            record.setSourceClassName(sourceClassName);
-            record.setSourceMethodName(sourceMethodName);
-            if ( ex != null ) {
-                record.setThrown(ex);
-            }
-            getLogger().log(record);
-        }
-    }
-
-    /**
-     * Gets the class and method by looking at the stack trace for the
-     * first entry that is not this class.
-     */
-    private void getClassAndMethod() {
-        try {
-            final Throwable throwable = new Throwable();
-            throwable.fillInStackTrace();
-            final StringWriter stringWriter = new StringWriter();
-            final PrintWriter printWriter = new PrintWriter( stringWriter );
-            throwable.printStackTrace( printWriter );
-            final String traceString = stringWriter.getBuffer().toString();
-            final StringTokenizer tokenizer =
-                new StringTokenizer( traceString, "\n" );
-            tokenizer.nextToken();
-            String line = tokenizer.nextToken();
-            while (!line.contains(this.getClass().getName())) {
-                line = tokenizer.nextToken();
-            }
-            while (line.contains(this.getClass().getName())) {
-                line = tokenizer.nextToken();
-            }
-            final int start = line.indexOf( "at " ) + 3;
-            final int end = line.indexOf( '(' );
-            final String temp = line.substring( start, end );
-            final int lastPeriod = temp.lastIndexOf( '.' );
-            sourceClassName = temp.substring( 0, lastPeriod );
-            sourceMethodName = temp.substring( lastPeriod + 1 );
-        } catch ( final Exception ex ) {
-            // ignore - leave class and methodname unknown
-        }
-        classAndMethodFound = true;
-    }
 
     /**
      * Logs a message with {@code java.util.logging.Level.FINE}.
@@ -200,6 +151,40 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     @Override
     public void fatal(final Object message, final Throwable exception) {
         log(Level.SEVERE, String.valueOf(message), exception);
+    }
+
+    /**
+     * Gets the class and method by looking at the stack trace for the
+     * first entry that is not this class.
+     */
+    private void getClassAndMethod() {
+        try {
+            final Throwable throwable = new Throwable();
+            throwable.fillInStackTrace();
+            final StringWriter stringWriter = new StringWriter();
+            final PrintWriter printWriter = new PrintWriter( stringWriter );
+            throwable.printStackTrace( printWriter );
+            final String traceString = stringWriter.getBuffer().toString();
+            final StringTokenizer tokenizer =
+                new StringTokenizer( traceString, "\n" );
+            tokenizer.nextToken();
+            String line = tokenizer.nextToken();
+            while (!line.contains(this.getClass().getName())) {
+                line = tokenizer.nextToken();
+            }
+            while (line.contains(this.getClass().getName())) {
+                line = tokenizer.nextToken();
+            }
+            final int start = line.indexOf( "at " ) + 3;
+            final int end = line.indexOf( '(' );
+            final String temp = line.substring( start, end );
+            final int lastPeriod = temp.lastIndexOf( '.' );
+            sourceClassName = temp.substring( 0, lastPeriod );
+            sourceMethodName = temp.substring( lastPeriod + 1 );
+        } catch ( final Exception ex ) {
+            // ignore - leave class and methodname unknown
+        }
+        classAndMethodFound = true;
     }
 
     /**
@@ -283,6 +268,21 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     @Override
     public boolean isWarnEnabled() {
         return getLogger().isLoggable(Level.WARNING);
+    }
+
+    private void log( final Level level, final String msg, final Throwable ex ) {
+        if ( getLogger().isLoggable(level) ) {
+            final LogRecord record = new LogRecord(level, msg);
+            if ( !classAndMethodFound ) {
+                getClassAndMethod();
+            }
+            record.setSourceClassName(sourceClassName);
+            record.setSourceMethodName(sourceMethodName);
+            if ( ex != null ) {
+                record.setThrown(ex);
+            }
+            getLogger().log(record);
+        }
     }
 
     /**

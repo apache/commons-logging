@@ -109,6 +109,144 @@ import java.util.Set;
  */
 public final class WeakHashtable extends Hashtable {
 
+    /** Entry implementation */
+    private final static class Entry implements Map.Entry {
+
+        private final Object key;
+        private final Object value;
+
+        private Entry(final Object key, final Object value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            boolean result = false;
+            if (o instanceof Map.Entry) {
+                final Map.Entry entry = (Map.Entry) o;
+                result =    (getKey()==null ?
+                                            entry.getKey() == null :
+                                            getKey().equals(entry.getKey())) &&
+                            (getValue()==null ?
+                                            entry.getValue() == null :
+                                            getValue().equals(entry.getValue()));
+            }
+            return result;
+        }
+
+        @Override
+        public Object getKey() {
+            return key;
+        }
+
+        @Override
+        public Object getValue() {
+            return value;
+        }
+
+        @Override
+        public int hashCode() {
+            return (getKey()==null ? 0 : getKey().hashCode()) ^
+                (getValue()==null ? 0 : getValue().hashCode());
+        }
+
+        @Override
+        public Object setValue(final Object value) {
+            throw new UnsupportedOperationException("Entry.setValue is not supported.");
+        }
+    }
+
+    /** Wrapper giving correct symantics for equals and hash code */
+    private final static class Referenced {
+
+        private final WeakReference reference;
+        private final int           hashCode;
+
+        /**
+         *
+         * @throws NullPointerException if referant is {@code null}
+         */
+        private Referenced(final Object referant) {
+            reference = new WeakReference(referant);
+            // Calc a permanent hashCode so calls to Hashtable.remove()
+            // work if the WeakReference has been cleared
+            hashCode  = referant.hashCode();
+        }
+
+        /**
+         *
+         * @throws NullPointerException if key is {@code null}
+         */
+        private Referenced(final Object key, final ReferenceQueue queue) {
+            reference = new WeakKey(key, queue, this);
+            // Calc a permanent hashCode so calls to Hashtable.remove()
+            // work if the WeakReference has been cleared
+            hashCode  = key.hashCode();
+
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            boolean result = false;
+            if (o instanceof Referenced) {
+                final Referenced otherKey = (Referenced) o;
+                final Object thisKeyValue = getValue();
+                final Object otherKeyValue = otherKey.getValue();
+                if (thisKeyValue == null) {
+                    result = otherKeyValue == null;
+
+                    // Since our hash code was calculated from the original
+                    // non-null referant, the above check breaks the
+                    // hash code/equals contract, as two cleared Referenced
+                    // objects could test equal but have different hash codes.
+                    // We can reduce (not eliminate) the chance of this
+                    // happening by comparing hash codes.
+                    result = result && this.hashCode() == otherKey.hashCode();
+                    // In any case, as our c'tor does not allow null referants
+                    // and Hashtable does not do equality checks between
+                    // existing keys, normal hashtable operations should never
+                    // result in an equals comparison between null referants
+                }
+                else
+                {
+                    result = thisKeyValue.equals(otherKeyValue);
+                }
+            }
+            return result;
+        }
+
+        private Object getValue() {
+            return reference.get();
+        }
+
+        @Override
+        public int hashCode() {
+            return hashCode;
+        }
+    }
+
+    /**
+     * WeakReference subclass that holds a hard reference to an
+     * associated {@code value} and also makes accessible
+     * the Referenced object holding it.
+     */
+    private final static class WeakKey extends WeakReference {
+
+        private final Referenced referenced;
+
+        private WeakKey(final Object key,
+                        final ReferenceQueue queue,
+                        final Referenced referenced) {
+            super(key, queue);
+            this.referenced = referenced;
+        }
+
+        private Referenced getReferenced() {
+            return referenced;
+        }
+     }
+
     /** Serializable version identifier. */
     private static final long serialVersionUID = -1546036869799732453L;
 
@@ -190,6 +328,15 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     @Override
+    public boolean isEmpty() {
+        purge();
+        return super.isEmpty();
+    }
+
+    /**
+     *@see Hashtable
+     */
+    @Override
     public Enumeration keys() {
         purge();
         final Enumeration enumer = super.keys();
@@ -222,6 +369,41 @@ public final class WeakHashtable extends Hashtable {
             }
         }
         return unreferencedKeys;
+    }
+
+    /**
+     * Purges all entries whose wrapped keys
+     * have been garbage collected.
+     */
+    private void purge() {
+        final List toRemove = new ArrayList();
+        synchronized (queue) {
+            WeakKey key;
+            while ((key = (WeakKey) queue.poll()) != null) {
+                toRemove.add(key.getReferenced());
+            }
+        }
+
+        // LOGGING-119: do the actual removal of the keys outside the sync block
+        // to prevent deadlock scenarios as purge() may be called from
+        // non-synchronized methods too
+        final int size = toRemove.size();
+        for (int i = 0; i < size; i++) {
+            super.remove(toRemove.get(i));
+        }
+    }
+
+    /**
+     * Purges one entry whose wrapped key
+     * has been garbage collected.
+     */
+    private void purgeOne() {
+        synchronized (queue) {
+            final WeakKey key = (WeakKey) queue.poll();
+            if (key != null) {
+                super.remove(key.getReferenced());
+            }
+        }
     }
 
     /**
@@ -263,12 +445,13 @@ public final class WeakHashtable extends Hashtable {
     }
 
     /**
-     *@see Hashtable
+     * @see Hashtable
      */
     @Override
-    public Collection values() {
+    protected void rehash() {
+        // purge here to save the effort of rehashing dead entries
         purge();
-        return super.values();
+        super.rehash();
     }
 
     /**
@@ -293,15 +476,6 @@ public final class WeakHashtable extends Hashtable {
      *@see Hashtable
      */
     @Override
-    public boolean isEmpty() {
-        purge();
-        return super.isEmpty();
-    }
-
-    /**
-     *@see Hashtable
-     */
-    @Override
     public int size() {
         purge();
         return super.size();
@@ -317,185 +491,11 @@ public final class WeakHashtable extends Hashtable {
     }
 
     /**
-     * @see Hashtable
+     *@see Hashtable
      */
     @Override
-    protected void rehash() {
-        // purge here to save the effort of rehashing dead entries
+    public Collection values() {
         purge();
-        super.rehash();
+        return super.values();
     }
-
-    /**
-     * Purges all entries whose wrapped keys
-     * have been garbage collected.
-     */
-    private void purge() {
-        final List toRemove = new ArrayList();
-        synchronized (queue) {
-            WeakKey key;
-            while ((key = (WeakKey) queue.poll()) != null) {
-                toRemove.add(key.getReferenced());
-            }
-        }
-
-        // LOGGING-119: do the actual removal of the keys outside the sync block
-        // to prevent deadlock scenarios as purge() may be called from
-        // non-synchronized methods too
-        final int size = toRemove.size();
-        for (int i = 0; i < size; i++) {
-            super.remove(toRemove.get(i));
-        }
-    }
-
-    /**
-     * Purges one entry whose wrapped key
-     * has been garbage collected.
-     */
-    private void purgeOne() {
-        synchronized (queue) {
-            final WeakKey key = (WeakKey) queue.poll();
-            if (key != null) {
-                super.remove(key.getReferenced());
-            }
-        }
-    }
-
-    /** Entry implementation */
-    private final static class Entry implements Map.Entry {
-
-        private final Object key;
-        private final Object value;
-
-        private Entry(final Object key, final Object value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            boolean result = false;
-            if (o instanceof Map.Entry) {
-                final Map.Entry entry = (Map.Entry) o;
-                result =    (getKey()==null ?
-                                            entry.getKey() == null :
-                                            getKey().equals(entry.getKey())) &&
-                            (getValue()==null ?
-                                            entry.getValue() == null :
-                                            getValue().equals(entry.getValue()));
-            }
-            return result;
-        }
-
-        @Override
-        public int hashCode() {
-            return (getKey()==null ? 0 : getKey().hashCode()) ^
-                (getValue()==null ? 0 : getValue().hashCode());
-        }
-
-        @Override
-        public Object setValue(final Object value) {
-            throw new UnsupportedOperationException("Entry.setValue is not supported.");
-        }
-
-        @Override
-        public Object getValue() {
-            return value;
-        }
-
-        @Override
-        public Object getKey() {
-            return key;
-        }
-    }
-
-    /** Wrapper giving correct symantics for equals and hash code */
-    private final static class Referenced {
-
-        private final WeakReference reference;
-        private final int           hashCode;
-
-        /**
-         *
-         * @throws NullPointerException if referant is {@code null}
-         */
-        private Referenced(final Object referant) {
-            reference = new WeakReference(referant);
-            // Calc a permanent hashCode so calls to Hashtable.remove()
-            // work if the WeakReference has been cleared
-            hashCode  = referant.hashCode();
-        }
-
-        /**
-         *
-         * @throws NullPointerException if key is {@code null}
-         */
-        private Referenced(final Object key, final ReferenceQueue queue) {
-            reference = new WeakKey(key, queue, this);
-            // Calc a permanent hashCode so calls to Hashtable.remove()
-            // work if the WeakReference has been cleared
-            hashCode  = key.hashCode();
-
-        }
-
-        @Override
-        public int hashCode() {
-            return hashCode;
-        }
-
-        private Object getValue() {
-            return reference.get();
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            boolean result = false;
-            if (o instanceof Referenced) {
-                final Referenced otherKey = (Referenced) o;
-                final Object thisKeyValue = getValue();
-                final Object otherKeyValue = otherKey.getValue();
-                if (thisKeyValue == null) {
-                    result = otherKeyValue == null;
-
-                    // Since our hash code was calculated from the original
-                    // non-null referant, the above check breaks the
-                    // hash code/equals contract, as two cleared Referenced
-                    // objects could test equal but have different hash codes.
-                    // We can reduce (not eliminate) the chance of this
-                    // happening by comparing hash codes.
-                    result = result && this.hashCode() == otherKey.hashCode();
-                    // In any case, as our c'tor does not allow null referants
-                    // and Hashtable does not do equality checks between
-                    // existing keys, normal hashtable operations should never
-                    // result in an equals comparison between null referants
-                }
-                else
-                {
-                    result = thisKeyValue.equals(otherKeyValue);
-                }
-            }
-            return result;
-        }
-    }
-
-    /**
-     * WeakReference subclass that holds a hard reference to an
-     * associated {@code value} and also makes accessible
-     * the Referenced object holding it.
-     */
-    private final static class WeakKey extends WeakReference {
-
-        private final Referenced referenced;
-
-        private WeakKey(final Object key,
-                        final ReferenceQueue queue,
-                        final Referenced referenced) {
-            super(key, queue);
-            this.referenced = referenced;
-        }
-
-        private Referenced getReferenced() {
-            return referenced;
-        }
-     }
 }

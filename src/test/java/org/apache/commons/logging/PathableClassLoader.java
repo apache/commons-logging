@@ -97,94 +97,6 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     * Allow caller to explicitly add paths. Generally this not a good idea;
-     * use addLogicalLib instead, then define the location for that logical
-     * library in the build.xml file.
-     */
-    @Override
-    public void addURL(final URL url) {
-        super.addURL(url);
-    }
-
-    /**
-     * Specify whether this classloader should ask the parent classloader
-     * to resolve a class first, before trying to resolve it via its own
-     * classpath.
-     * <p>
-     * Checking with the parent first is the normal approach for java, but
-     * components within containers such as servlet engines can use
-     * child-first lookup instead, to allow the components to override libs
-     * which are visible in shared classloaders provided by the container.
-     * <p>
-     * Note that the method getResources always behaves as if parentFirst=true,
-     * because of limitations in java 1.4; see the javadoc for method
-     * getResourcesInOrder for details.
-     * <p>
-     * This value defaults to true.
-     */
-    public void setParentFirst(final boolean state) {
-        parentFirst = state;
-    }
-
-    /**
-     * For classes with the specified prefix, get them from the system
-     * classpath <i>which is active at the point this method is called</i>.
-     * <p>
-     * This method is just a shortcut for
-     * <pre>
-     * useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
-     * </pre>
-     * <p>
-     * Of course, this assumes that the classes of interest are already
-     * in the classpath of the system classloader.
-     */
-    public void useSystemLoader(final String prefix) {
-        useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
-
-    }
-
-    /**
-     * Specify a classloader to use for specific java packages.
-     * <p>
-     * The specified classloader is normally a loader that is NOT
-     * an ancestor of this classloader. In particular, this loader
-     * may have the bootloader as its parent, but be configured to
-     * see specific other classes (eg the junit library loaded
-     * via the system classloader).
-     * <p>
-     * The differences between using this method, and using
-     * addLogicalLib are:
-     * <ul>
-     * <li>If code calls getClassLoader on a class loaded via
-     * "lookaside", then traces up its inheritance chain, it
-     * will see the "real" classloaders. When the class is remapped
-     * into this classloader via addLogicalLib, the classloader
-     * chain seen is this object plus ancestors.
-     * <li>If two different jars contain classes in the same
-     * package, then it is not possible to load both jars into
-     * the same "lookaside" classloader (eg the system classloader)
-     * then map one of those subsets from here. Of course they could
-     * be loaded into two different "lookaside" classloaders and
-     * then a prefix used to map from here to one of those classloaders.
-     * </ul>
-     */
-    public void useExplicitLoader(final String prefix, final ClassLoader loader) {
-        if (lookasides == null) {
-            lookasides = new HashMap();
-        }
-        lookasides.put(prefix, loader);
-    }
-
-    /**
-     * Specify a collection of logical libraries. See addLogicalLib.
-     */
-    public void addLogicalLib(final String[] logicalLibs) {
-        for (final String logicalLib : logicalLibs) {
-            addLogicalLib(logicalLib);
-        }
-    }
-
-    /**
      * Specify a logical library to be included in the classpath used to
      * locate classes.
      * <p>
@@ -229,6 +141,101 @@ public class PathableClassLoader extends URLClassLoader {
         throw new UnknownError(
             "Logical lib [" + logicalLib + "] is not defined"
             + " as a System property.");
+    }
+
+    /**
+     * Specify a collection of logical libraries. See addLogicalLib.
+     */
+    public void addLogicalLib(final String[] logicalLibs) {
+        for (final String logicalLib : logicalLibs) {
+            addLogicalLib(logicalLib);
+        }
+    }
+
+    /**
+     * Allow caller to explicitly add paths. Generally this not a good idea;
+     * use addLogicalLib instead, then define the location for that logical
+     * library in the build.xml file.
+     */
+    @Override
+    public void addURL(final URL url) {
+        super.addURL(url);
+    }
+
+    /**
+     * Same as parent class method except that when parentFirst is false
+     * the resource is looked for in the local classpath before the parent
+     * loader is consulted.
+     */
+    @Override
+    public URL getResource(final String name) {
+        if (parentFirst) {
+            return super.getResource(name);
+        }
+        final URL local = super.findResource(name);
+        if (local != null) {
+            return local;
+        }
+        return super.getResource(name);
+    }
+
+    /**
+     * Same as parent class method except that when parentFirst is false
+     * the resource is looked for in the local classpath before the parent
+     * loader is consulted.
+     */
+    @Override
+    public InputStream getResourceAsStream(final String name) {
+        if (parentFirst) {
+            return super.getResourceAsStream(name);
+        }
+        final URL local = super.findResource(name);
+        if (local != null) {
+            try {
+                return local.openStream();
+            } catch (final IOException e) {
+                // TODO: check if this is right or whether we should
+                // fall back to trying parent. The javadoc doesn't say...
+                return null;
+            }
+        }
+        return super.getResourceAsStream(name);
+    }
+
+    /**
+     * Emulate a proper implementation of getResources which respects the
+     * setting for parentFirst.
+     * <p>
+     * Note that it's not possible to override the inherited getResources, as
+     * it's declared final in java1.4 (thought that's been removed for 1.5).
+     * The inherited implementation always behaves as if parentFirst=true.
+     */
+    public Enumeration getResourcesInOrder(final String name) throws IOException {
+        if (parentFirst) {
+            return super.getResources(name);
+        }
+        final Enumeration localUrls = super.findResources(name);
+
+        final ClassLoader parent = getParent();
+        if (parent == null) {
+            // Alas, there is no method to get matching resources
+            // from a null (BOOT) parent classloader. Calling
+            // ClassLoader.getSystemClassLoader isn't right. Maybe
+            // calling Class.class.getResources(name) would do?
+            //
+            // However for the purposes of unit tests, we can
+            // simply assume that no relevant resources are
+            // loadable from the parent; unit tests will never be
+            // putting any of their resources in a "boot" classloader
+            // path!
+            return localUrls;
+        }
+        final Enumeration parentUrls = parent.getResources(name);
+
+        final ArrayList localItems = toList(localUrls);
+        final ArrayList parentItems = toList(parentUrls);
+        localItems.addAll(parentItems);
+        return Collections.enumeration(localItems);
     }
 
     /**
@@ -328,56 +335,23 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     * Same as parent class method except that when parentFirst is false
-     * the resource is looked for in the local classpath before the parent
-     * loader is consulted.
-     */
-    @Override
-    public URL getResource(final String name) {
-        if (parentFirst) {
-            return super.getResource(name);
-        }
-        final URL local = super.findResource(name);
-        if (local != null) {
-            return local;
-        }
-        return super.getResource(name);
-    }
-
-    /**
-     * Emulate a proper implementation of getResources which respects the
-     * setting for parentFirst.
+     * Specify whether this classloader should ask the parent classloader
+     * to resolve a class first, before trying to resolve it via its own
+     * classpath.
      * <p>
-     * Note that it's not possible to override the inherited getResources, as
-     * it's declared final in java1.4 (thought that's been removed for 1.5).
-     * The inherited implementation always behaves as if parentFirst=true.
+     * Checking with the parent first is the normal approach for java, but
+     * components within containers such as servlet engines can use
+     * child-first lookup instead, to allow the components to override libs
+     * which are visible in shared classloaders provided by the container.
+     * <p>
+     * Note that the method getResources always behaves as if parentFirst=true,
+     * because of limitations in java 1.4; see the javadoc for method
+     * getResourcesInOrder for details.
+     * <p>
+     * This value defaults to true.
      */
-    public Enumeration getResourcesInOrder(final String name) throws IOException {
-        if (parentFirst) {
-            return super.getResources(name);
-        }
-        final Enumeration localUrls = super.findResources(name);
-
-        final ClassLoader parent = getParent();
-        if (parent == null) {
-            // Alas, there is no method to get matching resources
-            // from a null (BOOT) parent classloader. Calling
-            // ClassLoader.getSystemClassLoader isn't right. Maybe
-            // calling Class.class.getResources(name) would do?
-            //
-            // However for the purposes of unit tests, we can
-            // simply assume that no relevant resources are
-            // loadable from the parent; unit tests will never be
-            // putting any of their resources in a "boot" classloader
-            // path!
-            return localUrls;
-        }
-        final Enumeration parentUrls = parent.getResources(name);
-
-        final ArrayList localItems = toList(localUrls);
-        final ArrayList parentItems = toList(parentUrls);
-        localItems.addAll(parentItems);
-        return Collections.enumeration(localItems);
+    public void setParentFirst(final boolean state) {
+        parentFirst = state;
     }
 
     /**
@@ -400,25 +374,51 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     * Same as parent class method except that when parentFirst is false
-     * the resource is looked for in the local classpath before the parent
-     * loader is consulted.
+     * Specify a classloader to use for specific java packages.
+     * <p>
+     * The specified classloader is normally a loader that is NOT
+     * an ancestor of this classloader. In particular, this loader
+     * may have the bootloader as its parent, but be configured to
+     * see specific other classes (eg the junit library loaded
+     * via the system classloader).
+     * <p>
+     * The differences between using this method, and using
+     * addLogicalLib are:
+     * <ul>
+     * <li>If code calls getClassLoader on a class loaded via
+     * "lookaside", then traces up its inheritance chain, it
+     * will see the "real" classloaders. When the class is remapped
+     * into this classloader via addLogicalLib, the classloader
+     * chain seen is this object plus ancestors.
+     * <li>If two different jars contain classes in the same
+     * package, then it is not possible to load both jars into
+     * the same "lookaside" classloader (eg the system classloader)
+     * then map one of those subsets from here. Of course they could
+     * be loaded into two different "lookaside" classloaders and
+     * then a prefix used to map from here to one of those classloaders.
+     * </ul>
      */
-    @Override
-    public InputStream getResourceAsStream(final String name) {
-        if (parentFirst) {
-            return super.getResourceAsStream(name);
+    public void useExplicitLoader(final String prefix, final ClassLoader loader) {
+        if (lookasides == null) {
+            lookasides = new HashMap();
         }
-        final URL local = super.findResource(name);
-        if (local != null) {
-            try {
-                return local.openStream();
-            } catch (final IOException e) {
-                // TODO: check if this is right or whether we should
-                // fall back to trying parent. The javadoc doesn't say...
-                return null;
-            }
-        }
-        return super.getResourceAsStream(name);
+        lookasides.put(prefix, loader);
+    }
+
+    /**
+     * For classes with the specified prefix, get them from the system
+     * classpath <i>which is active at the point this method is called</i>.
+     * <p>
+     * This method is just a shortcut for
+     * <pre>
+     * useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
+     * </pre>
+     * <p>
+     * Of course, this assumes that the classes of interest are already
+     * in the classpath of the system classloader.
+     */
+    public void useSystemLoader(final String prefix) {
+        useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());
+
     }
 }
