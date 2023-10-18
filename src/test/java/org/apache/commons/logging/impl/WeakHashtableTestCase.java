@@ -75,12 +75,12 @@ public class WeakHashtableTestCase extends TestCase {
         super.setUp();
         weakHashtable = new WeakHashtable();
 
-        keyOne = new Long(1);
-        keyTwo = new Long(2);
-        keyThree = new Long(3);
-        valueOne = new Long(100);
-        valueTwo = new Long(200);
-        valueThree = new Long(300);
+        keyOne = Long.valueOf(1);
+        keyTwo = Long.valueOf(2);
+        keyThree = Long.valueOf(3);
+        valueOne = Long.valueOf(100);
+        valueTwo = Long.valueOf(200);
+        valueThree = Long.valueOf(300);
 
         weakHashtable.put(keyOne, valueOne);
         weakHashtable.put(keyTwo, valueTwo);
@@ -89,35 +89,35 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public boolean contains(Object value) */
     public void testContains() throws Exception {
-        assertFalse(weakHashtable.contains(new Long(1)));
-        assertFalse(weakHashtable.contains(new Long(2)));
-        assertFalse(weakHashtable.contains(new Long(3)));
-        assertTrue(weakHashtable.contains(new Long(100)));
-        assertTrue(weakHashtable.contains(new Long(200)));
-        assertTrue(weakHashtable.contains(new Long(300)));
-        assertFalse(weakHashtable.contains(new Long(400)));
+        assertFalse(weakHashtable.contains(Long.valueOf(1)));
+        assertFalse(weakHashtable.contains(Long.valueOf(2)));
+        assertFalse(weakHashtable.contains(Long.valueOf(3)));
+        assertTrue(weakHashtable.contains(Long.valueOf(100)));
+        assertTrue(weakHashtable.contains(Long.valueOf(200)));
+        assertTrue(weakHashtable.contains(Long.valueOf(300)));
+        assertFalse(weakHashtable.contains(Long.valueOf(400)));
     }
 
     /** Tests public boolean containsKey(Object key) */
     public void testContainsKey() throws Exception {
-        assertTrue(weakHashtable.containsKey(new Long(1)));
-        assertTrue(weakHashtable.containsKey(new Long(2)));
-        assertTrue(weakHashtable.containsKey(new Long(3)));
-        assertFalse(weakHashtable.containsKey(new Long(100)));
-        assertFalse(weakHashtable.containsKey(new Long(200)));
-        assertFalse(weakHashtable.containsKey(new Long(300)));
-        assertFalse(weakHashtable.containsKey(new Long(400)));
+        assertTrue(weakHashtable.containsKey(Long.valueOf(1)));
+        assertTrue(weakHashtable.containsKey(Long.valueOf(2)));
+        assertTrue(weakHashtable.containsKey(Long.valueOf(3)));
+        assertFalse(weakHashtable.containsKey(Long.valueOf(100)));
+        assertFalse(weakHashtable.containsKey(Long.valueOf(200)));
+        assertFalse(weakHashtable.containsKey(Long.valueOf(300)));
+        assertFalse(weakHashtable.containsKey(Long.valueOf(400)));
     }
 
     /** Tests public boolean containsValue(Object value) */
     public void testContainsValue() throws Exception {
-        assertFalse(weakHashtable.containsValue(new Long(1)));
-        assertFalse(weakHashtable.containsValue(new Long(2)));
-        assertFalse(weakHashtable.containsValue(new Long(3)));
-        assertTrue(weakHashtable.containsValue(new Long(100)));
-        assertTrue(weakHashtable.containsValue(new Long(200)));
-        assertTrue(weakHashtable.containsValue(new Long(300)));
-        assertFalse(weakHashtable.containsValue(new Long(400)));
+        assertFalse(weakHashtable.containsValue(Long.valueOf(1)));
+        assertFalse(weakHashtable.containsValue(Long.valueOf(2)));
+        assertFalse(weakHashtable.containsValue(Long.valueOf(3)));
+        assertTrue(weakHashtable.containsValue(Long.valueOf(100)));
+        assertTrue(weakHashtable.containsValue(Long.valueOf(200)));
+        assertTrue(weakHashtable.containsValue(Long.valueOf(300)));
+        assertFalse(weakHashtable.containsValue(Long.valueOf(400)));
     }
 
     /** Tests public Enumeration elements() */
@@ -155,7 +155,7 @@ public class WeakHashtableTestCase extends TestCase {
         assertEquals(valueOne, weakHashtable.get(keyOne));
         assertEquals(valueTwo, weakHashtable.get(keyTwo));
         assertEquals(valueThree, weakHashtable.get(keyThree));
-        assertNull(weakHashtable.get(new Long(50)));
+        assertNull(weakHashtable.get(Long.valueOf(50)));
     }
 
     /** Tests public Enumeration keys() */
@@ -208,10 +208,10 @@ public class WeakHashtableTestCase extends TestCase {
 
     /** Tests public Object put(Object key, Object value) */
     public void testPut() throws Exception {
-        final Long anotherKey = new Long(2004);
-        weakHashtable.put(anotherKey, new Long(1066));
+        final Long anotherKey = Long.valueOf(2004);
+        weakHashtable.put(anotherKey, Long.valueOf(1066));
 
-        assertEquals(new Long(1066), weakHashtable.get(anotherKey));
+        assertEquals(Long.valueOf(1066), weakHashtable.get(anotherKey));
 
         // Test compliance with the hashtable API re nulls
         Exception caught = null;
@@ -235,11 +235,11 @@ public class WeakHashtableTestCase extends TestCase {
     /** Tests public void putAll(Map t) */
     public void testPutAll() throws Exception {
         final Map newValues = new HashMap();
-        final Long newKey = new Long(1066);
-        final Long newValue = new Long(1415);
+        final Long newKey = Long.valueOf(1066);
+        final Long newValue = Long.valueOf(1415);
         newValues.put(newKey, newValue);
-        final Long anotherNewKey = new Long(1645);
-        final Long anotherNewValue = new Long(1815);
+        final Long anotherNewKey = Long.valueOf(1645);
+        final Long anotherNewValue = Long.valueOf(1815);
         newValues.put(anotherNewKey, anotherNewValue);
         weakHashtable.putAll(newValues);
 
@@ -272,7 +272,7 @@ public class WeakHashtableTestCase extends TestCase {
      * IBM J9 VM (build 2.4, JRE 1.6.0 IBM J9 2.4 Linux x86-32 jvmxi3260sr12-20121024_1
      */
     public void xxxIgnoretestRelease() throws Exception {
-        assertNotNull(weakHashtable.get(new Long(1)));
+        assertNotNull(weakHashtable.get(Long.valueOf(1)));
         final ReferenceQueue testQueue = new ReferenceQueue();
         final WeakReference weakKeyOne = new WeakReference(keyOne, testQueue);
 
@@ -292,7 +292,7 @@ public class WeakHashtableTestCase extends TestCase {
                 fail("Max iterations reached before resource released.");
             }
 
-            if (weakHashtable.get(new Long(1)) == null) {
+            if (weakHashtable.get(Long.valueOf(1)) == null) {
                 break;
 
             }

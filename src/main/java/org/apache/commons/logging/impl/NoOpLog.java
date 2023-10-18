@@ -35,7 +35,7 @@ public class NoOpLog implements Log, Serializable {
 
     /**
      * Base constructor
-     * 
+     *
      * @param name unused.
      */
     public NoOpLog(final String name) {

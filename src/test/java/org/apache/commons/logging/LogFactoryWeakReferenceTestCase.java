@@ -37,7 +37,7 @@ public class LogFactoryWeakReferenceTestCase extends TestCase {
         // reflection hacks to obtain the weak reference
         Field field = logFactoryClass.getDeclaredField("thisClassLoaderRef");
         field.setAccessible(true);
-        WeakReference thisClassLoaderRef = (WeakReference) field.get(null);
+        final WeakReference thisClassLoaderRef = (WeakReference) field.get(null);
 
         // the ref should at this point contain the loader
         assertSame(loader, thisClassLoaderRef.get());
@@ -48,10 +48,10 @@ public class LogFactoryWeakReferenceTestCase extends TestCase {
         loader.close();
         loader = null;
 
-        GarbageCollectionHelper gcHelper = new GarbageCollectionHelper();
+        final GarbageCollectionHelper gcHelper = new GarbageCollectionHelper();
         gcHelper.run();
         try {
-            long start = System.currentTimeMillis();
+            final long start = System.currentTimeMillis();
             while (thisClassLoaderRef.get() != null) {
                 if (System.currentTimeMillis() - start > MAX_WAIT_FOR_REF_NULLED_BY_GC) {
                     fail("After waiting " + MAX_WAIT_FOR_REF_NULLED_BY_GC + "ms, the weak ref still yields a non-null value.");

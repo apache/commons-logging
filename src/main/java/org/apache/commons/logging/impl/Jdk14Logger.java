@@ -216,7 +216,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message at the given level. 
+     * Logs a message at the given level.
      * @param level The level.
      * @param msg The message.
      * @param ex The exception.

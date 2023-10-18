@@ -227,8 +227,8 @@ public abstract class LogFactory {
     static {
         // note: it's safe to call methods before initDiagnostics (though
         // diagnostic output gets discarded).
-        ClassLoader thisClassLoader = getClassLoader(LogFactory.class);
-        thisClassLoaderRef = new WeakReference<ClassLoader>(thisClassLoader);
+        final ClassLoader thisClassLoader = getClassLoader(LogFactory.class);
+        thisClassLoaderRef = new WeakReference<>(thisClassLoader);
         // In order to avoid confusion where multiple instances of JCL are
         // being used via different classloaders within the same app, we
         // ensure each logged message has a prefix of form
@@ -305,28 +305,26 @@ public abstract class LogFactory {
                             logDiagnostic("Loaded class " + logFactoryClass.getName() +
                                           " from classloader " + objectId(classLoader));
                         }
-                    } else {
-                        //
-                        // This indicates a problem with the ClassLoader tree.
-                        // An incompatible ClassLoader was used to load the
-                        // implementation.
-                        // As the same classes
-                        // must be available in multiple class loaders,
-                        // it is very likely that multiple JCL jars are present.
-                        // The most likely fix for this
-                        // problem is to remove the extra JCL jars from the
-                        // ClassLoader hierarchy.
-                        //
-                        if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Factory class " + logFactoryClass.getName() +
-                                          " loaded from classloader " + objectId(logFactoryClass.getClassLoader()) +
-                                          " does not extend '" + LogFactory.class.getName() +
-                                          "' as loaded by this classloader.");
-                            logHierarchy("[BAD CL TREE] ", classLoader);
-                        }
+                    } else //
+                    // This indicates a problem with the ClassLoader tree.
+                    // An incompatible ClassLoader was used to load the
+                    // implementation.
+                    // As the same classes
+                    // must be available in multiple class loaders,
+                    // it is very likely that multiple JCL jars are present.
+                    // The most likely fix for this
+                    // problem is to remove the extra JCL jars from the
+                    // ClassLoader hierarchy.
+                    //
+                    if (isDiagnosticsEnabled()) {
+                        logDiagnostic("Factory class " + logFactoryClass.getName() +
+                                      " loaded from classloader " + objectId(logFactoryClass.getClassLoader()) +
+                                      " does not extend '" + LogFactory.class.getName() +
+                                      "' as loaded by this classloader.");
+                        logHierarchy("[BAD CL TREE] ", classLoader);
                     }
 
-                    return (LogFactory) logFactoryClass.getConstructor().newInstance();
+                    return logFactoryClass.getConstructor().newInstance();
 
                 } catch (final ClassNotFoundException ex) {
                     if (classLoader == thisClassLoaderRef.get()) {
@@ -426,7 +424,7 @@ public abstract class LogFactory {
                               " - trying the classloader associated with this LogFactory.");
             }
             logFactoryClass = Class.forName(factoryClass);
-            return (LogFactory) logFactoryClass.newInstance();
+            return logFactoryClass.newInstance();
         } catch (final Exception e) {
             // Check to see if we've got a bad configuration
             if (isDiagnosticsEnabled()) {
@@ -675,13 +673,11 @@ public abstract class LogFactory {
                             propsUrl = url;
                             props = newProps;
                             priority = newPriority;
-                        } else {
-                            if (isDiagnosticsEnabled()) {
-                                logDiagnostic("[LOOKUP] Properties file at '" + url + "'" +
-                                              " with priority " + newPriority +
-                                              " does not override file at '" + propsUrl + "'" +
-                                              " with priority " + priority);
-                            }
+                        } else if (isDiagnosticsEnabled()) {
+                            logDiagnostic("[LOOKUP] Properties file at '" + url + "'" +
+                                          " with priority " + newPriority +
+                                          " does not override file at '" + propsUrl + "'" +
+                                          " with priority " + priority);
                         }
                     }
 
@@ -743,12 +739,7 @@ public abstract class LogFactory {
      */
     private static ClassLoader getContextClassLoaderInternal() throws LogConfigurationException {
         return (ClassLoader)AccessController.doPrivileged(
-            new PrivilegedAction() {
-                @Override
-                public Object run() {
-                    return directGetContextClassLoader();
-                }
-            });
+            (PrivilegedAction) LogFactory::directGetContextClassLoader);
     }
 
     /**
@@ -817,7 +808,7 @@ public abstract class LogFactory {
             final String useTCCLStr = props.getProperty(TCCL_KEY);
             // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
             // is required for Java 1.2 compatibility.
-            if ((useTCCLStr != null) && !Boolean.parseBoolean(useTCCLStr)) {
+            if (useTCCLStr != null && !Boolean.parseBoolean(useTCCLStr)) {
                 // Don't use current context classloader when locating any
                 // LogFactory or Log classes, just use the class that loaded
                 // this abstract class. When this class is deployed in a shared
@@ -844,10 +835,8 @@ public abstract class LogFactory {
                                   "' as specified by system property " + FACTORY_PROPERTY);
                 }
                 factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
-            } else {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
-                }
+            } else if (isDiagnosticsEnabled()) {
+                logDiagnostic("[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
             }
         } catch (final SecurityException e) {
             if (isDiagnosticsEnabled()) {
@@ -938,10 +927,8 @@ public abstract class LogFactory {
                         logDiagnostic("[LOOKUP] Properties file has no entry specifying LogFactory subclass.");
                     }
                 }
-            } else {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("[LOOKUP] No properties file available to determine" + " LogFactory subclass from..");
-                }
+            } else if (isDiagnosticsEnabled()) {
+                logDiagnostic("[LOOKUP] No properties file available to determine" + " LogFactory subclass from..");
             }
         }
 
@@ -1019,44 +1006,41 @@ public abstract class LogFactory {
      */
     private static Properties getProperties(final URL url) {
         final PrivilegedAction action =
-            new PrivilegedAction() {
-                @Override
-                public Object run() {
-                    InputStream stream = null;
+            () -> {
+            InputStream stream = null;
+            try {
+                // We must ensure that useCaches is set to false, as the
+                // default behavior of java is to cache file handles, and
+                // this "locks" files, preventing hot-redeploy on windows.
+                final URLConnection connection = url.openConnection();
+                connection.setUseCaches(false);
+                stream = connection.getInputStream();
+                if (stream != null) {
+                    final Properties props = new Properties();
+                    props.load(stream);
+                    stream.close();
+                    stream = null;
+                    return props;
+                }
+            } catch (final IOException e) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("Unable to read URL " + url);
+                }
+            } finally {
+                if (stream != null) {
                     try {
-                        // We must ensure that useCaches is set to false, as the
-                        // default behavior of java is to cache file handles, and
-                        // this "locks" files, preventing hot-redeploy on windows.
-                        final URLConnection connection = url.openConnection();
-                        connection.setUseCaches(false);
-                        stream = connection.getInputStream();
-                        if (stream != null) {
-                            final Properties props = new Properties();
-                            props.load(stream);
-                            stream.close();
-                            stream = null;
-                            return props;
-                        }
+                        stream.close();
                     } catch (final IOException e) {
+                        // ignore exception; this should not happen
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Unable to read URL " + url);
-                        }
-                    } finally {
-                        if (stream != null) {
-                            try {
-                                stream.close();
-                            } catch (final IOException e) {
-                                // ignore exception; this should not happen
-                                if (isDiagnosticsEnabled()) {
-                                    logDiagnostic("Unable to close stream for URL " + url);
-                                }
-                            }
+                            logDiagnostic("Unable to close stream for URL " + url);
                         }
                     }
-
-                    return null;
                 }
-            };
+            }
+
+            return null;
+        };
         return (Properties) AccessController.doPrivileged(action);
     }
 
@@ -1068,14 +1052,11 @@ public abstract class LogFactory {
      */
     private static InputStream getResourceAsStream(final ClassLoader loader, final String name) {
         return (InputStream)AccessController.doPrivileged(
-            new PrivilegedAction() {
-                @Override
-                public Object run() {
-                    if (loader != null) {
-                        return loader.getResourceAsStream(name);
-                    }
-                    return ClassLoader.getSystemResourceAsStream(name);
+            (PrivilegedAction) () -> {
+                if (loader != null) {
+                    return loader.getResourceAsStream(name);
                 }
+                return ClassLoader.getSystemResourceAsStream(name);
             });
     }
 
@@ -1094,28 +1075,25 @@ public abstract class LogFactory {
      */
     private static Enumeration getResources(final ClassLoader loader, final String name) {
         final PrivilegedAction action =
-            new PrivilegedAction() {
-                @Override
-                public Object run() {
-                    try {
-                        if (loader != null) {
-                            return loader.getResources(name);
-                        }
-                        return ClassLoader.getSystemResources(name);
-                    } catch (final IOException e) {
-                        if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Exception while trying to find configuration file " +
-                                          name + ":" + e.getMessage());
-                        }
-                        return null;
-                    } catch (final NoSuchMethodError e) {
-                        // we must be running on a 1.1 JVM which doesn't support
-                        // ClassLoader.getSystemResources; just return null in
-                        // this case.
-                        return null;
-                    }
+            () -> {
+            try {
+                if (loader != null) {
+                    return loader.getResources(name);
                 }
-            };
+                return ClassLoader.getSystemResources(name);
+            } catch (final IOException e) {
+                if (isDiagnosticsEnabled()) {
+                    logDiagnostic("Exception while trying to find configuration file " +
+                                  name + ":" + e.getMessage());
+                }
+                return null;
+            } catch (final NoSuchMethodError e) {
+                // we must be running on a 1.1 JVM which doesn't support
+                // ClassLoader.getSystemResources; just return null in
+                // this case.
+                return null;
+            }
+        };
         final Object result = AccessController.doPrivileged(action);
         return (Enumeration) result;
     }
@@ -1134,12 +1112,7 @@ public abstract class LogFactory {
     private static String getSystemProperty(final String key, final String def)
         throws SecurityException {
         return (String) AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    @Override
-                    public Object run() {
-                        return System.getProperty(key, def);
-                    }
-                });
+                (PrivilegedAction) () -> System.getProperty(key, def));
     }
 
     /**
@@ -1475,12 +1448,7 @@ public abstract class LogFactory {
         // method will propagate out of this method; in particular a
         // ClassCastException can be thrown.
         final Object result = AccessController.doPrivileged(
-            new PrivilegedAction() {
-                @Override
-                public Object run() {
-                    return createFactory(factoryClass, classLoader);
-                }
-            });
+            (PrivilegedAction) () -> createFactory(factoryClass, classLoader));
 
         if (result instanceof LogConfigurationException) {
             final LogConfigurationException ex = (LogConfigurationException) result;

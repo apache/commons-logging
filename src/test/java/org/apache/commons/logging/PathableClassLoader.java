@@ -48,7 +48,7 @@ import java.util.Map;
 
 public class PathableClassLoader extends URLClassLoader {
 
-    private static final URL[] NO_URLS = new URL[0];
+    private static final URL[] NO_URLS = {};
 
     /**
      * A map of package-prefix to ClassLoader. Any class which is in

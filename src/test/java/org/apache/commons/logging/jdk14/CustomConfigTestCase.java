@@ -67,14 +67,14 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             final ClassLoader srcCL = CustomConfigAPITestCase.class.getClassLoader();
             final byte[] classData = readClass(className, srcCL);
 
-            final Class[] params = new Class[] { String.class, classData.getClass(), Integer.TYPE, Integer.TYPE };
+            final Class[] params = { String.class, classData.getClass(), Integer.TYPE, Integer.TYPE };
             final Method m = ClassLoader.class.getDeclaredMethod("defineClass", params);
 
             final Object[] args = new Object[4];
             args[0] = className;
             args[1] = classData;
-            args[2] = new Integer(0);
-            args[3] = new Integer(classData.length);
+            args[2] = Integer.valueOf(0);
+            args[3] = Integer.valueOf(classData.length);
             m.setAccessible(true);
             m.invoke(targetCL, args);
         } catch (final Exception e) {

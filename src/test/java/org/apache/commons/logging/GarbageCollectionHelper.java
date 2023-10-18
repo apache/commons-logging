@@ -35,7 +35,7 @@ public final class GarbageCollectionHelper implements Closeable, Runnable {
                     // Allocate data to help suggest a GC
                     try {
                         // 1mb of heap
-                        byte[] buf = new byte[1024 * 1024];
+                        final byte[] buf = new byte[1024 * 1024];
                         SINK.write(buf);
                     } catch (final IOException ignored) {
                     }
@@ -49,15 +49,15 @@ public final class GarbageCollectionHelper implements Closeable, Runnable {
     }
     private static final OutputStream SINK = new OutputStream() {
         @Override
-        public void write(byte[] b) {
+        public void write(final byte[] b) {
         }
 
         @Override
-        public void write(byte[] b, int off, int len) {
+        public void write(final byte[] b, final int off, final int len) {
         }
 
         @Override
-        public void write(int b) {
+        public void write(final int b) {
         }
     };
     private final AtomicBoolean running = new AtomicBoolean();

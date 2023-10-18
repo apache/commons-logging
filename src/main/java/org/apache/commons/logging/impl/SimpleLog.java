@@ -236,16 +236,13 @@ public class SimpleLog implements Log, Serializable {
 
     private static InputStream getResourceAsStream(final String name) {
         return (InputStream)AccessController.doPrivileged(
-            new PrivilegedAction() {
-                @Override
-                public Object run() {
-                    final ClassLoader threadCL = getContextClassLoader();
+            (PrivilegedAction) () -> {
+                final ClassLoader threadCL = getContextClassLoader();
 
-                    if (threadCL != null) {
-                        return threadCL.getResourceAsStream(name);
-                    }
-                    return ClassLoader.getSystemResourceAsStream(name);
+                if (threadCL != null) {
+                    return threadCL.getResourceAsStream(name);
                 }
+                return ClassLoader.getSystemResourceAsStream(name);
             });
     }
 
@@ -497,7 +494,7 @@ public class SimpleLog implements Log, Serializable {
      * Tests whether the given log level currently enabled.
      *
      * @param logLevel is this level enabled?
-     * @return whether the given log level currently enabled. 
+     * @return whether the given log level currently enabled.
      */
     protected boolean isLevelEnabled(final int logLevel) {
         // log level are numerically ordered so can use simple numeric

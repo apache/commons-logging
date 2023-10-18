@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class DummyLogFactory extends LogFactory {
     @Override
-    public Object getAttribute(String name) {
+    public Object getAttribute(final String name) {
         return null;
     }
 
@@ -32,12 +32,12 @@ public class DummyLogFactory extends LogFactory {
     }
 
     @Override
-    public Log getInstance(Class clazz) throws LogConfigurationException {
+    public Log getInstance(final Class clazz) throws LogConfigurationException {
         return null;
     }
 
     @Override
-    public Log getInstance(String name) throws LogConfigurationException {
+    public Log getInstance(final String name) throws LogConfigurationException {
         return null;
     }
 
@@ -47,12 +47,12 @@ public class DummyLogFactory extends LogFactory {
     }
 
     @Override
-    public void removeAttribute(String name) {
+    public void removeAttribute(final String name) {
         // empty
     }
 
     @Override
-    public void setAttribute(String name, Object value) {
+    public void setAttribute(final String name, final Object value) {
         // empty
     }
 }

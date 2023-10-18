@@ -41,7 +41,7 @@ public class GeneralTestCase extends TestCase {
                 contextLoader.getClass().getName(),
                 PathableClassLoader.class.getName());
 
-        final URL[] noUrls = new URL[0];
+        final URL[] noUrls = {};
         Thread.currentThread().setContextClassLoader(new URLClassLoader(noUrls));
     }
 
