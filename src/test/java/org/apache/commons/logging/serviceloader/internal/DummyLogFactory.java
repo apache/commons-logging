@@ -43,16 +43,16 @@ public class DummyLogFactory extends LogFactory {
 
     @Override
     public void release() {
-
+        // empty
     }
 
     @Override
     public void removeAttribute(String name) {
-
+        // empty
     }
 
     @Override
     public void setAttribute(String name, Object value) {
-
+        // empty
     }
 }
