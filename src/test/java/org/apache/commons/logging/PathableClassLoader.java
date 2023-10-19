@@ -118,15 +118,15 @@ public class PathableClassLoader extends URLClassLoader {
      */
     public void addLogicalLib(final String logicalLib) {
         // first, check the system properties
-        final String filename = System.getProperty(logicalLib);
-        if (filename != null) {
+        final String fileName = System.getProperty(logicalLib);
+        if (fileName != null) {
             try {
-                final URL libUrl = new File(filename).toURL();
+                final URL libUrl = new File(fileName).toURL();
                 addURL(libUrl);
                 return;
             } catch (final java.net.MalformedURLException e) {
                 throw new UnknownError(
-                    "Invalid file [" + filename + "] for logical lib [" + logicalLib + "]");
+                    "Invalid file [" + fileName + "] for logical lib [" + logicalLib + "]");
             }
         }
 
@@ -253,7 +253,7 @@ public class PathableClassLoader extends URLClassLoader {
      * of {@code file:///some/where/foo-2.7.jar}.
      * <p>
      * When multiple classpath entries match the specified logicalLib string,
-     * the one with the shortest filename component is returned. This means that
+     * the one with the shortest file name component is returned. This means that
      * if "foo-1.1.jar" and "foobar-1.1.jar" are in the path, then a logicalLib
      * name of "foo" will match the first entry above.
      */
@@ -268,22 +268,22 @@ public class PathableClassLoader extends URLClassLoader {
         URL shortestMatch = null;
         int shortestMatchLen = Integer.MAX_VALUE;
         for (final URL u : path) {
-            // extract the filename bit on the end of the url
-            String filename = u.toString();
-            if (!filename.endsWith(".jar")) {
+            // extract the file name bit on the end of the URL
+            String fileName = u.toString();
+            if (!fileName.endsWith(".jar")) {
                 // not a jarfile, ignore it
                 continue;
             }
 
-            final int lastSlash = filename.lastIndexOf('/');
+            final int lastSlash = fileName.lastIndexOf('/');
             if (lastSlash >= 0) {
-                filename = filename.substring(lastSlash+1);
+                fileName = fileName.substring(lastSlash+1);
             }
 
             // ok, this is a candidate
-            if (filename.startsWith(logicalLib) && filename.length() < shortestMatchLen) {
+            if (fileName.startsWith(logicalLib) && fileName.length() < shortestMatchLen) {
                 shortestMatch = u;
-                shortestMatchLen = filename.length();
+                shortestMatchLen = fileName.length();
             }
         }
 

@@ -223,7 +223,7 @@ public class ParentFirstTestCase extends TestCase {
 
         // getResource where it is accessable to both classloaders. The one visible
         // to the parent should be returned. The URL returned will be of form
-        //  jar:file:/x/y.jar!path/to/resource. The filename part should include the jarname
+        //  jar:file:/x/y.jar!path/to/resource. The file name part should include the jarname
         // of form commons-logging-nnnn.jar, not commons-logging-adapters-nnnn.jar
         resource = childLoader.getResource("org/apache/commons/logging/impl/Log4JLogger.class");
         assertNotNull("Unable to locate Log4JLogger.class resource", resource);

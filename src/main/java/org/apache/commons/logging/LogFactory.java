@@ -1061,8 +1061,8 @@ public abstract class LogFactory {
     }
 
     /**
-     * Given a filename, return an enumeration of URLs pointing to
-     * all the occurrences of that filename in the classpath.
+     * Given a file name, return an enumeration of URLs pointing to
+     * all the occurrences of that file name in the classpath.
      * <p>
      * This is just like ClassLoader.getResources except that the
      * operation is done under an AccessController so that this method will
@@ -1205,7 +1205,7 @@ public abstract class LogFactory {
      * Determines whether the user wants internal diagnostic output. If so,
      * returns an appropriate writer object. Users can enable diagnostic
      * output by setting the system property named {@link #DIAGNOSTICS_DEST_PROPERTY} to
-     * a filename, or the special values STDOUT or STDERR.
+     * a file name, or the special values STDOUT or STDERR.
      */
     private static PrintStream initDiagnostics() {
         String dest;
