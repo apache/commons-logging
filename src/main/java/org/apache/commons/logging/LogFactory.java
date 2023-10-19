@@ -1468,12 +1468,12 @@ public abstract class LogFactory {
      * Returns a string that uniquely identifies the specified object, including
      * its class.
      * <p>
-     * The returned string is of form "classname@hashCode", ie is the same as
+     * The returned string is of form "className@hashCode", ie is the same as
      * the return value of the Object.toString() method, but works even when
      * the specified object's class has overidden the toString method.
      *
      * @param o may be null.
-     * @return a string of form classname@hashCode, or "null" if param o is null.
+     * @return a string of form className@hashCode, or "null" if param o is null.
      * @since 1.1
      */
     public static String objectId(final Object o) {

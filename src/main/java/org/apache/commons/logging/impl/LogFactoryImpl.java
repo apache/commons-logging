@@ -322,7 +322,7 @@ public class LogFactoryImpl extends LogFactory {
      * Attempts to load the given class, find a suitable constructor,
      * and instantiate an instance of Log.
      *
-     * @param logAdapterClassName classname of the Log implementation
+     * @param logAdapterClassName class name of the Log implementation
      * @param logCategory  argument to pass to the Log implementation's constructor
      * @param affectState  {@code true} if this object's state should
      *  be affected by this method call, {@code false} otherwise.
@@ -597,7 +597,7 @@ public class LogFactoryImpl extends LogFactory {
      * a Log implementation specified by the user under the
      * property names {@link #LOG_PROPERTY} or {@link #LOG_PROPERTY_OLD}.
      *
-     * @return classname specified by the user, or {@code null}
+     * @return class name specified by the user, or {@code null}
      */
     private String findUserSpecifiedLogClassName() {
         if (isDiagnosticsEnabled()) {
@@ -643,7 +643,7 @@ public class LogFactoryImpl extends LogFactory {
             }
         }
 
-        // Remove any whitespace; it's never valid in a classname so its
+        // Remove any whitespace; it's never valid in a class name so its
         // presence just means a user mistake. As we know what they meant,
         // we may as well strip the spaces.
         if (specifiedClass != null) {
@@ -864,9 +864,9 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return the fully qualified Java classname of the {@link Log} implementation we will be using.
+     * Return the fully qualified Java class name of the {@link Log} implementation we will be using.
      *
-     * @return the fully qualified Java classname of the {@link Log} implementation we will be using.
+     * @return the fully qualified Java class name of the {@link Log} implementation we will be using.
      * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
@@ -1244,13 +1244,13 @@ public class LogFactoryImpl extends LogFactory {
      * present and available for use. Note that this does <i>not</i>
      * affect the future behavior of this class.
      */
-    private boolean isLogLibraryAvailable(final String name, final String classname) {
+    private boolean isLogLibraryAvailable(final String name, final String className) {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Checking for '" + name + "'.");
         }
         try {
             final Log log = createLogFromClass(
-                        classname,
+                        className,
                         this.getClass().getName(), // dummy category
                         false);
 
