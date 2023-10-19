@@ -231,6 +231,14 @@ public class LogFactoryImpl extends LogFactory {
         return LogFactory.isDiagnosticsEnabled();
     }
 
+    /** Utility method to safely trim a string. */
+    private static String trim(final String src) {
+        if (src == null) {
+            return null;
+        }
+        return src.trim();
+    }
+
     /**
      * Determines whether logging classes should be loaded using the thread-context
      * classloader, or via the classloader that loaded this LogFactoryImpl class.
@@ -272,13 +280,13 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Class[] logConstructorSignature = { java.lang.String.class };
 
+    // --------------------------------------------------------- Public Methods
+
     /**
      * The one-argument {@code setLogFactory} method of the selected
      * {@link org.apache.commons.logging.Log} method, if it exists.
      */
     protected Method logMethod;
-
-    // --------------------------------------------------------- Public Methods
 
     /**
      * The signature of the {@code setLogFactory} method to be used.
@@ -374,7 +382,7 @@ public class LogFactoryImpl extends LogFactory {
                     // trying higher up in the hierarchy in this case..
                     String msg = originalClassNotFoundException.getMessage();
                     logDiagnostic("The log adapter '" + logAdapterClassName + "' is not available via classloader " +
-                                  objectId(currentCL) + ": " + msg.trim());
+                                  objectId(currentCL) + ": " + trim(msg));
                     try {
                         // Try the class classloader.
                         // This may work in cases where the TCCL
@@ -388,7 +396,7 @@ public class LogFactoryImpl extends LogFactory {
                         // no point continuing: this adapter isn't available
                         msg = secondaryClassNotFoundException.getMessage();
                         logDiagnostic("The log adapter '" + logAdapterClassName +
-                                      "' is not available via the LogFactoryImpl class classloader: " + msg.trim());
+                                      "' is not available via the LogFactoryImpl class classloader: " + trim(msg));
                         break;
                     }
                 }
@@ -484,6 +492,13 @@ public class LogFactoryImpl extends LogFactory {
         return logAdapter;
     }
 
+    // ------------------------------------------------------
+    // Static Methods
+    //
+    // These methods only defined as workarounds for a java 1.2 bug;
+    // theoretically none of these are needed.
+    // ------------------------------------------------------
+
     /**
      * Attempts to create a Log instance for the given category name.
      * Follows the discovery process described in the class javadoc.
@@ -577,13 +592,6 @@ public class LogFactoryImpl extends LogFactory {
         return result;
     }
 
-    // ------------------------------------------------------
-    // Static Methods
-    //
-    // These methods only defined as workarounds for a java 1.2 bug;
-    // theoretically none of these are needed.
-    // ------------------------------------------------------
-
     /**
      * Checks system properties and the attribute map for
      * a Log implementation specified by the user under the
@@ -656,6 +664,8 @@ public class LogFactoryImpl extends LogFactory {
         return attributes.get(name);
     }
 
+    // ------------------------------------------------------ Protected Methods
+
     /**
      * Return an array containing the names of all currently defined
      * configuration attributes.  If there are no such attributes, a zero
@@ -665,8 +675,6 @@ public class LogFactoryImpl extends LogFactory {
     public String[] getAttributeNames() {
         return (String[]) attributes.keySet().toArray(EMPTY_STRING_ARRAY);
     }
-
-    // ------------------------------------------------------ Protected Methods
 
     /**
      * Return the classloader from which we should try to load the logging
@@ -756,6 +764,7 @@ public class LogFactoryImpl extends LogFactory {
         return Boolean.parseBoolean(val);
     }
 
+
     /**
      * Attempt to find an attribute (see method setAttribute) or a
      * system property with the provided name and return its value.
@@ -812,7 +821,6 @@ public class LogFactoryImpl extends LogFactory {
 
         return null;
     }
-
 
     /**
      * Convenience method to derive a name from the specified class and
@@ -898,6 +906,8 @@ public class LogFactoryImpl extends LogFactory {
         return logConstructor;
     }
 
+    //  ------------------------------------------------------ Private Methods
+
     /**
      * Given two related classloaders, return the one which is a child of
      * the other.
@@ -943,8 +953,6 @@ public class LogFactoryImpl extends LogFactory {
 
         return null;
     }
-
-    //  ------------------------------------------------------ Private Methods
 
     /**
      * Fetch the parent classloader of a specified classloader.

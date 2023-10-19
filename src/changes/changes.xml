@@ -69,6 +69,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action issue="LOGGING-185" type="fix" dev="pkarwasz" due-to="Piotr P. Karwasz">
         Replace custom code with `ServiceLoader` call.
       </action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">
+        Fix possible NPEs in LogFactoryImpl.
+      </action>
       <!-- UPDATES -->
       <action dev="ggregory" type="update" due-to="Gary Gregory">
         Bump Java from 6 to 8.
