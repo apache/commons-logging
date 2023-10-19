@@ -74,7 +74,7 @@ public class PathableClassLoader extends URLClassLoader {
     /**
      * Constructor.
      * <p>
-     * Often, null is passed as the parent, ie the parent of the new
+     * Often, null is passed as the parent, that is, the parent of the new
      * instance is the bootloader. This ensures that the classpath is
      * totally clean; nothing but the standard java library will be
      * present.

@@ -139,7 +139,7 @@ public class MockSecurityManager extends SecurityManager {
     /**
      * This returns the number of times that a check of a permission failed
      * due to stack-walking tracing up into untrusted code. Any non-zero
-     * value indicates a bug in JCL, ie a situation where code was not
+     * value indicates a bug in JCL, that is, a situation where code was not
      * correctly wrapped in an AccessController block. The result of such a
      * bug is that signing JCL is not sufficient to allow JCL to perform
      * the operation; the caller would need to be signed too.

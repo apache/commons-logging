@@ -104,9 +104,10 @@ public class SimpleLog implements Log, Serializable {
      * Used to format times.
      * <p>
      * Any code that accesses this object should first obtain a lock on it,
-     * ie use synchronized(dateFormatter); this requirement was introduced
+     * that is, use synchronized(dateFormatter); this requirement was introduced
      * in 1.1.1 to fix an existing thread safety bug (SimpleDateFormat.format
      * is not thread-safe).
+     * </p>
      */
     static protected DateFormat dateFormatter;
 

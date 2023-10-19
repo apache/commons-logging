@@ -407,7 +407,7 @@ public abstract class LogFactory {
              * classLoader was unable to load factoryClass.
              *
              * In either case, we call Class.forName, which is equivalent
-             * to LogFactory.class.getClassLoader().load(name), ie we ignore
+             * to LogFactory.class.getClassLoader().load(name), that is, we ignore
              * the classloader parameter the caller passed, and fall back
              * to trying the classloader associated with this class. See the
              * javadoc for the newFactory method for more info on the
@@ -576,7 +576,7 @@ public abstract class LogFactory {
      * <p>
      * Even when using an AccessController, however, this method can still
      * throw SecurityException. Commons-logging basically relies on the
-     * ability to access classloaders, ie a policy that forbids all
+     * ability to access classloaders. A policy that forbids all
      * classloader access will also prevent commons-logging from working:
      * currently this method will throw an exception preventing the entire app
      * from starting up. Maybe it would be good to detect this situation and
@@ -1411,9 +1411,11 @@ public abstract class LogFactory {
     /**
      * Return a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
      * used to load this (abstract) LogFactory.
-     * <p><b>ClassLoader conflicts</b></p>
      * <p>
-     * Note that there can be problems if the specified ClassLoader is not the same as the classloader that loaded this class, ie when loading a concrete
+     * <b>ClassLoader conflicts</b>
+     * </p>
+     * <p>
+     * Note that there can be problems if the specified ClassLoader is not the same as the classloader that loaded this class, that is, when loading a concrete
      * LogFactory subclass via a context classloader.
      * </p>
      * <p>
@@ -1423,9 +1425,9 @@ public abstract class LogFactory {
      * The problem occurs when code running in the context classloader calls class X which was loaded via a parent classloader, and class X then calls
      * LogFactory.getFactory (either directly or via LogFactory.getLog). Because class X was loaded via the parent, it binds to LogFactory loaded via the
      * parent. When the code in this method finds some LogFactoryYYYY class in the child (context) classloader, and there also happens to be a LogFactory class
-     * defined in the child classloader, then LogFactoryYYYY will be bound to LogFactory@childloader. It cannot be cast to LogFactory@parentloader, ie this
-     * method cannot return the object as the desired type. Note that it doesn't matter if the LogFactory class in the child classloader is identical to the
-     * LogFactory class in the parent classloader, they are not compatible.
+     * defined in the child classloader, then LogFactoryYYYY will be bound to LogFactory@childloader. It cannot be cast to LogFactory@parentloader, that is,
+     * this method cannot return the object as the desired type. Note that it doesn't matter if the LogFactory class in the child classloader is identical to
+     * the LogFactory class in the parent classloader, they are not compatible.
      * </p>
      * <p>
      * The solution taken here is to simply print out an error message when this occurs then throw an exception. The deployer of the application must ensure
@@ -1468,7 +1470,7 @@ public abstract class LogFactory {
      * Returns a string that uniquely identifies the specified object, including
      * its class.
      * <p>
-     * The returned string is of form "className@hashCode", ie is the same as
+     * The returned string is of form "className@hashCode", that is, is the same as
      * the return value of the Object.toString() method, but works even when
      * the specified object's class has overridden the toString method.
      * </p>
