@@ -147,7 +147,7 @@
  * <h3>Configuring the Underlying Logging System</h3>
  * <p>The basic principle is that the user is totally responsible for the
  * configuration of the underlying logging system.
- * Commons-logging should not change the existing configuration.</p>
+ * Commons Logging should not change the existing configuration.</p>
  * <p>Each individual <a href="Log.html">Log</a> implementation may
  * support its own configuration properties.  These will be documented in the
  * class descriptions for the corresponding implementation class.</p>

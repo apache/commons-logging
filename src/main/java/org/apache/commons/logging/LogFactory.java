@@ -575,7 +575,7 @@ public abstract class LogFactory {
      * </p>
      * <p>
      * Even when using an AccessController, however, this method can still
-     * throw SecurityException. Commons-logging basically relies on the
+     * throw SecurityException. Commons Logging basically relies on the
      * ability to access classloaders. A policy that forbids all
      * classloader access will also prevent commons-logging from working:
      * currently this method will throw an exception preventing the entire app
