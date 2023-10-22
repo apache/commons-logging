@@ -1010,7 +1010,7 @@ public class LogFactoryImpl extends LogFactory {
 
                     if (cause instanceof ExceptionInInitializerError) {
                         final ExceptionInInitializerError eiie = (ExceptionInInitializerError)cause;
-                        final Throwable cause2 = eiie.getException();
+                        final Throwable cause2 = eiie.getCause();
                         if (cause2 != null) {
                             final StringWriter sw = new StringWriter();
                             cause2.printStackTrace(new PrintWriter(sw, true));
