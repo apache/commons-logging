@@ -1001,7 +1001,7 @@ public class LogFactoryImpl extends LogFactory {
                 // Ok, the lib is there but while trying to create a real underlying
                 // logger something failed in the underlying lib; display info about
                 // that if possible.
-                final InvocationTargetException ite = (InvocationTargetException)discoveryFlaw;
+                final InvocationTargetException ite = (InvocationTargetException) discoveryFlaw;
                 final Throwable cause = ite.getTargetException();
                 if (cause != null) {
                     logDiagnostic("... InvocationTargetException: " +
@@ -1009,7 +1009,7 @@ public class LogFactoryImpl extends LogFactory {
                         cause.getLocalizedMessage());
 
                     if (cause instanceof ExceptionInInitializerError) {
-                        final ExceptionInInitializerError eiie = (ExceptionInInitializerError)cause;
+                        final ExceptionInInitializerError eiie = (ExceptionInInitializerError) cause;
                         final Throwable cause2 = eiie.getCause();
                         if (cause2 != null) {
                             final StringWriter sw = new StringWriter();
