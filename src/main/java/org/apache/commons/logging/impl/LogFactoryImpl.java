@@ -457,7 +457,7 @@ public class LogFactoryImpl extends LogFactory {
                 // handleFlawedDiscovery will determine whether this is a fatal
                 // problem or not. If it is fatal, then a LogConfigurationException
                 // will be thrown.
-                handleFlawedDiscovery(logAdapterClassName, currentCL, t);
+                handleFlawedDiscovery(logAdapterClassName, t);
             }
 
             if (currentCL == null) {
@@ -979,16 +979,11 @@ public class LogFactoryImpl extends LogFactory {
      *
      * @param logAdapterClassName is the class name of the Log implementation
      * that could not be instantiated. Cannot be {@code null}.
-     *
-     * @param classLoader is the classloader that we were trying to load the
-     * logAdapterClassName from when the exception occurred.
-     *
      * @param discoveryFlaw is the Throwable created by the classloader
      *
      * @throws LogConfigurationException    ALWAYS
      */
     private void handleFlawedDiscovery(final String logAdapterClassName,
-                                       final ClassLoader classLoader, // USED?
                                        final Throwable discoveryFlaw) {
 
         if (isDiagnosticsEnabled()) {
