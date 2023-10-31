@@ -21,7 +21,7 @@ import org.apache.commons.logging.impl.LogFactoryImpl;
 public class UserClass {
 
     /**
-     * Set the ALLOW_FLAWED_CONTEXT feature on the LogFactoryImpl object
+     * Sets the ALLOW_FLAWED_CONTEXT feature on the LogFactoryImpl object
      * associated with this class' classloader.
      * <p>
      * Don't forget to set the context classloader to whatever it will be

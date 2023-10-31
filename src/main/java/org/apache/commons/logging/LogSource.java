@@ -200,7 +200,7 @@ public class LogSource {
     }
 
     /**
-     * Set the log implementation/log implementation factory by class. The given class must implement {@link Log}, and provide a constructor that takes a single
+     * Sets the log implementation/log implementation factory by class. The given class must implement {@link Log}, and provide a constructor that takes a single
      * {@link String} argument (containing the name of the log).
      *
      * @param logclass class.
@@ -219,7 +219,7 @@ public class LogSource {
     }
 
     /**
-     * Set the log implementation/log implementation factory by the name of the class. The given class must implement {@link Log}, and provide a constructor
+     * Sets the log implementation/log implementation factory by the name of the class. The given class must implement {@link Log}, and provide a constructor
      * that takes a single {@link String} argument (containing the name of the log).
      *
      * @param className class name.

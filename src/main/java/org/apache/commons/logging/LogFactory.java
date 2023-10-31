@@ -1636,7 +1636,7 @@ public abstract class LogFactory {
     // ----------------------------------------------------------------------
 
     /**
-     * Set the configuration attribute with the specified name.  Calling
+     * Sets the configuration attribute with the specified name.  Calling
      * this with a {@code null} value is equivalent to calling
      * {@code removeAttribute(name)}.
      *

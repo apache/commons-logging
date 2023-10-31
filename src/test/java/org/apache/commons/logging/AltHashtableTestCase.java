@@ -41,7 +41,7 @@ public class AltHashtableTestCase extends TestCase {
     }
 
     /**
-     * Set up before each test.
+     * Sets up before each test.
      * <p>
      * This method ensures that the appropriate system property is defined
      * to force the LogFactory class to use the AltHashtable class as its

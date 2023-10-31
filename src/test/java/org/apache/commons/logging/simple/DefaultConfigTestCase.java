@@ -121,7 +121,7 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
     /**
-     * Set system properties that will control the LogFactory/Log objects
+     * Sets system properties that will control the LogFactory/Log objects
      * when they are created. Subclasses can override this method to
      * define properties that suit them.
      */
@@ -132,7 +132,7 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
     /**
-     * Set up instance variables required by this test case.
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {

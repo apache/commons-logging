@@ -82,7 +82,7 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     // ----------------------------------------------------------- Methods
 
     /**
-     * Set up system properties required by this unit test. Here, we
+     * Sets up system properties required by this unit test. Here, we
      * set up the props defined in the parent class setProperties method,
      * and add a few to configure the SimpleLog class date/time output.
      */
@@ -99,7 +99,7 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     }
 
     /**
-     * Set up instance variables required by this test case.
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {

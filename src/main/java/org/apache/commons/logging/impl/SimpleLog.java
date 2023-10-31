@@ -595,7 +595,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Set logging level.
+     * Sets logging level.
      *
      * @param currentLogLevel new logging level
      */

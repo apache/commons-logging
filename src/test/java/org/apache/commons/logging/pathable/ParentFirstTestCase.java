@@ -45,7 +45,7 @@ import org.apache.commons.logging.PathableTestSuite;
 public class ParentFirstTestCase extends TestCase {
 
     /**
-     * Set up a custom classloader hierarchy for this test case.
+     * Sets up a custom classloader hierarchy for this test case.
      * The hierarchy is:
      * <ul>
      * <li> contextloader: parent-first.

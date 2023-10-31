@@ -57,7 +57,7 @@ public class GeneralTestCase extends TestCase {
     }
 
     /**
-     * Set up a custom classloader hierarchy for this test case.
+     * Sets up a custom classloader hierarchy for this test case.
      */
     public static Test suite() throws Exception {
         final Class thisClass = GeneralTestCase.class;
