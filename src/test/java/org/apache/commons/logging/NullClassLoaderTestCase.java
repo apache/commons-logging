@@ -35,7 +35,7 @@ public class NullClassLoaderTestCase extends TestCase {
      */
     public void testSameLogObject() throws Exception {
         // unfortunately, there just isn't any way to emulate JCL being
-        // accessable via the null classloader in "standard" systems, so
+        // accessible via the null classloader in "standard" systems, so
         // we can't include this test in our standard unit tests.
     }
 }

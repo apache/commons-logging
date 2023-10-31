@@ -136,8 +136,8 @@ public class TcclDisabledTestCase extends TestCase {
     }
 
     /**
-     * Verify that the custom Log implementation which is only accessable
-     * via the TCCL has NOT been loaded. Because this is only accessable via the
+     * Verify that the custom Log implementation which is only accessible
+     * via the TCCL has NOT been loaded. Because this is only accessible via the
      * TCCL, and we've use a commons-logging.properties that disables TCCL loading,
      * we should see the default Log rather than the custom one.
      */
@@ -151,7 +151,7 @@ public class TcclDisabledTestCase extends TestCase {
         try {
             final Log log = instance.getInstance("test");
             fail("Unexpectedly succeeded in loading a custom Log class"
-                + " that is only accessable via the tccl.");
+                + " that is only accessible via the tccl.");
             assertNotNull(log); // silence compiler warning about unused var
         } catch (final LogConfigurationException ex) {
             // ok, expected

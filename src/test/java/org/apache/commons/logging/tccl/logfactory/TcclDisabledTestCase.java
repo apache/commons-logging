@@ -138,8 +138,8 @@ public class TcclDisabledTestCase extends TestCase {
     }
 
     /**
-     * Verify that the custom LogFactory implementation which is only accessable
-     * via the TCCL has NOT been loaded. Because this is only accessable via the
+     * Verify that the custom LogFactory implementation which is only accessible
+     * via the TCCL has NOT been loaded. Because this is only accessible via the
      * TCCL, and we've use a commons-logging.properties that disables TCCL loading,
      * we should see the default LogFactoryImpl rather than the custom one.
      */

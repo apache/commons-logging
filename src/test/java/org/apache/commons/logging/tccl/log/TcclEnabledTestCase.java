@@ -136,7 +136,7 @@ public class TcclEnabledTestCase extends TestCase {
     }
 
     /**
-     * Verify that the custom Log implementation which is only accessable
+     * Verify that the custom Log implementation which is only accessible
      * via the TCCL has successfully been loaded as specified in the config file.
      * This proves that the TCCL was used to load that class.
      */

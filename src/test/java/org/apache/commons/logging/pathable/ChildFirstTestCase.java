@@ -165,7 +165,7 @@ public class ChildFirstTestCase extends TestCase {
 
         // junit classes should be visible; their classloader is not
         // in the hierarchy of parent classloaders for this class,
-        // though it is accessable due to trickery in the PathableClassLoader.
+        // though it is accessible due to trickery in the PathableClassLoader.
         final Class junitTest = contextLoader.loadClass("junit.framework.Test");
         final Set ancestorCLs = getAncestorCLs();
         assertFalse("Junit not loaded by ancestor classloader",
@@ -215,15 +215,15 @@ public class ChildFirstTestCase extends TestCase {
         resource = childLoader.getResource("nosuchfile");
         assertNull("Non-null URL returned for invalid resource name", resource);
 
-        // getResource where it is accessable only to parent classloader
+        // getResource where it is accessible only to parent classloader
         resource = childLoader.getResource("org/apache/commons/logging/Log.class");
         assertNotNull("Unable to locate Log.class resource", resource);
 
-        // getResource where it is accessable only to child classloader
+        // getResource where it is accessible only to child classloader
         resource = childLoader.getResource("org/apache/commons/logging/PathableTestSuite.class");
         assertNotNull("Unable to locate PathableTestSuite.class resource", resource);
 
-        // getResource where it is accessable to both classloaders. The one visible
+        // getResource where it is accessible to both classloaders. The one visible
         // to the child should be returned. The URL returned will be of form
         //  jar:file:/x/y.jar!path/to/resource. The file name part should include the jarname
         // of form commons-logging-adapters-nnnn.jar, not commons-logging-nnnn.jar

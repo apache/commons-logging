@@ -112,7 +112,7 @@ public class ServletContextCleaner implements ServletContextListener {
                 loader = null;
             } catch (final IllegalAccessException ex) {
                 // This is not expected; every ancestor class should be accessible
-                System.err.println("LogFactory instance found which is not accessable!");
+                System.err.println("LogFactory instance found which is not accessible!");
                 loader = null;
             } catch (final InvocationTargetException ex) {
                 // This is not expected
