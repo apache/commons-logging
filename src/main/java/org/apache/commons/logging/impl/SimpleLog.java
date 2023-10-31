@@ -408,7 +408,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Get logging level.
+     * Gets logging level.
      *
      * @return  logging level.
      */

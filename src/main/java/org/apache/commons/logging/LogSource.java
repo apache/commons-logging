@@ -135,7 +135,7 @@ public class LogSource {
     // ------------------------------------------------------------ Constructor
 
     /**
-     * Get a {@code Log} instance by class.
+     * Gets a {@code Log} instance by class.
      *
      * @param clazz a Class.
      * @return a {@code Log} instance.
@@ -147,7 +147,7 @@ public class LogSource {
     // ---------------------------------------------------------- Class Methods
 
     /**
-     * Get a {@code Log} instance by class name.
+     * Gets a {@code Log} instance by class name.
      *
      * @param name Class name.
      * @return a {@code Log} instance.

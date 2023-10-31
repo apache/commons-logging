@@ -753,7 +753,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Get the setting for the user-configurable behavior specified by key.
+     * Gets the setting for the user-configurable behavior specified by key.
      * If nothing has explicitly been set, then return dflt.
      */
     private boolean getBooleanConfiguration(final String key, final boolean dflt) {
