@@ -201,7 +201,7 @@ public class ParentFirstTestCase extends TestCase {
     }
 
     /**
-     * Test that the various flavours of ClassLoader.getResource work as expected.
+     * Test that the various flavors of ClassLoader.getResource work as expected.
      */
     public void testResource() {
         URL resource;
@@ -260,7 +260,7 @@ public class ParentFirstTestCase extends TestCase {
     }
 
     /**
-     * Test that the various flavours of ClassLoader.getResources work as expected.
+     * Test that the various flavors of ClassLoader.getResources work as expected.
      */
     public void testResources() throws Exception {
         Enumeration resources;
