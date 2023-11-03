@@ -407,7 +407,14 @@ under the License.
             </goals>
             <configuration>
               <runOrder>${failsafe.runorder}</runOrder>
+              <classpathDependencyExcludes>
+                <exclude>ch.qos.logback:*</exclude>
+                <exclude>org.apache.logging.log4j:*</exclude>
+                <exclude>org.slf4j:*</exclude>
+              </classpathDependencyExcludes>
               <excludes>
+                <exclude>org/apache/commons/logging/log4j2/**</exclude>
+                <exclude>org/apache/commons/logging/slf4j/**</exclude>
                 <exclude>org/apache/commons/logging/serviceloader/**</exclude>
               </excludes>
               <includes>
@@ -428,7 +435,7 @@ under the License.
             </configuration>
           </execution>
           <!--
-            - The ServiceLoaderTestCase uses an alternative implementation of LogFactory,
+            - The ServiceLoaderTestCase uses a custom implementation of LogFactory,
             - therefore it requires a separate execution.
             -->
           <execution>
@@ -442,6 +449,92 @@ under the License.
               </additionalClasspathElements>
               <includes>
                 <include>org/apache/commons/logging/serviceloader/*TestCase.java</include>
+              </includes>
+            </configuration>
+          </execution>
+          <!--
+            - Tests logging through the Log4j API.
+            -->
+          <execution>
+            <id>log4j-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <additionalClasspathDependencies>
+                <dependency>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-core</artifactId>
+                  <version>${log4j2.version}</version>
+                </dependency>
+              </additionalClasspathDependencies>
+              <includes>
+                <include>org/apache/commons/logging/log4j2/*TestCase.java</include>
+              </includes>
+              <systemPropertyVariables>
+                <!-- Due to a bug in `log4j-core-test`,
+                   ~ the default LogEventFactory loses the location info.
+                   ~ We need to force the usage of the reusable version.
+                <log4j2.messageFactory>org.apache.logging.log4j.message.ParameterizedMessageFactory</log4j2.messageFactory>
+                   -->
+                <log4j2.logEventFactory>org.apache.logging.log4j.core.impl.ReusableLogEventFactory</log4j2.logEventFactory>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <!--
+            - Tests falling back to the SLF4J API, when the Log4j API is absent.
+          -->
+          <execution>
+            <id>slf4j-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <additionalClasspathDependencies>
+                <dependency>
+                  <groupId>ch.qos.logback</groupId>
+                  <artifactId>logback-classic</artifactId>
+                  <version>${logback.version}</version>
+                  <scope>test</scope>
+                </dependency>
+              </additionalClasspathDependencies>
+              <classpathDependencyExcludes>
+                <exclude>org.apache.logging.log4j:*</exclude>
+              </classpathDependencyExcludes>
+              <includes>
+                <include>org/apache/commons/logging/slf4j/*TestCase.java</include>
+              </includes>
+            </configuration>
+          </execution>
+          <!--
+            - Tests falling back to the SLF4J API, when the Log4j API is present, but redirected to SLF4J.
+          -->
+          <execution>
+            <id>log4j-to-slf4j-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <additionalClasspathDependencies>
+                <dependency>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-to-slf4j</artifactId>
+                  <version>${log4j2.version}</version>
+                  <!-- Conflicts with the version used by the project -->
+                  <exclusions>
+                    <exclusion>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+              </additionalClasspathDependencies>
+              <classpathDependencyExcludes>
+                <exclude>org.apache.logging.log4j:log4j-core</exclude>
+                <exclude>org.apache.logging.log4j:log4j-core-test</exclude>
+              </classpathDependencyExcludes>
+              <includes>
+                <include>org/apache/commons/logging/slf4j/*TestCase.java</include>
               </includes>
             </configuration>
           </execution>
@@ -502,9 +595,21 @@ under the License.
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework</artifactId>
+      <version>4.1.5</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -514,9 +619,9 @@ under the License.
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>avalon-framework</groupId>
-      <artifactId>avalon-framework</artifactId>
-      <version>4.1.5</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -525,6 +630,37 @@ under the License.
       <version>2.5</version>
       <scope>provided</scope>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core-test</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -592,14 +728,22 @@ under the License.
     <!-- The RC version used in the staging repository URL. -->
     <commons.rc.version>RC1</commons.rc.version>
     <skipSurefireReport>true</skipSurefireReport>
+    <!-- Since version 3.2 additional classpath dependencies are allowed. -->
+    <commons.failsafe.version>3.2.1</commons.failsafe.version>
     <!-- Allow default test run order to be changed -->
     <failsafe.runorder>filesystem</failsafe.runorder>
+
+    <log4j2.version>2.21.1</log4j2.version>
+    <logback.version>1.3.11</logback.version>
+    <slf4j.version>2.0.9</slf4j.version>
     
     <commons.osgi.import>
       javax.servlet;version="[2.1.0, 3.0.0)";resolution:=optional,
       org.apache.avalon.framework.logger;version="[4.1.3, 4.1.5]";resolution:=optional,
       org.apache.log;version="[1.0.1, 1.0.1]";resolution:=optional,
-      org.apache.log4j;version="[1.2.15, 2.0.0)";resolution:=optional
+      org.apache.log4j;version="[1.2.15, 2.0.0)";resolution:=optional,
+      org.apache.logging.log4j;version="[2.0, 4.0)";resolution:=optional,
+      org.slf4j;version="1.7.0, 3.0";resolution:=optional
     </commons.osgi.import>
   </properties>
 

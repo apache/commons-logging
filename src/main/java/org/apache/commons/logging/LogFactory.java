@@ -92,6 +92,13 @@ public abstract class LogFactory {
      */
     public static final String FACTORY_PROPERTY = "org.apache.commons.logging.LogFactory";
 
+    private static final String FACTORY_LOG4J_API = "org.apache.commons.logging.impl.Log4jApiLogFactory";
+    private static final String LOG4J_API_LOGGER = "org.apache.logging.log4j.Logger";
+    private static final String LOG4J_TO_SLF4J_BRIDGE = "org.apache.logging.slf4j.SLF4JProvider";
+
+    private static final String FACTORY_SLF4J = "org.apache.commons.logging.impl.Slf4jLogFactory";
+    private static final String SLF4J_API_LOGGER = "org.slf4j.Logger";
+
     /**
      * The fully qualified class name of the fallback {@code LogFactory}
      * implementation class to use, if no other can be found.
@@ -932,7 +939,29 @@ public abstract class LogFactory {
             }
         }
 
-        // Fourth, try the fallback implementation class
+        // Fourth, try one of the 3 provided factories
+
+        try {
+            // We prefer Log4j API, since it does not stringify objects.
+            if (factory == null && isClassAvailable(LOG4J_API_LOGGER, baseClassLoader)) {
+                // If the Log4j API is redirected to SLF4J, we use SLF4J directly.
+                if (isClassAvailable(LOG4J_TO_SLF4J_BRIDGE, baseClassLoader)) {
+                    logDiagnostic(
+                            "[LOOKUP] Log4j API to SLF4J redirection detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
+                    factory = newFactory(FACTORY_SLF4J, baseClassLoader, contextClassLoader);
+                } else {
+                    logDiagnostic("[LOOKUP] Log4j API detected. Loading the Log4j API LogFactory implementation '" + FACTORY_LOG4J_API + "'.");
+                    factory = newFactory(FACTORY_LOG4J_API, baseClassLoader, contextClassLoader);
+                }
+            }
+
+            if (factory == null && isClassAvailable(SLF4J_API_LOGGER, baseClassLoader)) {
+                logDiagnostic("[LOOKUP] SLF4J detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
+                factory = newFactory(FACTORY_SLF4J, baseClassLoader, contextClassLoader);
+            }
+        } catch (final Exception e) {
+            logDiagnostic("[LOOKUP] An exception occurred while creating LogFactory: " + e.getMessage());
+        }
 
         if (factory == null) {
             if (isDiagnosticsEnabled()) {
@@ -971,6 +1000,18 @@ public abstract class LogFactory {
         }
 
         return factory;
+    }
+
+    private static boolean isClassAvailable(final String className, final ClassLoader classLoader) {
+        final ClassLoader loader = LogFactory.class.getClassLoader();
+        logDiagnostic("Checking if class '" + className + "' is available in class loader " + objectId(loader));
+        try {
+            Class.forName(className, true, classLoader);
+            return true;
+        } catch (final ClassNotFoundException | LinkageError e) {
+            logDiagnostic("Failed to load class '" + className + "' from class loader " + objectId(loader) + ": " + e.getMessage());
+        }
+        return false;
     }
 
     /**
