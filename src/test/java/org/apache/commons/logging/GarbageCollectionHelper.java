@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 // after: https://github.com/apache/logging-log4j2/blob/c47e98423b461731f7791fcb9ea1079cd451f365/log4j-core/src/test/java/org/apache/logging/log4j/core/GarbageCollectionHelper.java
 public final class GarbageCollectionHelper implements Closeable, Runnable {
-    class GcTask implements Runnable {
+    final class GcTask implements Runnable {
         @Override
         public void run() {
             try {
