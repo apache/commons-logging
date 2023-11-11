@@ -73,7 +73,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     // ----------------------------------------------------------- Constructors
 
     /**
-     * Construct a named instance of this Logger.
+     * Constructs a named instance of this Logger.
      *
      * @param name Name of the logger to be constructed
      */

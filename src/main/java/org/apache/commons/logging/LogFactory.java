@@ -750,7 +750,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Construct (if necessary) and return a {@code LogFactory} instance, using the following ordered lookup procedure to determine the name of the
+     * Constructs (if necessary) and return a {@code LogFactory} instance, using the following ordered lookup procedure to determine the name of the
      * implementation class to be loaded.
      * <ul>
      * <li>The {@code org.apache.commons.logging.LogFactory} system property.</li>
@@ -1626,7 +1626,7 @@ public abstract class LogFactory {
     public abstract Log getInstance(Class clazz) throws LogConfigurationException;
 
     /**
-     * Construct (if necessary) and return a {@code Log} instance, using the factory's current set of configuration attributes.
+     * Constructs (if necessary) and return a {@code Log} instance, using the factory's current set of configuration attributes.
      * <p>
      * <strong>NOTE</strong> - Depending upon the implementation of the {@code LogFactory} you are using, the {@code Log} instance you are returned may or may
      * not be local to the current application, and may or may not be returned again on a subsequent call with the same name argument.

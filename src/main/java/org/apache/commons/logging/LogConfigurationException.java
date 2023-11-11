@@ -33,13 +33,13 @@ public class LogConfigurationException extends RuntimeException {
     protected Throwable cause;
 
     /**
-     * Construct a new exception with {@code null} as its detail message.
+     * Constructs a new exception with {@code null} as its detail message.
      */
     public LogConfigurationException() {
     }
 
     /**
-     * Construct a new exception with the specified detail message.
+     * Constructs a new exception with the specified detail message.
      *
      * @param message The detail message
      */
@@ -48,7 +48,7 @@ public class LogConfigurationException extends RuntimeException {
     }
 
     /**
-     * Construct a new exception with the specified detail message and cause.
+     * Constructs a new exception with the specified detail message and cause.
      *
      * @param message The detail message
      * @param cause The underlying cause
@@ -59,7 +59,7 @@ public class LogConfigurationException extends RuntimeException {
     }
 
     /**
-     * Construct a new exception with the specified cause and a derived
+     * Constructs a new exception with the specified cause and a derived
      * detail message.
      *
      * @param cause The underlying cause

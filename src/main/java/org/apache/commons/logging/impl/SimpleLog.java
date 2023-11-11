@@ -276,7 +276,7 @@ public class SimpleLog implements Log, Serializable {
     private volatile String shortLogName;
 
     /**
-     * Construct a simple log with given name.
+     * Constructs a simple log with given name.
      *
      * @param name log name
      */

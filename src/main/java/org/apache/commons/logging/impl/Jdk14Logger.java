@@ -54,7 +54,7 @@ public class Jdk14Logger implements Log, Serializable {
     protected String name;
 
     /**
-     * Construct a named instance of this Logger.
+     * Constructs a named instance of this Logger.
      *
      * @param name Name of the logger to be constructed
      */

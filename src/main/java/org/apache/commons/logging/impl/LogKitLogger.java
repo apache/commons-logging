@@ -51,7 +51,7 @@ public class LogKitLogger implements Log, Serializable {
     // ------------------------------------------------------------ Constructor
 
     /**
-     * Construct {@code LogKitLogger} which wraps the {@code LogKit}
+     * Constructs {@code LogKitLogger} which wraps the {@code LogKit}
      * logger with given name.
      *
      * @param name log name
