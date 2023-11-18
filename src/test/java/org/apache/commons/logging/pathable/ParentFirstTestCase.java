@@ -28,6 +28,7 @@ import java.util.Set;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
+import org.apache.commons.logging.Artifacts;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
@@ -67,6 +68,7 @@ public class ParentFirstTestCase extends TestCase {
         // this class, so use that as the source for future access to classes
         // from the junit package.
         parent.useExplicitLoader("junit.", thisClassLoader);
+        parent.useExplicitLoader("org.junit.", thisClassLoader);
 
         // make the commons-logging.jar classes visible via the parent
         parent.addLogicalLib("commons-logging");
@@ -228,7 +230,7 @@ public class ParentFirstTestCase extends TestCase {
         resource = childLoader.getResource("org/apache/commons/logging/impl/Log4JLogger.class");
         assertNotNull("Unable to locate Log4JLogger.class resource", resource);
         assertTrue("Incorrect source for Log4JLogger class",
-                resource.toString().indexOf("/commons-logging-1.") > 0);
+                resource.toString().indexOf(Artifacts.getMainJarName()) > 0);
     }
 
     /**
@@ -301,9 +303,9 @@ public class ParentFirstTestCase extends TestCase {
         urlsToStrings[1] = urls[1].toString();
         Arrays.sort(urlsToStrings);
         assertTrue("Incorrect source for Log4JLogger class",
-                urlsToStrings[0].indexOf("/commons-logging-1.") > 0);
+                urlsToStrings[0].indexOf(Artifacts.getAdaptersJarName()) > 0);
         assertTrue("Incorrect source for Log4JLogger class",
-                urlsToStrings[1].indexOf("/commons-logging-adapters-1.") > 0);
+                urlsToStrings[1].indexOf(Artifacts.getMainJarName()) > 0);
 
     }
 }
