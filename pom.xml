@@ -345,6 +345,10 @@ under the License.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <!-- Span a different JVM per test -->
+        <configuration>
+          <reuseForks>false</reuseForks>
+        </configuration>
         <executions>
           <execution>
             <id>integration-test</id>
