@@ -434,7 +434,7 @@ public class LogFactoryImpl extends LogFactory {
                 final String msg = e.getMessage();
                 logDiagnostic("The log adapter '" + logAdapterClassName +
                               "' is missing dependencies when loaded via classloader " + objectId(currentCL) +
-                              ": " + msg.trim());
+                              ": " + trim(msg));
                 break;
             } catch (final ExceptionInInitializerError e) {
                 // A static initializer block or the initializer code associated
@@ -446,7 +446,7 @@ public class LogFactoryImpl extends LogFactory {
                 final String msg = e.getMessage();
                 logDiagnostic("The log adapter '" + logAdapterClassName +
                               "' is unable to initialize itself when loaded via classloader " + objectId(currentCL) +
-                              ": " + msg.trim());
+                              ": " + trim(msg));
                 break;
             } catch (final LogConfigurationException e) {
                 // call to handleFlawedHierarchy above must have thrown
