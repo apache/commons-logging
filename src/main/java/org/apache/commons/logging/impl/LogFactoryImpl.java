@@ -250,7 +250,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * Configuration attributes.
      */
-    protected Hashtable attributes = new Hashtable();
+    protected Hashtable<String, Object> attributes = new Hashtable<>();
 
     /**
      * The {@link org.apache.commons.logging.Log} instances that have
@@ -666,7 +666,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     @Override
     public String[] getAttributeNames() {
-        return (String[]) attributes.keySet().toArray(EMPTY_STRING_ARRAY);
+        return attributes.keySet().toArray(EMPTY_STRING_ARRAY);
     }
 
     /**
