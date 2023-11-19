@@ -71,6 +71,7 @@ limitations under the License.
       <property name="separated" value="true"/>
       <property name="sortStaticImportsAlphabetically" value="true"/>
     </module>
+    <module name="WhitespaceAfter" />
   </module>
 
 </module>
