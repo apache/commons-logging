@@ -156,7 +156,7 @@ public class LoadTestCase extends TestCase{
      * Note that this test assumes that commons-logging.jar and log4j.jar
      * are available via the system classpath.
      */
-    public void testInContainer()throws Exception{
+    public void testInContainer() throws Exception{
 
         //problem can be in this step (broken app container or missconfiguration)
         //1.  Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());

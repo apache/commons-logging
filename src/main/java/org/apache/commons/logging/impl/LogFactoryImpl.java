@@ -199,7 +199,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     private static ClassLoader getContextClassLoaderInternal()
         throws LogConfigurationException {
-        return (ClassLoader)AccessController.doPrivileged(
+        return (ClassLoader) AccessController.doPrivileged(
             (PrivilegedAction) LogFactory::directGetContextClassLoader);
     }
 
@@ -956,7 +956,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     private ClassLoader getParentClassLoader(final ClassLoader cl) {
         try {
-            return (ClassLoader)AccessController.doPrivileged(
+            return (ClassLoader) AccessController.doPrivileged(
                     (PrivilegedAction) () -> cl.getParent());
         } catch (final SecurityException ex) {
             logDiagnostic("[SECURITY] Unable to obtain parent classloader");

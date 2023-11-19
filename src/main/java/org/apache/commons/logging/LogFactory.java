@@ -1417,7 +1417,7 @@ public abstract class LogFactory {
             logDiagnostic("Created object " + objectId(result) + " to manage classloader " +
                           objectId(contextClassLoader));
         }
-        return (LogFactory)result;
+        return (LogFactory) result;
     }
 
     /**
