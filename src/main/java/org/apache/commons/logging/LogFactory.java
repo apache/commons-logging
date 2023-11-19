@@ -1355,7 +1355,7 @@ public abstract class LogFactory {
      *
      * @param msg is the diagnostic message to be output.
      */
-    private static final void logDiagnostic(final String msg) {
+    private static void logDiagnostic(final String msg) {
         if (DIAGNOSTICS_STREAM != null) {
             DIAGNOSTICS_STREAM.print(diagnosticPrefix);
             DIAGNOSTICS_STREAM.println(msg);
