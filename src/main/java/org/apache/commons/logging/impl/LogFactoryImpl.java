@@ -823,7 +823,7 @@ public class LogFactoryImpl extends LogFactory {
      *  instance cannot be returned
      */
     @Override
-    public Log getInstance(final Class clazz) throws LogConfigurationException {
+    public Log getInstance(final Class<?> clazz) throws LogConfigurationException {
         return getInstance(clazz.getName());
     }
 

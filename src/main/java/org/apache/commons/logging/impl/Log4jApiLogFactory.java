@@ -194,7 +194,7 @@ public final class Log4jApiLogFactory extends LogFactory {
     }
 
     @Override
-    public Log getInstance(final Class clazz) {
+    public Log getInstance(final Class<?> clazz) {
         return getInstance(clazz.getName());
     }
 

@@ -136,7 +136,7 @@ public class LogSource {
      * @param clazz a Class.
      * @return a {@code Log} instance.
      */
-    static public Log getInstance(final Class clazz) {
+    static public Log getInstance(final Class<?> clazz) {
         return getInstance(clazz.getName());
     }
 
