@@ -18,9 +18,7 @@
 package org.apache.commons.logging;
 
 /**
- * An exception that is thrown only if a suitable {@code LogFactory}
- * or {@code Log} instance cannot be created by the corresponding
- * factory methods.
+ * An exception that is thrown only if a suitable {@code LogFactory} or {@code Log} instance cannot be created by the corresponding factory methods.
  */
 public class LogConfigurationException extends RuntimeException {
 
@@ -29,7 +27,10 @@ public class LogConfigurationException extends RuntimeException {
 
     /**
      * The underlying cause of this exception.
+     *
+     * @deprecated Use {@link #getCause()}.
      */
+    @Deprecated
     protected Throwable cause;
 
     /**
@@ -51,16 +52,15 @@ public class LogConfigurationException extends RuntimeException {
      * Constructs a new exception with the specified detail message and cause.
      *
      * @param message The detail message
-     * @param cause The underlying cause
+     * @param cause   The underlying cause
      */
     public LogConfigurationException(final String message, final Throwable cause) {
-        super(message + " (Caused by " + cause + ")");
-        this.cause = cause; // Two-argument version requires JDK 1.4 or later
+        super(message, cause);
+        this.cause = cause;
     }
 
     /**
-     * Constructs a new exception with the specified cause and a derived
-     * detail message.
+     * Constructs a new exception with the specified cause and a derived detail message.
      *
      * @param cause The underlying cause
      */
@@ -68,11 +68,4 @@ public class LogConfigurationException extends RuntimeException {
         this(cause == null ? null : cause.toString(), cause);
     }
 
-    /**
-     * Return the underlying cause of this exception (if any).
-     */
-    @Override
-    public Throwable getCause() {
-        return this.cause;
-    }
 }
