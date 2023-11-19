@@ -17,11 +17,11 @@
 
 package org.apache.commons.logging.log4j.log4j12;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests for Log4J logging that emulate a webapp running within

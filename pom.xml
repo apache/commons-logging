@@ -26,7 +26,6 @@ under the License.
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <!-- Tests are special, 61 causes issues, 64 is OK locally but not on GitHub -->
     <version>64</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>

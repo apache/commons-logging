@@ -16,13 +16,13 @@
  */
 package org.apache.commons.logging.avalon;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.avalon.framework.logger.NullLogger;
 import org.apache.commons.logging.AbstractLogTest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.AvalonLogger;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  */

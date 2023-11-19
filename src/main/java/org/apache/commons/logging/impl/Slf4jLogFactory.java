@@ -16,6 +16,12 @@
  */
 package org.apache.commons.logging.impl;
 
+import static org.slf4j.spi.LocationAwareLogger.DEBUG_INT;
+import static org.slf4j.spi.LocationAwareLogger.ERROR_INT;
+import static org.slf4j.spi.LocationAwareLogger.INFO_INT;
+import static org.slf4j.spi.LocationAwareLogger.TRACE_INT;
+import static org.slf4j.spi.LocationAwareLogger.WARN_INT;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -28,12 +34,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.slf4j.spi.LocationAwareLogger;
-
-import static org.slf4j.spi.LocationAwareLogger.DEBUG_INT;
-import static org.slf4j.spi.LocationAwareLogger.ERROR_INT;
-import static org.slf4j.spi.LocationAwareLogger.INFO_INT;
-import static org.slf4j.spi.LocationAwareLogger.TRACE_INT;
-import static org.slf4j.spi.LocationAwareLogger.WARN_INT;
 
 /**
  * Logger factory hardcoded to send everything to SLF4J.

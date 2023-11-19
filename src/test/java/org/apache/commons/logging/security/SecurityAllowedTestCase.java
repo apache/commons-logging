@@ -24,14 +24,13 @@ import java.lang.reflect.Method;
 import java.security.AllPermission;
 import java.util.Hashtable;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-import org.junit.Assume;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests for logging with a security policy that allows JCL access to everything.

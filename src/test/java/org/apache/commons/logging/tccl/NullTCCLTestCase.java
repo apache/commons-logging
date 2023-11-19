@@ -16,12 +16,12 @@
  */
 package org.apache.commons.logging.tccl;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableTestSuite;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Simulates the case when TCCL is set to NULL.

@@ -18,7 +18,6 @@ package org.apache.commons.logging.log4j2;
 
 import java.util.List;
 
-import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.Log4jApiLogFactory;
@@ -31,6 +30,8 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.test.appender.ListAppender;
 import org.apache.logging.log4j.message.ObjectMessage;
 import org.apache.logging.log4j.message.SimpleMessage;
+
+import junit.framework.TestCase;
 
 public class CallerInformationTestCase extends TestCase {
 

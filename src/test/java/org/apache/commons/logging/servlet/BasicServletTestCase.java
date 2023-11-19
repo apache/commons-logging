@@ -17,12 +17,12 @@
 
 package org.apache.commons.logging.servlet;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.ServletContextCleaner;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 
 /**

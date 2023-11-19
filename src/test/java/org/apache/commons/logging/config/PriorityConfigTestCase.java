@@ -20,12 +20,12 @@ package org.apache.commons.logging.config;
 
 import java.net.URL;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 
 /**

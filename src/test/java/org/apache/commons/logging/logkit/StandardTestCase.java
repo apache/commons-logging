@@ -23,14 +23,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.Test;
-
 import org.apache.commons.logging.AbstractLogTest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.LogKitLogger;
+
+import junit.framework.Test;
 
 /**
  * Basic tests for Avalon LogKit logger adapter.

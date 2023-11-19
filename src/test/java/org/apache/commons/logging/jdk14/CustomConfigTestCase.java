@@ -28,11 +28,11 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import junit.framework.Test;
-
 import org.apache.commons.logging.DummyException;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+
+import junit.framework.Test;
 
 
 /**

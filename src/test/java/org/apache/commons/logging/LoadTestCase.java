@@ -17,6 +17,7 @@
 package org.apache.commons.logging;
 
 import java.lang.reflect.InvocationTargetException;
+
 import junit.framework.TestCase;
 
 /**
