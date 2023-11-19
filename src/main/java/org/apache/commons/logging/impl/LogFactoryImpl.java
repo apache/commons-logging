@@ -254,7 +254,7 @@ public class LogFactoryImpl extends LogFactory {
      * The {@link org.apache.commons.logging.Log} instances that have
      * already been created, keyed by logger name.
      */
-    protected Hashtable instances = new Hashtable();
+    protected Hashtable<String, Log> instances = new Hashtable<>();
 
     /**
      * Name of the class implementing the Log interface.
@@ -846,12 +846,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     @Override
     public Log getInstance(final String name) throws LogConfigurationException {
-        Log instance = (Log) instances.get(name);
-        if (instance == null) {
-            instance = newInstance(name);
-            instances.put(name, instance);
-        }
-        return instance;
+        return instances.computeIfAbsent(name, this::newInstance);
     }
 
     /**
