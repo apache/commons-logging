@@ -1052,9 +1052,8 @@ public abstract class LogFactory {
      * hasMoreElements method returns false (ie an "empty" enumeration).
      * If resources could not be listed for some reason, null is returned.
      */
-    private static Enumeration getResources(final ClassLoader loader, final String name) {
-        final PrivilegedAction action =
-            () -> {
+    private static Enumeration<URL> getResources(final ClassLoader loader, final String name) {
+        return AccessController.doPrivileged((PrivilegedAction<Enumeration<URL>>) () -> {
             try {
                 if (loader != null) {
                     return loader.getResources(name);
@@ -1062,8 +1061,7 @@ public abstract class LogFactory {
                 return ClassLoader.getSystemResources(name);
             } catch (final IOException e) {
                 if (isDiagnosticsEnabled()) {
-                    logDiagnostic("Exception while trying to find configuration file " +
-                                  name + ":" + e.getMessage());
+                    logDiagnostic("Exception while trying to find configuration file " + name + ":" + e.getMessage());
                 }
                 return null;
             } catch (final NoSuchMethodError e) {
@@ -1072,9 +1070,7 @@ public abstract class LogFactory {
                 // this case.
                 return null;
             }
-        };
-        final Object result = AccessController.doPrivileged(action);
-        return (Enumeration) result;
+        });
     }
 
     /**
