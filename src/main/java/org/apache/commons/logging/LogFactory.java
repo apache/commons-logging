@@ -734,7 +734,7 @@ public abstract class LogFactory {
 
         // This is an odd enough situation to report about. This
         // output will be a nuisance on JDK1.1, as the system
-        // classloader is null in that environment.
+        // class loader is null in that environment.
         if (contextClassLoader == null && isDiagnosticsEnabled()) {
             logDiagnostic("Context classloader is null.");
         }
@@ -772,7 +772,7 @@ public abstract class LogFactory {
             // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
             // is required for Java 1.2 compatibility.
             if (useTCCLStr != null && !Boolean.parseBoolean(useTCCLStr)) {
-                // Don't use current context classloader when locating any
+                // Don't use current context class loader when locating any
                 // LogFactory or Log classes, just use the class that loaded
                 // this abstract class. When this class is deployed in a shared
                 // classpath of a container, it means webapps cannot deploy their
