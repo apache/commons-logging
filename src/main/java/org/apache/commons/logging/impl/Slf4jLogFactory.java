@@ -246,9 +246,9 @@ public final class Slf4jLogFactory extends LogFactory {
         }
     }
 
-    private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    private static final Object[] EMPTY_OBJECT_ARRAY = {};
 
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final String[] EMPTY_STRING_ARRAY = {};
 
     /**
      * Marker used by all messages coming from Apache Commons Logging.

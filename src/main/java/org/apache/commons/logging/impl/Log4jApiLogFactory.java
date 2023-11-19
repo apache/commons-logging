@@ -169,7 +169,7 @@ public final class Log4jApiLogFactory extends LogFactory {
 
     }
 
-    private static final String[] EMPTY_ARRAY = new String[0];
+    private static final String[] EMPTY_ARRAY = {};
 
     /**
      * Marker used by all messages coming from Apache Commons Logging.
