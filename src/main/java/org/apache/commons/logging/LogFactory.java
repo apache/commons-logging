@@ -996,42 +996,32 @@ public abstract class LogFactory {
      * {@code Null} is returned if the URL cannot be opened.
      */
     private static Properties getProperties(final URL url) {
-        final PrivilegedAction<Properties> action = () -> {
-            InputStream stream = null;
+        return AccessController.doPrivileged((PrivilegedAction<Properties>) () -> {
+            // We must ensure that useCaches is set to false, as the
+            // default behavior of java is to cache file handles, and
+            // this "locks" files, preventing hot-redeploy on windows.
             try {
-                // We must ensure that useCaches is set to false, as the
-                // default behavior of java is to cache file handles, and
-                // this "locks" files, preventing hot-redeploy on windows.
                 final URLConnection connection = url.openConnection();
                 connection.setUseCaches(false);
-                stream = connection.getInputStream();
-                if (stream != null) {
-                    final Properties props = new Properties();
-                    props.load(stream);
-                    stream.close();
-                    stream = null;
-                    return props;
+                try (InputStream stream = connection.getInputStream()) {
+                    if (stream != null) {
+                        final Properties props = new Properties();
+                        props.load(stream);
+                        return props;
+                    }
+                } catch (final IOException e) {
+                    if (isDiagnosticsEnabled()) {
+                        logDiagnostic("Unable to close stream for URL " + url);
+                    }
                 }
             } catch (final IOException e) {
                 if (isDiagnosticsEnabled()) {
                     logDiagnostic("Unable to read URL " + url);
                 }
-            } finally {
-                if (stream != null) {
-                    try {
-                        stream.close();
-                    } catch (final IOException e) {
-                        // ignore exception; this should not happen
-                        if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Unable to close stream for URL " + url);
-                        }
-                    }
-                }
             }
 
             return null;
-        };
-        return AccessController.doPrivileged(action);
+        });
     }
 
     /**
