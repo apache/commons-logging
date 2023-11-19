@@ -39,12 +39,12 @@ public final class Artifacts {
         }
     }
 
-    public static String getMainJarName() {
-        return ARTIFACT_ID + "-" + VERSION + ".jar";
-    }
-
     public static String getAdaptersJarName() {
         return ARTIFACT_ID + "-" + VERSION + "-adapters.jar";
+    }
+
+    public static String getMainJarName() {
+        return ARTIFACT_ID + "-" + VERSION + ".jar";
     }
 
     private Artifacts() {
