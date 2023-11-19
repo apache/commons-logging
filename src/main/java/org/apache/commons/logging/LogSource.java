@@ -207,9 +207,9 @@ public class LogSource {
      *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
      *                                     s.checkPackageAccess()} denies access to the package of this class.
      */
-    static public void setLogImplementation(final Class logClass)
+    static public void setLogImplementation(final Class<?> logClass)
         throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
-        final Class[] argTypes = new Class[1];
+        final Class<?>[] argTypes = new Class[1];
         argTypes[0] = "".getClass();
         logImplctor = logClass.getConstructor(argTypes);
     }
@@ -226,8 +226,8 @@ public class LogSource {
      */
     static public void setLogImplementation(final String className) throws LinkageError, SecurityException {
         try {
-            final Class logClass = Class.forName(className);
-            final Class[] argTypes = new Class[1];
+            final Class<?> logClass = Class.forName(className);
+            final Class<?>[] argTypes = new Class[1];
             argTypes[0] = "".getClass();
             logImplctor = logClass.getConstructor(argTypes);
         } catch (final Throwable t) {
