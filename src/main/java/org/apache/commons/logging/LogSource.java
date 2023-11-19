@@ -199,7 +199,7 @@ public class LogSource {
      * Sets the log implementation/log implementation factory by class. The given class must implement {@link Log}, and provide a constructor that takes a single
      * {@link String} argument (containing the name of the log).
      *
-     * @param logclass class.
+     * @param logClass class.
      * @throws LinkageError                if there is missing dependency.
      * @throws ExceptionInInitializerError unexpected exception has occurred in a static initializer.
      * @throws NoSuchMethodException       if a matching method is not found.
@@ -207,11 +207,11 @@ public class LogSource {
      *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
      *                                     s.checkPackageAccess()} denies access to the package of this class.
      */
-    static public void setLogImplementation(final Class logclass)
+    static public void setLogImplementation(final Class logClass)
         throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
-        final Class[] argtypes = new Class[1];
-        argtypes[0] = "".getClass();
-        logImplctor = logclass.getConstructor(argtypes);
+        final Class[] argTypes = new Class[1];
+        argTypes[0] = "".getClass();
+        logImplctor = logClass.getConstructor(argTypes);
     }
 
     /**
