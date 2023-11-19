@@ -85,8 +85,7 @@ public class LogSource {
 
         // Is JDK 1.4 Logging Available?
         try {
-            jdk14IsAvailable = null != Class.forName("java.util.logging.Logger") &&
-                               null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
+            jdk14IsAvailable = null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
         } catch (final Throwable t) {
             jdk14IsAvailable = false;
         }
