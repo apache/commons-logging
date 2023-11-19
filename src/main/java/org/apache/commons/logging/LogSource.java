@@ -226,10 +226,10 @@ public class LogSource {
      */
     static public void setLogImplementation(final String className) throws LinkageError, SecurityException {
         try {
-            final Class logclass = Class.forName(className);
-            final Class[] argtypes = new Class[1];
-            argtypes[0] = "".getClass();
-            logImplctor = logclass.getConstructor(argtypes);
+            final Class logClass = Class.forName(className);
+            final Class[] argTypes = new Class[1];
+            argTypes[0] = "".getClass();
+            logImplctor = logClass.getConstructor(argTypes);
         } catch (final Throwable t) {
             logImplctor = null;
         }
