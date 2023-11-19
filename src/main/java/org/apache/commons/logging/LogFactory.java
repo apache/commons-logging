@@ -556,13 +556,12 @@ public abstract class LogFactory {
      *
      * @since 1.1
      */
-    protected static ClassLoader getClassLoader(final Class clazz) {
+    protected static ClassLoader getClassLoader(final Class<?> clazz) {
         try {
             return clazz.getClassLoader();
         } catch (final SecurityException ex) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("Unable to get classloader for class '" + clazz +
-                              "' due to security restrictions - " + ex.getMessage());
+                logDiagnostic("Unable to get classloader for class '" + clazz + "' due to security restrictions - " + ex.getMessage());
             }
             throw ex;
         }
