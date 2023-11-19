@@ -29,6 +29,7 @@ import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
@@ -946,9 +947,9 @@ public abstract class LogFactory {
             cacheFactory(contextClassLoader, factory);
 
             if (props != null) {
-                final Enumeration names = props.propertyNames();
+                final Enumeration<?> names = props.propertyNames();
                 while (names.hasMoreElements()) {
-                    final String name = (String) names.nextElement();
+                    final String name = Objects.toString(names.nextElement(), null);
                     final String value = props.getProperty(name);
                     factory.setAttribute(name, value);
                 }
