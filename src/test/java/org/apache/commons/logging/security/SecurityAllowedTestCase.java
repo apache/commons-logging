@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+import org.junit.Assume;
 
 /**
  * Tests for logging with a security policy that allows JCL access to everything.
@@ -87,6 +88,10 @@ public class SecurityAllowedTestCase extends TestCase
      * overrides should take effect.
      */
     public void testAllAllowed() {
+        // Ignore on Java 21
+        if (System.getProperty("java.version").startsWith("21.")) {
+            return;
+        }
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());

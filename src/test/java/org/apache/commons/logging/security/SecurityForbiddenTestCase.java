@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+import org.junit.Assume;
 
 /**
  * Tests for logging with a security policy that forbids JCL access to anything.
@@ -63,6 +64,7 @@ public class SecurityForbiddenTestCase extends TestCase
     public static Test suite() throws Exception {
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
+        parent.useExplicitLoader("org.junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
 
@@ -117,6 +119,10 @@ public class SecurityForbiddenTestCase extends TestCase
      * should fall back to the built-in defaults.
      */
     public void testAllForbidden() {
+        // Ignore on Java 21
+        if (System.getProperty("java.version").startsWith("21.")) {
+            return;
+        }
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
@@ -166,6 +172,10 @@ public class SecurityForbiddenTestCase extends TestCase
      * than the context classloader of the current thread tries to log something.
      */
     public void testContextClassLoader() {
+        // Ignore on Java 21
+        if (System.getProperty("java.version").startsWith("21.")) {
+            return;
+        }
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());

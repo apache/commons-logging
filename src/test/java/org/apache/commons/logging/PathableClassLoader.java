@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import junit.framework.Assert;
 
 /**
  * A ClassLoader which sees only specified classes, and which can be
@@ -121,7 +122,11 @@ public class PathableClassLoader extends URLClassLoader {
         final String fileName = System.getProperty(logicalLib);
         if (fileName != null) {
             try {
-                final URL libUrl = new File(fileName).toURL();
+                final File file = new File(fileName);
+                if (!file.exists()) {
+                    Assert.fail("Unable to add logical library " + fileName);
+                }
+                final URL libUrl = file.toURL();
                 addURL(libUrl);
                 return;
             } catch (final java.net.MalformedURLException e) {

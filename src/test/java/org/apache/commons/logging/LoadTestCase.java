@@ -16,6 +16,7 @@
  */
 package org.apache.commons.logging;
 
+import java.lang.reflect.InvocationTargetException;
 import junit.framework.TestCase;
 
 /**
@@ -184,8 +185,12 @@ public class LoadTestCase extends TestCase{
             setAllowFlawedContext(cls, "false");
             execute(cls);
             fail("Logging config succeeded when context classloader was null!");
-        } catch (final LogConfigurationException ex) {
-            // expected; the boot classloader doesn't *have* JCL available
+        } catch (final InvocationTargetException ex) {
+            final Throwable targetException = ex.getTargetException();
+            // LogConfigurationException is expected; the boot classloader doesn't *have* JCL available
+            if (!(targetException instanceof LogConfigurationException)) {
+                throw ex;
+            }
         }
 
         // Context classloader is the system classloader.
@@ -209,8 +214,12 @@ public class LoadTestCase extends TestCase{
             execute(cls);
             fail("Error: somehow downcast a Logger loaded via system classloader"
                     + " to the Log interface loaded via a custom classloader");
-        } catch (final LogConfigurationException ex) {
-            // expected
+        } catch (final InvocationTargetException ex) {
+            final Throwable targetException = ex.getTargetException();
+            // LogConfigurationException is expected
+            if (!(targetException instanceof LogConfigurationException)) {
+                throw ex;
+            }
         }
     }
 }
