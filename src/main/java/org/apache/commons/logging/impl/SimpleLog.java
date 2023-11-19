@@ -143,12 +143,12 @@ public class SimpleLog implements Log, Serializable {
         if (null != in) {
             try {
                 simpleLogProps.load(in);
-            } catch (final IOException e) {
+            } catch (final IOException ignore) {
                 // ignored
             } finally {
                 try {
                     in.close();
-                } catch (final IOException e) {
+                } catch (final IOException ignore) {
                     // ignored
                 }
             }
@@ -171,9 +171,9 @@ public class SimpleLog implements Log, Serializable {
         }
     }
 
-    private static boolean getBooleanProperty(final String name, final boolean dephault) {
+    private static boolean getBooleanProperty(final String name, final boolean defaultValue) {
         final String prop = getStringProperty(name);
-        return prop == null ? dephault : "true".equalsIgnoreCase(prop);
+        return prop == null ? defaultValue : "true".equalsIgnoreCase(prop);
     }
 
     /**
@@ -258,9 +258,9 @@ public class SimpleLog implements Log, Serializable {
         }
         return prop == null ? simpleLogProps.getProperty(name) : prop;
     }
-    private static String getStringProperty(final String name, final String dephault) {
+    private static String getStringProperty(final String name, final String defaultValue) {
         final String prop = getStringProperty(name);
-        return prop == null ? dephault : prop;
+        return prop == null ? defaultValue : prop;
     }
     /** The name of this simple log instance */
     protected volatile String logName;
