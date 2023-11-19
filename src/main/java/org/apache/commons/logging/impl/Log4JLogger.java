@@ -43,6 +43,7 @@ import org.apache.log4j.Priority;
  *
  * @deprecated Scheduled for removal since version 1.x of Log4j has reached end-of-life.
  */
+@Deprecated
 public class Log4JLogger implements Log, Serializable {
 
     /** Serializable version identifier. */
