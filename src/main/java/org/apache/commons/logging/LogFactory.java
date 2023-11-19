@@ -461,7 +461,7 @@ public abstract class LogFactory {
      * that LogFactory.release(contextClassLoader) is called whenever a
      * webapp is undeployed.
      */
-    private static final Hashtable createFactoryStore() {
+    private static Hashtable createFactoryStore() {
         Hashtable result = null;
         String storeImplementationClass;
         try {
