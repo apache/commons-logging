@@ -42,80 +42,6 @@ import org.apache.logging.log4j.util.StackLocatorUtil;
  */
 public final class Log4jApiLogFactory extends LogFactory {
 
-    private static final String[] EMPTY_ARRAY = new String[0];
-    /**
-     * Marker used by all messages coming from Apache Commons Logging.
-     */
-    private static final Marker MARKER = MarkerManager.getMarker("COMMONS-LOGGING");
-
-    /**
-     * Caches Log instances
-     */
-    private final LoggerAdapter<Log> adapter = new LogAdapter();
-
-    private final ConcurrentMap<String, Object> attributes = new ConcurrentHashMap<>();
-
-    @Override
-    public Log getInstance(final String name) {
-        return adapter.getLogger(name);
-    }
-
-    @Override
-    public Object getAttribute(final String name) {
-        return attributes.get(name);
-    }
-
-    @Override
-    public String[] getAttributeNames() {
-        return attributes.keySet().toArray(EMPTY_ARRAY);
-    }
-
-    @Override
-    public Log getInstance(final Class clazz) {
-        return getInstance(clazz.getName());
-    }
-
-    /**
-     * This method is supposed to clear all loggers. In this implementation it will clear all the logger
-     * wrappers but the loggers managed by the underlying logger context will not be.
-     */
-    @Override
-    public void release() {
-        try {
-            adapter.close();
-        } catch (final IOException ignored) {
-        }
-    }
-
-    @Override
-    public void removeAttribute(final String name) {
-        attributes.remove(name);
-    }
-
-    @Override
-    public void setAttribute(final String name, final Object value) {
-        if (value != null) {
-            attributes.put(name, value);
-        } else {
-            removeAttribute(name);
-        }
-    }
-
-    private static final class LogAdapter extends AbstractLoggerAdapter<Log> {
-
-        @Override
-        protected Log newLogger(final String name, final LoggerContext context) {
-            return new Log4j2Log(context.getLogger(name));
-        }
-
-        @Override
-        protected LoggerContext getContext() {
-            return getContext(LogManager.getFactory().isClassLoaderDependent() ? StackLocatorUtil.getCallerClass(
-                    LogFactory.class) : null);
-        }
-
-    }
-
     private static final class Log4j2Log implements Log {
 
         private static final String FQCN = Log4j2Log.class.getName();
@@ -127,8 +53,52 @@ public final class Log4jApiLogFactory extends LogFactory {
         }
 
         @Override
+        public void debug(final Object message) {
+            logIfEnabled(Level.DEBUG, message, null);
+        }
+
+        @Override
+        public void debug(final Object message, final Throwable t) {
+            logIfEnabled(Level.DEBUG, message, t);
+        }
+
+        @Override
+        public void error(final Object message) {
+            logIfEnabled(Level.ERROR, message, null);
+        }
+
+        @Override
+        public void error(final Object message, final Throwable t) {
+            logIfEnabled(Level.ERROR, message, t);
+        }
+
+        @Override
+        public void fatal(final Object message) {
+            logIfEnabled(Level.FATAL, message, null);
+        }
+
+        @Override
+        public void fatal(final Object message, final Throwable t) {
+            logIfEnabled(Level.FATAL, message, t);
+        }
+
+        @Override
+        public void info(final Object message) {
+            logIfEnabled(Level.INFO, message, null);
+        }
+
+        @Override
+        public void info(final Object message, final Throwable t) {
+            logIfEnabled(Level.INFO, message, t);
+        }
+
+        @Override
         public boolean isDebugEnabled() {
             return isEnabled(Level.DEBUG);
+        }
+
+        private boolean isEnabled(final Level level) {
+            return logger.isEnabled(level, MARKER, null);
         }
 
         @Override
@@ -156,6 +126,14 @@ public final class Log4jApiLogFactory extends LogFactory {
             return isEnabled(Level.WARN);
         }
 
+        private void logIfEnabled(final Level level, final Object message, final Throwable t) {
+            if (message instanceof CharSequence) {
+                logger.logIfEnabled(FQCN, level, MARKER, (CharSequence) message, t);
+            } else {
+                logger.logIfEnabled(FQCN, level, MARKER, message, t);
+            }
+        }
+
         @Override
         public void trace(final Object message) {
             logIfEnabled(Level.TRACE, message, null);
@@ -167,26 +145,6 @@ public final class Log4jApiLogFactory extends LogFactory {
         }
 
         @Override
-        public void debug(final Object message) {
-            logIfEnabled(Level.DEBUG, message, null);
-        }
-
-        @Override
-        public void debug(final Object message, final Throwable t) {
-            logIfEnabled(Level.DEBUG, message, t);
-        }
-
-        @Override
-        public void info(final Object message) {
-            logIfEnabled(Level.INFO, message, null);
-        }
-
-        @Override
-        public void info(final Object message, final Throwable t) {
-            logIfEnabled(Level.INFO, message, t);
-        }
-
-        @Override
         public void warn(final Object message) {
             logIfEnabled(Level.WARN, message, null);
         }
@@ -195,37 +153,79 @@ public final class Log4jApiLogFactory extends LogFactory {
         public void warn(final Object message, final Throwable t) {
             logIfEnabled(Level.WARN, message, t);
         }
+    }
+    private static final class LogAdapter extends AbstractLoggerAdapter<Log> {
 
         @Override
-        public void error(final Object message) {
-            logIfEnabled(Level.ERROR, message, null);
-        }
-
-        @Override
-        public void error(final Object message, final Throwable t) {
-            logIfEnabled(Level.ERROR, message, t);
+        protected LoggerContext getContext() {
+            return getContext(LogManager.getFactory().isClassLoaderDependent() ? StackLocatorUtil.getCallerClass(
+                    LogFactory.class) : null);
         }
 
         @Override
-        public void fatal(final Object message) {
-            logIfEnabled(Level.FATAL, message, null);
+        protected Log newLogger(final String name, final LoggerContext context) {
+            return new Log4j2Log(context.getLogger(name));
         }
 
-        @Override
-        public void fatal(final Object message, final Throwable t) {
-            logIfEnabled(Level.FATAL, message, t);
-        }
+    }
 
-        private boolean isEnabled(final Level level) {
-            return logger.isEnabled(level, MARKER, null);
-        }
+    private static final String[] EMPTY_ARRAY = new String[0];
 
-        private void logIfEnabled(final Level level, final Object message, final Throwable t) {
-            if (message instanceof CharSequence) {
-                logger.logIfEnabled(FQCN, level, MARKER, (CharSequence) message, t);
-            } else {
-                logger.logIfEnabled(FQCN, level, MARKER, message, t);
-            }
+    /**
+     * Marker used by all messages coming from Apache Commons Logging.
+     */
+    private static final Marker MARKER = MarkerManager.getMarker("COMMONS-LOGGING");
+
+    /**
+     * Caches Log instances
+     */
+    private final LoggerAdapter<Log> adapter = new LogAdapter();
+
+    private final ConcurrentMap<String, Object> attributes = new ConcurrentHashMap<>();
+
+    @Override
+    public Object getAttribute(final String name) {
+        return attributes.get(name);
+    }
+
+    @Override
+    public String[] getAttributeNames() {
+        return attributes.keySet().toArray(EMPTY_ARRAY);
+    }
+
+    @Override
+    public Log getInstance(final Class clazz) {
+        return getInstance(clazz.getName());
+    }
+
+    @Override
+    public Log getInstance(final String name) {
+        return adapter.getLogger(name);
+    }
+
+    /**
+     * This method is supposed to clear all loggers. In this implementation it will clear all the logger
+     * wrappers but the loggers managed by the underlying logger context will not be.
+     */
+    @Override
+    public void release() {
+        try {
+            adapter.close();
+        } catch (final IOException ignored) {
+        }
+    }
+
+    @Override
+    public void removeAttribute(final String name) {
+        attributes.remove(name);
+    }
+
+    @Override
+    public void setAttribute(final String name, final Object value) {
+        if (value != null) {
+            attributes.put(name, value);
+        } else {
+            removeAttribute(name);
         }
     }
 }

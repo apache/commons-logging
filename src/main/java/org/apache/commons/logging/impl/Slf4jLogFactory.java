@@ -42,80 +42,111 @@ import org.slf4j.spi.LocationAwareLogger;
  */
 public final class Slf4jLogFactory extends LogFactory {
 
-    private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final class Slf4jLocationAwareLog implements Log {
 
-    /**
-     * Marker used by all messages coming from Apache Commons Logging.
-     */
-    private static final Marker MARKER = MarkerFactory.getMarker("COMMONS-LOGGING");
+        private static final String FQCN = Slf4jLocationAwareLog.class.getName();
 
-    /**
-     * Caches Log instances.
-     * <p>
-     * The SLF4J reference implementation (Logback) has a single logger context, so each call to
-     * {@link #getInstance(String)}
-     * should give the same result.
-     * </p>
-     */
-    private final ConcurrentMap<String, Log> loggers = new ConcurrentHashMap<>();
+        private final LocationAwareLogger logger;
 
-    private final ConcurrentMap<String, Object> attributes = new ConcurrentHashMap<>();
+        public Slf4jLocationAwareLog(final LocationAwareLogger logger) {
+            this.logger = logger;
+        }
 
-    @Override
-    public Log getInstance(final String name) {
-        return loggers.computeIfAbsent(name, n -> {
-            final Logger logger = LoggerFactory.getLogger(n);
-            return logger instanceof LocationAwareLogger ? new Slf4jLocationAwareLog((LocationAwareLogger) logger) : new Slf4jLog(
-                    logger);
-        });
-    }
+        @Override
+        public void debug(Object message) {
+            log(DEBUG_INT, message, null);
+        }
 
-    @Override
-    public Object getAttribute(final String name) {
-        return attributes.get(name);
-    }
+        @Override
+        public void debug(Object message, Throwable t) {
+            log(DEBUG_INT, message, t);
+        }
 
-    @Override
-    public String[] getAttributeNames() {
-        return attributes.keySet().toArray(EMPTY_STRING_ARRAY);
-    }
+        @Override
+        public void error(Object message) {
+            log(ERROR_INT, message, null);
+        }
 
-    @Override
-    public Log getInstance(final Class clazz) throws LogConfigurationException {
-        return getInstance(clazz.getName());
-    }
+        @Override
+        public void error(Object message, Throwable t) {
+            log(ERROR_INT, message, t);
+        }
 
-    /**
-     * This method is supposed to clear all loggers.
-     * <p>
-     * In this implementation it calls a "stop" method if the logger factory supports it. This is the case of
-     * Logback.
-     * </p>
-     */
-    @Override
-    public void release() {
-        final ILoggerFactory factory = LoggerFactory.getILoggerFactory();
-        try {
-            factory.getClass().getMethod("stop").invoke(factory);
-        } catch (final ReflectiveOperationException ignored) {
+        @Override
+        public void fatal(Object message) {
+            error(message);
+        }
+
+        @Override
+        public void fatal(Object message, Throwable t) {
+            error(message, t);
+        }
+
+        @Override
+        public void info(Object message) {
+            log(INFO_INT, message, null);
+        }
+
+        @Override
+        public void info(Object message, Throwable t) {
+            log(INFO_INT, message, t);
+        }
+
+
+        @Override
+        public boolean isDebugEnabled() {
+            return logger.isDebugEnabled(MARKER);
+        }
+
+        @Override
+        public boolean isErrorEnabled() {
+            return logger.isErrorEnabled(MARKER);
+        }
+
+        @Override
+        public boolean isFatalEnabled() {
+            return isErrorEnabled();
+        }
+
+        @Override
+        public boolean isInfoEnabled() {
+            return logger.isInfoEnabled(MARKER);
+        }
+
+        @Override
+        public boolean isTraceEnabled() {
+            return logger.isTraceEnabled(MARKER);
+        }
+
+        @Override
+        public boolean isWarnEnabled() {
+            return logger.isWarnEnabled(MARKER);
+        }
+
+        private void log(final int level, final Object message, final Throwable t) {
+            logger.log(MARKER, FQCN, level, String.valueOf(message), EMPTY_OBJECT_ARRAY, t);
+        }
+
+        @Override
+        public void trace(Object message) {
+            log(TRACE_INT, message, null);
+        }
+
+        @Override
+        public void trace(Object message, Throwable t) {
+            log(TRACE_INT, message, t);
+        }
+
+        @Override
+        public void warn(Object message) {
+            log(WARN_INT, message, null);
+        }
+
+        @Override
+        public void warn(Object message, Throwable t) {
+            log(WARN_INT, message, t);
         }
     }
-
-    @Override
-    public void removeAttribute(final String name) {
-        attributes.remove(name);
-    }
-
-    @Override
-    public void setAttribute(final String name, final Object value) {
-        if (value != null) {
-            attributes.put(name, value);
-        } else {
-            removeAttribute(name);
-        }
-    }
-
     private static class Slf4jLog implements Log {
 
         private final Logger logger;
@@ -215,109 +246,78 @@ public final class Slf4jLogFactory extends LogFactory {
         }
     }
 
-    private static final class Slf4jLocationAwareLog implements Log {
+    private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
-        private static final String FQCN = Slf4jLocationAwareLog.class.getName();
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-        private final LocationAwareLogger logger;
+    /**
+     * Marker used by all messages coming from Apache Commons Logging.
+     */
+    private static final Marker MARKER = MarkerFactory.getMarker("COMMONS-LOGGING");
 
-        public Slf4jLocationAwareLog(final LocationAwareLogger logger) {
-            this.logger = logger;
+    /**
+     * Caches Log instances.
+     * <p>
+     * The SLF4J reference implementation (Logback) has a single logger context, so each call to
+     * {@link #getInstance(String)}
+     * should give the same result.
+     * </p>
+     */
+    private final ConcurrentMap<String, Log> loggers = new ConcurrentHashMap<>();
+
+    private final ConcurrentMap<String, Object> attributes = new ConcurrentHashMap<>();
+
+    @Override
+    public Object getAttribute(final String name) {
+        return attributes.get(name);
+    }
+
+    @Override
+    public String[] getAttributeNames() {
+        return attributes.keySet().toArray(EMPTY_STRING_ARRAY);
+    }
+
+    @Override
+    public Log getInstance(final Class clazz) throws LogConfigurationException {
+        return getInstance(clazz.getName());
+    }
+
+    @Override
+    public Log getInstance(final String name) {
+        return loggers.computeIfAbsent(name, n -> {
+            final Logger logger = LoggerFactory.getLogger(n);
+            return logger instanceof LocationAwareLogger ? new Slf4jLocationAwareLog((LocationAwareLogger) logger) : new Slf4jLog(
+                    logger);
+        });
+    }
+
+    /**
+     * This method is supposed to clear all loggers.
+     * <p>
+     * In this implementation it calls a "stop" method if the logger factory supports it. This is the case of
+     * Logback.
+     * </p>
+     */
+    @Override
+    public void release() {
+        final ILoggerFactory factory = LoggerFactory.getILoggerFactory();
+        try {
+            factory.getClass().getMethod("stop").invoke(factory);
+        } catch (final ReflectiveOperationException ignored) {
         }
+    }
 
-        @Override
-        public void debug(Object message) {
-            log(DEBUG_INT, message, null);
-        }
+    @Override
+    public void removeAttribute(final String name) {
+        attributes.remove(name);
+    }
 
-        @Override
-        public void debug(Object message, Throwable t) {
-            log(DEBUG_INT, message, t);
-        }
-
-        @Override
-        public void error(Object message) {
-            log(ERROR_INT, message, null);
-        }
-
-        @Override
-        public void error(Object message, Throwable t) {
-            log(ERROR_INT, message, t);
-        }
-
-        @Override
-        public void fatal(Object message) {
-            error(message);
-        }
-
-        @Override
-        public void fatal(Object message, Throwable t) {
-            error(message, t);
-        }
-
-        @Override
-        public void info(Object message) {
-            log(INFO_INT, message, null);
-        }
-
-        @Override
-        public void info(Object message, Throwable t) {
-            log(INFO_INT, message, t);
-        }
-
-
-        @Override
-        public boolean isDebugEnabled() {
-            return logger.isDebugEnabled(MARKER);
-        }
-
-        @Override
-        public boolean isErrorEnabled() {
-            return logger.isErrorEnabled(MARKER);
-        }
-
-        @Override
-        public boolean isFatalEnabled() {
-            return isErrorEnabled();
-        }
-
-        @Override
-        public boolean isInfoEnabled() {
-            return logger.isInfoEnabled(MARKER);
-        }
-
-        @Override
-        public boolean isTraceEnabled() {
-            return logger.isTraceEnabled(MARKER);
-        }
-
-        @Override
-        public boolean isWarnEnabled() {
-            return logger.isWarnEnabled(MARKER);
-        }
-
-        @Override
-        public void trace(Object message) {
-            log(TRACE_INT, message, null);
-        }
-
-        @Override
-        public void trace(Object message, Throwable t) {
-            log(TRACE_INT, message, t);
-        }
-
-        @Override
-        public void warn(Object message) {
-            log(WARN_INT, message, null);
-        }
-
-        @Override
-        public void warn(Object message, Throwable t) {
-            log(WARN_INT, message, t);
-        }
-
-        private void log(final int level, final Object message, final Throwable t) {
-            logger.log(MARKER, FQCN, level, String.valueOf(message), EMPTY_OBJECT_ARRAY, t);
+    @Override
+    public void setAttribute(final String name, final Object value) {
+        if (value != null) {
+            attributes.put(name, value);
+        } else {
+            removeAttribute(name);
         }
     }
 }

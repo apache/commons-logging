@@ -1002,18 +1002,6 @@ public abstract class LogFactory {
         return factory;
     }
 
-    private static boolean isClassAvailable(final String className, final ClassLoader classLoader) {
-        final ClassLoader loader = LogFactory.class.getClassLoader();
-        logDiagnostic("Checking if class '" + className + "' is available in class loader " + objectId(loader));
-        try {
-            Class.forName(className, true, classLoader);
-            return true;
-        } catch (final ClassNotFoundException | LinkageError e) {
-            logDiagnostic("Failed to load class '" + className + "' from class loader " + objectId(loader) + ": " + e.getMessage());
-        }
-        return false;
-    }
-
     /**
      * Convenience method to return a named logger, without the application having to care about factories.
      *
@@ -1139,8 +1127,6 @@ public abstract class LogFactory {
         return (Enumeration) result;
     }
 
-    // ------------------------------------------------------ Protected Methods
-
     /**
      * Read the specified system property, using an AccessController so that
      * the property can be read if JCL has been granted the appropriate
@@ -1155,6 +1141,8 @@ public abstract class LogFactory {
         return (String) AccessController.doPrivileged(
                 (PrivilegedAction) () -> System.getProperty(key, def));
     }
+
+    // ------------------------------------------------------ Protected Methods
 
     /**
      * Checks whether the supplied Throwable is one that needs to be
@@ -1275,6 +1263,18 @@ public abstract class LogFactory {
             // We should report this to the user - but how?
             return null;
         }
+    }
+
+    private static boolean isClassAvailable(final String className, final ClassLoader classLoader) {
+        final ClassLoader loader = LogFactory.class.getClassLoader();
+        logDiagnostic("Checking if class '" + className + "' is available in class loader " + objectId(loader));
+        try {
+            Class.forName(className, true, classLoader);
+            return true;
+        } catch (final ClassNotFoundException | LinkageError e) {
+            logDiagnostic("Failed to load class '" + className + "' from class loader " + objectId(loader) + ": " + e.getMessage());
+        }
+        return false;
     }
 
     /**
