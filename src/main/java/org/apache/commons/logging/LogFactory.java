@@ -702,8 +702,7 @@ public abstract class LogFactory {
      *  attempting to get the context classloader.
      */
     private static ClassLoader getContextClassLoaderInternal() throws LogConfigurationException {
-        return (ClassLoader)AccessController.doPrivileged(
-            (PrivilegedAction) LogFactory::directGetContextClassLoader);
+        return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) LogFactory::directGetContextClassLoader);
     }
 
     /**
