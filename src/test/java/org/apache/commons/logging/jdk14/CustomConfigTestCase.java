@@ -45,8 +45,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     protected static final String HANDLER_NAME = "org.apache.commons.logging.jdk14.TestHandler";
 
-    // ----------------------------------------------------------- Constructors
-
+    
 
     /**
      * Make a class available in the system classloader even when its classfile is
@@ -84,8 +83,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     }
 
 
-    // ----------------------------------------------------- Instance Variables
-
+    
 
     /**
      * Given the name of a class that is somewhere in the classpath of the provided
@@ -157,8 +155,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     protected LogManager manager;
 
 
-    // ------------------------------------------- JUnit Infrastructure Methods
-
+    
 
     /**
      * <p>The message levels that should have been logged.</p>
@@ -237,8 +234,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     }
 
 
-    // ----------------------------------------------------------- Test Methods
-
+    
 
     // Log the messages with exceptions
     protected void logExceptionMessages() {
@@ -311,8 +307,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     }
 
 
-    // -------------------------------------------------------- Support Methods
-
+    
 
     // Set up LogManager instance
     protected void setUpManager(final String config) throws Exception {

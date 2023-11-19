@@ -53,42 +53,8 @@ public class Log4JLogger implements Log, Serializable {
 
     private static final Priority traceLevel;
 
-    static {
-        if (!Priority.class.isAssignableFrom(Level.class)) {
-            // nope, this is log4j 1.3, so force an ExceptionInInitializerError
-            throw new InstantiationError("Log4J 1.2 not available");
-        }
-
-        // Releases of log4j1.2 >= 1.2.12 have Priority.TRACE available, earlier
-        // versions do not. If TRACE is not available, then we have to map
-        // calls to Log.trace(...) onto the DEBUG level.
-
-        Priority _traceLevel;
-        try {
-            _traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
-        } catch (final Exception ex) {
-            // ok, trace not available
-            _traceLevel = Level.DEBUG;
-        }
-        traceLevel = _traceLevel;
-    }
-
     /** Log to this logger */
     private transient volatile Logger logger;
-
-    // ------------------------------------------------------------
-    // Static Initializer.
-    //
-    // Note that this must come after the static variable declarations
-    // otherwise initializer expressions associated with those variables
-    // will override any settings done here.
-    //
-    // Verify that log4j is available, and that it is version 1.2.
-    // If an ExceptionInInitializerError is generated, then LogFactoryImpl
-    // will treat that as meaning that the appropriate underlying logging
-    // library is just not present - if discovery is in progress then
-    // discovery will continue.
-    // ------------------------------------------------------------
 
     /** Logger name */
     private final String name;
@@ -333,4 +299,35 @@ public class Log4JLogger implements Log, Serializable {
     public void warn(final Object message, final Throwable t) {
         getLogger().log(FQCN, Level.WARN, message, t);
     }
+
+    //
+    // Note that this must come after the static variable declarations
+    // otherwise initializer expressions associated with those variables
+    // will override any settings done here.
+    //
+    // Verify that log4j is available, and that it is version 1.2.
+    // If an ExceptionInInitializerError is generated, then LogFactoryImpl
+    // will treat that as meaning that the appropriate underlying logging
+    // library is just not present - if discovery is in progress then
+    // discovery will continue.    
+    static {
+        if (!Priority.class.isAssignableFrom(Level.class)) {
+            // nope, this is log4j 1.3, so force an ExceptionInInitializerError
+            throw new InstantiationError("Log4J 1.2 not available");
+        }
+
+        // Releases of log4j1.2 >= 1.2.12 have Priority.TRACE available, earlier
+        // versions do not. If TRACE is not available, then we have to map
+        // calls to Log.trace(...) onto the DEBUG level.
+
+        Priority _traceLevel;
+        try {
+            _traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
+        } catch (final Exception ex) {
+            // ok, trace not available
+            _traceLevel = Level.DEBUG;
+        }
+        traceLevel = _traceLevel;
+    }
+
 }

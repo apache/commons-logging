@@ -83,8 +83,7 @@ public class NoOpLogTestCase extends AbstractLogTest
     }
 
 
-    // -------------------------------------------------------- Support Methods
-
+    
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
         Log log = LogFactory.getLog(this.getClass().getName());

@@ -68,8 +68,7 @@ public abstract class LogFactory {
     // lib and JCL have the necessary permissions even when the untrusted
     // caller does not. That's a pretty hard route to exploit though.
 
-    // ----------------------------------------------------- Manifest Constants
-
+    
     /**
      * The name ({@code priority}) of the key in the config file used to
      * specify the priority of that particular config file. The associated value
@@ -203,16 +202,14 @@ public abstract class LogFactory {
      */
     private static final int MAX_BROKEN_SERVICES = 3;
 
-    // ----------------------------------------------------------- Constructors
-
+    
     /**
      * The previously constructed {@code LogFactory} instances, keyed by
      * the {@code ClassLoader} with which it was created.
      */
     protected static Hashtable factories;
 
-    // --------------------------------------------------------- Public Methods
-
+    
     /**
      * Previously constructed {@code LogFactory} instance as in the
      * {@code factories} map, but for the case where
@@ -230,39 +227,6 @@ public abstract class LogFactory {
      */
     @Deprecated
     protected static volatile LogFactory nullClassLoaderFactory;
-
-    static {
-        // note: it's safe to call methods before initDiagnostics (though
-        // diagnostic output gets discarded).
-        final ClassLoader thisClassLoader = getClassLoader(LogFactory.class);
-        thisClassLoaderRef = new WeakReference<>(thisClassLoader);
-        // In order to avoid confusion where multiple instances of JCL are
-        // being used via different classloaders within the same app, we
-        // ensure each logged message has a prefix of form
-        // [LogFactory from classloader OID]
-        //
-        // Note that this prefix should be kept consistent with that
-        // in LogFactoryImpl. However here we don't need to output info
-        // about the actual *instance* of LogFactory, as all methods that
-        // output diagnostics from this class are static.
-        String classLoaderName;
-        try {
-            if (thisClassLoader == null) {
-                classLoaderName = "BOOTLOADER";
-            } else {
-                classLoaderName = objectId(thisClassLoader);
-            }
-        } catch (final SecurityException e) {
-            classLoaderName = "UNKNOWN";
-        }
-        diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";
-        DIAGNOSTICS_STREAM = initDiagnostics();
-        logClassLoaderEnvironment(LogFactory.class);
-        factories = createFactoryStore();
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("BOOTSTRAP COMPLETED");
-        }
-    }
 
     /**
      * Remember this factory, so later calls to LogFactory.getCachedFactory
@@ -567,8 +531,7 @@ public abstract class LogFactory {
         return (LogFactory) factories.get(contextClassLoader);
     }
 
-    // ------------------------------------------------------- Static Variables
-
+    
     /**
      * Safely get access to the classloader for the specified class.
      * <p>
@@ -728,8 +691,7 @@ public abstract class LogFactory {
         return directGetContextClassLoader();
     }
 
-    // --------------------------------------------------------- Static Methods
-
+    
     /**
      * Calls LogFactory.directGetContextClassLoader under the control of an
      * AccessController class. This means that java code running under a
@@ -1142,8 +1104,7 @@ public abstract class LogFactory {
                 (PrivilegedAction) () -> System.getProperty(key, def));
     }
 
-    // ------------------------------------------------------ Protected Methods
-
+    
     /**
      * Checks whether the supplied Throwable is one that needs to be
      * re-thrown and ignores all others.
@@ -1656,9 +1617,18 @@ public abstract class LogFactory {
      * @param name Name of the attribute to remove
      */
     public abstract void removeAttribute(String name);
+    
+    /**
+     * Sets the configuration attribute with the specified name.  Calling
+     * this with a {@code null} value is equivalent to calling
+     * {@code removeAttribute(name)}.
+     *
+     * @param name Name of the attribute to set
+     * @param value Value of the attribute to set, or {@code null}
+     *  to remove any setting for this attribute
+     */
+    public abstract void setAttribute(String name, Object value);
 
-    // ----------------------------------------------------------------------
-    // Static initializer block to perform initialization at class load time.
     //
     // We can't do this in the class constructor, as there are many
     // static methods on this class that can be called before any
@@ -1674,16 +1644,38 @@ public abstract class LogFactory {
     //
     // So the wisest thing to do is just to place this code at the very end
     // of the class file.
-    // ----------------------------------------------------------------------
 
-    /**
-     * Sets the configuration attribute with the specified name.  Calling
-     * this with a {@code null} value is equivalent to calling
-     * {@code removeAttribute(name)}.
-     *
-     * @param name Name of the attribute to set
-     * @param value Value of the attribute to set, or {@code null}
-     *  to remove any setting for this attribute
-     */
-    public abstract void setAttribute(String name, Object value);
+    static {
+        // note: it's safe to call methods before initDiagnostics (though
+        // diagnostic output gets discarded).
+        final ClassLoader thisClassLoader = getClassLoader(LogFactory.class);
+        thisClassLoaderRef = new WeakReference<>(thisClassLoader);
+        // In order to avoid confusion where multiple instances of JCL are
+        // being used via different classloaders within the same app, we
+        // ensure each logged message has a prefix of form
+        // [LogFactory from classloader OID]
+        //
+        // Note that this prefix should be kept consistent with that
+        // in LogFactoryImpl. However here we don't need to output info
+        // about the actual *instance* of LogFactory, as all methods that
+        // output diagnostics from this class are static.
+        String classLoaderName;
+        try {
+            if (thisClassLoader == null) {
+                classLoaderName = "BOOTLOADER";
+            } else {
+                classLoaderName = objectId(thisClassLoader);
+            }
+        } catch (final SecurityException e) {
+            classLoaderName = "UNKNOWN";
+        }
+        diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";
+        DIAGNOSTICS_STREAM = initDiagnostics();
+        logClassLoaderEnvironment(LogFactory.class);
+        factories = createFactoryStore();
+        if (isDiagnosticsEnabled()) {
+            logDiagnostic("BOOTSTRAP COMPLETED");
+        }
+    }
+
 }

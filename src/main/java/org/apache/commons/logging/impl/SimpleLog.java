@@ -74,8 +74,7 @@ public class SimpleLog implements Log, Serializable {
     /** Serializable version identifier. */
     private static final long serialVersionUID = 136942970684951178L;
 
-    // ------------------------------------------------------- Class Attributes
-
+    
     /** All system properties used by {@code SimpleLog} start with this */
     static protected final String systemPrefix = "org.apache.commons.logging.simplelog.";
 
@@ -111,8 +110,7 @@ public class SimpleLog implements Log, Serializable {
      */
     static protected DateFormat dateFormatter;
 
-    // ---------------------------------------------------- Log Level Constants
-
+    
     /** "Trace" level logging. */
     public static final int LOG_LEVEL_TRACE  = 1;
     /** "Debug" level logging. */
@@ -132,8 +130,7 @@ public class SimpleLog implements Log, Serializable {
     /** Enable no logging levels */
     public static final int LOG_LEVEL_OFF    = LOG_LEVEL_FATAL + 1;
 
-    // ------------------------------------------------------------ Initializer
-
+    
     // Initialize class attributes.
     // Load properties file, if found.
     // Override with system properties.
@@ -247,8 +244,7 @@ public class SimpleLog implements Log, Serializable {
             });
     }
 
-    // ------------------------------------------------------------- Attributes
-
+    
     private static String getStringProperty(final String name) {
         String prop = null;
         try {
@@ -265,13 +261,11 @@ public class SimpleLog implements Log, Serializable {
     /** The name of this simple log instance */
     protected volatile String logName;
 
-    // ------------------------------------------------------------ Constructor
-
+    
     /** The current log level */
     protected volatile int currentLogLevel;
 
-    // -------------------------------------------------------- Properties
-
+    
     /** The short name of this simple log instance */
     private volatile String shortLogName;
 
@@ -320,8 +314,7 @@ public class SimpleLog implements Log, Serializable {
         }
     }
 
-    // -------------------------------------------------------- Logging Methods
-
+    
     /**
      * Logs a message with
      * {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_DEBUG}.
@@ -378,8 +371,7 @@ public class SimpleLog implements Log, Serializable {
         }
     }
 
-    // -------------------------------------------------------- Log Implementation
-
+    
     /**
      * Log a message with {@code org.apache.commons.logging.impl.SimpleLog.LOG_LEVEL_FATAL}.
      *

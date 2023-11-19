@@ -53,8 +53,7 @@ import org.apache.commons.logging.impl.NoOpLog;
 @Deprecated
 public class LogSource {
 
-    // ------------------------------------------------------- Class Attributes
-
+    
     /**
      * Logs.
      */
@@ -74,8 +73,7 @@ public class LogSource {
      */
     private static final String[] EMPTY_STRING_ARRAY = {};
 
-    // ----------------------------------------------------- Class Initializers
-
+    
     static {
 
         // Is Log4J Available?
@@ -132,8 +130,7 @@ public class LogSource {
 
     }
 
-    // ------------------------------------------------------------ Constructor
-
+    
     /**
      * Gets a {@code Log} instance by class.
      *
@@ -144,8 +141,7 @@ public class LogSource {
         return getInstance(clazz.getName());
     }
 
-    // ---------------------------------------------------------- Class Methods
-
+    
     /**
      * Gets a {@code Log} instance by class name.
      *
