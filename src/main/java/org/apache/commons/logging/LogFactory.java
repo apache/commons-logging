@@ -208,7 +208,7 @@ public abstract class LogFactory {
      * The previously constructed {@code LogFactory} instances, keyed by
      * the {@code ClassLoader} with which it was created.
      */
-    protected static Hashtable factories;
+    protected static Hashtable<ClassLoader, LogFactory> factories;
 
     
     /**
@@ -415,8 +415,8 @@ public abstract class LogFactory {
      * that LogFactory.release(contextClassLoader) is called whenever a
      * webapp is undeployed.
      */
-    private static Hashtable createFactoryStore() {
-        Hashtable result = null;
+    private static Hashtable<ClassLoader, LogFactory> createFactoryStore() {
+        Hashtable<ClassLoader, LogFactory> result = null;
         String storeImplementationClass;
         try {
             storeImplementationClass = getSystemProperty(HASHTABLE_IMPLEMENTATION_PROPERTY, null);
@@ -449,7 +449,7 @@ public abstract class LogFactory {
             }
         }
         if (result == null) {
-            result = new Hashtable();
+            result = new Hashtable<>();
         }
         return result;
     }
@@ -518,7 +518,7 @@ public abstract class LogFactory {
             // nb: nullClassLoaderFactory might be null. That's ok.
             return nullClassLoaderFactory;
         }
-        return (LogFactory) factories.get(contextClassLoader);
+        return factories.get(contextClassLoader);
     }
 
     
@@ -1468,7 +1468,7 @@ public abstract class LogFactory {
             logDiagnostic("Releasing factory for classloader " + objectId(classLoader));
         }
         // factories is not final and could be replaced in this block.
-        final Hashtable factories = LogFactory.factories;
+        final Hashtable<ClassLoader, LogFactory> factories = LogFactory.factories;
         synchronized (factories) {
             if (classLoader == null) {
                 if (nullClassLoaderFactory != null) {
@@ -1476,7 +1476,7 @@ public abstract class LogFactory {
                     nullClassLoaderFactory = null;
                 }
             } else {
-                final LogFactory factory = (LogFactory) factories.get(classLoader);
+                final LogFactory factory = factories.get(classLoader);
                 if (factory != null) {
                     factory.release();
                     factories.remove(classLoader);
@@ -1498,11 +1498,11 @@ public abstract class LogFactory {
             logDiagnostic("Releasing factory for all classloaders.");
         }
         // factories is not final and could be replaced in this block.
-        final Hashtable factories = LogFactory.factories;
+        final Hashtable<ClassLoader, LogFactory> factories = LogFactory.factories;
         synchronized (factories) {
-            final Enumeration elements = factories.elements();
+            final Enumeration<LogFactory> elements = factories.elements();
             while (elements.hasMoreElements()) {
-                final LogFactory element = (LogFactory) elements.nextElement();
+                final LogFactory element = elements.nextElement();
                 element.release();
             }
             factories.clear();
