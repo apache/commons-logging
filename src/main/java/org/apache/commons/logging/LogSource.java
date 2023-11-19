@@ -220,14 +220,11 @@ public class LogSource {
      *
      * @param className class name.
      * @throws LinkageError           if there is missing dependency.
-     * @throws NoSuchMethodException  if a matching method is not found.
      * @throws SecurityException      If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the class
      *                                loader for the current class and invocation of {@link SecurityManager#checkPackageAccess s.checkPackageAccess()} denies
      *                                access to the package of this class.
-     * @throws ClassNotFoundException if the class cannot be located
      */
-    static public void setLogImplementation(final String className)
-        throws LinkageError, NoSuchMethodException, SecurityException, ClassNotFoundException {
+    static public void setLogImplementation(final String className) throws LinkageError, SecurityException {
         try {
             final Class logclass = Class.forName(className);
             final Class[] argtypes = new Class[1];
