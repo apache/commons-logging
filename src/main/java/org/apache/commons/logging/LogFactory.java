@@ -633,7 +633,7 @@ public abstract class LogFactory {
      * webapps. Webapps can also use explicit priorities to override a configuration
      * file in the shared classpath if needed.
      */
-    private static final Properties getConfigurationFile(final ClassLoader classLoader, final String fileName) {
+    private static Properties getConfigurationFile(final ClassLoader classLoader, final String fileName) {
         Properties props = null;
         double priority = 0.0;
         URL propsUrl = null;
