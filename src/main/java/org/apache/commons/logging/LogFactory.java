@@ -254,13 +254,13 @@ public abstract class LogFactory {
     /**
      * Implements the operations described in the javadoc for newFactory.
      *
-     * @param factoryClass Factory class.
+     * @param factoryClassName Factory class.
      * @param classLoader  used to load the specified factory class. This is expected to be either the TCCL or the classloader which loaded this class. Note
      *                     that the classloader which loaded this class might be "null" (ie the bootloader) for embedded systems.
      * @return either a LogFactory object or a LogConfigurationException object.
      * @since 1.1
      */
-    protected static Object createFactory(final String factoryClass, final ClassLoader classLoader) {
+    protected static Object createFactory(final String factoryClassName, final ClassLoader classLoader) {
         // This will be used to diagnose bad configurations
         // and allow a useful message to be sent to the user
         Class logFactoryClass = null;
@@ -271,11 +271,10 @@ public abstract class LogFactory {
 
                     // Warning: must typecast here & allow exception
                     // to be generated/caught & recast properly.
-                    logFactoryClass = classLoader.loadClass(factoryClass);
+                    logFactoryClass = classLoader.loadClass(factoryClassName);
                     if (LogFactory.class.isAssignableFrom(logFactoryClass)) {
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Loaded class " + logFactoryClass.getName() +
-                                          " from classloader " + objectId(classLoader));
+                            logDiagnostic("Loaded class " + logFactoryClass.getName() + " from classloader " + objectId(classLoader));
                         }
                     } else //
                     // This indicates a problem with the ClassLoader tree.
@@ -289,10 +288,8 @@ public abstract class LogFactory {
                     // ClassLoader hierarchy.
                     //
                     if (isDiagnosticsEnabled()) {
-                        logDiagnostic("Factory class " + logFactoryClass.getName() +
-                                      " loaded from classloader " + objectId(logFactoryClass.getClassLoader()) +
-                                      " does not extend '" + LogFactory.class.getName() +
-                                      "' as loaded by this classloader.");
+                        logDiagnostic("Factory class " + logFactoryClass.getName() + " loaded from classloader " + objectId(logFactoryClass.getClassLoader())
+                                + " does not extend '" + LogFactory.class.getName() + "' as loaded by this classloader.");
                         logHierarchy("[BAD CL TREE] ", classLoader);
                     }
 
@@ -302,8 +299,7 @@ public abstract class LogFactory {
                     if (classLoader == thisClassLoaderRef.get()) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Unable to locate any class called '" + factoryClass +
-                                          "' via classloader " + objectId(classLoader));
+                            logDiagnostic("Unable to locate any class called '" + factoryClassName + "' via classloader " + objectId(classLoader));
                         }
                         throw ex;
                     }
@@ -312,9 +308,8 @@ public abstract class LogFactory {
                     if (classLoader == thisClassLoaderRef.get()) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Class '" + factoryClass + "' cannot be loaded" +
-                                          " via classloader " + objectId(classLoader) +
-                                          " - it depends on some other class that cannot be found.");
+                            logDiagnostic("Class '" + factoryClassName + "' cannot be loaded" + " via classloader " + objectId(classLoader)
+                                    + " - it depends on some other class that cannot be found.");
                         }
                         throw e;
                     }
@@ -336,7 +331,7 @@ public abstract class LogFactory {
                         final StringBuilder msg = new StringBuilder();
                         msg.append("The application has specified that a custom LogFactory implementation ");
                         msg.append("should be used but Class '");
-                        msg.append(factoryClass);
+                        msg.append(factoryClassName);
                         msg.append("' cannot be converted to '");
                         msg.append(LogFactory.class.getName());
                         msg.append("'. ");
@@ -375,27 +370,22 @@ public abstract class LogFactory {
                 }
             }
 
-            /* At this point, either classLoader == null, OR
-             * classLoader was unable to load factoryClass.
+            /*
+             * At this point, either classLoader == null, OR classLoader was unable to load factoryClass.
              *
-             * In either case, we call Class.forName, which is equivalent
-             * to LogFactory.class.getClassLoader().load(name), that is, we ignore
-             * the classloader parameter the caller passed, and fall back
-             * to trying the classloader associated with this class. See the
-             * javadoc for the newFactory method for more info on the
-             * consequences of this.
+             * In either case, we call Class.forName, which is equivalent to LogFactory.class.getClassLoader().load(name), that is, we ignore the classloader
+             * parameter the caller passed, and fall back to trying the classloader associated with this class. See the javadoc for the newFactory method for
+             * more info on the consequences of this.
              *
-             * Notes:
-             * * LogFactory.class.getClassLoader() may return 'null'
-             *   if LogFactory is loaded by the bootstrap classloader.
+             * Notes: * LogFactory.class.getClassLoader() may return 'null' if LogFactory is loaded by the bootstrap classloader.
              */
             // Warning: must typecast here & allow exception
             // to be generated/caught & recast properly.
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("Unable to load factory class via classloader " + objectId(classLoader) +
-                              " - trying the classloader associated with this LogFactory.");
+                logDiagnostic(
+                        "Unable to load factory class via classloader " + objectId(classLoader) + " - trying the classloader associated with this LogFactory.");
             }
-            logFactoryClass = Class.forName(factoryClass);
+            logFactoryClass = Class.forName(factoryClassName);
             return logFactoryClass.newInstance();
         } catch (final Exception e) {
             // Check to see if we've got a bad configuration
@@ -403,9 +393,8 @@ public abstract class LogFactory {
                 logDiagnostic("Unable to create LogFactory instance.");
             }
             if (logFactoryClass != null && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
-                return new LogConfigurationException(
-                    "The chosen LogFactory implementation does not extend LogFactory." +
-                    " Please check your configuration.", e);
+                return new LogConfigurationException("The chosen LogFactory implementation does not extend LogFactory." + " Please check your configuration.",
+                        e);
             }
             return new LogConfigurationException(e);
         }
