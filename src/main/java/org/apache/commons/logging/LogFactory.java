@@ -996,8 +996,7 @@ public abstract class LogFactory {
      * {@code Null} is returned if the URL cannot be opened.
      */
     private static Properties getProperties(final URL url) {
-        final PrivilegedAction action =
-            () -> {
+        final PrivilegedAction<Properties> action = () -> {
             InputStream stream = null;
             try {
                 // We must ensure that useCaches is set to false, as the
@@ -1032,7 +1031,7 @@ public abstract class LogFactory {
 
             return null;
         };
-        return (Properties) AccessController.doPrivileged(action);
+        return AccessController.doPrivileged(action);
     }
 
     /**
