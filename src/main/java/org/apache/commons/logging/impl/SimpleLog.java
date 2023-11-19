@@ -574,9 +574,9 @@ public class SimpleLog implements Log, Serializable {
             buf.append(">");
 
             final StringWriter sw = new StringWriter(1024);
-            final PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            pw.close();
+            try (PrintWriter pw = new PrintWriter(sw)) {
+                t.printStackTrace(pw);
+            }
             buf.append(sw.toString());
         }
 
