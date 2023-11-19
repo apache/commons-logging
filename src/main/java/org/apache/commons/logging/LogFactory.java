@@ -252,11 +252,11 @@ public abstract class LogFactory {
     }
 
     /**
-     * Implements the operations described in the javadoc for newFactory.
+     * Implements the operations described in the Javadoc for newFactory.
      *
      * @param factoryClassName Factory class.
-     * @param classLoader  used to load the specified factory class. This is expected to be either the TCCL or the classloader which loaded this class. Note
-     *                     that the classloader which loaded this class might be "null" (ie the bootloader) for embedded systems.
+     * @param classLoader      used to load the specified factory class. This is expected to be either the TCCL or the class loader which loaded this class.
+     *                         Note that the class loader which loaded this class might be "null" (for example, the boot loader) for embedded systems.
      * @return either a LogFactory object or a LogConfigurationException object.
      * @since 1.1
      */
