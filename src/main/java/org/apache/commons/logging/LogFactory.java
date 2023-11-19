@@ -430,8 +430,9 @@ public abstract class LogFactory {
             storeImplementationClass = WEAK_HASHTABLE_CLASSNAME;
         }
         try {
-            final Class implementationClass = Class.forName(storeImplementationClass);
-            result = (Hashtable) implementationClass.getConstructor().newInstance();
+            final Class<Hashtable<ClassLoader, LogFactory>> implementationClass = (Class<Hashtable<ClassLoader, LogFactory>>) Class
+                    .forName(storeImplementationClass);
+            result = implementationClass.getConstructor().newInstance();
         } catch (final Throwable t) {
             handleThrowable(t); // may re-throw t
 
