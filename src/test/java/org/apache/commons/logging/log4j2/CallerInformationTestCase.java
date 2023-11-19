@@ -63,7 +63,7 @@ public class CallerInformationTestCase extends TestCase {
     public void testLocationInfo() {
         appender.clear();
         // The following value must match the line number
-        final int currentLineNumber = 65;
+        final int currentLineNumber = 66;
         log.fatal(OBJ);
         log.fatal(OBJ, T);
         log.error(OBJ);
