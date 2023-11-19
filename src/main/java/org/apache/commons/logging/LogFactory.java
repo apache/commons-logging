@@ -601,14 +601,14 @@ public abstract class LogFactory {
         double priority = 0.0;
         URL propsUrl = null;
         try {
-            final Enumeration urls = getResources(classLoader, fileName);
+            final Enumeration<URL> urls = getResources(classLoader, fileName);
 
             if (urls == null) {
                 return null;
             }
 
             while (urls.hasMoreElements()) {
-                final URL url = (URL) urls.nextElement();
+                final URL url = urls.nextElement();
 
                 final Properties newProps = getProperties(url);
                 if (newProps != null) {
@@ -622,8 +622,7 @@ public abstract class LogFactory {
                         }
 
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP] Properties file found at '" + url + "'" +
-                                          " with priority " + priority);
+                            logDiagnostic("[LOOKUP] Properties file found at '" + url + "'" + " with priority " + priority);
                         }
                     } else {
                         final String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
@@ -634,20 +633,16 @@ public abstract class LogFactory {
 
                         if (newPriority > priority) {
                             if (isDiagnosticsEnabled()) {
-                                logDiagnostic("[LOOKUP] Properties file at '" + url + "'" +
-                                              " with priority " + newPriority +
-                                              " overrides file at '" + propsUrl + "'" +
-                                              " with priority " + priority);
+                                logDiagnostic("[LOOKUP] Properties file at '" + url + "'" + " with priority " + newPriority + " overrides file at '" + propsUrl
+                                        + "'" + " with priority " + priority);
                             }
 
                             propsUrl = url;
                             props = newProps;
                             priority = newPriority;
                         } else if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP] Properties file at '" + url + "'" +
-                                          " with priority " + newPriority +
-                                          " does not override file at '" + propsUrl + "'" +
-                                          " with priority " + priority);
+                            logDiagnostic("[LOOKUP] Properties file at '" + url + "'" + " with priority " + newPriority + " does not override file at '"
+                                    + propsUrl + "'" + " with priority " + priority);
                         }
                     }
 
