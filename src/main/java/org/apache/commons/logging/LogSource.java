@@ -57,7 +57,7 @@ public class LogSource {
     /**
      * Logs.
      */
-    static protected Hashtable logs = new Hashtable();
+    static protected Hashtable<String, Log> logs = new Hashtable<>();
 
     /** Is log4j available (in the current classpath) */
     static protected boolean log4jIsAvailable;
@@ -148,7 +148,7 @@ public class LogSource {
      * @return a {@code Log} instance.
      */
     static public Log getInstance(final String name) {
-        return (Log) logs.computeIfAbsent(name, k -> makeNewLogInstance(name));
+        return logs.computeIfAbsent(name, k -> makeNewLogInstance(name));
     }
 
     /**
@@ -159,7 +159,7 @@ public class LogSource {
      * all logs known to me.
      */
     static public String[] getLogNames() {
-        return (String[]) logs.keySet().toArray(EMPTY_STRING_ARRAY);
+        return logs.keySet().toArray(EMPTY_STRING_ARRAY);
     }
 
     /**
