@@ -291,8 +291,8 @@ classloader used to load <code>LogFactory</code> and to the TCCL.
  Containers known to use this mechanism:
     </p>
     <ul>
-      <li><a href='http://www.ibm.com/software/websphere/'>WebSphere Application Server</a> from
-      <a href='http://www.ibm.com/software/websphere/'>IBM</a> (versions 5 and 6).</li>
+      <li><a href='https//www.ibm.com/software/websphere/'>WebSphere Application Server</a> from
+      <a href='https//www.ibm.com/software/websphere/'>IBM</a> (versions 5 and 6).</li>
     </ul>
     <p>
  Containers suspected to use this mechanism:
@@ -315,10 +315,10 @@ of other containers using a custom implementation.
   implementation should be used but Class 'com.ibm.ws.commons.logging.TrLogFactory' cannot be converted 
   to 'org.apache.commons.logging.LogFactory'. The conflict is caused by the presence of multiple 
   LogFactory classes in incompatible classloaders. Background can be found in 
-  http://commons.apache.org/logging/tech.html. If you have not explicitly specified a custom
+  https//commons.apache.org/logging/tech.html. If you have not explicitly specified a custom
   LogFactory then it is likely that the container has set one without your knowledge. 
   In this case, consider using the commons-logging-adapters.jar file or specifying the standard 
-  LogFactory from the command line. Help can be found @http://commons.apache.org/logging.
+  LogFactory from the command line. Help can be found @https//commons.apache.org/logging.
   </pre></code>
         <p>
   This is a WebSphere example so the name of the custom LogFactory is 

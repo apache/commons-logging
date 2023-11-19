@@ -183,10 +183,10 @@ limitations under the License.
       </p>
       <ul>
         <li>
-  posting to the <a href='http://commons.apache.org/mail-lists.html'>Apache Commons dev mailing list</a> or
+  posting to the <a href='https//commons.apache.org/mail-lists.html'>Apache Commons dev mailing list</a> or
         </li>
         <li>
-  creating an issue in <a href='http://issues.apache.org/jira/browse/LOGGING/'>JIRA</a>.
+  creating an issue in <a href='https//issues.apache.org/jira/browse/LOGGING/'>JIRA</a>.
         </li>
       </ul>
       <p>
@@ -217,7 +217,7 @@ limitations under the License.
       </subsection>
        <subsection name='Resolution Of Symbolic References'>
       <p>
-  (<a href='http://java.sun.com/docs/books/jls/second_edition/html/execution.doc.html#44524'>LangSpec 12.3.3</a>)
+  (<a href='https//java.sun.com/docs/books/jls/second_edition/html/execution.doc.html#44524'>LangSpec 12.3.3</a>)
   The bytecode representation of a class contains symbolic names for other classes referenced.
       </p>
       <p>
@@ -227,7 +227,7 @@ limitations under the License.
         </em>
       </p>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#73492'>VMSpec 5.4.3</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#73492'>VMSpec 5.4.3</a>)
   Resolution of a symbolic reference occurs dynamically at runtime and is carried out by
   the Java Virtual Machine. Resolution of a symbolic reference requires loading and linking of the new class.
       </p>
@@ -239,7 +239,7 @@ limitations under the License.
       </subsection>
     <subsection name='Loading'>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#19175'>VMSpec 2.17.2</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#19175'>VMSpec 2.17.2</a>)
   Loading is the name given to the process by which a binary form of a class is obtained
   by the Java Virtual Machine.
   Java classes are always loaded and linked dynamically by the Java Virtual Machine
@@ -256,12 +256,12 @@ limitations under the License.
       </subsection>
     <subsection name='Linking'>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#22574'>VMSpec 2.17.3</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#22574'>VMSpec 2.17.3</a>)
   Linking is the name used for combining the
   binary form of a class into the Java Virtual Machine. This must happen before the class can be used.
       </p>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#22574'>VMSpec 2.17.3</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#22574'>VMSpec 2.17.3</a>)
   Linking is composed of verification, preparation and resolution (of symbolic references).
   Flexibility is allowed over the timing of resolution. (Within limit) this may happen at any time after
   preparation and before that reference is used.
@@ -278,11 +278,11 @@ limitations under the License.
 
     <subsection name='Loading Classes'>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#19175'>VMSpec 2.17.2</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/Concepts.doc.html#19175'>VMSpec 2.17.2</a>)
   The loading process is performed by a <code>ClassLoader</code>.
       </p>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSpec 5.3</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSpec 5.3</a>)
   A classloader may create a class either by delegation or by defining it directly.
   The classloader that initiates loading of a class is known as the initiating loader.
   The classloader that defines the class is known as the defining loader.
@@ -297,7 +297,7 @@ limitations under the License.
 
     <subsection name='Bootstrap Classloader'>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSPEC 5.3</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSPEC 5.3</a>)
   The bootstrap is the base <code>ClassLoader</code> supplied by the Java Virtual Machine.
   All others are user (also known as application) <code>ClassLoader</code> instances.
       </p>
@@ -312,12 +312,12 @@ limitations under the License.
       </subsection>
     <subsection name='Runtime Package'>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSpec 5.3</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSpec 5.3</a>)
   At runtime, a class (or interface) is determined by its fully qualified name
   and by the classloader that defines it. This is known as the class's runtime package.
       </p>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#75929'>VMSpec 5.4.4</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#75929'>VMSpec 5.4.4</a>)
   Only classes in the same runtime package are mutually accessible.
       </p>
       <p>
@@ -334,7 +334,7 @@ limitations under the License.
 
     <subsection name='Loader Used To Resolve A Symbolic Reference'>
       <p>
-  (<a href='http://java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSpec 5.3</a>)
+  (<a href='https//java.sun.com/docs/books/vmspec/2nd-edition/html/ConstantPool.doc.html#72007'>VMSpec 5.3</a>)
   The classloader which defines the class (whose reference is being resolved) is the one
   used to initiate loading of the class referred to.
       </p>
@@ -352,10 +352,10 @@ limitations under the License.
     <subsection name='Bibliography'>
       <ul>
         <li>
-    <a href='http://java.sun.com/docs/books/vmspec/'>VMSpec</a> <em>The Java Virtual Machine Specification, Second Edition</em>
+    <a href='https//java.sun.com/docs/books/vmspec/'>VMSpec</a> <em>The Java Virtual Machine Specification, Second Edition</em>
         </li>
         <li>
-    <a href='http://java.sun.com/docs/books/jls/'>LangSpec</a> <em>The Java Language Specification, Second Edition</em>
+    <a href='https//java.sun.com/docs/books/jls/'>LangSpec</a> <em>The Java Language Specification, Second Edition</em>
         </li>
       </ul>
       </subsection>
@@ -443,7 +443,7 @@ limitations under the License.
     <subsection name='The Context Classloader in Container Applications'>
       <p>
   The Javadoc for
-  <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Thread.html#setContextClassLoader(java.lang.ClassLoader)">
+  <a href="https//java.sun.com/j2se/1.5.0/docs/api/java/lang/Thread.html#setContextClassLoader(java.lang.ClassLoader)">
   <code>Thread.setContextClassLoader</code></a> emphasizes the setting of the
   context classloader as an aspect of thread creation.  However, in many
   applications the context classloader is not fixed at thread creation but
@@ -508,7 +508,7 @@ limitations under the License.
   Again, this will cause difficulties.
       </p>
       <p>
-  Introduced in <a href='http://java.sun.com/j2ee/j2ee-1_3-fr-spec.pdf'>Java J2EE 1.3</a>
+  Introduced in <a href='https//java.sun.com/j2ee/j2ee-1_3-fr-spec.pdf'>Java J2EE 1.3</a>
   is a requirement for vendors to appropriately set the context classloader.
   Section 6.2.4.8 (1.4 text):
       </p>
@@ -569,19 +569,19 @@ above.
           <ul>
             <li>
               <a
-    href='http://www.onjava.com/pub/a/onjava/2001/07/25/ejb.html'>
+    href='https//www.onjava.com/pub/a/onjava/2001/07/25/ejb.html'>
   Article on J2EE class loading
               </a>
             </li>
             <li>
               <a
-    href='http://www.onjava.com/pub/a/onjava/2003/11/12/classloader.html'>
+    href='https//www.onjava.com/pub/a/onjava/2003/11/12/classloader.html'>
   Article on class loading
               </a>
             </li>
             <li>
               <a
-    href='http://www.javaworld.com/javaworld/javaqa/2003-06/01-qa-0606-load.html'>
+    href='https//www.javaworld.com/javaworld/javaqa/2003-06/01-qa-0606-load.html'>
   Article on context class loaders
               </a>
             </li>
@@ -591,19 +591,19 @@ above.
           <ul>
             <li>
               <a
-    href='http://tomcat.apache.org/tomcat-4.1-doc/class-loader-howto.html'>
+    href='https//tomcat.apache.org/tomcat-4.1-doc/class-loader-howto.html'>
   Tomcat 4.1 ClassLoader Guide
               </a>
             </li>
             <li>
               <a
-    href='http://tomcat.apache.org/tomcat-5.0-doc/class-loader-howto.html'>
+    href='https//tomcat.apache.org/tomcat-5.0-doc/class-loader-howto.html'>
   Tomcat 5.0 ClassLoader Guide
               </a>
             </li>
             <li>
               <a
-href='http://publib.boulder.ibm.com/infocenter/wasinfo/v6r0/index.jsp?topic=/com.ibm.websphere.express.doc/info/exp/ae/trun_classload_web.html'>
+href='https//publib.boulder.ibm.com/infocenter/wasinfo/v6r0/index.jsp?topic=/com.ibm.websphere.express.doc/info/exp/ae/trun_classload_web.html'>
   Classloading In WebSphere
               </a>
             </li>

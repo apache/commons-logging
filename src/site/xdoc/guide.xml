@@ -97,8 +97,8 @@ a specific logging implementation.
     </p>
 <p>JCL provides thin-wrapper <code>Log</code> implementations for
 other logging tools, including
-<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>
+<a href="https//logging.apache.org/log4j/docs/index.html">Log4J</a>,
+<a href="https//avalon.apache.org/logkit/index.html">Avalon LogKit</a>
 (the Avalon Framework's logging infrastructure),
 JDK 1.4, and an implementation of JDK 1.4 logging APIs (JSR-47) for pre-1.4
 systems.
@@ -174,16 +174,16 @@ compatibility to pre-1.0 versions of this API, a system property
                 <li>
 If the Log4J logging system is available in the application
 class path, use the corresponding wrapper class
-(<a href="http://commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Log4JLogger.html">Log4JLogger</a>).
+(<a href="https//commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Log4JLogger.html">Log4JLogger</a>).
             </li>
                 <li>
 If the application is executing on a JDK 1.4 system, use
 the corresponding wrapper class
-(<a href="http://commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Jdk14Logger.html">Jdk14Logger</a>).
+(<a href="https//commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Jdk14Logger.html">Jdk14Logger</a>).
             </li>
                 <li>
 Fall back to the default simple logging wrapper
-(<a href="http://commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/SimpleLog.html">SimpleLog</a>).
+(<a href="https//commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/SimpleLog.html">SimpleLog</a>).
             </li>
         </ol>
             <p>
@@ -217,7 +217,7 @@ is responsible for handling such issues.
                 <p>
 Log4J is a very commonly used logging implementation (as well as being the JCL primary default), 
 so a <i>few</i> details are presented herein to get the developer/integrator going.
-Please see the <a href='http://logging.apache.org/log4j/docs/index.html'>Log4J Home</a> for more details
+Please see the <a href='https//logging.apache.org/log4j/docs/index.html'>Log4J Home</a> for more details
 on Log4J and it's configuration.
             </p>
                 <p>
@@ -388,8 +388,8 @@ In addition to the logging methods, the following are provided for code guards:
 The <code>commons-logging.jar</code> file includes the JCL API, the default 
 <code>LogFactory</code> implementation and thin-wrapper <code>Log</code> 
 implementations for
-<a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>,
+<a href="https//logging.apache.org/log4j/docs/index.html">Log4J</a>,
+<a href="https//avalon.apache.org/logkit/index.html">Avalon LogKit</a>,
 the Avalon Framework's logging infrastructure,
 JDK 1.4, as well as an implementation of JDK 1.4 logging APIs (JSR-47) for 
 pre-1.4 systems.
@@ -784,7 +784,7 @@ for details.
 JCL is distributed with a very simple <code>Log</code> implementation named 
 <code>org.apache.commons.logging.impl.SimpleLog</code>. This is intended to be a minimal
 implementation and those requiring a fully functional open source logging system are 
-directed to <a href='http://logging.apache.org/log4j'>Log4J</a>.
+directed to <a href='https//logging.apache.org/log4j'>Log4J</a>.
   </p>
   <p>
   <code>SimpleLog</code> sends all (enabled) log messages,

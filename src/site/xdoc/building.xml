@@ -24,8 +24,8 @@ limitations under the License.
 <!-- ================================================== -->
 <section name="Overview">
   <p>
-    Commons Logging uses <a href="http://maven.apache.org">Maven 2.0.x</a> as its
-    primary build system. <a href="http://ant.apache.org">Ant</a> can also be used.
+    Commons Logging uses <a href="https://maven.apache.org">Maven 2.0.x</a> as its
+    primary build system. <a href="https://ant.apache.org">Ant</a> can also be used.
   </p>
 </section>
 <!-- ================================================== -->
@@ -56,7 +56,7 @@ limitations under the License.
   </p>
   <p>
     Further details can be found in the
-    <a href="http://commons.apache.org/building.html">commons build instructions</a>.
+    <a href="https//commons.apache.org/building.html">commons build instructions</a>.
   </p>
 </section>
 <!-- ================================================== -->
