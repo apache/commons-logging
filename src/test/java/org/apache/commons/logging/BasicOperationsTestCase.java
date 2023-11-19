@@ -25,94 +25,76 @@ import junit.framework.TestCase;
  * This is the minimum requirement for any well behaved logger
  * and so this test should be run for each kind.
  */
-public class BasicOperationsTestCase extends TestCase
-{
-    public void executeIsEnabledTest(final Log log)
-    {
-        try
-        {
+public class BasicOperationsTestCase extends TestCase {
+
+    public void executeIsEnabledTest(final Log log) {
+        try {
             log.isTraceEnabled();
             log.isDebugEnabled();
             log.isInfoEnabled();
             log.isWarnEnabled();
             log.isErrorEnabled();
             log.isFatalEnabled();
-        }
-        catch (final Throwable t)
-        {
+        } catch (final Throwable t) {
             t.printStackTrace();
             fail("Exception thrown: " + t);
         }
     }
 
-    public void executeMessageWithExceptionTest(final Log log)
-    {
-        try
-        {
+    public void executeMessageWithExceptionTest(final Log log) {
+        try {
             log.trace("Hello, Mum", new ArithmeticException());
             log.debug("Hello, Mum", new ArithmeticException());
             log.info("Hello, Mum", new ArithmeticException());
             log.warn("Hello, Mum", new ArithmeticException());
             log.error("Hello, Mum", new ArithmeticException());
             log.fatal("Hello, Mum", new ArithmeticException());
-        }
-        catch (final Throwable t)
-        {
+        } catch (final Throwable t) {
             t.printStackTrace();
             fail("Exception thrown: " + t);
         }
     }
 
-    public void executeMessageWithoutExceptionTest(final Log log)
-    {
-        try
-        {
+    public void executeMessageWithoutExceptionTest(final Log log) {
+        try {
             log.trace("Hello, Mum");
             log.debug("Hello, Mum");
             log.info("Hello, Mum");
             log.warn("Hello, Mum");
             log.error("Hello, Mum");
             log.fatal("Hello, Mum");
-        }
-        catch (final Throwable t)
-        {
+        } catch (final Throwable t) {
             t.printStackTrace();
             fail("Exception thrown: " + t);
         }
     }
 
-    public void testIsEnabledClassLog()
-    {
+    public void testIsEnabledClassLog() {
         final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeIsEnabledTest(log);
     }
 
-    public void testIsEnabledNamedLog()
-    {
+    public void testIsEnabledNamedLog() {
         final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeIsEnabledTest(log);
     }
 
-    public void testMessageWithExceptionClassLog()
-    {
+    public void testMessageWithExceptionClassLog() {
         final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithExceptionTest(log);
     }
 
-    public void testMessageWithExceptionNamedLog()
-    {
+    public void testMessageWithExceptionNamedLog() {
         final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithExceptionTest(log);
     }
 
-    public void testMessageWithoutExceptionClassLog()
-    {
+    public void testMessageWithoutExceptionClassLog() {
         final Log log = LogFactory.getLog(BasicOperationsTestCase.class);
         executeMessageWithoutExceptionTest(log);
     }
 
-    public void testMessageWithoutExceptionNamedLog()
-    {
+    public void testMessageWithoutExceptionNamedLog() {
         final Log log = LogFactory.getLog(BasicOperationsTestCase.class.getName());
         executeMessageWithoutExceptionTest(log);
     }

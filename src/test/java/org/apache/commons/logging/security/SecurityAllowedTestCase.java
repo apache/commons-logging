@@ -41,8 +41,8 @@ import junit.framework.TestCase;
  * PathableClassLoader approach to ensure each test is run in its own
  * classloader, and use a separate test class for each test.
  */
-public class SecurityAllowedTestCase extends TestCase
-{
+public class SecurityAllowedTestCase extends TestCase {
+
     // Dummy special hashtable, so we can tell JCL to use this instead of
     // the standard one.
     public static class CustomHashtable extends Hashtable {

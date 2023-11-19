@@ -32,8 +32,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * <p>
  * This simply applies the tests defined in AbstractLogTest to this class.
  */
-public class NoOpLogTestCase extends AbstractLogTest
-{
+public class NoOpLogTestCase extends AbstractLogTest {
     private void checkLog(final Log log) {
 
         assertNotNull("Log exists", log);

@@ -288,7 +288,7 @@ public class WeakHashtableTestCase extends TestCase {
         int bytz = 2;
         while(true) {
             System.gc();
-            if (iterations++ > MAX_GC_ITERATIONS){
+            if (iterations++ > MAX_GC_ITERATIONS) {
                 fail("Max iterations reached before resource released.");
             }
 

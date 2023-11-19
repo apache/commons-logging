@@ -18,11 +18,9 @@ package org.apache.commons.logging;
 
 import org.apache.commons.logging.impl.SimpleLog;
 
-public class SimpleLogTestCase extends AbstractLogTest
-{
+public class SimpleLogTestCase extends AbstractLogTest {
     @Override
-    public Log getLogObject()
-    {
+    public Log getLogObject() {
         return new SimpleLog(this.getClass().getName());
     }
 }

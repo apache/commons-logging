@@ -371,7 +371,7 @@ public class PathableClassLoader extends URLClassLoader {
     private ArrayList toList(final Enumeration en) {
         final ArrayList results = new ArrayList();
         if (en != null) {
-            while (en.hasMoreElements()){
+            while (en.hasMoreElements()) {
                 final Object element = en.nextElement();
                 results.add(element);
             }
