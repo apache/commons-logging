@@ -1031,13 +1031,12 @@ public abstract class LogFactory {
      * run the operation using an AccessController.
      */
     private static InputStream getResourceAsStream(final ClassLoader loader, final String name) {
-        return (InputStream)AccessController.doPrivileged(
-            (PrivilegedAction) () -> {
-                if (loader != null) {
-                    return loader.getResourceAsStream(name);
-                }
-                return ClassLoader.getSystemResourceAsStream(name);
-            });
+        return AccessController.doPrivileged((PrivilegedAction<InputStream>) () -> {
+            if (loader != null) {
+                return loader.getResourceAsStream(name);
+            }
+            return ClassLoader.getSystemResourceAsStream(name);
+        });
     }
 
     /**
