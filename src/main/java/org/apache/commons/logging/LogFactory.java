@@ -1010,21 +1010,6 @@ public abstract class LogFactory {
     }
 
     /**
-     * Applets may run in an environment where accessing resources of a loader is
-     * a secure operation, but where the commons-logging library has explicitly
-     * been granted permission for that operation. In this case, we need to
-     * run the operation using an AccessController.
-     */
-    private static InputStream getResourceAsStream(final ClassLoader loader, final String name) {
-        return AccessController.doPrivileged((PrivilegedAction<InputStream>) () -> {
-            if (loader != null) {
-                return loader.getResourceAsStream(name);
-            }
-            return ClassLoader.getSystemResourceAsStream(name);
-        });
-    }
-
-    /**
      * Given a file name, return an enumeration of URLs pointing to
      * all the occurrences of that file name in the classpath.
      * <p>
