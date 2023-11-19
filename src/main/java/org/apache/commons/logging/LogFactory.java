@@ -1083,9 +1083,8 @@ public abstract class LogFactory {
      * info to access data that should not be available to it.
      */
     private static String getSystemProperty(final String key, final String def)
-        throws SecurityException {
-        return (String) AccessController.doPrivileged(
-                (PrivilegedAction) () -> System.getProperty(key, def));
+            throws SecurityException {
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(key, def));
     }
 
     
