@@ -955,7 +955,7 @@ public abstract class LogFactory {
      * @return a named logger.
      * @throws LogConfigurationException if a suitable {@code Log} instance cannot be returned
      */
-    public static Log getLog(final Class clazz) throws LogConfigurationException {
+    public static Log getLog(final Class<?> clazz) throws LogConfigurationException {
         return getFactory().getInstance(clazz);
     }
 
@@ -1220,7 +1220,7 @@ public abstract class LogFactory {
      * @param clazz is the class whose classloader + tree are to be
      * output.
      */
-    private static void logClassLoaderEnvironment(final Class clazz) {
+    private static void logClassLoaderEnvironment(final Class<?> clazz) {
         if (!isDiagnosticsEnabled()) {
             return;
         }
@@ -1536,7 +1536,7 @@ public abstract class LogFactory {
      * @return a name from the specified class.
      * @throws LogConfigurationException if a suitable {@code Log} instance cannot be returned
      */
-    public abstract Log getInstance(Class clazz) throws LogConfigurationException;
+    public abstract Log getInstance(Class<?> clazz) throws LogConfigurationException;
 
     /**
      * Constructs (if necessary) and return a {@code Log} instance, using the factory's current set of configuration attributes.
