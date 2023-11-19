@@ -525,16 +525,16 @@ public abstract class LogFactory {
 
         try {
             classLoader = Thread.currentThread().getContextClassLoader();
-        } catch (final SecurityException ex) {
-            /**
-             * getContextClassLoader() throws SecurityException when
-             * the context class loader isn't an ancestor of the
-             * calling class's class loader, or if security
-             * permissions are restricted.
-             *
-             * We ignore this exception to be consistent with the previous
-             * behavior (e.g. 1.1.3 and earlier).
-             */
+        } catch (final SecurityException ignore) {
+            //
+            // getContextClassLoader() throws SecurityException when
+            // the context class loader isn't an ancestor of the
+            // calling class's class loader, or if security
+            // permissions are restricted.
+            //
+            // We ignore this exception to be consistent with the previous
+            // behavior (e.g. 1.1.3 and earlier).
+            //
             // ignore
         }
 
