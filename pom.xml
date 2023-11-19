@@ -637,7 +637,6 @@ under the License.
         <artifactId>maven-pmd-plugin</artifactId>
         <configuration>
           <targetJdk>1.8</targetJdk>
-          <linkXref>true</linkXref>
           <rulesets>
             <ruleset>${basedir}/pmd.xml</ruleset>
           </rulesets>
