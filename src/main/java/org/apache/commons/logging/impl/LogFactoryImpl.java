@@ -278,7 +278,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The signature of the Constructor to be used.
      */
-    protected Class[] logConstructorSignature = { java.lang.String.class };
+    protected Class[] logConstructorSignature = { String.class };
 
     // --------------------------------------------------------- Public Methods
 
