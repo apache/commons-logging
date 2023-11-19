@@ -163,7 +163,7 @@ public class LogFactoryImpl extends LogFactory {
      * @return See {@link LogFactory#getClassLoader(Class)}.
      * @since 1.1
      */
-    protected static ClassLoader getClassLoader(final Class clazz) {
+    protected static ClassLoader getClassLoader(final Class<?> clazz) {
         return LogFactory.getClassLoader(clazz);
     }
 
@@ -198,9 +198,8 @@ public class LogFactoryImpl extends LogFactory {
      * allow this class to access the context classloader.
      */
     private static ClassLoader getContextClassLoaderInternal()
-        throws LogConfigurationException {
-        return (ClassLoader) AccessController.doPrivileged(
-            (PrivilegedAction) LogFactory::directGetContextClassLoader);
+            throws LogConfigurationException {
+        return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) LogFactory::directGetContextClassLoader);
     }
 
     /**
@@ -213,9 +212,8 @@ public class LogFactoryImpl extends LogFactory {
      * info to access data that should not be available to it.
      */
     private static String getSystemProperty(final String key, final String def)
-        throws SecurityException {
-        return (String) AccessController.doPrivileged(
-                (PrivilegedAction) () -> System.getProperty(key, def));
+            throws SecurityException {
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(key, def));
     }
 
     /**
@@ -956,8 +954,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     private ClassLoader getParentClassLoader(final ClassLoader cl) {
         try {
-            return (ClassLoader) AccessController.doPrivileged(
-                    (PrivilegedAction) () -> cl.getParent());
+            return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> cl.getParent());
         } catch (final SecurityException ex) {
             logDiagnostic("[SECURITY] Unable to obtain parent classloader");
             return null;
