@@ -97,7 +97,8 @@ public class LogSource {
             if (name == null) {
                 name = System.getProperty("org.apache.commons.logging.Log");
             }
-        } catch (final Throwable t) {
+        } catch (final Throwable ignore) {
+            // Ignore
         }
         if (name != null) {
             try {
@@ -105,8 +106,8 @@ public class LogSource {
             } catch (final Throwable t) {
                 try {
                     setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
-                } catch (final Throwable u) {
-                    // ignored
+                } catch (final Throwable ignore) {
+                    // Ignore
                 }
             }
         } else {
@@ -121,8 +122,8 @@ public class LogSource {
             } catch (final Throwable t) {
                 try {
                     setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
-                } catch (final Throwable u) {
-                    // ignored
+                } catch (final Throwable ignore) {
+                    // Ignore
                 }
             }
         }
