@@ -47,7 +47,7 @@ import java.util.Set;
  * <strong>Usage:</strong> typical use case is as a drop-in replacement
  * for the {@code Hashtable} used in {@code LogFactory} for J2EE environments
  * running 1.3+ JVMs. Use of this class <i>in most cases</i> (see below) will
- * allow classloaders to be collected by the garbage collector without the need
+ * allow class loaders to be collected by the garbage collector without the need
  * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
  * <p>
  * {@code org.apache.commons.logging.LogFactory} checks whether this class
@@ -64,7 +64,7 @@ import java.util.Set;
  * <p>
  * The reason all this is necessary is due to a issue which
  * arises during hot deploy in a J2EE-like containers.
- * Each component running in the container owns one or more classloaders; when
+ * Each component running in the container owns one or more class loaders; when
  * the component loads a LogFactory instance via the component classloader
  * a reference to it gets stored in the static LogFactory.factories member,
  * keyed by the component's classloader so different components don't
@@ -73,7 +73,7 @@ import java.util.Set;
  * component's classes get garbage-collected. However there's still a
  * reference to the component's classloader from a key in the "global"
  * {@code LogFactory}'s factories member! If {@code LogFactory.release()}
- * is called whenever component is unloaded, the classloaders will be correctly
+ * is called whenever component is unloaded, the class loaders will be correctly
  * garbage collected; this <i>should</i> be done by any container that
  * bundles commons-logging by default. However, holding the classloader
  * references weakly ensures that the classloader will be garbage collected

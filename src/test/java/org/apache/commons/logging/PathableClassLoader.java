@@ -348,7 +348,7 @@ public class PathableClassLoader extends URLClassLoader {
      * Checking with the parent first is the normal approach for java, but
      * components within containers such as servlet engines can use
      * child-first lookup instead, to allow the components to override libs
-     * which are visible in shared classloaders provided by the container.
+     * which are visible in shared class loaders provided by the container.
      * <p>
      * Note that the method getResources always behaves as if parentFirst=true,
      * because of limitations in java 1.4; see the javadoc for method
@@ -393,15 +393,15 @@ public class PathableClassLoader extends URLClassLoader {
      * <ul>
      * <li>If code calls getClassLoader on a class loaded via
      * "lookaside", then traces up its inheritance chain, it
-     * will see the "real" classloaders. When the class is remapped
+     * will see the "real" class loaders. When the class is remapped
      * into this classloader via addLogicalLib, the classloader
      * chain seen is this object plus ancestors.
      * <li>If two different jars contain classes in the same
      * package, then it is not possible to load both jars into
      * the same "lookaside" classloader (eg the system classloader)
      * then map one of those subsets from here. Of course they could
-     * be loaded into two different "lookaside" classloaders and
-     * then a prefix used to map from here to one of those classloaders.
+     * be loaded into two different "lookaside" class loaders and
+     * then a prefix used to map from here to one of those class loaders.
      * </ul>
      */
     public void useExplicitLoader(final String prefix, final ClassLoader loader) {

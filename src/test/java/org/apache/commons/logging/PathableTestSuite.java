@@ -58,7 +58,7 @@ import junit.framework.TestSuite;
  * <p>
  * This class will run each test methods within the specified TestCase using
  * the specified context classloader and system classloader. If different
- * tests within the same class require different context classloaders,
+ * tests within the same class require different context class loaders,
  * then the context classloader passed to the constructor should be the
  * "lowest" one available, and tests that need the context set to some parent
  * of this "lowest" classloader can call
@@ -81,7 +81,7 @@ import junit.framework.TestSuite;
  * is different from the class whose suite() method was executed to determine
  * the classpath. This means that the suite method cannot communicate with
  * the test cases simply by setting static variables (for example to make the
- * custom classloaders available to the test methods or setUp/tearDown fixtures).
+ * custom class loaders available to the test methods or setUp/tearDown fixtures).
  * If this is really necessary then it is possible to use reflection to invoke
  * static methods on the class object passed to the constructor of this class.
  * <p>

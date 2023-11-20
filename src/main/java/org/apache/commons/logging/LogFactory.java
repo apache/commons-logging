@@ -121,7 +121,7 @@ public abstract class LogFactory {
      * The name ({@code org.apache.commons.logging.diagnostics.dest})
      * of the property used to enable internal commons-logging
      * diagnostic output, in order to get information on what logging
-     * implementations are being discovered, what classloaders they
+     * implementations are being discovered, what class loaders they
      * are loaded through, etc.
      * <p>
      * If a system property of this name is set then the value is
@@ -153,7 +153,7 @@ public abstract class LogFactory {
      * Setting this system property
      * ({@code org.apache.commons.logging.LogFactory.HashtableImpl})
      * value allows the {@code Hashtable} used to store
-     * classloaders to be substituted by an alternative implementation.
+     * class loaders to be substituted by an alternative implementation.
      * <p>
      * <strong>Note:</strong> {@code LogFactory} will print:
      * <pre>
@@ -178,7 +178,7 @@ public abstract class LogFactory {
      * <p>
      * A typical use case is to allow a custom
      * Hashtable implementation using weak references to be substituted.
-     * This will allow classloaders to be garbage collected without
+     * This will allow class loaders to be garbage collected without
      * the need to release them (on 1.3+ JVMs only, of course ;).
      */
     public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
@@ -337,7 +337,7 @@ public abstract class LogFactory {
                         msg.append("'. ");
                         if (implementsLogFactory) {
                             msg.append("The conflict is caused by the presence of multiple LogFactory classes ");
-                            msg.append("in incompatible classloaders. ");
+                            msg.append("in incompatible class loaders. ");
                             msg.append("Background can be found in http://commons.apache.org/logging/tech.html. ");
                             msg.append("If you have not explicitly specified a custom LogFactory then it is likely ");
                             msg.append("that the container has set one without your knowledge. ");
@@ -537,7 +537,7 @@ public abstract class LogFactory {
      * <p>
      * Even when using an AccessController, however, this method can still
      * throw SecurityException. Commons Logging basically relies on the
-     * ability to access classloaders. A policy that forbids all
+     * ability to access class loaders. A policy that forbids all
      * classloader access will also prevent commons-logging from working:
      * currently this method will throw an exception preventing the entire app
      * from starting up. Maybe it would be good to detect this situation and
@@ -1131,7 +1131,7 @@ public abstract class LogFactory {
                 // LogFactory cannot be loaded by the classloader which loaded the custom factory implementation.
                 // The custom implementation is not viable until this is corrected.
                 // Ensure that the JCL jar and the custom class are available from the same classloader.
-                // Running with diagnostics on should give information about the classloaders used
+                // Running with diagnostics on should give information about the class loaders used
                 // to load the custom factory.
                 //
                 logDiagnostic("[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by the class loader which loaded "
@@ -1478,7 +1478,7 @@ public abstract class LogFactory {
      */
     public static void releaseAll() {
         if (isDiagnosticsEnabled()) {
-            logDiagnostic("Releasing factory for all classloaders.");
+            logDiagnostic("Releasing factory for all class loaders.");
         }
         // factories is not final and could be replaced in this block.
         final Hashtable<ClassLoader, LogFactory> factories = LogFactory.factories;
@@ -1601,7 +1601,7 @@ public abstract class LogFactory {
         final ClassLoader thisClassLoader = getClassLoader(LogFactory.class);
         thisClassLoaderRef = new WeakReference<>(thisClassLoader);
         // In order to avoid confusion where multiple instances of JCL are
-        // being used via different classloaders within the same app, we
+        // being used via different class loaders within the same app, we
         // ensure each logged message has a prefix of form
         // [LogFactory from classloader OID]
         //

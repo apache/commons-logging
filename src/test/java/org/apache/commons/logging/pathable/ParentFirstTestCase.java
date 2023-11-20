@@ -105,7 +105,7 @@ public class ParentFirstTestCase extends TestCase {
     }
 
     /**
-     * Utility method to return the set of all classloaders in the
+     * Utility method to return the set of all class loaders in the
      * parent chain starting from the one that loaded the class for
      * this object instance.
      */
@@ -121,7 +121,7 @@ public class ParentFirstTestCase extends TestCase {
 
     /**
      * Test that the classloader hierarchy is as expected, and that
-     * calling loadClass() on various classloaders works as expected.
+     * calling loadClass() on various class loaders works as expected.
      * Note that for this test case, parent-first classloading is
      * in effect.
      */
@@ -164,7 +164,7 @@ public class ParentFirstTestCase extends TestCase {
                 systemLoader.getClass().getName());
 
         // junit classes should be visible; their classloader is not
-        // in the hierarchy of parent classloaders for this class,
+        // in the hierarchy of parent class loaders for this class,
         // though it is accessible due to trickery in the PathableClassLoader.
         final Class junitTest = contextLoader.loadClass("junit.framework.Test");
         final Set ancestorCLs = getAncestorCLs();
@@ -177,7 +177,7 @@ public class ParentFirstTestCase extends TestCase {
                 logClass.getClassLoader(), parentLoader);
 
         // jcl adapter classes should be visible via both parent and child. However
-        // as the classloaders are parent-first we should see the parent one.
+        // as the class loaders are parent-first we should see the parent one.
         final Class log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4JLogger");
         assertSame("Log4JLogger not loaded via parent",
                 log4jClass.getClassLoader(), parentLoader);
@@ -223,7 +223,7 @@ public class ParentFirstTestCase extends TestCase {
         resource = childLoader.getResource("org/apache/commons/logging/PathableTestSuite.class");
         assertNotNull("Unable to locate PathableTestSuite.class resource", resource);
 
-        // getResource where it is accessible to both classloaders. The one visible
+        // getResource where it is accessible to both class loaders. The one visible
         // to the parent should be returned. The URL returned will be of form
         //  jar:file:/x/y.jar!path/to/resource. The file name part should include the jarname
         // of form commons-logging-nnnn.jar, not commons-logging-adapters-nnnn.jar

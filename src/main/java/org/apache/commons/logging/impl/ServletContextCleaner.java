@@ -33,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
  * In general, the WeakHashtable support added in commons-logging release 1.1
  * ensures that logging classes do not hold references that prevent an
  * undeployed webapp's memory from being garbage-collected even when multiple
- * copies of commons-logging are deployed via multiple classloaders (a
+ * copies of commons-logging are deployed via multiple class loaders (a
  * situation that earlier versions had problems with). However there are
  * some rare cases where the WeakHashtable approach does not work; in these
  * situations specifying this class as a listener for the web application will
@@ -62,7 +62,7 @@ public class ServletContextCleaner implements ServletContextListener {
         final Object[] params = new Object[1];
         params[0] = tccl;
 
-        // Walk up the tree of classloaders, finding all the available
+        // Walk up the tree of class loaders, finding all the available
         // LogFactory classes and releasing any objects associated with
         // the tccl (ie the webapp).
         //
@@ -87,7 +87,7 @@ public class ServletContextCleaner implements ServletContextListener {
         // to is expected to have been loaded via the TCCL, so the
         // underlying logging lib is only initialized/configured once.
         // These references from ancestor LogFactory classes down to
-        // TCCL classloaders are held via weak references and so should
+        // TCCL class loaders are held via weak references and so should
         // be released but there are circumstances where they may not.
         // Walking up the classloader ancestry ladder releasing
         // the current tccl at each level tree, though, will definitely

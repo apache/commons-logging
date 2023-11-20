@@ -102,7 +102,7 @@ public class LogFactoryImpl extends LogFactory {
      * LogFactoryImpl is loaded via a child classloader of the TCCL (this
      * should never happen in sane systems).
      *
-     * Default behavior: true (tolerates bad context classloaders)
+     * Default behavior: true (tolerates bad context class loaders)
      *
      * See also method setAttribute.
      */
@@ -543,7 +543,7 @@ public class LogFactoryImpl extends LogFactory {
         //
         // Note that we deliberately loop here over classesToDiscover and
         // expect method createLogFromClass to loop over the possible source
-        // classloaders. The effect is:
+        // class loaders. The effect is:
         //   for each discoverable log adapter
         //      for each possible classloader
         //          see if it works
@@ -679,7 +679,7 @@ public class LogFactoryImpl extends LogFactory {
      * <p>
      * The only time when the classloader which loaded this class is a
      * descendant (rather than the same as or an ancestor of the context
-     * classloader) is when an app has created custom classloaders but
+     * classloader) is when an app has created custom class loaders but
      * failed to correctly set the context classloader. This is a bug in
      * the calling application; however we provide the option for JCL to
      * simply generate a warning rather than fail outright.
@@ -698,7 +698,7 @@ public class LogFactoryImpl extends LogFactory {
                 contextClassLoader, thisClassLoader);
 
         if (baseClassLoader == null) {
-           // The two classloaders are not part of a parent child relationship.
+           // The two class loaders are not part of a parent child relationship.
            // In some classloading setups (e.g. JBoss with its
            // UnifiedLoaderRepository) this can still work, so if user hasn't
            // forbidden it, just return the contextClassLoader.
@@ -722,7 +722,7 @@ public class LogFactoryImpl extends LogFactory {
             // We really should just use the contextClassLoader as the starting
             // point for scanning for log adapter classes. However it is expected
             // that there are a number of broken systems out there which create
-            // custom classloaders but fail to set the context classloader so
+            // custom class loaders but fail to set the context classloader so
             // we handle those flawed systems anyway.
             if (!allowFlawedContext) {
                 throw new LogConfigurationException(
@@ -895,7 +895,7 @@ public class LogFactoryImpl extends LogFactory {
     //  ------------------------------------------------------ Private Methods
 
     /**
-     * Given two related classloaders, return the one which is a child of
+     * Given two related class loaders, return the one which is a child of
      * the other.
      * <p>
      * @param c1 is a classloader (including the null classloader)
@@ -905,7 +905,7 @@ public class LogFactoryImpl extends LogFactory {
      * and null if neither is an ancestor of the other.
      */
     private ClassLoader getLowestClassLoader(final ClassLoader c1, final ClassLoader c2) {
-        // TODO: use AccessController when dealing with classloaders here
+        // TODO: use AccessController when dealing with class loaders here
 
         if (c1 == null) {
             return c2;
