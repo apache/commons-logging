@@ -65,7 +65,7 @@ public class LogSource {
     static protected boolean jdk14IsAvailable;
 
     /** Constructor for current log class */
-    static protected Constructor logImplctor;
+    static protected Constructor<?> logImplctor;
 
     /**
      * An empty immutable {@code String} array.
