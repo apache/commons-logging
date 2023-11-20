@@ -48,6 +48,10 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="add" due-to="Piotr P. Karwasz">
         Add support for Log4j API and SLF4J #177.
       </action>
+      <!-- REMOVE -->
+      <action dev="ggregory" type="add" due-to="Piotr P. Karwasz">
+        Deprecate org.apache.commons.logging.impl.WeakHashtable without replacement.
+      </action>
       <!-- FIX -->
       <action issue="LOGGING-165" dev="britter" type="add">
         Add Automatic-Module-Name Manifest Header for Java 9 compatibility.

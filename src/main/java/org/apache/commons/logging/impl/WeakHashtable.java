@@ -106,7 +106,9 @@ import java.util.Set;
  * for most or all users.
  *
  * @since 1.1
+ * @deprecated No longer used.
  */
+@Deprecated
 public final class WeakHashtable extends Hashtable {
 
     /** Entry implementation */
