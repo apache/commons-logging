@@ -31,6 +31,7 @@ public class NoOpLog implements Log, Serializable {
 
     /** Convenience constructor */
     public NoOpLog() {
+        // no-op
     }
 
     /**
@@ -39,46 +40,55 @@ public class NoOpLog implements Log, Serializable {
      * @param name unused.
      */
     public NoOpLog(final String name) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void debug(final Object message) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void debug(final Object message, final Throwable t) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void error(final Object message) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void error(final Object message, final Throwable t) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void fatal(final Object message) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void fatal(final Object message, final Throwable t) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void info(final Object message) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void info(final Object message, final Throwable t) {
+        // no-op
     }
 
     /**
@@ -144,20 +154,24 @@ public class NoOpLog implements Log, Serializable {
     /** Do nothing */
     @Override
     public void trace(final Object message) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void trace(final Object message, final Throwable t) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void warn(final Object message) {
+        // no-op
     }
 
     /** Do nothing */
     @Override
     public void warn(final Object message, final Throwable t) {
+        // no-op
     }
 }
