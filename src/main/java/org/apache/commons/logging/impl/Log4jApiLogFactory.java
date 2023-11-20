@@ -212,6 +212,7 @@ public final class Log4jApiLogFactory extends LogFactory {
         try {
             adapter.close();
         } catch (final IOException ignored) {
+            // Ignore
         }
     }
 
