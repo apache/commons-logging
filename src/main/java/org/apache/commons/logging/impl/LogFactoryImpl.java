@@ -367,9 +367,9 @@ public class LogFactoryImpl extends LogFactory {
                     }
                 }
 
-                Class c;
+                Class clazz;
                 try {
-                    c = Class.forName(logAdapterClassName, true, currentCL);
+                    clazz = Class.forName(logAdapterClassName, true, currentCL);
                 } catch (final ClassNotFoundException originalClassNotFoundException) {
                     // The current classloader was unable to find the log adapter
                     // in this or any ancestor classloader. There's no point in
@@ -385,7 +385,7 @@ public class LogFactoryImpl extends LogFactory {
                         // classloading strategy is not consistent with the
                         // Java 1.2 classloading guidelines but JCL can
                         // and so should handle this case.
-                        c = Class.forName(logAdapterClassName);
+                        clazz = Class.forName(logAdapterClassName);
                     } catch (final ClassNotFoundException secondaryClassNotFoundException) {
                         // no point continuing: this adapter isn't available
                         msg = secondaryClassNotFoundException.getMessage();
@@ -395,7 +395,7 @@ public class LogFactoryImpl extends LogFactory {
                     }
                 }
 
-                constructor = c.getConstructor(logConstructorSignature);
+                constructor = clazz.getConstructor(logConstructorSignature);
                 final Object o = constructor.newInstance(params);
 
                 // Note that we do this test after trying to create an instance
@@ -403,7 +403,7 @@ public class LogFactoryImpl extends LogFactory {
                 // we don't complain about Log hierarchy problems when the
                 // adapter couldn't be instantiated anyway.
                 if (o instanceof Log) {
-                    logAdapterClass = c;
+                    logAdapterClass = clazz;
                     logAdapter = (Log) o;
                     break;
                 }
@@ -418,7 +418,7 @@ public class LogFactoryImpl extends LogFactory {
                 // The handleFlawedHierarchy method will throw
                 // LogConfigurationException if it regards this problem as
                 // fatal, and just return if not.
-                handleFlawedHierarchy(currentCL, c);
+                handleFlawedHierarchy(currentCL, clazz);
             } catch (final NoClassDefFoundError e) {
                 // We were able to load the adapter but it had references to
                 // other classes that could not be found. This simply means that
