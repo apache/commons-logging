@@ -48,7 +48,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ServletContextCleaner implements ServletContextListener {
 
-    private static final Class[] RELEASE_SIGNATURE = {ClassLoader.class};
+    private static final Class<?>[] RELEASE_SIGNATURE = { ClassLoader.class };
 
     /**
      * Invoked when a webapp is undeployed, this tells the LogFactory
@@ -98,12 +98,13 @@ public class ServletContextCleaner implements ServletContextListener {
             // via this loader, but is accessible via some ancestor then that class
             // will be returned.
             try {
-                final Class logFactoryClass = loader.loadClass("org.apache.commons.logging.LogFactory");
+                @SuppressWarnings("unchecked")
+                final Class<LogFactory> logFactoryClass = (Class<LogFactory>) loader.loadClass("org.apache.commons.logging.LogFactory");
                 final Method releaseMethod = logFactoryClass.getMethod("release", RELEASE_SIGNATURE);
                 releaseMethod.invoke(null, params);
                 loader = logFactoryClass.getClassLoader().getParent();
             } catch (final ClassNotFoundException ex) {
-                // Neither the current classloader nor any of its ancestors could find
+                // Neither the current class loader nor any of its ancestors could find
                 // the LogFactory class, so we can stop now.
                 loader = null;
             } catch (final NoSuchMethodException ex) {
