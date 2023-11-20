@@ -53,7 +53,6 @@ import org.apache.commons.logging.impl.NoOpLog;
 @Deprecated
 public class LogSource {
 
-    
     /**
      * Logs.
      */
@@ -72,7 +71,6 @@ public class LogSource {
      * An empty immutable {@code String} array.
      */
     private static final String[] EMPTY_STRING_ARRAY = {};
-
     
     static {
 
@@ -129,7 +127,6 @@ public class LogSource {
         }
 
     }
-
     
     /**
      * Gets a {@code Log} instance by class.
@@ -140,7 +137,6 @@ public class LogSource {
     static public Log getInstance(final Class<?> clazz) {
         return getInstance(clazz.getName());
     }
-
     
     /**
      * Gets a {@code Log} instance by class name.
