@@ -441,11 +441,11 @@ public abstract class LogFactory {
                 // if the user's trying to set up a custom implementation, give a clue
                 if (isDiagnosticsEnabled()) {
                     // use internal logging to issue the warning
-                    logDiagnostic("[ERROR] LogFactory: Load of custom hashtable failed");
+                    logDiagnostic("[ERROR] LogFactory: Load of custom Hashtable failed");
                 } else {
                     // we *really* want this output, even if diagnostics weren't
                     // explicitly enabled by the user.
-                    System.err.println("[ERROR] LogFactory: Load of custom hashtable failed");
+                    System.err.println("[ERROR] LogFactory: Load of custom Hashtable failed");
                 }
             }
         }
@@ -1100,15 +1100,13 @@ public abstract class LogFactory {
                     logDiagnostic("[CUSTOM LOG FACTORY] was loaded by the boot classloader");
                 } else {
                     logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
-                    final Class factoryFromCustomLoader
-                        = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
+                    final Class factoryFromCustomLoader = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
                     implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
                     if (implementsLogFactory) {
-                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() +
-                                      " implements LogFactory but was loaded by an incompatible classloader.");
+                        logDiagnostic(
+                                "[CUSTOM LOG FACTORY] " + logFactoryClass.getName() + " implements LogFactory but was loaded by an incompatible classloader.");
                     } else {
-                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() +
-                                      " does not implement LogFactory.");
+                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() + " does not implement LogFactory.");
                     }
                 }
             } catch (final SecurityException e) {
@@ -1117,8 +1115,8 @@ public abstract class LogFactory {
                 // This will make it very hard to diagnose issues with JCL.
                 // Consider running less securely whilst debugging this issue.
                 //
-                logDiagnostic("[CUSTOM LOG FACTORY] SecurityException thrown whilst trying to determine whether " +
-                              "the compatibility was caused by a classloader conflict: " + e.getMessage());
+                logDiagnostic("[CUSTOM LOG FACTORY] SecurityException caught trying to determine whether "
+                        + "the compatibility was caused by a class loader conflict: " + e.getMessage());
             } catch (final LinkageError e) {
                 //
                 // This should be an unusual circumstance.
@@ -1126,8 +1124,8 @@ public abstract class LogFactory {
                 // Another possibility may be an exception thrown by an initializer.
                 // Time for a clean rebuild?
                 //
-                logDiagnostic("[CUSTOM LOG FACTORY] LinkageError thrown whilst trying to determine whether " +
-                              "the compatibility was caused by a classloader conflict: " + e.getMessage());
+                logDiagnostic("[CUSTOM LOG FACTORY] LinkageError caught trying to determine whether "
+                        + "the compatibility was caused by a class loader conflict: " + e.getMessage());
             } catch (final ClassNotFoundException e) {
                 //
                 // LogFactory cannot be loaded by the classloader which loaded the custom factory implementation.
@@ -1136,8 +1134,8 @@ public abstract class LogFactory {
                 // Running with diagnostics on should give information about the classloaders used
                 // to load the custom factory.
                 //
-                logDiagnostic("[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by classloader which loaded " +
-                              "the custom LogFactory implementation. Is the custom factory in the right classloader?");
+                logDiagnostic("[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by the class loader which loaded "
+                        + "the custom LogFactory implementation. Is the custom factory in the right class loader?");
             }
         }
         return implementsLogFactory;
