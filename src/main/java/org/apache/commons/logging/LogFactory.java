@@ -1102,11 +1102,11 @@ public abstract class LogFactory {
                     logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
                     final Class factoryFromCustomLoader = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
                     implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
+                    final String logFactoryClassName = logFactoryClass.getName();
                     if (implementsLogFactory) {
-                        logDiagnostic(
-                                "[CUSTOM LOG FACTORY] " + logFactoryClass.getName() + " implements LogFactory but was loaded by an incompatible classloader.");
+                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClassName + " implements LogFactory but was loaded by an incompatible classloader.");
                     } else {
-                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClass.getName() + " does not implement LogFactory.");
+                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClassName + " does not implement LogFactory.");
                     }
                 }
             } catch (final SecurityException e) {
