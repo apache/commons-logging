@@ -43,7 +43,7 @@ import junit.framework.TestCase;
  * <p>
  * Note that parentFirst=true is used in this test because method
  * {@code PathableClassLoader.getResources} always behaves as if
- * parentFirst=true; see the PathableClassLoader javadoc for details.
+ * parentFirst=true; see the PathableClassLoader Javadoc for details.
  */
 
 public class PriorityConfigTestCase extends TestCase {

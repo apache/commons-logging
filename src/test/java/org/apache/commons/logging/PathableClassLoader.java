@@ -43,7 +43,7 @@ import junit.framework.Assert;
  * resources from the parent. However overriding this method isn't possible
  * as the java 1.4 version of ClassLoader declares this method final
  * (though the java 1.5 version has removed the final qualifier). As the
- * ClassLoader javadoc doesn't specify the order in which resources
+ * ClassLoader Javadoc doesn't specify the order in which resources
  * are returned, it's valid to return the resources in any order (just
  * untidy) so the inherited implementation is technically ok.
  */
@@ -201,7 +201,7 @@ public class PathableClassLoader extends URLClassLoader {
                 return local.openStream();
             } catch (final IOException e) {
                 // TODO: check if this is right or whether we should
-                // fall back to trying parent. The javadoc doesn't say...
+                // fall back to trying parent. The Javadoc doesn't say...
                 return null;
             }
         }
@@ -351,7 +351,7 @@ public class PathableClassLoader extends URLClassLoader {
      * which are visible in shared class loaders provided by the container.
      * <p>
      * Note that the method getResources always behaves as if parentFirst=true,
-     * because of limitations in java 1.4; see the javadoc for method
+     * because of limitations in java 1.4; see the Javadoc for method
      * getResourcesInOrder for details.
      * <p>
      * This value defaults to true.

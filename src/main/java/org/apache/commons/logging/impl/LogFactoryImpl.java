@@ -493,7 +493,7 @@ public class LogFactoryImpl extends LogFactory {
     
     /**
      * Attempts to create a Log instance for the given category name.
-     * Follows the discovery process described in the class javadoc.
+     * Follows the discovery process described in the class Javadoc.
      *
      * @param logCategory the name of the log category
      *

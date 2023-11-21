@@ -374,7 +374,7 @@ public abstract class LogFactory {
              * At this point, either classLoader == null, OR classLoader was unable to load factoryClass.
              *
              * In either case, we call Class.forName, which is equivalent to LogFactory.class.getClassLoader().load(name), that is, we ignore the classloader
-             * parameter the caller passed, and fall back to trying the classloader associated with this class. See the javadoc for the newFactory method for
+             * parameter the caller passed, and fall back to trying the classloader associated with this class. See the Javadoc for the newFactory method for
              * more info on the consequences of this.
              *
              * Notes: * LogFactory.class.getClassLoader() may return 'null' if LogFactory is loaded by the bootstrap classloader.
