@@ -19,6 +19,8 @@ package org.apache.commons.logging.log4j.log4j12;
 
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+import org.apache.commons.logging.impl.Log4JLogger;
+import org.apache.commons.logging.impl.LogFactoryImpl;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -34,6 +36,8 @@ public class ParentClasspathStandardTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
+        // Ensure Log4JLogger is used
+        System.setProperty(LogFactoryImpl.LOG_PROPERTY, Log4JLogger.class.getName());
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");

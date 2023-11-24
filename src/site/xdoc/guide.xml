@@ -94,20 +94,24 @@ is intended to be both light-weight and an independent abstraction of other logg
 It provides the middleware/tooling developer with a simple
 logging abstraction, that allows the user (application developer) to plug in
 a specific logging implementation.
-    </p>
-<p>JCL provides thin-wrapper <code>Log</code> implementations for
-other logging tools, including
-<a href="https//logging.apache.org/log4j/docs/index.html">Log4J</a>,
-<a href="https//avalon.apache.org/logkit/index.html">Avalon LogKit</a>
-(the Avalon Framework's logging infrastructure),
-JDK 1.4, and an implementation of JDK 1.4 logging APIs (JSR-47) for pre-1.4
-systems.
-The interface maps closely to Log4J and LogKit.
-</p>
+        </p>
+        <p>
+          JCL provides thin-wrapper <code>Log</code> implementations for other logging APIs and backends, including
+          <a href="https://logging.apache.org/log4j/2.x/manual/api-separation">Log4j API</a>,
+          <a href="https://www.slf4j.org">SLF4J</a> and <code>java.util.logging</code>.
+        </p>
+
+        <p>
+          <strong>Warning:</strong> implementations for older logging backends such as
+          <a href="https//logging.apache.org/log4j/1.2/">Log4j 1.2</a>,
+          <a href="https//avalon.apache.org">Avalon LogKit</a> and
+          <a href="https://javalogging.sourceforge.net">Lumberjack</a> are also provided, although they are disabled by default.
+        </p>
+
         <p>
 Familiarity with high-level details of the relevant Logging implementations is presumed.
-    </p>
-</section>
+        </p>
+    </section>
     <section name="Quick Start">
         <p>
 As far as possible, JCL tries to be as unobtrusive as possible.
@@ -134,58 +138,66 @@ JCL's discovery process).
 There are two base abstractions used by JCL: <code>Log</code>
 (the basic logger) and <code>LogFactory</code> (which knows how to create <code>Log</code>
 instances). Specifying a particular Log implementation is very useful (whether that is
-one provided by commons-logging or a user-defined one). Specifying a 
-<code>LogFactory</code> implementation other than the default is a subject for
+one provided by Commons Logging or a user-defined one). Specifying a
+<code>LogFactory</code> implementation explicitly is a subject for
 advanced users only, so will not be addressed here.
-        </p>
+            </p>
             <p>
-The default <code>LogFactory</code> implementation uses the following discovery process
+              JCL provides three standard log factories:
+            </p>
+            <ol>
+              <li>if <a href="https://logging.apache.org/log4j/2.x/manual/api-separation">Log4j API</a>
+                  is present on the classpath and it is not redirected to SLF4J, then <code>Log4jApiLogFactory</code>
+                  is used. This factory redirects all output to Log4j API.</li>
+              <li>otherwise if <a href="https://www.slf4j.org">SLF4J</a> is presend on the classpath,
+                  then <code>Slf4jLogFactory</code> is used. This factory redirects all output to SLF4J.</li>
+              <li>otherwise the legacy <code>LogFactoryImpl</code> is used.</li>
+            </ol>
+            <p>
+The legacy <code>LogFactory</code> implementation uses the following discovery process
 to determine what type of <code>Log</code> implementation it should use
 (the process terminates when the first positive match - in order - is found):
-        </p>
+            </p>
 
             <ol>
                 <li>
+                    <p>
 Look for a configuration attribute of this factory named
 <code>org.apache.commons.logging.Log</code> (for backwards compatibility to
 pre-1.0 versions of this API, an attribute
 <code>org.apache.commons.logging.log</code> is also consulted).
-<p>
+                    </p>
+                    <p>
 Configuration attributes can be set explicitly by java code, but they are more
-commonly set by placing a file named commons-logging.properties in the classpath.
+commonly set by placing a file named <code>commons-logging.properties</code> in the classpath.
 When such a file exists, every entry in the properties file becomes an "attribute"
 of the LogFactory. When there is more than one such file in the classpath, releases
 of commons-logging prior to 1.1 simply use the first one found. From release 1.1,
 each file may define a <code>priority</code> key, and the file with
 the highest priority is used (no priority definition implies priority of zero).
 When multiple files have the same priority, the first one found is used.
-</p>
-<p>
-Defining this property in a commons-logging.properties file is the recommended
+                    </p>
+                    <p>
+                      Defining this property in a <code>commons-logging.properties</code> file is the recommended
 way of explicitly selecting a Log implementation.
-</p>
-            </li>
+                    </p>
+                </li>
                 <li>
 Look for a system property named
 <code>org.apache.commons.logging.Log</code> (for backwards
 compatibility to pre-1.0 versions of this API, a system property
 <code>org.apache.commons.logging.log</code> is also consulted).
-            </li>
+                </li>
                 <li>
-If the Log4J logging system is available in the application
-class path, use the corresponding wrapper class
-(<a href="https//commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Log4JLogger.html">Log4JLogger</a>).
-            </li>
-                <li>
-If the application is executing on a JDK 1.4 system, use
+If the <code>java.logging</code> module is available, use
 the corresponding wrapper class
 (<a href="https//commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/Jdk14Logger.html">Jdk14Logger</a>).
-            </li>
+                </li>
                 <li>
 Fall back to the default simple logging wrapper
 (<a href="https//commons.apache.org/logging/apidocs/org/apache/commons/logging/impl/SimpleLog.html">SimpleLog</a>).
-            </li>
-        </ol>
+                </li>
+            </ol>
             <p>
 Consult the JCL javadocs for details of the various <code>Log</code>
 implementations that ship with the component. (The discovery process is also covered in more
@@ -213,66 +225,6 @@ be required in the application. JCL simply forwards logging method calls to the 
 implementation. When writing library code this issue is of course not relevant as the calling application
 is responsible for handling such issues.
         </p>
-            <subsection name='Configuring Log4J'>
-                <p>
-Log4J is a very commonly used logging implementation (as well as being the JCL primary default), 
-so a <i>few</i> details are presented herein to get the developer/integrator going.
-Please see the <a href='https//logging.apache.org/log4j/docs/index.html'>Log4J Home</a> for more details
-on Log4J and it's configuration.
-            </p>
-                <p>
-Configure Log4J using system properties and/or a properties file:
-            </p>
-                <ul>
-                    <li>
-<strong>log4j.configuration=<em>log4j.properties</em></strong>
-Use this system property to specify the name of a Log4J configuration file.
-If not specified, the default configuration file is <i>log4j.properties</i>.
-                </li>
-                    <li>
-<strong>log4j.rootCategory=<i>priority</i> [, <i>appender</i>]*</strong>
-                </li>
-Set the default (root) logger priority.
-                    <li>
-<strong>log4j.logger.<i>logger.name</i>=<i>priority</i></strong>
-Set the priority for the named logger
-and all loggers hierarchically lower than, or below, the
-named logger.
-<i>logger.name</i> corresponds to the parameter of
-<code>LogFactory.getLog(<i>logger.name</i>)</code>,
-used to create the logger instance.  Priorities are:
-<code>DEBUG</code>,
-<code>INFO</code>,
-<code>WARN</code>,
-<code>ERROR</code>,
-or <code>FATAL</code>.
-<br/>
-Log4J understands hierarchical names,
-enabling control by package or high-level qualifiers:
-<code>log4j.logger.org.apache.component=DEBUG</code>
-will enable debug messages for all classes in both
-<code>org.apache.component</code>
-and
-<code>org.apache.component.sub</code>.
-Likewise, setting
-<code>log4j.logger.org.apache.component=DEBUG</code>
-will enable debug message for all 'component' classes,
-but not for other Apache projects.
-                </li>
-                    <li>
-<strong>log4j.appender.<i>appender</i>.Threshold=<i>priority</i></strong>
-                </li>
-Log4J <i>appenders</i> correspond to different output devices:
-console, files, sockets, and others.
-If appender's <i>threshold</i>
-is less than or equal to the message priority then
-the message is written by that appender.
-This allows different levels of detail to be appear
-at different log destinations.
-For example: one can capture DEBUG (and higher) level information in a logfile,
-while limiting console output to INFO (and higher).
-            </ul>
-        </subsection>
     </subsection>
 </section>
     <section name='Developing With JCL'>
