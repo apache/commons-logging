@@ -75,18 +75,10 @@ public class LogSource {
     static {
 
         // Is Log4J Available?
-        try {
-            log4jIsAvailable = null != Class.forName("org.apache.log4j.Logger");
-        } catch (final Throwable t) {
-            log4jIsAvailable = false;
-        }
+        log4jIsAvailable = isClassForName("org.apache.log4j.Logger");
 
         // Is JDK 1.4 Logging Available?
-        try {
-            jdk14IsAvailable = null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
-        } catch (final Throwable t) {
-            jdk14IsAvailable = false;
-        }
+        jdk14IsAvailable = isClassForName("org.apache.commons.logging.impl.Jdk14Logger");
 
         // Set the default Log implementation
         String name = null;
@@ -157,6 +149,14 @@ public class LogSource {
      */
     static public String[] getLogNames() {
         return logs.keySet().toArray(EMPTY_STRING_ARRAY);
+    }
+
+    private static boolean isClassForName(final String className) {
+        try {
+            return Class.forName(className) != null;
+        } catch (Throwable e) {
+            return false;
+        }
     }
 
     /**
