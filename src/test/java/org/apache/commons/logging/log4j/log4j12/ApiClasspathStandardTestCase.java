@@ -20,7 +20,6 @@ package org.apache.commons.logging.log4j.log4j12;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.Log4JLogger;
-import org.apache.commons.logging.impl.Log4jApiLogFactory;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 
 import junit.framework.Test;
