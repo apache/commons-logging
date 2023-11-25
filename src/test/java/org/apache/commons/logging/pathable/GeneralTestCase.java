@@ -32,7 +32,7 @@ import junit.framework.TestCase;
 public class GeneralTestCase extends TestCase {
 
     /**
-     * Verify that the context classloader is a custom one, then reset it to
+     * Verify that the context class loader is a custom one, then reset it to
      * a non-custom one.
      */
     private static void checkAndSetContext() {
@@ -57,7 +57,7 @@ public class GeneralTestCase extends TestCase {
     }
 
     /**
-     * Sets up a custom classloader hierarchy for this test case.
+     * Sets up a custom class loader hierarchy for this test case.
      */
     public static Test suite() throws Exception {
         final Class thisClass = GeneralTestCase.class;
@@ -67,7 +67,7 @@ public class GeneralTestCase extends TestCase {
         loader.useExplicitLoader("junit.", thisClassLoader);
         loader.addLogicalLib("testclasses");
 
-        // reload this class via the child classloader
+        // reload this class via the child class loader
         final Class testClass = loader.loadClass(thisClass.getName());
 
         // and return our custom TestSuite class
@@ -75,7 +75,7 @@ public class GeneralTestCase extends TestCase {
     }
 
     /**
-     * Verify that when a test method modifies the context classloader it is
+     * Verify that when a test method modifies the context class loader it is
      * reset before the next test is run.
      * <p>
      * This method works in conjunction with testResetContext2. There is no

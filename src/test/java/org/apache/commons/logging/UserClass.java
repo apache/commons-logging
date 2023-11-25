@@ -22,9 +22,9 @@ public class UserClass {
 
     /**
      * Sets the ALLOW_FLAWED_CONTEXT feature on the LogFactoryImpl object
-     * associated with this class' classloader.
+     * associated with this class' class loader.
      * <p>
-     * Don't forget to set the context classloader to whatever it will be
+     * Don't forget to set the context class loader to whatever it will be
      * when an instance of this class is actually created <i>before</i> calling
      * this method!
      */

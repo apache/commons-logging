@@ -37,9 +37,9 @@ import junit.framework.TestCase;
  * <p>
  * This class has only one unit test, as we are (in part) checking behavior in
  * the static block of the LogFactory class. As that class cannot be unloaded after
- * being loaded into a classloader, the only workaround is to use the
+ * being loaded into a class loader, the only workaround is to use the
  * PathableClassLoader approach to ensure each test is run in its own
- * classloader, and use a separate test class for each test.
+ * class loader, and use a separate test class for each test.
  */
 public class SecurityAllowedTestCase extends TestCase {
 

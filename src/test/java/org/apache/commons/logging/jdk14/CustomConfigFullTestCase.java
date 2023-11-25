@@ -39,7 +39,7 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
 
-        // the TestHandler class must be accessible from the System classloader
+        // the TestHandler class must be accessible from the System class loader
         // in order for java.util.logging.LogManager.readConfiguration to
         // be able to instantiate it. And this test case must see the same
         // class in order to be able to access its data. Yes this is ugly

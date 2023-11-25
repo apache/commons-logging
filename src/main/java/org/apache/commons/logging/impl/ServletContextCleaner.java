@@ -42,7 +42,7 @@ import org.apache.commons.logging.LogFactory;
  * To use this class, configure the webapp deployment descriptor to call
  * this class on webapp undeploy; the contextDestroyed method will tell
  * every accessible LogFactory class that the entry in its map for the
- * current webapp's context classloader should be cleared.
+ * current webapp's context class loader should be cleared.
  *
  * @since 1.1
  */
@@ -78,18 +78,18 @@ public class ServletContextCleaner implements ServletContextListener {
         // holding any data associated with the tccl being released.
         //
         // When there are multiple LogFactory classes in the classpath and
-        // child-first classloading is used in any classloader, then multiple
+        // child-first classloading is used in any class loader, then multiple
         // LogFactory instances may hold info about this TCCL; whenever the
-        // webapp makes a call into a class loaded via an ancestor classloader
+        // webapp makes a call into a class loaded via an ancestor class loader
         // and that class calls LogFactory the tccl gets registered in
         // the LogFactory instance that is visible from the ancestor
-        // classloader. However the concrete logging library it points
+        // class loader. However the concrete logging library it points
         // to is expected to have been loaded via the TCCL, so the
         // underlying logging lib is only initialized/configured once.
         // These references from ancestor LogFactory classes down to
         // TCCL class loaders are held via weak references and so should
         // be released but there are circumstances where they may not.
-        // Walking up the classloader ancestry ladder releasing
+        // Walking up the class loader ancestry ladder releasing
         // the current tccl at each level tree, though, will definitely
         // clear any problem references.
         ClassLoader loader = tccl;

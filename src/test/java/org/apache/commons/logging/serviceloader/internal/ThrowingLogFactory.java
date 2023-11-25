@@ -17,7 +17,7 @@
 package org.apache.commons.logging.serviceloader.internal;
 
 /**
- * A common ServiceLoader error is finding a class that implements LogFactory from a different classloader.
+ * A common ServiceLoader error is finding a class that implements LogFactory from a different class loader.
  * This class should emulate that behavior.
  */
 public class ThrowingLogFactory {

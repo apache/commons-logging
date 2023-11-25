@@ -68,7 +68,7 @@ public class PriorityConfigTestCase extends TestCase {
         final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         final URL baseUrl = dummy.findResource(thisClassPath);
 
-        // Now set up the desired classloader hierarchy. We'll put a config
+        // Now set up the desired class loader hierarchy. We'll put a config
         // file of priority=10 in the container path, and ones of both
         // "no priority" and priority=20 in the webapp path.
         //

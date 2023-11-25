@@ -61,10 +61,10 @@ public class TcclEnabledTestCase extends TestCase {
         final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         final URL baseUrl = dummy.findResource(thisClassPath);
 
-        // Now set up the desired classloader hierarchy. Everything goes into
+        // Now set up the desired class loader hierarchy. Everything goes into
         // the parent classpath, but we exclude the custom Log class.
         //
-        // We then create a tccl classloader that can see the custom
+        // We then create a tccl class loader that can see the custom
         // Log class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
         final PathableClassLoader emptyLoader = new PathableClassLoader(null);
@@ -73,7 +73,7 @@ public class TcclEnabledTestCase extends TestCase {
         parentLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         parentLoader.addLogicalLib("commons-logging");
         parentLoader.addLogicalLib("testclasses");
-        // hack to ensure that the test classloader can't see
+        // hack to ensure that the test class loader can't see
         // the custom MyLogFactoryImpl
         parentLoader.useExplicitLoader(MY_LOG_PKG + ".", emptyLoader);
 
@@ -113,12 +113,12 @@ public class TcclEnabledTestCase extends TestCase {
         final ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
         // the tccl loader should NOT be the same as the loader that loaded this test class.
-        assertNotSame("tccl not same as test classloader", thisClassLoader, tcclLoader);
+        assertNotSame("tccl not same as test class loader", thisClassLoader, tcclLoader);
 
         // MyLog should not be loadable via parent loader
         try {
             final Class clazz = thisClassLoader.loadClass(MY_LOG_IMPL);
-            fail("Unexpectedly able to load MyLog via test class classloader");
+            fail("Unexpectedly able to load MyLog via test class class loader");
             assertNotNull(clazz); // silence warnings about unused var
         } catch (final ClassNotFoundException ex) {
             // ok, expected
@@ -129,7 +129,7 @@ public class TcclEnabledTestCase extends TestCase {
             final Class clazz = tcclLoader.loadClass(MY_LOG_IMPL);
             assertNotNull(clazz);
         } catch (final ClassNotFoundException ex) {
-            fail("Unexpectedly unable to load MyLog via tccl classloader");
+            fail("Unexpectedly unable to load MyLog via tccl class loader");
         }
     }
 

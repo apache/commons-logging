@@ -26,7 +26,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 
 /**
- * Tests for Log4J logging when there is only one classloader and everything
+ * Tests for Log4J logging when there is only one class loader and everything
  * is in it, as would be the situation for a standalone application.
  */
 

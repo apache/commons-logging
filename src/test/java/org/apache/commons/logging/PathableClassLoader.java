@@ -33,7 +33,7 @@ import junit.framework.Assert;
  * A ClassLoader which sees only specified classes, and which can be
  * set to do parent-first or child-first path lookup.
  * <p>
- * Note that this classloader is not "industrial strength"; users
+ * Note that this class loader is not "industrial strength"; users
  * looking for such a class may wish to look at the Tomcat sourcecode
  * instead. In particular, this class may not be threadsafe.
  * <p>
@@ -54,16 +54,16 @@ public class PathableClassLoader extends URLClassLoader {
 
     /**
      * A map of package-prefix to ClassLoader. Any class which is in
-     * this map is looked up via the specified classloader instead of
-     * the classpath associated with this classloader or its parents.
+     * this map is looked up via the specified class loader instead of
+     * the classpath associated with this class loader or its parents.
      * <p>
      * This is necessary in order for the rest of the world to communicate
-     * with classes loaded via a custom classloader. As an example, junit
-     * tests which are loaded via a custom classloader needs to see
+     * with classes loaded via a custom class loader. As an example, junit
+     * tests which are loaded via a custom class loader needs to see
      * the same junit classes as the code invoking the test, otherwise
      * they can't pass result objects back.
      * <p>
-     * Normally, only a classloader created with a null parent needs to
+     * Normally, only a class loader created with a null parent needs to
      * have any lookasides defined.
      */
     private HashMap lookasides;
@@ -81,7 +81,7 @@ public class PathableClassLoader extends URLClassLoader {
      * totally clean; nothing but the standard java library will be
      * present.
      * <p>
-     * When using a null parent classloader with a junit test, it *is*
+     * When using a null parent class loader with a junit test, it *is*
      * necessary for the junit library to also be visible. In this case, it
      * is recommended that the following code be used:
      * <pre>
@@ -91,7 +91,7 @@ public class PathableClassLoader extends URLClassLoader {
      * </pre>
      * Note that this works regardless of whether junit is on the system
      * classpath, or whether it has been loaded by some test framework that
-     * creates its own classloader to run unit tests in (eg maven2's
+     * creates its own class loader to run unit tests in (eg maven2's
      * Surefire plugin).
      */
     public PathableClassLoader(final ClassLoader parent) {
@@ -108,9 +108,9 @@ public class PathableClassLoader extends URLClassLoader {
      * be found. Typically this is the name of a jar file, or a directory
      * containing class files.
      * <p>
-     * If there is no system property, but the classloader that loaded
+     * If there is no system property, but the class loader that loaded
      * this class is a URLClassLoader then the set of URLs that the
-     * classloader uses for its classpath is scanned; any jar in the
+     * class loader uses for its classpath is scanned; any jar in the
      * URL set whose name starts with the specified string is added to
      * the classpath managed by this instance.
      * <p>
@@ -225,14 +225,14 @@ public class PathableClassLoader extends URLClassLoader {
         final ClassLoader parent = getParent();
         if (parent == null) {
             // Alas, there is no method to get matching resources
-            // from a null (BOOT) parent classloader. Calling
+            // from a null (BOOT) parent class loader. Calling
             // ClassLoader.getSystemClassLoader isn't right. Maybe
             // calling Class.class.getResources(name) would do?
             //
             // However for the purposes of unit tests, we can
             // simply assume that no relevant resources are
             // loadable from the parent; unit tests will never be
-            // putting any of their resources in a "boot" classloader
+            // putting any of their resources in a "boot" class loader
             // path!
             return localUrls;
         }
@@ -245,15 +245,15 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     * If the classloader that loaded this class has this logical lib in its
+     * If the class loader that loaded this class has this logical lib in its
      * path, then return the matching URL otherwise return null.
      * <p>
-     * This only works when the classloader loading this class is an instance
+     * This only works when the class loader loading this class is an instance
      * of URLClassLoader and thus has a getURLs method that returns the classpath
      * it uses when loading classes. However in practice, the vast majority of the
-     * time this type is the classloader used.
+     * time this type is the class loader used.
      * <p>
-     * The classpath of the classloader for this instance is scanned, and any
+     * The classpath of the class loader for this instance is scanned, and any
      * jarfile in the path whose name starts with the logicalLib string is
      * considered a match. For example, passing "foo" will match a url
      * of {@code file:///some/where/foo-2.7.jar}.
@@ -301,7 +301,7 @@ public class PathableClassLoader extends URLClassLoader {
      * <p>
      * For each explicitly mapped package prefix, if the name matches the
      * prefix associated with that entry then attempt to load the class via
-     * that entries' classloader.
+     * that entries' class loader.
      */
     @Override
     protected Class loadClass(final String name, final boolean resolve)
@@ -341,7 +341,7 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     * Specify whether this classloader should ask the parent classloader
+     * Specify whether this class loader should ask the parent class loader
      * to resolve a class first, before trying to resolve it via its own
      * classpath.
      * <p>
@@ -380,13 +380,13 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     * Specify a classloader to use for specific java packages.
+     * Specify a class loader to use for specific java packages.
      * <p>
-     * The specified classloader is normally a loader that is NOT
-     * an ancestor of this classloader. In particular, this loader
+     * The specified class loader is normally a loader that is NOT
+     * an ancestor of this class loader. In particular, this loader
      * may have the bootloader as its parent, but be configured to
      * see specific other classes (eg the junit library loaded
-     * via the system classloader).
+     * via the system class loader).
      * <p>
      * The differences between using this method, and using
      * addLogicalLib are:
@@ -394,11 +394,11 @@ public class PathableClassLoader extends URLClassLoader {
      * <li>If code calls getClassLoader on a class loaded via
      * "lookaside", then traces up its inheritance chain, it
      * will see the "real" class loaders. When the class is remapped
-     * into this classloader via addLogicalLib, the classloader
+     * into this class loader via addLogicalLib, the class loader
      * chain seen is this object plus ancestors.
      * <li>If two different jars contain classes in the same
      * package, then it is not possible to load both jars into
-     * the same "lookaside" classloader (eg the system classloader)
+     * the same "lookaside" class loader (eg the system class loader)
      * then map one of those subsets from here. Of course they could
      * be loaded into two different "lookaside" class loaders and
      * then a prefix used to map from here to one of those class loaders.
@@ -421,7 +421,7 @@ public class PathableClassLoader extends URLClassLoader {
      * </pre>
      * <p>
      * Of course, this assumes that the classes of interest are already
-     * in the classpath of the system classloader.
+     * in the classpath of the system class loader.
      */
     public void useSystemLoader(final String prefix) {
         useExplicitLoader(prefix, ClassLoader.getSystemClassLoader());

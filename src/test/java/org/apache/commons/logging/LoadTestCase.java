@@ -26,13 +26,13 @@ import junit.framework.TestCase;
 public class LoadTestCase extends TestCase {
 
     /**
-     * A custom classloader which "duplicates" logging classes available
-     * in the parent classloader into itself.
+     * A custom class loader which "duplicates" logging classes available
+     * in the parent class loader into itself.
      * <p>
      * When asked to load a class that is in one of the LOG_PCKG packages,
      * it loads the class itself (child-first). This class doesn't need
      * to be set up with a classpath, as it simply uses the same classpath
-     * as the classloader that loaded it.
+     * as the class loader that loaded it.
      */
     static class AppClassLoader extends ClassLoader {
 
@@ -79,7 +79,7 @@ public class LoadTestCase extends TestCase {
         @Override
         public Class loadClass(final String name) throws ClassNotFoundException {
 
-            // isolates all logging classes, application in the same classloader too.
+            // isolates all logging classes, application in the same class loader too.
             // filters exceptions to simplify handling in test
             for (final String element : LOG_PCKG) {
                 if (name.startsWith(element) && name.indexOf("Exception") == -1) {
@@ -103,8 +103,8 @@ public class LoadTestCase extends TestCase {
     }
 
     /**
-     * Load class UserClass via a temporary classloader which is a child of
-     * the classloader used to load this test class.
+     * Load class UserClass via a temporary class loader which is a child of
+     * the class loader used to load this test class.
      */
     private Class reload() throws Exception {
         Class testObjCls = null;
@@ -129,7 +129,7 @@ public class LoadTestCase extends TestCase {
 
     /**
      * Call the static setAllowFlawedContext method on the specified class
-     * (expected to be a UserClass loaded via a custom classloader), passing
+     * (expected to be a UserClass loaded via a custom class loader), passing
      * it the specified state parameter.
      */
     private void setAllowFlawedContext(final Class c, final String state) throws Exception {
@@ -151,7 +151,7 @@ public class LoadTestCase extends TestCase {
     }
 
     /**
-     * Test what happens when we play various classloader tricks like those
+     * Test what happens when we play various class loader tricks like those
      * that happen in web and j2ee containers.
      * <p>
      * Note that this test assumes that commons-logging.jar and log4j.jar
@@ -166,19 +166,19 @@ public class LoadTestCase extends TestCase {
         // 1. Thread.currentThread().setContextClassLoader(appLoader);
         // 2. Thread.currentThread().setContextClassLoader(null);
 
-        // Context classloader is same as class calling into log
+        // Context class loader is same as class calling into log
         Class cls = reload();
         Thread.currentThread().setContextClassLoader(cls.getClassLoader());
         execute(cls);
 
-        // Context classloader is the "bootclassloader". This is technically
+        // Context class loader is the "bootclass loader". This is technically
         // bad, but LogFactoryImpl.ALLOW_FLAWED_CONTEXT defaults to true so
         // this test should pass.
         cls = reload();
         Thread.currentThread().setContextClassLoader(null);
         execute(cls);
 
-        // Context classloader is the "bootclassloader". This is same as above
+        // Context class loader is the "bootclass loader". This is same as above
         // except that ALLOW_FLAWED_CONTEXT is set to false; an error should
         // now be reported.
         cls = reload();
@@ -186,27 +186,27 @@ public class LoadTestCase extends TestCase {
         try {
             setAllowFlawedContext(cls, "false");
             execute(cls);
-            fail("Logging config succeeded when context classloader was null!");
+            fail("Logging config succeeded when context class loader was null!");
         } catch (final InvocationTargetException ex) {
             final Throwable targetException = ex.getTargetException();
-            // LogConfigurationException is expected; the boot classloader doesn't *have* JCL available
+            // LogConfigurationException is expected; the boot class loader doesn't *have* JCL available
             if (!(targetException instanceof LogConfigurationException)) {
                 throw ex;
             }
         }
 
-        // Context classloader is the system classloader.
+        // Context class loader is the system class loader.
         //
         // This is expected to cause problems, as LogFactoryImpl will attempt
-        // to use the system classloader to load the Log4JLogger class, which
+        // to use the system class loader to load the Log4JLogger class, which
         // will then be unable to cast that object to the Log interface loaded
-        // via the child classloader. However as ALLOW_FLAWED_CONTEXT defaults
+        // via the child class loader. However as ALLOW_FLAWED_CONTEXT defaults
         // to true this test should pass.
         cls = reload();
         Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
         execute(cls);
 
-        // Context classloader is the system classloader. This is the same
+        // Context class loader is the system class loader. This is the same
         // as above except that ALLOW_FLAWED_CONTEXT is set to false; an error
         // should now be reported.
         cls = reload();
@@ -214,8 +214,8 @@ public class LoadTestCase extends TestCase {
         try {
             setAllowFlawedContext(cls, "false");
             execute(cls);
-            fail("Error: somehow downcast a Logger loaded via system classloader"
-                    + " to the Log interface loaded via a custom classloader");
+            fail("Error: somehow downcast a Logger loaded via system class loader"
+                    + " to the Log interface loaded via a custom class loader");
         } catch (final InvocationTargetException ex) {
             final Throwable targetException = ex.getTargetException();
             // LogConfigurationException is expected

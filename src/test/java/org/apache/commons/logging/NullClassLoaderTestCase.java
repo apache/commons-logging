@@ -21,7 +21,7 @@ import junit.framework.TestCase;
 /**
  * Test cases for situations where getClassLoader or getContextClassLoader
  * return null. This can happen when using JDK 1.1. It can also happen when
- * JCL is deployed via the bootclassloader - something that could be done when
+ * JCL is deployed via the bootclass loader - something that could be done when
  * using java in embedded systems.
  */
 public class NullClassLoaderTestCase extends TestCase {
@@ -35,7 +35,7 @@ public class NullClassLoaderTestCase extends TestCase {
      */
     public void testSameLogObject() throws Exception {
         // unfortunately, there just isn't any way to emulate JCL being
-        // accessible via the null classloader in "standard" systems, so
+        // accessible via the null class loader in "standard" systems, so
         // we can't include this test in our standard unit tests.
     }
 }

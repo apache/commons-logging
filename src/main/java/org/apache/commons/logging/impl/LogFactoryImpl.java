@@ -97,9 +97,9 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The name ({@code org.apache.commons.logging.Log.allowFlawedContext})
      * of the system property which can be set true/false to
-     * determine system behavior when a bad context-classloader is encountered.
+     * determine system behavior when a bad context class loader is encountered.
      * When set to false, a LogConfigurationException is thrown if
-     * LogFactoryImpl is loaded via a child classloader of the TCCL (this
+     * LogFactoryImpl is loaded via a child class loader of the TCCL (this
      * should never happen in sane systems).
      *
      * Default behavior: true (tolerates bad context class loaders)
@@ -186,14 +186,14 @@ public class LogFactoryImpl extends LogFactory {
      * the entire call stack must have the privilege before the call is
      * allowed.
      *
-     * @return the context classloader associated with the current thread,
+     * @return the context class loader associated with the current thread,
      * or null if security doesn't allow it.
      *
      * @throws LogConfigurationException if there was some weird error while
-     * attempting to get the context classloader.
+     * attempting to get the context class loader.
      *
      * @throws SecurityException if the current java security policy doesn't
-     * allow this class to access the context classloader.
+     * allow this class to access the context class loader.
      */
     private static ClassLoader getContextClassLoaderInternal()
             throws LogConfigurationException {
@@ -234,7 +234,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Determines whether logging classes should be loaded using the thread-context
-     * classloader, or via the classloader that loaded this LogFactoryImpl class.
+     * class loader, or via the class loader that loaded this LogFactoryImpl class.
      */
     private boolean useTCCL = true;
 
@@ -341,14 +341,14 @@ public class LogFactoryImpl extends LogFactory {
         ClassLoader currentCL = getBaseClassLoader();
 
         for(;;) {
-            // Loop through the classloader hierarchy trying to find
-            // a viable classloader.
-            logDiagnostic("Trying to load '" + logAdapterClassName + "' from classloader " + objectId(currentCL));
+            // Loop through the class loader hierarchy trying to find
+            // a viable class loader.
+            logDiagnostic("Trying to load '" + logAdapterClassName + "' from class loader " + objectId(currentCL));
             try {
                 if (isDiagnosticsEnabled()) {
                     // Show the location of the first occurrence of the .class file
                     // in the classpath. This is the location that ClassLoader.loadClass
-                    // will load the class from -- unless the classloader is doing
+                    // will load the class from -- unless the class loader is doing
                     // something weird.
                     URL url;
                     final String resourceName = logAdapterClassName.replace('.', '/') + ".class";
@@ -369,14 +369,14 @@ public class LogFactoryImpl extends LogFactory {
                 try {
                     clazz = Class.forName(logAdapterClassName, true, currentCL);
                 } catch (final ClassNotFoundException originalClassNotFoundException) {
-                    // The current classloader was unable to find the log adapter
-                    // in this or any ancestor classloader. There's no point in
+                    // The current class loader was unable to find the log adapter
+                    // in this or any ancestor class loader. There's no point in
                     // trying higher up in the hierarchy in this case..
                     String msg = originalClassNotFoundException.getMessage();
-                    logDiagnostic("The log adapter '" + logAdapterClassName + "' is not available via classloader " +
+                    logDiagnostic("The log adapter '" + logAdapterClassName + "' is not available via class loader " +
                                   objectId(currentCL) + ": " + trim(msg));
                     try {
-                        // Try the class classloader.
+                        // Try the class class loader.
                         // This may work in cases where the TCCL
                         // does not contain the code executed or JCL.
                         // This behavior indicates that the application
@@ -388,7 +388,7 @@ public class LogFactoryImpl extends LogFactory {
                         // no point continuing: this adapter isn't available
                         msg = secondaryClassNotFoundException.getMessage();
                         logDiagnostic("The log adapter '" + logAdapterClassName +
-                                      "' is not available via the LogFactoryImpl class classloader: " + trim(msg));
+                                      "' is not available via the LogFactoryImpl class class loader: " + trim(msg));
                         break;
                     }
                 }
@@ -421,11 +421,11 @@ public class LogFactoryImpl extends LogFactory {
                 // We were able to load the adapter but it had references to
                 // other classes that could not be found. This simply means that
                 // the underlying logger library is not present in this or any
-                // ancestor classloader. There's no point in trying higher up
+                // ancestor class loader. There's no point in trying higher up
                 // in the hierarchy in this case..
                 final String msg = e.getMessage();
                 logDiagnostic("The log adapter '" + logAdapterClassName +
-                              "' is missing dependencies when loaded via classloader " + objectId(currentCL) +
+                              "' is missing dependencies when loaded via class loader " + objectId(currentCL) +
                               ": " + trim(msg));
                 break;
             } catch (final ExceptionInInitializerError e) {
@@ -437,7 +437,7 @@ public class LogFactoryImpl extends LogFactory {
                 // library could not be found.
                 final String msg = e.getMessage();
                 logDiagnostic("The log adapter '" + logAdapterClassName +
-                              "' is unable to initialize itself when loaded via classloader " + objectId(currentCL) +
+                              "' is unable to initialize itself when loaded via class loader " + objectId(currentCL) +
                               ": " + trim(msg));
                 break;
             } catch (final LogConfigurationException e) {
@@ -456,7 +456,7 @@ public class LogFactoryImpl extends LogFactory {
                 break;
             }
 
-            // try the parent classloader
+            // try the parent class loader
             // currentCL = currentCL.getParent();
             currentCL = getParentClassLoader(currentCL);
         }
@@ -473,11 +473,11 @@ public class LogFactoryImpl extends LogFactory {
             } catch (final Throwable t) {
                 handleThrowable(t); // may re-throw t
                 this.logMethod = null;
-                logDiagnostic("[INFO] '" + logAdapterClassName + "' from classloader " + objectId(currentCL) +
+                logDiagnostic("[INFO] '" + logAdapterClassName + "' from class loader " + objectId(currentCL) +
                               " does not declare optional method " + "setLogFactory(LogFactory)");
             }
 
-            logDiagnostic("Log adapter '" + logAdapterClassName + "' from classloader " +
+            logDiagnostic("Log adapter '" + logAdapterClassName + "' from class loader " +
                           objectId(logAdapterClass.getClassLoader()) + " has been selected for use.");
         }
 
@@ -543,18 +543,18 @@ public class LogFactoryImpl extends LogFactory {
         // expect method createLogFromClass to loop over the possible source
         // class loaders. The effect is:
         //   for each discoverable log adapter
-        //      for each possible classloader
+        //      for each possible class loader
         //          see if it works
         //
         // It appears reasonable at first glance to do the opposite:
-        //   for each possible classloader
+        //   for each possible class loader
         //     for each discoverable log adapter
         //        see if it works
         //
         // The latter certainly has advantages for user-installable logging
         // libraries such as log4j; in a webapp for example this code should
         // first check whether the user has provided any of the possible
-        // logging libraries before looking in the parent classloader.
+        // logging libraries before looking in the parent class loader.
         // Unfortunately, however, Jdk14Logger will always work in jvm>=1.4,
         // and SimpleLog will always work in any JVM. So the loop would never
         // ever look for logging libraries in the parent classpath. Yet many
@@ -666,19 +666,19 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return the classloader from which we should try to load the logging
+     * Return the class loader from which we should try to load the logging
      * adapter classes.
      * <p>
-     * This method usually returns the context classloader. However if it
-     * is discovered that the classloader which loaded this class is a child
-     * of the context classloader <i>and</i> the allowFlawedContext option
-     * has been set then the classloader which loaded this class is returned
+     * This method usually returns the context class loader. However if it
+     * is discovered that the class loader which loaded this class is a child
+     * of the context class loader <i>and</i> the allowFlawedContext option
+     * has been set then the class loader which loaded this class is returned
      * instead.
      * <p>
-     * The only time when the classloader which loaded this class is a
+     * The only time when the class loader which loaded this class is a
      * descendant (rather than the same as or an ancestor of the context
-     * classloader) is when an app has created custom class loaders but
-     * failed to correctly set the context classloader. This is a bug in
+     * class loader) is when an app has created custom class loaders but
+     * failed to correctly set the context class loader. This is a bug in
      * the calling application; however we provide the option for JCL to
      * simply generate a warning rather than fail outright.
      *
@@ -701,13 +701,13 @@ public class LogFactoryImpl extends LogFactory {
            // UnifiedLoaderRepository) this can still work, so if user hasn't
            // forbidden it, just return the contextClassLoader.
            if (!allowFlawedContext) {
-            throw new LogConfigurationException("Bad classloader hierarchy; LogFactoryImpl was loaded via" +
-                                                " a classloader that is not related to the current context" +
-                                                " classloader.");
+            throw new LogConfigurationException("Bad class loader hierarchy; LogFactoryImpl was loaded via" +
+                                                " a class loader that is not related to the current context" +
+                                                " class loader.");
            }
         if (isDiagnosticsEnabled()) {
-               logDiagnostic("[WARNING] the context classloader is not part of a" +
-                             " parent-child relationship with the classloader that" +
+               logDiagnostic("[WARNING] the context class loader is not part of a" +
+                             " parent-child relationship with the class loader that" +
                              " loaded LogFactoryImpl.");
           }
           // If contextClassLoader were null, getLowestClassLoader() would
@@ -720,20 +720,20 @@ public class LogFactoryImpl extends LogFactory {
             // We really should just use the contextClassLoader as the starting
             // point for scanning for log adapter classes. However it is expected
             // that there are a number of broken systems out there which create
-            // custom class loaders but fail to set the context classloader so
+            // custom class loaders but fail to set the context class loader so
             // we handle those flawed systems anyway.
             if (!allowFlawedContext) {
                 throw new LogConfigurationException(
-                        "Bad classloader hierarchy; LogFactoryImpl was loaded via" +
-                        " a classloader that is not related to the current context" +
-                        " classloader.");
+                        "Bad class loader hierarchy; LogFactoryImpl was loaded via" +
+                        " a class loader that is not related to the current context" +
+                        " class loader.");
             }
             if (isDiagnosticsEnabled()) {
                 logDiagnostic(
-                        "Warning: the context classloader is an ancestor of the" +
-                        " classloader that loaded LogFactoryImpl; it should be" +
+                        "Warning: the context class loader is an ancestor of the" +
+                        " class loader that loaded LogFactoryImpl; it should be" +
                         " the same or a descendant. The application using" +
-                        " commons-logging should ensure the context classloader" +
+                        " commons-logging should ensure the context class loader" +
                         " is used correctly.");
             }
         }
@@ -896,8 +896,8 @@ public class LogFactoryImpl extends LogFactory {
      * Given two related class loaders, return the one which is a child of
      * the other.
      * <p>
-     * @param c1 is a classloader (including the null classloader)
-     * @param c2 is a classloader (including the null classloader)
+     * @param c1 is a class loader (including the null class loader)
+     * @param c2 is a class loader (including the null class loader)
      *
      * @return c1 if it has c2 as an ancestor, c2 if it has c1 as an ancestor,
      * and null if neither is an ancestor of the other.
@@ -939,7 +939,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Fetch the parent classloader of a specified classloader.
+     * Fetch the parent class loader of a specified class loader.
      * <p>
      * If a SecurityException occurs, null is returned.
      * <p>
@@ -949,7 +949,7 @@ public class LogFactoryImpl extends LogFactory {
         try {
             return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> cl.getParent());
         } catch (final SecurityException ex) {
-            logDiagnostic("[SECURITY] Unable to obtain parent classloader");
+            logDiagnostic("[SECURITY] Unable to obtain parent class loader");
             return null;
         }
 
@@ -962,7 +962,7 @@ public class LogFactoryImpl extends LogFactory {
      *
      * @param logAdapterClassName is the class name of the Log implementation
      * that could not be instantiated. Cannot be {@code null}.
-     * @param discoveryFlaw is the Throwable created by the classloader
+     * @param discoveryFlaw is the Throwable created by the class loader
      *
      * @throws LogConfigurationException    ALWAYS
      */
@@ -1015,13 +1015,13 @@ public class LogFactoryImpl extends LogFactory {
      * <li>the specific class just doesn't implement the Log interface
      *     (user screwed up), or
      * <li> the specified class has bound to a Log class loaded by some other
-     *      classloader; Log@classloaderX cannot be cast to Log@classloaderY.
+     *      class loader; Log@ClassLoaderX cannot be cast to Log@ClassLoaderY.
      * </ol>
      * <p>
      * Here we try to figure out which case has occurred so we can give the
      * user some reasonable feedback.
      *
-     * @param badClassLoader is the classloader we loaded the problem class from,
+     * @param badClassLoader is the class loader we loaded the problem class from,
      * ie it is equivalent to badClass.getClassLoader().
      *
      * @param badClass is a Class object with the desired name, but which
@@ -1045,13 +1045,13 @@ public class LogFactoryImpl extends LogFactory {
 
         if (implementsLog) {
             // the class does implement an interface called Log, but
-            // it is in the wrong classloader
+            // it is in the wrong class loader
             if (isDiagnosticsEnabled()) {
                 try {
                     final ClassLoader logInterfaceClassLoader = getClassLoader(Log.class);
-                    logDiagnostic("Class '" + badClass.getName() + "' was found in classloader " +
+                    logDiagnostic("Class '" + badClass.getName() + "' was found in class loader " +
                                   objectId(badClassLoader) + ". It is bound to a Log interface which is not" +
-                                  " the one loaded from classloader " + objectId(logInterfaceClassLoader));
+                                  " the one loaded from class loader " + objectId(logInterfaceClassLoader));
                 } catch (final Throwable t) {
                     handleThrowable(t); // may re-throw t
                     logDiagnostic("Error while trying to output diagnostics about" + " bad class '" + badClass + "'");
@@ -1144,7 +1144,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Calculate and cache a string that uniquely identifies this instance,
-     * including which classloader the object was loaded from.
+     * including which class loader the object was loaded from.
      * <p>
      * This string will later be prefixed to each "internal logging" message
      * emitted, so that users can clearly see any unexpected behavior.
@@ -1155,7 +1155,7 @@ public class LogFactoryImpl extends LogFactory {
      * its own unique prefix for log messages.
      */
     private void initDiagnostics() {
-        // It would be nice to include an identifier of the context classloader
+        // It would be nice to include an identifier of the context class loader
         // that this LogFactoryImpl object is responsible for. However that
         // isn't possible as that information isn't available. It is possible
         // to figure this out by looking at the logging from LogFactory to

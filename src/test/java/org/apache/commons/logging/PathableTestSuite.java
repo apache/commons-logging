@@ -23,10 +23,10 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 /**
- * Custom TestSuite class that can be used to control the context classloader
+ * Custom TestSuite class that can be used to control the context class loader
  * in operation when a test runs.
  * <p>
- * For tests that need to control exactly what the classloader hierarchy is
+ * For tests that need to control exactly what the class loader hierarchy is
  * like when the test is run, something like the following is recommended:
  * <pre>
  * class SomeTestCase extends TestCase {
@@ -57,18 +57,18 @@ import junit.framework.TestSuite;
  * is expected that using the two classes together is common practice.
  * <p>
  * This class will run each test methods within the specified TestCase using
- * the specified context classloader and system classloader. If different
+ * the specified context class loader and system class loader. If different
  * tests within the same class require different context class loaders,
- * then the context classloader passed to the constructor should be the
+ * then the context class loader passed to the constructor should be the
  * "lowest" one available, and tests that need the context set to some parent
- * of this "lowest" classloader can call
+ * of this "lowest" class loader can call
  * <pre>
  *  // NB: pseudo-code only
  *  setContextClassLoader(getContextClassLoader().getParent());
  * </pre>
- * This class ensures that any context classloader changes applied by a test
+ * This class ensures that any context class loader changes applied by a test
  * is undone after the test is run, so tests don't need to worry about
- * restoring the context classloader on exit. This class also ensures that
+ * restoring the context class loader on exit. This class also ensures that
  * the system properties are restored to their original settings after each
  * test, so tests that manipulate those don't need to worry about resetting them.
  * <p>
@@ -87,14 +87,14 @@ import junit.framework.TestSuite;
  * <p>
  * <h2>Limitations</h2>
  * <p>
- * This class cannot control the system classloader (ie what method
+ * This class cannot control the system class loader (ie what method
  * ClassLoader.getSystemClassLoader returns) because Java provides no
- * mechanism for setting the system classloader. In this case, the only
+ * mechanism for setting the system class loader. In this case, the only
  * option is to invoke the unit test in a separate JVM with the appropriate
  * settings.
  * <p>
  * The effect of using this approach in a system that uses junit's
- * "reloading classloader" behavior is unknown. This junit feature is
+ * "reloading class loader" behavior is unknown. This junit feature is
  * intended for junit GUI apps where a test may be run multiple times
  * within the same JVM - and in particular, when the .class file may
  * be modified between runs of the test. How junit achieves this is
@@ -105,7 +105,7 @@ import junit.framework.TestSuite;
 public class PathableTestSuite extends TestSuite {
 
     /**
-     * The classloader that should be set as the context classloader
+     * The class loader that should be set as the context class loader
      * before each test in the suite is run.
      */
     private final ClassLoader contextLoader;
@@ -130,7 +130,7 @@ public class PathableTestSuite extends TestSuite {
      * Note that a Test may itself be a TestSuite object (ie a collection
      * of tests).
      * <p>
-     * The context classloader and system properties are saved before each
+     * The context class loader and system properties are saved before each
      * test, and restored after the test completes to better isolate tests.
      */
     @Override

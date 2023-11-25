@@ -42,9 +42,9 @@ import junit.framework.TestCase;
  * <p>
  * This class has only one unit test, as we are (in part) checking behavior in
  * the static block of the LogFactory class. As that class cannot be unloaded after
- * being loaded into a classloader, the only workaround is to use the
+ * being loaded into a class loader, the only workaround is to use the
  * PathableClassLoader approach to ensure each test is run in its own
- * classloader, and use a separate test class for each test.
+ * class loader, and use a separate test class for each test.
  */
 public class SecurityForbiddenTestCase extends TestCase {
 
@@ -77,7 +77,7 @@ public class SecurityForbiddenTestCase extends TestCase {
     private ClassLoader otherClassLoader;
 
     /**
-     * Loads a class with the given classloader.
+     * Loads a class with the given class loader.
      */
     private Object loadClass(final String name, final ClassLoader classLoader) {
         try {
@@ -167,8 +167,8 @@ public class SecurityForbiddenTestCase extends TestCase {
 
     /**
      * Test what happens when JCL is run with absolutely no security
-     * privileges at all and a class loaded with a different classloader
-     * than the context classloader of the current thread tries to log something.
+     * privileges at all and a class loaded with a different class loader
+     * than the context class loader of the current thread tries to log something.
      */
     public void testContextClassLoader() {
         // Ignore on Java 21
@@ -183,7 +183,7 @@ public class SecurityForbiddenTestCase extends TestCase {
         System.setSecurityManager(mySecurityManager);
 
         try {
-            // load a dummy class with another classloader
+            // load a dummy class with another class loader
             // to force a SecurityException when the LogFactory calls
             // Thread.getCurrentThread().getContextClassLoader()
             loadClass("org.apache.commons.logging.security.DummyClass", otherClassLoader);

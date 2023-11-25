@@ -61,7 +61,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
         final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         final URL baseUrl = dummy.findResource(thisClassPath);
 
-        // Now set up the desired classloader hierarchy. We'll put JCL
+        // Now set up the desired class loader hierarchy. We'll put JCL
         // in the container path, the test in a webapp path, and
         // both config files into the webapp path too.
         final PathableClassLoader containerLoader = new PathableClassLoader(null);
@@ -111,10 +111,10 @@ public class FirstPriorityConfigTestCase extends TestCase {
         final ClassLoader lfClassLoader = instance.getClass().getClassLoader();
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
-        // context classloader should be thisClassLoader
+        // context class loader should be thisClassLoader
         assertEquals(thisClassLoader, contextClassLoader);
 
-        // lfClassLoader should be parent of this classloader
+        // lfClassLoader should be parent of this class loader
         assertEquals(lfClassLoader, thisClassLoader.getParent());
         assertEquals(PathableClassLoader.class.getName(),
                 lfClassLoader.getClass().getName());

@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 /**
  * Test the ability to force the LogFactory class to use some
  * arbitrary Hashtable implementation to store its mapping from
- * context-classloader -&gt; LogFactory object.
+ * context class loader -&gt; LogFactory object.
  */
 public class AltHashtableTestCase extends TestCase {
 
@@ -61,7 +61,7 @@ public class AltHashtableTestCase extends TestCase {
     }
 
     /**
-     * Verify that when LogFactory sees a context-classloader for the
+     * Verify that when LogFactory sees a context class loader for the
      * first time that it creates a new entry in the LogFactory.factories
      * hashmap. In particular, this checks that this process works ok when
      * a system property has been used to specify an alternative Hashtable
@@ -86,7 +86,7 @@ public class AltHashtableTestCase extends TestCase {
         // Here, the reference to the LogFactory class should cause the
         // class to be loaded and initialized. It will see the property
         // set and use the AltHashtable class. If other tests in this
-        // class have already been run within the same classloader then
+        // class have already been run within the same class loader then
         // LogFactory will already have been initialized, but that
         // doesn't change the effectiveness of this test.
         assertTrue(LogFactory.factories instanceof AltHashtable);

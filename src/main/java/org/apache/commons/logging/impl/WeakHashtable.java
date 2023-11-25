@@ -65,18 +65,18 @@ import java.util.Set;
  * The reason all this is necessary is due to a issue which
  * arises during hot deploy in a J2EE-like containers.
  * Each component running in the container owns one or more class loaders; when
- * the component loads a LogFactory instance via the component classloader
+ * the component loads a LogFactory instance via the component class loader
  * a reference to it gets stored in the static LogFactory.factories member,
- * keyed by the component's classloader so different components don't
+ * keyed by the component's class loader so different components don't
  * stomp on each other. When the component is later unloaded, the container
- * sets the component's classloader to null with the intent that all the
+ * sets the component's class loader to null with the intent that all the
  * component's classes get garbage-collected. However there's still a
- * reference to the component's classloader from a key in the "global"
+ * reference to the component's class loader from a key in the "global"
  * {@code LogFactory}'s factories member! If {@code LogFactory.release()}
  * is called whenever component is unloaded, the class loaders will be correctly
  * garbage collected; this <i>should</i> be done by any container that
- * bundles commons-logging by default. However, holding the classloader
- * references weakly ensures that the classloader will be garbage collected
+ * bundles commons-logging by default. However, holding the class loader
+ * references weakly ensures that the class loader will be garbage collected
  * without the container performing this step.
  * <p>
  * <strong>Limitations:</strong>
@@ -85,22 +85,22 @@ import java.util.Set;
  * are used for its keys, it is necessary to use strong references for its values.
  * <p>
  * If the abstract class {@code LogFactory} is
- * loaded by the container classloader but a subclass of
+ * loaded by the container class loader but a subclass of
  * {@code LogFactory} [LogFactory1] is loaded by the component's
- * classloader and an instance stored in the static map associated with the
+ * class loader and an instance stored in the static map associated with the
  * base LogFactory class, then there is a strong reference from the LogFactory
  * class to the LogFactory1 instance (as normal) and a strong reference from
- * the LogFactory1 instance to the component classloader via
+ * the LogFactory1 instance to the component class loader via
  * {@code getClass().getClassLoader()}. This chain of references will prevent
- * collection of the child classloader.
+ * collection of the child class loader.
  * <p>
  * Such a situation occurs when the commons-logging.jar is
- * loaded by a parent classloader (e.g. a server level classloader in a
+ * loaded by a parent class loader (e.g. a server level class loader in a
  * servlet container) and a custom {@code LogFactory} implementation is
- * loaded by a child classloader (e.g. a web app classloader).
+ * loaded by a child class loader (e.g. a web app class loader).
  * <p>
  * To avoid this scenario, ensure
- * that any custom LogFactory subclass is loaded by the same classloader as
+ * that any custom LogFactory subclass is loaded by the same class loader as
  * the base {@code LogFactory}. Creating custom LogFactory subclasses is,
  * however, rare. The standard LogFactoryImpl class should be sufficient
  * for most or all users.

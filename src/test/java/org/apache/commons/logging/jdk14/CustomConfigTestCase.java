@@ -48,15 +48,15 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     
 
     /**
-     * Make a class available in the system classloader even when its classfile is
-     * not present in the classpath configured for that classloader. This only
+     * Make a class available in the system class loader even when its classfile is
+     * not present in the classpath configured for that class loader. This only
      * works for classes for which all dependencies are already loaded in
-     * that classloader.
+     * that class loader.
      */
     protected static void loadTestHandler(final String className, final ClassLoader targetCL) {
         try {
             targetCL.loadClass(className);
-            // fail("Class already in target classloader");
+            // fail("Class already in target class loader");
             return;
         } catch (final ClassNotFoundException ex) {
             // ok, go ahead and load it
@@ -87,7 +87,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     /**
      * Given the name of a class that is somewhere in the classpath of the provided
-     * classloader, return the contents of the corresponding .class file.
+     * class loader, return the contents of the corresponding .class file.
      */
     protected static byte[] readClass(final String name, final ClassLoader srcCL) throws Exception {
         final String resName = name.replace('.', '/') + ".class";
@@ -115,7 +115,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         final PathableClassLoader cl = new PathableClassLoader(null);
         cl.useExplicitLoader("junit.", Test.class.getClassLoader());
 
-        // the TestHandler class must be accessible from the System classloader
+        // the TestHandler class must be accessible from the System class loader
         // in order for java.util.logging.LogManager.readConfiguration to
         // be able to instantiate it. And this test case must see the same
         // class in order to be able to access its data. Yes this is ugly
