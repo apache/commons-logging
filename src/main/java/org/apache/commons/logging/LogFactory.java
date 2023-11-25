@@ -24,7 +24,6 @@ import java.io.PrintStream;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -50,37 +49,37 @@ public abstract class LogFactory {
     //
     // It is important to keep code invoked via an AccessController to small
     // auditable blocks. Such code must carefully evaluate all user input
-    // (parameters, system properties, config file contents, etc). As an
-    // example, a Log implementation should not write to its logfile
+    // (parameters, system properties, configuration file contents, etc). As an
+    // example, a Log implementation should not write to its log file
     // with an AccessController anywhere in the call stack, otherwise an
     // insecure application could configure the log implementation to write
     // to a protected file using the privileges granted to JCL rather than
     // to the calling application.
     //
     // Under no circumstance should a non-private method return data that is
-    // retrieved via an AccessController. That would allow an insecure app
+    // retrieved via an AccessController. That would allow an insecure application
     // to invoke that method and obtain data that it is not permitted to have.
     //
     // Invoking user-supplied code with an AccessController set is not a major
-    // issue (eg invoking the constructor of the class specified by
+    // issue (for example, invoking the constructor of the class specified by
     // HASHTABLE_IMPLEMENTATION_PROPERTY). That class will be in a different
     // trust domain, and therefore must have permissions to do whatever it
     // is trying to do regardless of the permissions granted to JCL. There is
-    // a slight issue in that untrusted code may point that environment var
+    // a slight issue in that untrusted code may point that environment variable
     // to another trusted library, in which case the code runs if both that
-    // lib and JCL have the necessary permissions even when the untrusted
+    // library and JCL have the necessary permissions even when the untrusted
     // caller does not. That's a pretty hard route to exploit though.
 
 
     /**
-     * The name ({@code priority}) of the key in the config file used to
-     * specify the priority of that particular config file. The associated value
+     * The name ({@code priority}) of the key in the configuration file used to
+     * specify the priority of that particular configuration file. The associated value
      * is a floating-point number; higher values take priority over lower values.
      */
     public static final String PRIORITY_KEY = "priority";
 
     /**
-     * The name ({@code use_tccl}) of the key in the config file used
+     * The name ({@code use_tccl}) of the key in the configuration file used
      * to specify whether logging classes should be loaded via the thread
      * context class loader (TCCL), or not. By default, the TCCL is used.
      */
