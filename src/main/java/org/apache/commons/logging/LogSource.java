@@ -205,10 +205,8 @@ public class LogSource {
      *                                     s.checkPackageAccess()} denies access to the package of this class.
      */
     static public void setLogImplementation(final Class<?> logClass)
-        throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
-        final Class<?>[] argTypes = new Class[1];
-        argTypes[0] = "".getClass();
-        logImplctor = logClass.getConstructor(argTypes);
+            throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
+        logImplctor = logClass.getConstructor(new Class<?>[] { String.class });
     }
 
     /**
@@ -224,9 +222,7 @@ public class LogSource {
     static public void setLogImplementation(final String className) throws LinkageError, SecurityException {
         try {
             final Class<?> logClass = Class.forName(className);
-            final Class<?>[] argTypes = new Class[1];
-            argTypes[0] = "".getClass();
-            logImplctor = logClass.getConstructor(argTypes);
+            logImplctor = logClass.getConstructor(new Class<?>[] { String.class });
         } catch (final Throwable t) {
             logImplctor = null;
         }
