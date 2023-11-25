@@ -95,6 +95,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action type="fix" dev="ggregory" due-to="Gary Gregory">
         Fix SpotBugs [ERROR] High: Found reliance on default encoding in org.apache.commons.logging.LogFactory.initDiagnostics(): new java.io.PrintStream(OutputStream) [org.apache.commons.logging.LogFactory] At LogFactory.java:[line 1205] DM_DEFAULT_ENCODING.
       </action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">
+        Fix SpotBugs [ERROR] Medium: Class org.apache.commons.logging.impl.WeakHashtable defines non-transient non-serializable instance field queue [org.apache.commons.logging.impl.WeakHashtable] In WeakHashtable.java SE_BAD_FIELD.
+      </action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Gary Gregory">
         Bump Java from 6 to 8.
