@@ -92,6 +92,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action type="fix" dev="ggregory" due-to="Gary Gregory">
         Deprecate LogConfigurationException.cause in favor of getCause().
       </action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">
+        Fix SpotBugs [ERROR] High: Found reliance on default encoding in org.apache.commons.logging.LogFactory.initDiagnostics(): new java.io.PrintStream(OutputStream) [org.apache.commons.logging.LogFactory] At LogFactory.java:[line 1205] DM_DEFAULT_ENCODING.
+      </action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Gary Gregory">
         Bump Java from 6 to 8.

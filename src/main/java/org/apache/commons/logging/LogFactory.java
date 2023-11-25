@@ -24,6 +24,8 @@ import java.io.PrintStream;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Enumeration;
@@ -1202,7 +1204,7 @@ public abstract class LogFactory {
         try {
             // open the file in append mode
             final FileOutputStream fos = new FileOutputStream(dest, true);
-            return new PrintStream(fos);
+            return new PrintStream(fos, false, StandardCharsets.UTF_8.name());
         } catch (final IOException ex) {
             // We should report this to the user - but how?
             return null;
