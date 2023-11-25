@@ -153,7 +153,8 @@ public class LogSource {
 
     private static boolean isClassForName(final String className) {
         try {
-            return Class.forName(className) != null;
+            Class.forName(className);
+            return true;
         } catch (Throwable e) {
             return false;
         }
