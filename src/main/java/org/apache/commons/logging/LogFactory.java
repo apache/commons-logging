@@ -297,7 +297,7 @@ public abstract class LogFactory {
     protected static Object createFactory(final String factoryClassName, final ClassLoader classLoader) {
         // This will be used to diagnose bad configurations
         // and allow a useful message to be sent to the user
-        Class logFactoryClass = null;
+        Class<?> logFactoryClass = null;
         try {
             if (classLoader != null) {
                 try {
@@ -1125,7 +1125,7 @@ public abstract class LogFactory {
      * {@code LogFactory} when that class is loaded via the same
      * classloader that loaded the {@code logFactoryClass}.
      */
-    private static boolean implementsLogFactory(final Class logFactoryClass) {
+    private static boolean implementsLogFactory(final Class<?> logFactoryClass) {
         boolean implementsLogFactory = false;
         if (logFactoryClass != null) {
             try {
@@ -1134,7 +1134,7 @@ public abstract class LogFactory {
                     logDiagnostic("[CUSTOM LOG FACTORY] was loaded by the boot classloader");
                 } else {
                     logHierarchy("[CUSTOM LOG FACTORY] ", logFactoryClassLoader);
-                    final Class factoryFromCustomLoader = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
+                    final Class<?> factoryFromCustomLoader = Class.forName("org.apache.commons.logging.LogFactory", false, logFactoryClassLoader);
                     implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
                     final String logFactoryClassName = logFactoryClass.getName();
                     if (implementsLogFactory) {
