@@ -52,6 +52,12 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="add" due-to="Piotr P. Karwasz">
         Deprecate org.apache.commons.logging.impl.WeakHashtable without replacement.
       </action>
+      <action issue="LOGGING-188" dev="pkarwasz" type="add" due-to="Piotr P. Karwasz">
+        Deprecate and disable `Jdk13LumberjackLogger` and `Log4JLogger`.
+      </action>
+      <action issue="LOGGING-173" dev="pkarwasz" type="add" due-to="SingingBush">
+        Deprecate and disable `AvalonLogger` and `LogKitLogger`.
+      </action>
       <!-- FIX -->
       <action issue="LOGGING-165" dev="britter" type="add">
         Add Automatic-Module-Name Manifest Header for Java 9 compatibility.
