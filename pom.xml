@@ -197,7 +197,7 @@ under the License.
   <build>
     <!-- TODO spotbugs:check -->
     <!-- TODO replace clirr:check with japicmp:cmp -->
-    <defaultGoal>clean verify apache-rat:check japicmp:cmp javadoc:javadoc checkstyle:check</defaultGoal>
+    <defaultGoal>clean verify apache-rat:check japicmp:cmp javadoc:javadoc checkstyle:check pmd:check</defaultGoal>
     <plugins>
 
       <!--
@@ -531,6 +531,17 @@ under the License.
         <configuration>
           <configLocation>${basedir}/checkstyle.xml</configLocation>
           <enableRulesSummary>false</enableRulesSummary>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <configuration>
+          <targetJdk>1.8</targetJdk>
+          <rulesets>
+            <ruleset>${basedir}/pmd.xml</ruleset>
+          </rulesets>
         </configuration>
       </plugin>
 

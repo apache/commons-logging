@@ -15,11 +15,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<ruleset name="mybraces"
-    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+<ruleset name="mybraces" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
   <description>Excludes from default PMD rules.</description>
   <rule ref="rulesets/java/unusedcode.xml">
+  </rule>
+  <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+    <properties>
+      <property name="allowCommentedBlocks" value="true" />
+    </properties>
+  </rule>
+  <rule ref="category/java/bestpractices.xml/UnusedFormalParameter">
+    <properties>
+      <property name="violationSuppressRegex" value=".*'ignored'.*" />
+    </properties>
   </rule>
 </ruleset>
