@@ -63,7 +63,7 @@ public class Log4JLogger implements Log, Serializable {
     // If an ExceptionInInitializerError is generated, then LogFactoryImpl
     // will treat that as meaning that the appropriate underlying logging
     // library is just not present - if discovery is in progress then
-    // discovery will continue.    
+    // discovery will continue.
     static {
         if (!Priority.class.isAssignableFrom(Level.class)) {
             // nope, this is log4j 1.3, so force an ExceptionInInitializerError

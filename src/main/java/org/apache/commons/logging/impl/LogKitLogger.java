@@ -40,14 +40,14 @@ public class LogKitLogger implements Log, Serializable {
     /** Serializable version identifier. */
     private static final long serialVersionUID = 3768538055836059519L;
 
-    
+
     /** Logging goes to this {@code LogKit} logger */
     protected transient volatile Logger logger;
 
     /** Name of this logger */
     protected String name;
 
-    
+
     /**
      * Constructs {@code LogKitLogger} which wraps the {@code LogKit}
      * logger with given name.
@@ -59,7 +59,7 @@ public class LogKitLogger implements Log, Serializable {
         this.logger = getLogger();
     }
 
-    
+
     /**
      * Logs a message with {@code org.apache.log.Priority.DEBUG}.
      *
@@ -73,7 +73,7 @@ public class LogKitLogger implements Log, Serializable {
         }
     }
 
-    
+
     /**
      * Logs a message with {@code org.apache.log.Priority.DEBUG}.
      *

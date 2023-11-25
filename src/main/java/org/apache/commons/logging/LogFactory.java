@@ -69,7 +69,7 @@ public abstract class LogFactory {
     // lib and JCL have the necessary permissions even when the untrusted
     // caller does not. That's a pretty hard route to exploit though.
 
-    
+
     /**
      * The name ({@code priority}) of the key in the config file used to
      * specify the priority of that particular config file. The associated value
@@ -203,14 +203,14 @@ public abstract class LogFactory {
      */
     private static final int MAX_BROKEN_SERVICES = 3;
 
-    
+
     /**
      * The previously constructed {@code LogFactory} instances, keyed by
      * the {@code ClassLoader} with which it was created.
      */
     protected static Hashtable<ClassLoader, LogFactory> factories;
 
-    
+
     /**
      * Previously constructed {@code LogFactory} instance as in the
      * {@code factories} map, but for the case where
@@ -530,7 +530,7 @@ public abstract class LogFactory {
         return classLoader;
     }
 
-    
+
     /**
      * Check cached factories (keyed by contextClassLoader)
      *
@@ -688,7 +688,7 @@ public abstract class LogFactory {
         return props;
     }
 
-    
+
     /**
      * Returns the current context classloader.
      * <p>
@@ -1075,7 +1075,7 @@ public abstract class LogFactory {
         });
     }
 
-    
+
     /**
      * Read the specified system property, using an AccessController so that
      * the property can be read if JCL has been granted the appropriate
@@ -1592,7 +1592,7 @@ public abstract class LogFactory {
      * class loader would prevent garbage collection.
      */
     public abstract void release();
-    
+
     /**
      * Remove any configuration attribute associated with the specified name.
      * If there is no such attribute, no action is taken.

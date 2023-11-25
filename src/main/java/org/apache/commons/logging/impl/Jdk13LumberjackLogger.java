@@ -41,7 +41,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     /** Serializable version identifier. */
     private static final long serialVersionUID = -8649807923527610591L;
 
-    
+
     /**
      * This member variable simply ensures that any attempt to initialize
      * this class in a pre-1.4 JVM will result in an ExceptionInInitializerError.
@@ -69,7 +69,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
     /** Class and method found flag. */
     private boolean classAndMethodFound;
 
-    
+
     /**
      * Constructs a named instance of this Logger.
      *
@@ -80,7 +80,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
         logger = getLogger();
     }
 
-    
+
     /**
      * Logs a message with {@code java.util.logging.Level.FINE}.
      *

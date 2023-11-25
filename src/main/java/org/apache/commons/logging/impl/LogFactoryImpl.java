@@ -80,14 +80,14 @@ public class LogFactoryImpl extends LogFactory {
      */
     private static final String[] EMPTY_STRING_ARRAY = {};
 
-    
+
     /**
      * The name ({@code org.apache.commons.logging.Log}) of the system
      * property identifying our {@link Log} implementation class.
      */
     public static final String LOG_PROPERTY = "org.apache.commons.logging.Log";
 
-    
+
     /**
      * The deprecated system property used for backwards compatibility with
      * old versions of JCL.
@@ -165,7 +165,7 @@ public class LogFactoryImpl extends LogFactory {
         return LogFactory.getClassLoader(clazz);
     }
 
-    
+
     /**
      * Gets the context ClassLoader.
      * This method is a workaround for a java 1.2 compiler bug.
@@ -273,7 +273,7 @@ public class LogFactoryImpl extends LogFactory {
      */
     protected Class[] logConstructorSignature = { String.class };
 
-    
+
     /**
      * The one-argument {@code setLogFactory} method of the selected
      * {@link org.apache.commons.logging.Log} method, if it exists.
@@ -488,7 +488,7 @@ public class LogFactoryImpl extends LogFactory {
     //
     // These methods only defined as workarounds for a java 1.2 bug;
     // theoretically none of these are needed.
-    
+
     /**
      * Attempts to create a Log instance for the given category name.
      * Follows the discovery process described in the class Javadoc.
@@ -654,7 +654,7 @@ public class LogFactoryImpl extends LogFactory {
         return attributes.get(name);
     }
 
-    
+
     /**
      * Return an array containing the names of all currently defined
      * configuration attributes.  If there are no such attributes, a zero
