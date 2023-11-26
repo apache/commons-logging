@@ -38,7 +38,7 @@ import org.apache.logging.log4j.util.StackLocatorUtil;
  * Based on the `log4j-jcl` artifact from Apache Logging Services.
  * </p>
  *
- * @since 1.3
+ * @since 1.3.0
  */
 public final class Log4jApiLogFactory extends LogFactory {
 

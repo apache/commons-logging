@@ -426,7 +426,7 @@ implementation.
  Because the commons-logging-api.jar in the container does not contain any
  log-library-adapter classes, updated behavior for these <i>will</i> be
  seen when logging 1.1 is bundled in WEB-INF/lib. In particular, the 
- support for log4j's TRACE level will take effect without having to update
+ support for Log4j's TRACE level will take effect without having to update
  the container.
    </p>
    <p>
@@ -437,7 +437,7 @@ implementation.
  can only see their matching concrete logging library if that library is
  available in the same classpath. Bundling the full commons-logging jarfile
  (with adapters) into the system classpath therefore means that logging
- libraries (eg log4j) within WEB-INF/lib are not accessible.
+ libraries (eg Log4j) within WEB-INF/lib are not accessible.
    </p>
    <p>
  Note that the behavior described here only applies if the standard Tomcat

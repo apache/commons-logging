@@ -25,7 +25,7 @@ import org.apache.log4j.spi.LoggingEvent;
 
 /**
  * A custom implementation of {@code org.apache.log4j.Appender} which
- * converts the log4j-specific log event record into a representation that
+ * converts the Log4j-specific log event record into a representation that
  * doesn't have a dependency on log4j and stores that new representation into
  * an external list.
  */

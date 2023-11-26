@@ -56,7 +56,7 @@ import java.util.Set;
  * (rather than using a standard Hashtable instance).
  * Having this class used instead of {@code Hashtable} solves
  * certain issues related to dynamic reloading of applications in J2EE-style
- * environments. However this class requires java 1.3 or later (due to its use
+ * environments. However this class requires Java 1.3 or later (due to its use
  * of {@code java.lang.ref.WeakReference} and associates).
  * And by the way, this extends {@code Hashtable} rather than {@code HashMap}
  * for backwards compatibility reasons. See the documentation

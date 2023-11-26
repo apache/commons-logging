@@ -38,7 +38,7 @@ import org.slf4j.spi.LocationAwareLogger;
 /**
  * Logger factory hardcoded to send everything to SLF4J.
  *
- * @since 1.3
+ * @since 1.3.0
  */
 public final class Slf4jLogFactory extends LogFactory {
 

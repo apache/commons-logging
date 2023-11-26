@@ -58,7 +58,7 @@ public class LogSource {
      */
     static protected Hashtable<String, Log> logs = new Hashtable<>();
 
-    /** Is log4j available (in the current classpath) */
+    /** Is Log4j available (in the current classpath) */
     static protected boolean log4jIsAvailable;
 
     /** Is JDK 1.4 logging available */
@@ -171,7 +171,7 @@ public class LogSource {
      * (containing the <i>name</i> of the {@link Log} to be constructed.
      * <p>
      * When {@code org.apache.commons.logging.log} is not set, or when no corresponding
-     * class can be found, this method will return a Log4JLogger if the log4j Logger
+     * class can be found, this method will return a Log4JLogger if the Log4j Logger
      * class is available in the {@link LogSource}'s classpath, or a Jdk14Logger if we
      * are on a JDK 1.4 or later system, or NoOpLog if neither of the above conditions is true.
      *

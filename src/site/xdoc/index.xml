@@ -108,10 +108,10 @@ Binary and source distributions are available
       have been encountered when using commons-logging in servlet containers or j2ee
       containers where complex classpaths are present and multiple copies of
       commons-logging libraries are present at different levels.</p>
-      <p>This release also adds support for the TRACE level added to log4j in the
+      <p>This release also adds support for the TRACE level added to Log4j in the
       1.2.12 release. In former commons-logging versions, the log.trace method
-      caused log4j to output the message at the DEBUG level (the lowest level
-      supported by log4j at that time).</p>
+      caused Log4j to output the message at the DEBUG level (the lowest level
+      supported by Log4j at that time).</p>
       <p>For the full details, see the release notes for this version.</p> 
     </subsection>
     <subsection name='1.0.5 Release (Alpha)'>

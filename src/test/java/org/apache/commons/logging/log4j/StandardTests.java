@@ -125,7 +125,7 @@ public abstract class StandardTests extends TestCase {
     }
 
     /**
-     * Modify log4j's setup so that all messages actually logged get redirected
+     * Modify Log4j's setup so that all messages actually logged get redirected
      * into the specified list.
      * <p>
      * This method also sets the logging level to INFO so that we

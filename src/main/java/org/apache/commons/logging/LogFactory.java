@@ -111,7 +111,7 @@ public abstract class LogFactory {
     public static final String FACTORY_PROPERTIES = "commons-logging.properties";
 
     /**
-     * JDK1.3+ <a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
+     * JDK 1.3+ <a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
      * 'Service Provider' specification</a>.
      */
     protected static final String SERVICE_ID =
@@ -841,7 +841,7 @@ public abstract class LogFactory {
             throw e;
         }
 
-        // Second, try to find a service by using the JDK1.3 class
+        // Second, try to find a service by using the JDK 1.3 class
         // discovery mechanism, which involves putting a file with the name
         // of an interface class in the META-INF/services directory, where the
         // contents of the file is a single line specifying a concrete class
