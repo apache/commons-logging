@@ -41,8 +41,8 @@ import junit.framework.Assert;
  * It would be nice to ensure that when child-first lookup is set the
  * resources from the child are returned earlier in the list than the
  * resources from the parent. However overriding this method isn't possible
- * as the java 1.4 version of ClassLoader declares this method final
- * (though the java 1.5 version has removed the final qualifier). As the
+ * as the Java 1.4 version of ClassLoader declares this method final
+ * (though the Java 1.5 version has removed the final qualifier). As the
  * ClassLoader Javadoc doesn't specify the order in which resources
  * are returned, it's valid to return the resources in any order (just
  * untidy) so the inherited implementation is technically ok.
@@ -78,7 +78,7 @@ public class PathableClassLoader extends URLClassLoader {
      * <p>
      * Often, null is passed as the parent, that is, the parent of the new
      * instance is the bootloader. This ensures that the classpath is
-     * totally clean; nothing but the standard java library will be
+     * totally clean; nothing but the standard Java library will be
      * present.
      * <p>
      * When using a null parent class loader with a junit test, it *is*
@@ -351,7 +351,7 @@ public class PathableClassLoader extends URLClassLoader {
      * which are visible in shared class loaders provided by the container.
      * <p>
      * Note that the method getResources always behaves as if parentFirst=true,
-     * because of limitations in java 1.4; see the Javadoc for method
+     * because of limitations in Java 1.4; see the Javadoc for method
      * getResourcesInOrder for details.
      * <p>
      * This value defaults to true.
@@ -380,7 +380,7 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     * Specify a class loader to use for specific java packages.
+     * Specify a class loader to use for specific Java packages.
      * <p>
      * The specified class loader is normally a loader that is NOT
      * an ancestor of this class loader. In particular, this loader

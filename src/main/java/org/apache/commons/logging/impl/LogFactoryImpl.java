@@ -165,7 +165,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Gets the context ClassLoader.
-     * This method is a workaround for a java 1.2 compiler bug.
+     * This method is a workaround for a Java 1.2 compiler bug.
      *
      * @return the context ClassLoader
      * @since 1.1
@@ -176,7 +176,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Calls LogFactory.directGetContextClassLoader under the control of an
-     * AccessController class. This means that java code running under a
+     * AccessController class. This means that Java code running under a
      * security manager that forbids access to ClassLoaders will still work
      * if this class is given appropriate privileges, even when the caller
      * doesn't have such privileges. Without using an AccessController, the
@@ -189,7 +189,7 @@ public class LogFactoryImpl extends LogFactory {
      * @throws LogConfigurationException if there was some weird error while
      * attempting to get the context class loader.
      *
-     * @throws SecurityException if the current java security policy doesn't
+     * @throws SecurityException if the current Java security policy doesn't
      * allow this class to access the context class loader.
      */
     private static ClassLoader getContextClassLoaderInternal()

@@ -501,7 +501,7 @@ public abstract class LogFactory {
      *
      * @throws LogConfigurationException if a suitable class loader
      *  cannot be identified.
-     * @return the thread's context class loader or {@code null} if the java security
+     * @return the thread's context class loader or {@code null} if the Java security
      *  policy forbids access to the context class loader from one of the classes
      *  in the current call stack.
      * @since 1.1
@@ -708,7 +708,7 @@ public abstract class LogFactory {
 
     /**
      * Calls LogFactory.directGetContextClassLoader under the control of an
-     * AccessController class. This means that java code running under a
+     * AccessController class. This means that Java code running under a
      * security manager that forbids access to ClassLoaders will still work
      * if this class is given appropriate privileges, even when the caller
      * doesn't have such privileges. Without using an AccessController, the
@@ -1219,7 +1219,7 @@ public abstract class LogFactory {
      * Indicates true if the user has enabled internal logging.
      * <p>
      * By the way, sorry for the incorrect grammar, but calling this method
-     * areDiagnosticsEnabled just isn't java beans style.
+     * areDiagnosticsEnabled just isn't Java beans style.
      *
      * @return true if calls to logDiagnostic will have any effect.
      * @since 1.1
