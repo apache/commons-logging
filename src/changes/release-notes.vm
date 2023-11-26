@@ -14,9 +14,9 @@
 ## KIND, either express or implied.  See the License for the
 ## specific language governing permissions and limitations
 ## under the License.
-              ${project.name}
-                  Version ${version}
-                  RELEASE NOTES
+${project.name}
+Version ${version}
+RELEASE NOTES
 
 The ${developmentTeam} is pleased to announce the release of ${project.name} ${version}
 
@@ -107,3 +107,5 @@ For complete information on ${project.name}, including instructions on how to su
 patches, or suggestions for improvement, see the ${project.name} website:
 
 ${project.url}
+
+=============================================================================
