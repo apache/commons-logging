@@ -84,9 +84,10 @@ public class SimpleLog implements Log, Serializable {
     /** Include the instance name in the log message? */
     static volatile protected boolean showLogName;
 
-    /** Include the short name ( last component ) of the logger in the log
-     *  message. Defaults to true - otherwise we'll be lost in a flood of
-     *  messages without knowing who sends them.
+    /**
+     * Include the short name (last component) of the logger in the log
+     * message. Defaults to true - otherwise we'll be lost in a flood of
+     * messages without knowing who sends them.
      */
     static volatile protected boolean showShortName = true;
 
@@ -238,7 +239,7 @@ public class SimpleLog implements Log, Serializable {
 
         // Set initial log level
         // Used to be: set default log level to ERROR
-        // IMHO it should be lower, but at least info ( costin ).
+        // IMHO it should be lower, but at least info (costin).
         setLevel(SimpleLog.LOG_LEVEL_INFO);
 
         // Set log level from properties
