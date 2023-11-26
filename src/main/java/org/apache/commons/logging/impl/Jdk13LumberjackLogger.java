@@ -46,7 +46,10 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
      * this class in a pre-1.4 JVM will result in an ExceptionInInitializerError.
      * It must not be private, as an optimizing compiler could detect that it
      * is not used and optimize it away.
+     *
+     * @deprecated No longer used.
      */
+    @Deprecated
     protected static final Level dummyLevel = Level.FINE;
 
     /**
