@@ -159,11 +159,10 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
             final Throwable throwable = new Throwable();
             throwable.fillInStackTrace();
             final StringWriter stringWriter = new StringWriter();
-            final PrintWriter printWriter = new PrintWriter( stringWriter );
-            throwable.printStackTrace( printWriter );
+            final PrintWriter printWriter = new PrintWriter(stringWriter);
+            throwable.printStackTrace(printWriter);
             final String traceString = stringWriter.getBuffer().toString();
-            final StringTokenizer tokenizer =
-                new StringTokenizer( traceString, "\n" );
+            final StringTokenizer tokenizer = new StringTokenizer(traceString, "\n");
             tokenizer.nextToken();
             String line = tokenizer.nextToken();
             while (!line.contains(this.getClass().getName())) {
@@ -172,13 +171,13 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
             while (line.contains(this.getClass().getName())) {
                 line = tokenizer.nextToken();
             }
-            final int start = line.indexOf( "at " ) + 3;
-            final int end = line.indexOf( '(' );
-            final String temp = line.substring( start, end );
-            final int lastPeriod = temp.lastIndexOf( '.' );
-            sourceClassName = temp.substring( 0, lastPeriod );
-            sourceMethodName = temp.substring( lastPeriod + 1 );
-        } catch ( final Exception ex ) {
+            final int start = line.indexOf("at ") + 3;
+            final int end = line.indexOf('(');
+            final String temp = line.substring(start, end);
+            final int lastPeriod = temp.lastIndexOf('.');
+            sourceClassName = temp.substring(0, lastPeriod);
+            sourceMethodName = temp.substring(lastPeriod + 1);
+        } catch (final Exception ex) {
             // ignore - leave class and methodname unknown
         }
         classAndMethodFound = true;
