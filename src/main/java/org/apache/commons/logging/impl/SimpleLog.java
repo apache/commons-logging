@@ -133,19 +133,12 @@ public class SimpleLog implements Log, Serializable {
     // Override with system properties.
     static {
         // Add props from the resource simplelog.properties
-        final InputStream in = getResourceAsStream("simplelog.properties");
-        if (null != in) {
-            try {
+        try (InputStream in = getResourceAsStream("simplelog.properties")) {
+            if (null != in) {
                 simpleLogProps.load(in);
-            } catch (final IOException ignore) {
-                // ignored
-            } finally {
-                try {
-                    in.close();
-                } catch (final IOException ignore) {
-                    // ignored
-                }
             }
+        } catch (IOException ignore) {
+            // Ignore
         }
 
         showLogName = getBooleanProperty(systemPrefix + "showlogname", showLogName);
@@ -153,8 +146,7 @@ public class SimpleLog implements Log, Serializable {
         showDateTime = getBooleanProperty(systemPrefix + "showdatetime", showDateTime);
 
         if (showDateTime) {
-            dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat",
-                                               dateTimeFormat);
+            dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat", dateTimeFormat);
             try {
                 dateFormatter = new SimpleDateFormat(dateTimeFormat);
             } catch (final IllegalArgumentException e) {
@@ -527,7 +519,7 @@ public class SimpleLog implements Log, Serializable {
         if (showDateTime) {
             final Date now = new Date();
             String dateText;
-            synchronized(dateFormatter) {
+            synchronized (dateFormatter) {
                 dateText = dateFormatter.format(now);
             }
             buf.append(dateText);
@@ -535,13 +527,25 @@ public class SimpleLog implements Log, Serializable {
         }
 
         // Append a readable representation of the log level
-        switch(type) {
-            case SimpleLog.LOG_LEVEL_TRACE: buf.append("[TRACE] "); break;
-            case SimpleLog.LOG_LEVEL_DEBUG: buf.append("[DEBUG] "); break;
-            case SimpleLog.LOG_LEVEL_INFO:  buf.append("[INFO] ");  break;
-            case SimpleLog.LOG_LEVEL_WARN:  buf.append("[WARN] ");  break;
-            case SimpleLog.LOG_LEVEL_ERROR: buf.append("[ERROR] "); break;
-            case SimpleLog.LOG_LEVEL_FATAL: buf.append("[FATAL] "); break;
+        switch (type) {
+        case SimpleLog.LOG_LEVEL_TRACE:
+            buf.append("[TRACE] ");
+            break;
+        case SimpleLog.LOG_LEVEL_DEBUG:
+            buf.append("[DEBUG] ");
+            break;
+        case SimpleLog.LOG_LEVEL_INFO:
+            buf.append("[INFO] ");
+            break;
+        case SimpleLog.LOG_LEVEL_WARN:
+            buf.append("[WARN] ");
+            break;
+        case SimpleLog.LOG_LEVEL_ERROR:
+            buf.append("[ERROR] ");
+            break;
+        case SimpleLog.LOG_LEVEL_FATAL:
+            buf.append("[FATAL] ");
+            break;
         }
 
         // Append the name of the log instance if so configured
