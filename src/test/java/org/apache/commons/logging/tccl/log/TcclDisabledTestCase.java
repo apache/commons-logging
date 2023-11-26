@@ -42,7 +42,7 @@ public class TcclDisabledTestCase extends TestCase {
     public static final String MY_LOG_IMPL =
         MY_LOG_PKG + ".MyLog";
 
-    
+
     /**
      * Return the tests included in this test suite.
      */
@@ -103,7 +103,7 @@ public class TcclDisabledTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-    
+
     /**
      * Verify that MyLog is only loadable via the tccl.
      */

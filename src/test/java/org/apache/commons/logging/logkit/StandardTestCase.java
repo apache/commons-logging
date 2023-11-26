@@ -39,7 +39,7 @@ import junit.framework.Test;
 public class StandardTestCase extends AbstractLogTest {
 
 
-    
+
 
     /**
      * Return the tests included in this test suite.
@@ -64,7 +64,7 @@ public class StandardTestCase extends AbstractLogTest {
     protected LogFactory factory;
 
 
-    
+
 
     /**
      * <p>The {@link Log} implementation we have selected.</p>
@@ -99,7 +99,7 @@ public class StandardTestCase extends AbstractLogTest {
         return new LogKitLogger(this.getClass().getName());
     }
 
-    
+
     /**
      * Sets up instance variables required by this test case.
      */
@@ -144,7 +144,7 @@ public class StandardTestCase extends AbstractLogTest {
     }
 
 
-    
+
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
         checkStandard();

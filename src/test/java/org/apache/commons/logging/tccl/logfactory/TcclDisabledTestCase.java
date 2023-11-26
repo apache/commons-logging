@@ -41,7 +41,7 @@ public class TcclDisabledTestCase extends TestCase {
     public static final String MY_LOG_FACTORY_IMPL =
         MY_LOG_FACTORY_PKG + ".MyLogFactoryImpl";
 
-    
+
 
     /**
      * Return the tests included in this test suite.
@@ -105,7 +105,7 @@ public class TcclDisabledTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-    
+
     /**
      * Verify that MyLogFactoryImpl is only loadable via the tccl.
      */

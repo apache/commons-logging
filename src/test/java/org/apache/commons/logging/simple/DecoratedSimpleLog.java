@@ -33,7 +33,7 @@ import org.apache.commons.logging.impl.SimpleLog;
 public class DecoratedSimpleLog extends SimpleLog {
 
 
-    
+
 
     /**
      * Generated serial version ID.
@@ -44,7 +44,7 @@ public class DecoratedSimpleLog extends SimpleLog {
     protected ArrayList cache = new ArrayList();
 
 
-    
+
     public DecoratedSimpleLog(final String name) {
         super(name);
     }
@@ -72,14 +72,14 @@ public class DecoratedSimpleLog extends SimpleLog {
     }
 
 
-    
+
 
     public String getLogName() {
         return logName;
     }
 
 
-    
+
 
     public boolean getShowDateTime() {
         return showDateTime;

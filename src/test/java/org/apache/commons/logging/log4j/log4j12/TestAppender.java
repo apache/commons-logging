@@ -36,7 +36,7 @@ public class TestAppender extends AppenderSkeleton {
     // The set of logged events for this appender
     private final List events;
 
-    
+
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public class TestAppender extends AppenderSkeleton {
     }
 
 
-    
+
     @Override
     protected void append(final LoggingEvent event) {
         final StandardTests.LogEvent lev = new StandardTests.LogEvent();

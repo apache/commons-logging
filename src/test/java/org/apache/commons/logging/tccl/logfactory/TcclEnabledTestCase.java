@@ -35,7 +35,7 @@ import junit.framework.TestCase;
 
 public class TcclEnabledTestCase extends TestCase {
 
-    
+
 
     /**
      * Return the tests included in this test suite.
@@ -99,7 +99,7 @@ public class TcclEnabledTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-    
+
     /**
      * Verify that MyLogFactoryImpl is only loadable via the tccl.
      */

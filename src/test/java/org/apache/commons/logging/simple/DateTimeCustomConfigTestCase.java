@@ -32,7 +32,7 @@ import junit.framework.Test;
  */
 public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
 
-    
+
     /**
      * Return the tests included in this test suite.
      * <p>
@@ -78,7 +78,7 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     }
 
 
-    
+
     /**
      * Sets up system properties required by this unit test. Here, we
      * set up the props defined in the parent class setProperties method,

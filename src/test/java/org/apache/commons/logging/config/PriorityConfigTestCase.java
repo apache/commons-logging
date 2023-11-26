@@ -48,7 +48,7 @@ import junit.framework.TestCase;
 
 public class PriorityConfigTestCase extends TestCase {
 
-    
+
 
     /**
      * Return the tests included in this test suite.
@@ -117,7 +117,7 @@ public class PriorityConfigTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-    
+
     /**
      * Verify that the config file being used is the one containing
      * the desired configId value.

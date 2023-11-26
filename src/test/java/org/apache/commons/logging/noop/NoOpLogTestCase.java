@@ -82,7 +82,7 @@ public class NoOpLogTestCase extends AbstractLogTest {
     }
 
 
-    
+
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
         Log log = LogFactory.getLog(this.getClass().getName());
