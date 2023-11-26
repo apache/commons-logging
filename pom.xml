@@ -560,7 +560,7 @@ under the License.
         <configuration>
           <targetJdk>1.8</targetJdk>
           <rulesets>
-            <ruleset>${basedir}/pmd.xml</ruleset>
+            <ruleset>${basedir}/src/conf/pmd.xml</ruleset>
           </rulesets>
         </configuration>
       </plugin>
@@ -692,7 +692,7 @@ under the License.
         <configuration>
           <targetJdk>1.8</targetJdk>
           <rulesets>
-            <ruleset>${basedir}/pmd.xml</ruleset>
+            <ruleset>${basedir}/src/conf/pmd.xml</ruleset>
           </rulesets>
         </configuration>
       </plugin>
