@@ -521,6 +521,10 @@ public class SimpleLog implements Log, Serializable {
         case SimpleLog.LOG_LEVEL_FATAL:
             buf.append("[FATAL] ");
             break;
+        default:
+            // Or throw?
+            buf.append("[UNDEFINED] ");
+            break;
         }
 
         // Append the name of the log instance if so configured

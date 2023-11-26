@@ -101,6 +101,9 @@ The <action> type attribute can be add,update,fix,remove.
       <action type="fix" dev="ggregory" due-to="Piotr P. Karwasz">
         Set java.logging as optional module #183.
       </action>
+      <action type="fix" dev="ggregory" due-to="Gary Gregory">
+        Fix SpotBugs [ERROR] Medium: Switch statement found in org.apache.commons.logging.impl.SimpleLog.log(int, Object, Throwable) where default case is missing [org.apache.commons.logging.impl.SimpleLog] At SimpleLog.java:[lines 505-522] SF_SWITCH_NO_DEFAULT.
+      </action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Gary Gregory">
         Bump Java from 6 to 8.
