@@ -22,8 +22,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.text.DateFormat;
@@ -163,54 +161,29 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Return the thread context class loader if available.
-     * Otherwise return null.
+     * Gets the thread context class loader if available. Otherwise return null.
      *
-     * The thread context class loader is available for JDK 1.2
-     * or later, if certain security conditions are met.
+     * The thread context class loader is available if certain security conditions are met.
      *
-     * @throws LogConfigurationException if a suitable class loader
-     * cannot be identified.
+     * @throws LogConfigurationException if a suitable class loader cannot be identified.
      */
     private static ClassLoader getContextClassLoader() {
         ClassLoader classLoader = null;
 
+        // Get the thread context class loader (if there is one)
         try {
-            // Are we running on a JDK 1.2 or later system?
-            final Method method = Thread.class.getMethod("getContextClassLoader", (Class[]) null);
-
-            // Get the thread context class loader (if there is one)
-            try {
-                classLoader = (ClassLoader) method.invoke(Thread.currentThread(), (Class[]) null);
-            } catch (final IllegalAccessException e) {
-                // ignore
-            } catch (final InvocationTargetException e) {
-                /**
-                 * InvocationTargetException is thrown by 'invoke' when
-                 * the method being invoked (getContextClassLoader) throws
-                 * an exception.
-                 *
-                 * getContextClassLoader() throws SecurityException when
-                 * the context class loader isn't an ancestor of the
-                 * calling class's class loader, or if security
-                 * permissions are restricted.
-                 *
-                 * In the first case (not related), we want to ignore and
-                 * keep going.  We cannot help but also ignore the second
-                 * with the logic below, but other calls elsewhere (to
-                 * obtain a class loader) will trigger this exception where
-                 * we can make a distinction.
-                 */
-                if (!(e.getTargetException() instanceof SecurityException)) {
-                    // Capture 'e.getTargetException()' exception for details
-                    // alternate: log 'e.getTargetException()', and pass back 'e'.
-                    throw new LogConfigurationException
-                        ("Unexpected InvocationTargetException", e.getTargetException());
-                }
-            }
-        } catch (final NoSuchMethodException e) {
-            // Assume we are running on JDK 1.1
-            // ignore
+            classLoader = Thread.currentThread().getContextClassLoader();
+        } catch (final SecurityException e) {
+            /**
+             * getContextClassLoader() throws SecurityException when the context class loader isn't an ancestor of the calling class's class loader, or if
+             * security permissions are restricted.
+             *
+             * In the first case (not related), we want to ignore and keep going. We cannot help but also ignore the second with the logic below, but other
+             * calls elsewhere (to obtain a class loader) will trigger this exception where we can make a distinction.
+             */
+            // Capture 'e.getTargetException()' exception for details
+            // alternate: log 'e.getTargetException()', and pass back 'e'.
+            throw new LogConfigurationException("Unexpected SecurityException", e);
         }
 
         if (classLoader == null) {
