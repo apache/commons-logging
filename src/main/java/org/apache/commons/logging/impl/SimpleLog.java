@@ -173,7 +173,7 @@ public class SimpleLog implements Log, Serializable {
         // Get the thread context class loader (if there is one)
         try {
             classLoader = Thread.currentThread().getContextClassLoader();
-        } catch (final SecurityException e) {
+        } catch (final RuntimeException e) {
             /**
              * getContextClassLoader() throws SecurityException when the context class loader isn't an ancestor of the calling class's class loader, or if
              * security permissions are restricted.
@@ -183,7 +183,9 @@ public class SimpleLog implements Log, Serializable {
              */
             // Capture 'e.getTargetException()' exception for details
             // alternate: log 'e.getTargetException()', and pass back 'e'.
-            throw new LogConfigurationException("Unexpected SecurityException", e);
+            if (!(e instanceof SecurityException)) {
+                throw new LogConfigurationException("Unexpected SecurityException", e);
+            }
         }
 
         if (classLoader == null) {
