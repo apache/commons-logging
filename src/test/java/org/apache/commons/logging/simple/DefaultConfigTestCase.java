@@ -193,14 +193,13 @@ public class DefaultConfigTestCase extends TestCase {
 
         // Serialize and deserialize the instance
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(log);
-        oos.close();
-        final ByteArrayInputStream bais =
-            new ByteArrayInputStream(baos.toByteArray());
-        final ObjectInputStream ois = new ObjectInputStream(bais);
-        log = (Log) ois.readObject();
-        ois.close();
+        try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(log);
+        }
+        final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        try (ObjectInputStream ois = new ObjectInputStream(bais)) {
+            log = (Log) ois.readObject();
+        }
 
         // Check the characteristics of the resulting object
         checkStandard();
