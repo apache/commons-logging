@@ -70,7 +70,6 @@ public abstract class LogFactory {
     // library and JCL have the necessary permissions even when the untrusted
     // caller does not. That's a pretty hard route to exploit though.
 
-
     /**
      * The name ({@code priority}) of the key in the configuration file used to
      * specify the priority of that particular configuration file. The associated value
@@ -204,13 +203,11 @@ public abstract class LogFactory {
      */
     private static final int MAX_BROKEN_SERVICES = 3;
 
-
     /**
      * The previously constructed {@code LogFactory} instances, keyed by
      * the {@code ClassLoader} with which it was created.
      */
     protected static Hashtable<ClassLoader, LogFactory> factories;
-
 
     /**
      * Previously constructed {@code LogFactory} instance as in the
@@ -531,7 +528,6 @@ public abstract class LogFactory {
         return classLoader;
     }
 
-
     /**
      * Check cached factories (keyed by contextClassLoader)
      *
@@ -689,7 +685,6 @@ public abstract class LogFactory {
         return props;
     }
 
-
     /**
      * Returns the current context class loader.
      * <p>
@@ -754,7 +749,6 @@ public abstract class LogFactory {
     public static LogFactory getFactory() throws LogConfigurationException {
         // Identify the class loader we will be using
         final ClassLoader contextClassLoader = getContextClassLoaderInternal();
-
 
         // This is an odd enough situation to report about. This
         // output will be a nuisance on JDK1.1, as the system
@@ -1075,7 +1069,6 @@ public abstract class LogFactory {
             }
         });
     }
-
 
     /**
      * Read the specified system property, using an AccessController so that

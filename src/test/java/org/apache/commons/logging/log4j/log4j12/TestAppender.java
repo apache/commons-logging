@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.log4j.log4j12;
 
-
 import java.util.List;
 
 import org.apache.commons.logging.log4j.StandardTests;
@@ -36,16 +35,12 @@ public class TestAppender extends AppenderSkeleton {
     // The set of logged events for this appender
     private final List events;
 
-
-
     /**
      * Constructor.
      */
     public TestAppender(final List logEvents) {
         events = logEvents;
     }
-
-
 
     @Override
     protected void append(final LoggingEvent event) {
@@ -68,16 +63,13 @@ public class TestAppender extends AppenderSkeleton {
         events.add(lev);
     }
 
-
     @Override
     public void close() {
     }
-
 
     @Override
     public boolean requiresLayout() {
         return false;
     }
-
 
 }

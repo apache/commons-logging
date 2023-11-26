@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.simple;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +28,6 @@ import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.SimpleLog;
 
 import junit.framework.Test;
-
 
 /**
  * <p>TestCase for simple logging when running with custom configuration
@@ -204,8 +202,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         setUpLog("DecoratedLogger");
     }
 
-
-
     /**
      * Tear down instance variables required by this test case.
      */
@@ -215,7 +211,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         expected = null;
     }
 
-
     // Test logging message strings with exceptions
     public void testExceptionMessages() throws Exception {
         ((DecoratedSimpleLog) log).clearCache();
@@ -223,14 +218,12 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         checkExpected();
     }
 
-
     // Test logging plain message strings
     public void testPlainMessages() throws Exception {
         ((DecoratedSimpleLog) log).clearCache();
         logPlainMessages();
         checkExpected();
     }
-
 
     // Test Serializability of standard instance
     @Override

@@ -95,7 +95,6 @@ public class LoadTestCase extends TestCase {
     static private String[] LOG_PCKG = {"org.apache.commons.logging",
                                         "org.apache.commons.logging.impl"};
 
-
     private ClassLoader origContextClassLoader;
 
     private void execute(final Class cls) throws Exception {
@@ -125,7 +124,6 @@ public class LoadTestCase extends TestCase {
         return testObjCls;
 
     }
-
 
     /**
      * Call the static setAllowFlawedContext method on the specified class

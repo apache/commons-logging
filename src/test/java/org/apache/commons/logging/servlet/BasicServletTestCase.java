@@ -24,7 +24,6 @@ import org.apache.commons.logging.impl.ServletContextCleaner;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-
 /**
  * Tests for ServletContextCleaner utility class.
  */

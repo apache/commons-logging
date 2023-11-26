@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.config;
 
-
 import java.net.URL;
 
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +25,6 @@ import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-
 
 /**
  * Tests that verify that the process of configuring logging on startup
@@ -47,8 +45,6 @@ import junit.framework.TestCase;
  */
 
 public class PriorityConfigTestCase extends TestCase {
-
-
 
     /**
      * Return the tests included in this test suite.
@@ -116,7 +112,6 @@ public class PriorityConfigTestCase extends TestCase {
     public void tearDown() {
         LogFactory.releaseAll();
     }
-
 
     /**
      * Verify that the config file being used is the one containing

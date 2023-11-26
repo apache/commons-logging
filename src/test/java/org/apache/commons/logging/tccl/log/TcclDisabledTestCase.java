@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.tccl.log;
 
-
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
@@ -28,7 +27,6 @@ import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-
 
 /**
  * Verify that by default LogFactoryImpl is loaded from the tccl class loader.
@@ -41,7 +39,6 @@ public class TcclDisabledTestCase extends TestCase {
 
     public static final String MY_LOG_IMPL =
         MY_LOG_PKG + ".MyLog";
-
 
     /**
      * Return the tests included in this test suite.
@@ -102,7 +99,6 @@ public class TcclDisabledTestCase extends TestCase {
     public void tearDown() {
         LogFactory.releaseAll();
     }
-
 
     /**
      * Verify that MyLog is only loadable via the tccl.

@@ -21,7 +21,6 @@ import java.io.FilePermission;
 import java.security.Permission;
 import java.security.Permissions;
 
-
 /**
  * Custom implementation of a security manager, so we can control the
  * security environment for tests in this package.

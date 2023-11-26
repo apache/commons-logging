@@ -25,7 +25,6 @@ import org.apache.commons.logging.impl.LogFactoryImpl;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-
 /**
  * Tests for Log4J logging that emulate a webapp running within
  * a container where the commons-logging-api jar file is in

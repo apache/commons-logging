@@ -26,12 +26,10 @@ import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
 
-
 /**
  * Tests custom date time format configuration
  */
 public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
-
 
     /**
      * Return the tests included in this test suite.
@@ -57,7 +55,6 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
         return new PathableTestSuite(testClass, loader);
     }
 
-
     /** Checks that the date time format has been successfully set */
     @Override
     protected void checkDecoratedDateTime() {
@@ -76,8 +73,6 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     protected void checkShowDateTime() {
         assertTrue(((DecoratedSimpleLog) log).getShowDateTime());
     }
-
-
 
     /**
      * Sets up system properties required by this unit test. Here, we

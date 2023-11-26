@@ -22,7 +22,6 @@ import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
 
-
 /**
  * TestCase for Jdk14 logging when the commons-logging-api jar file is in
  * the parent classpath and commons-logging.jar is in the child.

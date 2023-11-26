@@ -16,13 +16,11 @@
  */
 package org.apache.commons.logging.jdk14;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-
 
 /**
  * <p>Test implementation of {@code java.util.logging.Handler}.</p>

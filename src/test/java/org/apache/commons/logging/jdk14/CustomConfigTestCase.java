@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.jdk14;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -34,7 +33,6 @@ import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
 
-
 /**
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
  * custom configuration, so that JDK 1.4 should be selected and an appropriate
@@ -44,8 +42,6 @@ import junit.framework.Test;
 public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     protected static final String HANDLER_NAME = "org.apache.commons.logging.jdk14.TestHandler";
-
-
 
     /**
      * Make a class available in the system class loader even when its classfile is
@@ -82,9 +78,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         }
     }
 
-
-
-
     /**
      * Given the name of a class that is somewhere in the classpath of the provided
      * class loader, return the contents of the corresponding .class file.
@@ -106,7 +99,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         is.close();
         return baos.toByteArray();
     }
-
 
     /**
      * Return the tests included in this test suite.
@@ -130,32 +122,25 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         return new PathableTestSuite(testClass, cl);
     }
 
-
     /**
      * <p>The customized {@code Handler} we will be using.</p>
      */
     protected TestHandler handler;
-
 
     /**
      * <p>The underlying {@code Handler}s we will be using.</p>
      */
     protected Handler handlers[];
 
-
     /**
      * <p>The underlying {@code Logger} we will be using.</p>
      */
     protected Logger logger;
 
-
     /**
      * <p>The underlying {@code LogManager} we will be using.</p>
      */
     protected LogManager manager;
-
-
-
 
     /**
      * <p>The message levels that should have been logged.</p>
@@ -177,7 +162,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     public CustomConfigTestCase(final String name) {
         super(name);
     }
-
 
     // Check the log instance
     @Override
@@ -233,9 +217,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         handler.flush();
     }
 
-
-
-
     // Log the messages with exceptions
     protected void logExceptionMessages() {
         final Throwable t = new DummyException();
@@ -247,7 +228,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         log.fatal("fatal", t);
     }
 
-
     // Log the plain messages
     protected void logPlainMessages() {
         log.trace("trace"); // Should not actually get logged
@@ -257,7 +237,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         log.error("error");
         log.fatal("fatal");
     }
-
 
     /**
      * Sets up instance variables required by this test case.
@@ -271,7 +250,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         setUpFactory();
         setUpLog(this.getClass().getName());
     }
-
 
     // Set up handlers instance
     protected void setUpHandlers() throws Exception {
@@ -300,14 +278,10 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         handler = (TestHandler) handlers[0];
     }
 
-
     // Set up logger instance
     protected void setUpLogger(final String name) throws Exception {
         logger = Logger.getLogger(name);
     }
-
-
-
 
     // Set up LogManager instance
     protected void setUpManager(final String config) throws Exception {
@@ -317,7 +291,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         manager.readConfiguration(is);
         is.close();
     }
-
 
     /**
      * Tear down instance variables required by this test case.
@@ -330,7 +303,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         manager = null;
     }
 
-
     // Test logging message strings with exceptions
     public void testExceptionMessages() throws Exception {
 
@@ -339,7 +311,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     }
 
-
     // Test logging plain message strings
     public void testPlainMessages() throws Exception {
 
@@ -347,7 +318,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         checkLogRecords(false);
 
     }
-
 
     // Test pristine Handlers instances
     public void testPristineHandlers() {
@@ -358,7 +328,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertNotNull(handler);
 
     }
-
 
     // Test pristine Logger instance
     public void testPristineLogger() {
@@ -377,7 +346,6 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     }
 
-
     // Test Serializability of Log instance
     @Override
     public void testSerializable() throws Exception {
@@ -386,6 +354,5 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         testExceptionMessages();
 
     }
-
 
 }

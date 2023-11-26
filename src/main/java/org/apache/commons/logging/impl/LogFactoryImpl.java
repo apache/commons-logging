@@ -80,13 +80,11 @@ public class LogFactoryImpl extends LogFactory {
      */
     private static final String[] EMPTY_STRING_ARRAY = {};
 
-
     /**
      * The name ({@code org.apache.commons.logging.Log}) of the system
      * property identifying our {@link Log} implementation class.
      */
     public static final String LOG_PROPERTY = "org.apache.commons.logging.Log";
-
 
     /**
      * The deprecated system property used for backwards compatibility with
@@ -164,7 +162,6 @@ public class LogFactoryImpl extends LogFactory {
     protected static ClassLoader getClassLoader(final Class<?> clazz) {
         return LogFactory.getClassLoader(clazz);
     }
-
 
     /**
      * Gets the context ClassLoader.
@@ -272,7 +269,6 @@ public class LogFactoryImpl extends LogFactory {
      * The signature of the Constructor to be used.
      */
     protected Class[] logConstructorSignature = { String.class };
-
 
     /**
      * The one-argument {@code setLogFactory} method of the selected
@@ -654,7 +650,6 @@ public class LogFactoryImpl extends LogFactory {
         return attributes.get(name);
     }
 
-
     /**
      * Return an array containing the names of all currently defined
      * configuration attributes.  If there are no such attributes, a zero
@@ -752,7 +747,6 @@ public class LogFactoryImpl extends LogFactory {
         }
         return Boolean.parseBoolean(val);
     }
-
 
     /**
      * Attempt to find an attribute (see method setAttribute) or a

@@ -15,7 +15,6 @@
  * limitations under the license.
  */
 
-
 package org.apache.commons.logging;
 
 import java.io.Closeable;

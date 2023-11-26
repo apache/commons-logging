@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.log4j;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -30,7 +29,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import junit.framework.TestCase;
-
 
 /**
  * Abstract set of tests that can be executed with various classpaths set.
@@ -168,7 +166,6 @@ public abstract class StandardTests extends TestCase {
         logExceptionMessages(log);
         checkLoggingEvents(logEvents, true);
     }
-
 
     /**
      * Verify that we can log messages without exceptions.

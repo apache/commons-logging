@@ -17,12 +17,10 @@
 
 package org.apache.commons.logging.jdk14;
 
-
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
-
 
 /**
  * TestCase for Jdk14 logging when the commons-logging jar file is in
@@ -30,7 +28,6 @@ import junit.framework.Test;
  */
 
 public class CustomConfigFullTestCase extends CustomConfigTestCase {
-
 
     /**
      * Return the tests included in this test suite.
@@ -55,7 +52,6 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
         final Class testClass = child.loadClass(CustomConfigFullTestCase.class.getName());
         return new PathableTestSuite(testClass, child);
     }
-
 
     public CustomConfigFullTestCase(final String name) {
         super(name);

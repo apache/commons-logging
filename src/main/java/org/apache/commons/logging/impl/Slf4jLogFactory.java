@@ -92,7 +92,6 @@ public final class Slf4jLogFactory extends LogFactory {
             log(INFO_INT, message, t);
         }
 
-
         @Override
         public boolean isDebugEnabled() {
             return logger.isDebugEnabled(MARKER);

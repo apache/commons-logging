@@ -17,13 +17,11 @@
 
 package org.apache.commons.logging.simple;
 
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.impl.SimpleLog;
-
 
 /**
  * <p>Decorated instance of SimpleLog to expose internal state and
@@ -31,9 +29,6 @@ import org.apache.commons.logging.impl.SimpleLog;
  */
 
 public class DecoratedSimpleLog extends SimpleLog {
-
-
-
 
     /**
      * Generated serial version ID.
@@ -43,53 +38,39 @@ public class DecoratedSimpleLog extends SimpleLog {
     // Cache of logged records
     protected ArrayList cache = new ArrayList();
 
-
-
     public DecoratedSimpleLog(final String name) {
         super(name);
     }
-
 
     // Clear cache
     public void clearCache() {
         cache.clear();
     }
 
-
     // Return cache
     public List getCache() {
         return this.cache;
     }
 
-
     public String getDateTimeFormat() {
         return dateTimeFormat;
     }
-
 
     public DateFormat getDateTimeFormatter() {
         return dateFormatter;
     }
 
-
-
-
     public String getLogName() {
         return logName;
     }
-
-
-
 
     public boolean getShowDateTime() {
         return showDateTime;
     }
 
-
     public boolean getShowShortName() {
         return showShortName;
     }
-
 
     // Cache logged messages
     @Override
@@ -99,6 +80,5 @@ public class DecoratedSimpleLog extends SimpleLog {
         cache.add(new LogRecord(type, message, t));
 
     }
-
 
 }

@@ -15,15 +15,11 @@
  * limitations under the License.
  */
 
-
 package org.apache.commons.logging.simple;
-
 
 import java.io.Serializable;
 
-
 public class LogRecord implements Serializable {
-
 
     /**
      * Generated serial version ID.

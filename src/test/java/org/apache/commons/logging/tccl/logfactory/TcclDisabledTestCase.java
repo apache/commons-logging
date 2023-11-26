@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.tccl.logfactory;
 
-
 import java.net.URL;
 
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +25,6 @@ import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-
 
 /**
  * Verify that a commons-logging.properties file can prevent a custom
@@ -40,8 +38,6 @@ public class TcclDisabledTestCase extends TestCase {
 
     public static final String MY_LOG_FACTORY_IMPL =
         MY_LOG_FACTORY_PKG + ".MyLogFactoryImpl";
-
-
 
     /**
      * Return the tests included in this test suite.
@@ -104,7 +100,6 @@ public class TcclDisabledTestCase extends TestCase {
     public void tearDown() {
         LogFactory.releaseAll();
     }
-
 
     /**
      * Verify that MyLogFactoryImpl is only loadable via the tccl.

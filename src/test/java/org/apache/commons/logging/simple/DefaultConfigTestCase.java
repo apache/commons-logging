@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.simple;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -31,7 +30,6 @@ import org.apache.commons.logging.impl.SimpleLog;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-
 
 /**
  * <p>TestCase for simple logging when running with zero configuration
@@ -167,13 +165,11 @@ public class DefaultConfigTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-
     // Test pristine DecoratedSimpleLog instance
     public void testPristineDecorated() {
         setUpDecorated("DecoratedLogger");
         checkDecorated();
     }
-
 
     // Test pristine LogFactory instance
     public void testPristineFactory() {
@@ -187,12 +183,10 @@ public class DefaultConfigTestCase extends TestCase {
         assertEquals("Names empty", 0, names.length);
     }
 
-
     // Test pristine Log instance
     public void testPristineLog() {
         checkStandard();
     }
-
 
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {

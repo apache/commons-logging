@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-
 package org.apache.commons.logging.impl;
 
 import java.lang.ref.ReferenceQueue;

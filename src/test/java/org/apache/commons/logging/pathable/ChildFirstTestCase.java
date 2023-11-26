@@ -43,7 +43,6 @@ import junit.framework.TestCase;
 
 public class ChildFirstTestCase extends TestCase {
 
-
     /**
      * Sets up a custom class loader hierarchy for this test case.
      * The hierarchy is:

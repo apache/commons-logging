@@ -18,7 +18,6 @@ package org.apache.commons.logging;
 
 import junit.framework.TestCase;
 
-
 /**
   * Generic tests that can be applied to any log adapter by
   * subclassing this class and defining method getLogObject

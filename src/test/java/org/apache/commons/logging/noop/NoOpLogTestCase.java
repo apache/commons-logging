@@ -81,8 +81,6 @@ public class NoOpLogTestCase extends AbstractLogTest {
         System.getProperties().remove("org.apache.commons.logging.Log");
     }
 
-
-
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
         Log log = LogFactory.getLog(this.getClass().getName());

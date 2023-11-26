@@ -41,7 +41,6 @@ public class Jdk14Logger implements Log, Serializable {
      */
     protected static final Level dummyLevel = Level.FINE;
 
-
     /**
      * The underlying Logger implementation we are using.
      */

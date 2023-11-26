@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.jdk14;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -30,7 +29,6 @@ import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
-
 
 /**
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
@@ -107,7 +105,6 @@ public class DefaultConfigTestCase extends TestCase {
     protected void setUpLog(final String name) throws Exception {
         log = LogFactory.getLog(name);
     }
-
 
     /**
      * Tear down instance variables required by this test case.
