@@ -36,7 +36,7 @@ public class DecoratedSimpleLog extends SimpleLog {
     private static final long serialVersionUID = 196544280770017153L;
 
     // Cache of logged records
-    protected ArrayList cache = new ArrayList();
+    protected ArrayList<LogRecord> cache = new ArrayList<>();
 
     public DecoratedSimpleLog(final String name) {
         super(name);
@@ -48,7 +48,7 @@ public class DecoratedSimpleLog extends SimpleLog {
     }
 
     // Return cache
-    public List getCache() {
+    public List<LogRecord> getCache() {
         return this.cache;
     }
 
