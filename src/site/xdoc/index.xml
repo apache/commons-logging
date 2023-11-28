@@ -79,7 +79,7 @@ This gives short introductions to topics such as advanced class loading.
 <section name="Releases">
     <p>
 Binary and source distributions are available
-       <a href="https//commons.apache.org/logging/download_logging.cgi">here</a>.
+       <a href="https//commons.apache.org/proper/commons-logging/download_logging.cgi">here</a>.
     </p>
     <subsection name='1.2 Release - July 2014'>
       <p>The main purpose of the 1.2 release is to drop support for Java 1.1.</p>
