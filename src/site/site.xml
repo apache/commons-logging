@@ -31,7 +31,7 @@
       <item name="User Guide" href="/guide.html" />
       <item name="Troubleshooting Guide" href="/troubleshooting.html" />
       <item name="Release Notes" href="/RELEASE-NOTES.txt" />
-      <item name='Javadoc (Latest release)' href='/javadocs/api-release/index.html' />
+      <item name='Javadoc (Latest release)' href='/apidocs/index.html' />
       <item name='Javadoc Archive' href='https://javadoc.io/doc/commons-logging/commons-logging' />
     </menu>
     <menu name="Development">
