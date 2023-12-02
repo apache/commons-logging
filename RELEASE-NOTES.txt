@@ -58,6 +58,8 @@ o               Bump github/codeql-action from 1 to 2 #86. Thanks to Dependabot.
 
 Historical list of changes: https://commons.apache.org/proper/commons-logging/changes-report.html
 
+Download it from https://commons.apache.org/proper/commons-logging/download_logging.cgi
+
 For complete information on Apache Commons Logging, including instructions on how to submit bug reports,
 patches, or suggestions for improvement, see the Apache Commons Logging website:
 
