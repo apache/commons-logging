@@ -36,7 +36,7 @@ public class TestAppender extends AppenderSkeleton {
     private final List events;
 
     /**
-     * Constructor.
+     * Constructs a new instance.
      */
     public TestAppender(final List logEvents) {
         events = logEvents;

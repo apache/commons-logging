@@ -74,7 +74,7 @@ public class PathableClassLoader extends URLClassLoader {
     private boolean parentFirst = true;
 
     /**
-     * Constructor.
+     * Constructs a new instance.
      * <p>
      * Often, null is passed as the parent, that is, the parent of the new
      * instance is the bootloader. This ensures that the classpath is

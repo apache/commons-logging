@@ -111,7 +111,7 @@ public class PathableTestSuite extends TestSuite {
     private final ClassLoader contextLoader;
 
     /**
-     * Constructor.
+     * Constructs a new instance.
      *
      * @param testClass is the TestCase that is to be run, as loaded by
      * the appropriate ClassLoader.
