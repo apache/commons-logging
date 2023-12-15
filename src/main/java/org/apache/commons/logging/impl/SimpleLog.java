@@ -158,7 +158,7 @@ public class SimpleLog implements Log, Serializable {
 
     private static boolean getBooleanProperty(final String name, final boolean defaultValue) {
         final String prop = getStringProperty(name);
-        return prop == null ? defaultValue : "true".equalsIgnoreCase(prop);
+        return prop == null ? defaultValue : Boolean.parseBoolean(prop);
     }
 
     /**
