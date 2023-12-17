@@ -731,7 +731,7 @@ public abstract class LogFactory {
      * <li>The {@code org.apache.commons.logging.LogFactory} system property.</li>
      * <li>The JDK 1.3 Service Discovery mechanism</li>
      * <li>Use the properties file {@code commons-logging.properties} file, if found in the class path of this class. The configuration file is in standard
-     * {@code java.util.Properties} format and contains the fully qualified name of the implementation class with the key being the system property defined
+     * {@link java.util.Properties} format and contains the fully qualified name of the implementation class with the key being the system property defined
      * above.</li>
      * <li>Fall back to a default implementation class ({@code org.apache.commons.logging.impl.LogFactoryImpl}).</li>
      * </ul>

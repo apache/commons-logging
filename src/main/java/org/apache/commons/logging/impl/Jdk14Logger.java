@@ -62,7 +62,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.FINE}.
+     * Logs a message with {@link java.util.logging.Level#FINE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
@@ -73,7 +73,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.FINE}.
+     * Logs a message with {@link java.util.logging.Level#FINE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -85,7 +85,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.SEVERE}.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
@@ -96,7 +96,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.SEVERE}.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -108,7 +108,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.SEVERE}.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
@@ -119,7 +119,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.SEVERE}.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -143,7 +143,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.INFO}.
+     * Logs a message with {@link java.util.logging.Level#INFO}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
@@ -154,7 +154,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.INFO}.
+     * Logs a message with {@link java.util.logging.Level#INFO}.
      *
      * @param message to log
      * @param exception log this cause
@@ -242,7 +242,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.FINEST}.
+     * Logs a message with {@link java.util.logging.Level#FINEST}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
@@ -253,7 +253,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.FINEST}.
+     * Logs a message with {@link java.util.logging.Level#FINEST}.
      *
      * @param message to log
      * @param exception log this cause
@@ -265,7 +265,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.WARNING}.
+     * Logs a message with {@link java.util.logging.Level#WARNING}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
@@ -276,7 +276,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with {@code java.util.logging.Level.WARNING}.
+     * Logs a message with {@link java.util.logging.Level#WARNING}.
      *
      * @param message to log
      * @param exception log this cause
