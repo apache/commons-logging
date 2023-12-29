@@ -1510,11 +1510,7 @@ public abstract class LogFactory {
         // factories is not final and could be replaced in this block.
         final Hashtable<ClassLoader, LogFactory> factories = LogFactory.factories;
         synchronized (factories) {
-            final Enumeration<LogFactory> elements = factories.elements();
-            while (elements.hasMoreElements()) {
-                final LogFactory element = elements.nextElement();
-                element.release();
-            }
+            factories.values().forEach(LogFactory::release);
             factories.clear();
 
             if (nullClassLoaderFactory != null) {
