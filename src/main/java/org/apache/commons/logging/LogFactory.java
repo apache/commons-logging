@@ -111,7 +111,7 @@ public abstract class LogFactory {
     public static final String FACTORY_PROPERTIES = "commons-logging.properties";
 
     /**
-     * JDK 1.3+ <a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
+     * JDK 1.3+ <a href="https://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
      * 'Service Provider' specification</a>.
      */
     protected static final String SERVICE_ID =

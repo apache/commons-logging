@@ -23,14 +23,14 @@
  * can be used around a variety of different logging implementations, including
  * prebuilt support for the following:</p>
  * <ul>
- * <li><a href="http://logging.apache.org/log4j/">Log4J</a> (version 1.2 or later)
+ * <li><a href="https://logging.apache.org/log4j/">Log4J</a> (version 1.2 or later)
  * from Apache's Logging project.  Each named <a href="Log.html">Log</a>
  * instance is connected to a corresponding Log4J Logger.</li>
- * <li><a href="http://java.sun.com/j2se/1.4/docs/guide/util/logging/index.html">
+ * <li><a href="https://java.sun.com/j2se/1.4/docs/guide/util/logging/index.html">
  * JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
  * <a href="Log.html">Log</a> instance is connected to a corresponding
  * <code>java.util.logging.Logger</code> instance.</li>
- * <li><a href="http://avalon.apache.org/logkit/">LogKit</a> from Apache's
+ * <li><a href="https://avalon.apache.org/logkit/">LogKit</a> from Apache's
  * Avalon project.  Each named <a href="Log.html">Log</a> instance is
  * connected to a corresponding LogKit <code>Logger</code>.</li>
  * <li><a href="impl/NoOpLog.html">NoOpLog</a> implementation that simply swallows
@@ -78,8 +78,8 @@
  * <li>Check for a system property named
  * <code>org.apache.commons.logging.LogFactory</code>.</li>
  * <li>Use the JDK 1.3 JAR Services Discovery mechanism (see
- * <a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html">
- * http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html</a> for
+ * <a href="https://java.sun.com/j2se/1.3/docs/guide/jar/jar.html">
+ * https://java.sun.com/j2se/1.3/docs/guide/jar/jar.html</a> for
  * more information) to look for a resource named
  * <code>META-INF/services/org.apache.commons.logging.LogFactory</code>
  * whose first line is assumed to contain the desired class name.</li>
