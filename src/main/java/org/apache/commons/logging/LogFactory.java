@@ -369,7 +369,7 @@ public abstract class LogFactory {
                         if (implementsLogFactory) {
                             msg.append("The conflict is caused by the presence of multiple LogFactory classes ");
                             msg.append("in incompatible class loaders. ");
-                            msg.append("Background can be found in http://commons.apache.org/logging/tech.html. ");
+                            msg.append("Background can be found in https://commons.apache.org/logging/tech.html. ");
                             msg.append("If you have not explicitly specified a custom LogFactory then it is likely ");
                             msg.append("that the container has set one without your knowledge. ");
                             msg.append("In this case, consider using the commons-logging-adapters.jar file or ");
@@ -377,7 +377,7 @@ public abstract class LogFactory {
                         } else {
                             msg.append("Please check the custom implementation. ");
                         }
-                        msg.append("Help can be found @http://commons.apache.org/logging/troubleshooting.html.");
+                        msg.append("Help can be found at https://commons.apache.org/logging/troubleshooting.html.");
 
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(msg.toString());
