@@ -487,7 +487,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Return the thread context class loader if available; otherwise return null.
+     * Gets the thread context class loader if available; otherwise return null.
      * <p>
      * Most/all code should call getContextClassLoaderInternal rather than
      * calling this method directly.
@@ -1388,7 +1388,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Return a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
+     * Gets a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
      * used to load this (abstract) LogFactory.
      * <p>
      * <b>ClassLoader conflicts</b>
@@ -1535,7 +1535,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Return the configuration attribute with the specified name (if any),
+     * Gets the configuration attribute with the specified name (if any),
      * or {@code null} if there is no such attribute.
      *
      * @param name Name of the attribute to return
