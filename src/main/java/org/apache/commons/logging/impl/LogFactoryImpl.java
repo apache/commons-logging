@@ -676,7 +676,6 @@ public class LogFactoryImpl extends LogFactory {
      * failed to correctly set the context class loader. This is a bug in
      * the calling application; however we provide the option for JCL to
      * simply generate a warning rather than fail outright.
-     *
      */
     private ClassLoader getBaseClassLoader() throws LogConfigurationException {
         final ClassLoader thisClassLoader = getClassLoader(LogFactoryImpl.class);
