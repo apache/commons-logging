@@ -100,7 +100,7 @@ other logging tools, including
 <a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
 <a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>
 (the Avalon Framework's logging infrastructure),
-JDK 1.4, and an implementation of JDK 1.4 logging APIs (JSR-47) for pre-1.4
+java.util.logging, and an implementation of java.util.logging APIs (JSR-47) for pre-1.4
 systems.
 The interface maps closely to Log4J and LogKit.
 </p>
@@ -147,7 +147,7 @@ to determine what type of <code>Log</code> implementation it should use
             <ol>
                 <li>
 Look for a configuration attribute of this factory named
-<code>org.apache.commons.logging.Log</code> (for backwards compatibility to
+<code>org.apache.commons.logging.Log</code> (for backwards compatibility with
 pre-1.0 versions of this API, an attribute
 <code>org.apache.commons.logging.log</code> is also consulted).
 <p>
@@ -168,7 +168,7 @@ way of explicitly selecting a Log implementation.
                 <li>
 Look for a system property named
 <code>org.apache.commons.logging.Log</code> (for backwards
-compatibility to pre-1.0 versions of this API, a system property
+compatibility with pre-1.0 versions of this API, a system property
 <code>org.apache.commons.logging.log</code> is also consulted).
             </li>
                 <li>
@@ -391,7 +391,7 @@ implementations for
 <a href="http://logging.apache.org/log4j/docs/index.html">Log4J</a>,
 <a href="http://avalon.apache.org/logkit/index.html">Avalon LogKit</a>,
 the Avalon Framework's logging infrastructure,
-JDK 1.4, as well as an implementation of JDK 1.4 logging APIs (JSR-47) for 
+java.util.logging, as well as an implementation of java.util.logging APIs (JSR-47) for 
 pre-1.4 systems.
    </p>
    <p>
@@ -654,10 +654,10 @@ invokes:
 Instead JCL caches the 
 <code>LogFactory</code> implementation created as a result of the discovery 
 process and uses the cached factory to return <code>Log</code> objects.  
-Since in J2EE and similar multi-classloader environments, the result of the 
+Since in JEE and similar multi-classloader environments, the result of the 
 discovery process can vary depending on the thread context classloader 
 (e.g. one webapp in a web container may be configured to use Log4j and 
-another to use JDK 1.4 logging), JCL internally caches the 
+another to use java.util.logging), JCL internally caches the 
 <code>LogFactory</code> instances in a static hashtable, keyed by classloader.
             </p>
             <p>
@@ -672,16 +672,11 @@ classloader (and thus to all the classes loaded by it) will be
 held in <code>LogFactory</code>'s static hashtable.
             </p>
             <p>
-Beginning with JCL 1.1, <code>LogFactory</code> caches factory implementations in a 
+<code>LogFactory</code> caches factory implementations in a 
 "WeakHashtable". This class is similar to <code>java.util.WeakHashMap</code> in
 that it holds a <code>WeakReference</code> to each key (but a strong reference
 to each value), thus allowing classloaders to be GC'd even if
 <code>LogFactory.release()</code> is never invoked.
-            </p>
-            <p>
-Because <code>WeakHashtable</code> depends on JDK 1.3+ features, it is dynamically
-loaded depending on the JVM version; when commons-logging is run on java versions
-prior to 1.3 the code defaults to a standard Hashtable instead.
             </p>
             <p>
 If a custom LogFactory implementation is used, however, then a
