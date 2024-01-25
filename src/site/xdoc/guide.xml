@@ -94,8 +94,8 @@ is intended to be both light-weight and an independent abstraction of other logg
 It provides the middleware/tooling developer with a simple
 logging abstraction, that allows the user (application developer) to plug in
 a specific logging implementation.
-       </p>
-       <p>
+        </p>
+        <p>
           JCL provides thin-wrapper <code>Log</code> implementations for other logging APIs and backends, including
           <a href="https://logging.apache.org/log4j/2.x/manual/api-separation">Log4j API</a>,
           <a href="https://www.slf4j.org">SLF4J</a> and <code>java.util.logging</code>.
@@ -113,19 +113,19 @@ Familiarity with high-level details of the relevant Logging implementations is p
     </section>
     <section name="Quick Start">
         <p>
-As far as possible, JCL tries to be as unobtrusive as possible.
+JCL tries to be as unobtrusive as possible.
 In most cases, including the (full) <code>commons-logging.jar</code> in the classpath
 should result in JCL configuring itself in a reasonable manner.
-There's a good chance that it'll guess (discover) your preferred logging system and you won't
+There's a good chance that it'll guess (discover) your preferred logging system, and you won't
 need to do any configuration of JCL at all! 
     </p><p>
-Note, however, that if you have a particular preference then providing a simple
+Note, however, that if you have a particular preference, then providing a simple
 <code>commons-logging.properties</code> file which specifies the concrete logging library to be
 used is recommended, since (in this case) JCL will log only to that system
 and will report any configuration problems that prevent that system being used.
     </p>
     <p>
-When no particular logging library is specified then JCL will silently ignore any logging library
+When no particular logging library is specified, then JCL will silently ignore any logging library
 that it finds but cannot initialise and continue to look for other alternatives. This is a deliberate
 design decision; no application should fail to run because a "guessed" logging library cannot be
 used. To ensure an exception is reported when a particular logging library cannot be used, use one
@@ -265,7 +265,7 @@ Note that for application code, declaring the log member as "static" is more
 efficient as one Log object is created per class, and is recommended.
 However this is not safe to do for a class which may be deployed via a "shared"
 classloader in a servlet or j2ee container or similar environment. If the class
-may end up invoked with different thread-context-classloader values set then the
+may end up invoked with different thread-context-classloader values set, then the
 member must <i>not</i> be declared static. The use of "static" should therefore
 be avoided in code within any "library" type project.
     </p>
@@ -315,7 +315,7 @@ In addition to the logging methods, the following are provided for code guards:
     <subsection name="Serialization Issues">
     <p>Prior to release 1.0.4, none of the standard Log implementations were
     Serializable. If you are using such a release and have a Serializable class
-    with a member that is of type Log then it is necessary to declare
+    with a member that is of type Log, then it is necessary to declare
     that member to be transient and to ensure that the value is restored on
     deserialization. The recommended approach is to define a custom
     readObject method on the class which reinitializes that member.</p>
@@ -329,7 +329,7 @@ In addition to the logging methods, the following are provided for code guards:
     library) is not Serializable for technical reasons.</p>
     <p>Custom Log implementations not distributed with commons-logging may
     or may not be Serializable. If you wish your code to be compatible with
-    any arbitrary log adapter then you should follow the advice given above
+    any arbitrary log adapter, then you should follow the advice given above
     for pre-1.0.4 releases.</p>
     </subsection>
 </section>
