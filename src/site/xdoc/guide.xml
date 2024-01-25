@@ -104,7 +104,7 @@ a specific logging implementation.
         <p>
           <strong>Warning:</strong> implementations for older logging backends such as
           <a href="https://logging.apache.org/log4j/1.2/">Log4j 1.2</a>,
-          <a href="https://avalon.apache.org">Avalon LogKit</a> and
+          <a href="https://avalon.apache.org">Avalon LogKit</a>, and
           <a href="https://javalogging.sourceforge.net">Lumberjack</a> are also provided, although they are disabled by default.
         </p>
         <p>
