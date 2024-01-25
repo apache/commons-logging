@@ -17,16 +17,14 @@
 package org.apache.commons.logging.avalon;
 
 import org.apache.avalon.framework.logger.NullLogger;
-import org.apache.commons.logging.impl.AvalonLogger;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.AbstractLogTest;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.impl.AvalonLogger;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * @author <a href="mailto:neeme@apache.org">Neeme Praks</a>
- * @version $Revision$ $Date$
  */
 public class AvalonLoggerTestCase extends AbstractLogTest {
 

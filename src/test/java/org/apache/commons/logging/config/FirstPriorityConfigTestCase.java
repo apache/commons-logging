@@ -17,16 +17,14 @@
 
 package org.apache.commons.logging.config;
 
-
 import java.net.URL;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests that verify that the process of configuring logging on startup
@@ -40,9 +38,6 @@ import org.apache.commons.logging.PathableTestSuite;
  * The result should be that the first file is used.
  */
 public class FirstPriorityConfigTestCase extends TestCase {
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
 
     /**
      * Return the tests included in this test suite.
@@ -62,8 +57,8 @@ public class FirstPriorityConfigTestCase extends TestCase {
         final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         final URL baseUrl = dummy.findResource(thisClassPath);
 
-        // Now set up the desired classloader hierarchy. We'll put JCL
-        // in the container path, the testcase in a webapp path, and
+        // Now set up the desired class loader hierarchy. We'll put JCL
+        // in the container path, the test in a webapp path, and
         // both config files into the webapp path too.
         final PathableClassLoader containerLoader = new PathableClassLoader(null);
         containerLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
@@ -85,7 +80,7 @@ public class FirstPriorityConfigTestCase extends TestCase {
     }
 
     /**
-     * Set up instance variables required by this test case.
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {
@@ -100,8 +95,6 @@ public class FirstPriorityConfigTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-    // ----------------------------------------------------------- Test Methods
-
     /**
      * Verify that the config file being used is the one containing
      * the desired configId value.
@@ -113,10 +106,10 @@ public class FirstPriorityConfigTestCase extends TestCase {
         final ClassLoader lfClassLoader = instance.getClass().getClassLoader();
         final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
-        // context classloader should be thisClassLoader
+        // context class loader should be thisClassLoader
         assertEquals(thisClassLoader, contextClassLoader);
 
-        // lfClassLoader should be parent of this classloader
+        // lfClassLoader should be parent of this class loader
         assertEquals(lfClassLoader, thisClassLoader.getParent());
         assertEquals(PathableClassLoader.class.getName(),
                 lfClassLoader.getClass().getName());

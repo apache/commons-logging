@@ -18,11 +18,7 @@
 package org.apache.commons.logging;
 
 /**
- * An exception that is thrown only if a suitable <code>LogFactory</code>
- * or <code>Log</code> instance cannot be created by the corresponding
- * factory methods.
- *
- * @version $Id$
+ * An exception that is thrown only if a suitable {@code LogFactory} or {@code Log} instance cannot be created by the corresponding factory methods.
  */
 public class LogConfigurationException extends RuntimeException {
 
@@ -30,13 +26,21 @@ public class LogConfigurationException extends RuntimeException {
     private static final long serialVersionUID = 8486587136871052495L;
 
     /**
-     * Construct a new exception with <code>null</code> as its detail message.
+     * The underlying cause of this exception.
+     *
+     * @deprecated Use {@link #getCause()}.
+     */
+    @Deprecated
+    protected Throwable cause;
+
+    /**
+     * Constructs a new exception with {@code null} as its detail message.
      */
     public LogConfigurationException() {
     }
 
     /**
-     * Construct a new exception with the specified detail message.
+     * Constructs a new exception with the specified detail message.
      *
      * @param message The detail message
      */
@@ -45,8 +49,18 @@ public class LogConfigurationException extends RuntimeException {
     }
 
     /**
-     * Construct a new exception with the specified cause and a derived
-     * detail message.
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message The detail message
+     * @param cause   The underlying cause
+     */
+    public LogConfigurationException(final String message, final Throwable cause) {
+        super(message, cause);
+        this.cause = cause;
+    }
+
+    /**
+     * Constructs a new exception with the specified cause and a derived detail message.
      *
      * @param cause The underlying cause
      */
@@ -54,27 +68,4 @@ public class LogConfigurationException extends RuntimeException {
         this(cause == null ? null : cause.toString(), cause);
     }
 
-    /**
-     * Construct a new exception with the specified detail message and cause.
-     *
-     * @param message The detail message
-     * @param cause The underlying cause
-     */
-    public LogConfigurationException(final String message, final Throwable cause) {
-        super(message + " (Caused by " + cause + ")");
-        this.cause = cause; // Two-argument version requires JDK 1.4 or later
-    }
-
-    /**
-     * The underlying cause of this exception.
-     */
-    protected Throwable cause;
-
-    /**
-     * Return the underlying cause of this exception (if any).
-     */
-    @Override
-    public Throwable getCause() {
-        return this.cause;
-    }
 }

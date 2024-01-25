@@ -21,18 +21,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import junit.framework.Test;
-
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
+import junit.framework.Test;
 
 /**
  * Tests custom date time format configuration
  */
 public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
-
-    // ----------------------------------------------------------- Constructors
 
     /**
      * Return the tests included in this test suite.
@@ -40,10 +37,10 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
      * We need to use a PathableClassLoader here because the SimpleLog class
      * is a pile of junk and chock-full of static variables. Any other test
      * (like simple.CustomConfigTestCase) that has used the SimpleLog class
-     * will already have caused it to do once-only initialisation that we
+     * will already have caused it to do once-only initialization that we
      * can't reset, even by calling LogFactory.releaseAll, because of those
      * ugly statics. The only clean solution is to load a clean copy of
-     * commons-logging including SimpleLog via a nice clean classloader.
+     * commons-logging including SimpleLog via a nice clean class loader.
      * Or we could fix SimpleLog to be sane...
      */
     public static Test suite() throws Exception {
@@ -57,35 +54,6 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
         final Class testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
-
-
-    /**
-     * Set up system properties required by this unit test. Here, we
-     * set up the props defined in the parent class setProperties method,
-     * and add a few to configure the SimpleLog class date/time output.
-     */
-    @Override
-    public void setProperties() {
-        super.setProperties();
-
-        System.setProperty(
-            "org.apache.commons.logging.simplelog.dateTimeFormat",
-            "dd.mm.yyyy");
-        System.setProperty(
-            "org.apache.commons.logging.simplelog.showdatetime",
-            "true");
-    }
-
-    /**
-     * Set up instance variables required by this test case.
-     */
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
-
-    // ----------------------------------------------------------- Methods
 
     /** Checks that the date time format has been successfully set */
     @Override
@@ -104,6 +72,31 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
     @Override
     protected void checkShowDateTime() {
         assertTrue(((DecoratedSimpleLog) log).getShowDateTime());
+    }
+
+    /**
+     * Sets up system properties required by this unit test. Here, we
+     * set up the props defined in the parent class setProperties method,
+     * and add a few to configure the SimpleLog class date/time output.
+     */
+    @Override
+    public void setProperties() {
+        super.setProperties();
+
+        System.setProperty(
+            "org.apache.commons.logging.simplelog.dateTimeFormat",
+            "dd.mm.yyyy");
+        System.setProperty(
+            "org.apache.commons.logging.simplelog.showdatetime",
+            "true");
+    }
+
+    /**
+     * Sets up instance variables required by this test case.
+     */
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
     }
 
 }

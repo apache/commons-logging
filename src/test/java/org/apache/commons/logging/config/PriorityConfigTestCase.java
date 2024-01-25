@@ -17,16 +17,14 @@
 
 package org.apache.commons.logging.config;
 
-
 import java.net.URL;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests that verify that the process of configuring logging on startup
@@ -42,14 +40,11 @@ import org.apache.commons.logging.PathableTestSuite;
  * The result should be that the third file is used.
  * <p>
  * Note that parentFirst=true is used in this test because method
- * <code>PathableClassLoader.getResources</code> always behaves as if
- * parentFirst=true; see the PathableClassLoader javadoc for details.
+ * {@code PathableClassLoader.getResources} always behaves as if
+ * parentFirst=true; see the PathableClassLoader Javadoc for details.
  */
 
 public class PriorityConfigTestCase extends TestCase {
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
 
     /**
      * Return the tests included in this test suite.
@@ -69,7 +64,7 @@ public class PriorityConfigTestCase extends TestCase {
         final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         final URL baseUrl = dummy.findResource(thisClassPath);
 
-        // Now set up the desired classloader hierarchy. We'll put a config
+        // Now set up the desired class loader hierarchy. We'll put a config
         // file of priority=10 in the container path, and ones of both
         // "no priority" and priority=20 in the webapp path.
         //
@@ -103,7 +98,7 @@ public class PriorityConfigTestCase extends TestCase {
     }
 
     /**
-     * Set up instance variables required by this test case.
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {
@@ -117,8 +112,6 @@ public class PriorityConfigTestCase extends TestCase {
     public void tearDown() {
         LogFactory.releaseAll();
     }
-
-    // ----------------------------------------------------------- Test Methods
 
     /**
      * Verify that the config file being used is the one containing

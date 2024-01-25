@@ -17,12 +17,13 @@
 
 package org.apache.commons.logging.log4j.log4j12;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+import org.apache.commons.logging.impl.Log4JLogger;
+import org.apache.commons.logging.impl.LogFactoryImpl;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests for Log4J logging that emulate a webapp running within
@@ -35,6 +36,8 @@ public class ChildClasspathStandardTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
+        // Ensure Log4JLogger is used
+        System.setProperty(LogFactoryImpl.LOG_PROPERTY, Log4JLogger.class.getName());
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
 

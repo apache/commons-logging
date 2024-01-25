@@ -17,12 +17,11 @@
 
 package org.apache.commons.logging.simple;
 
-
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.text.DateFormat;
-import org.apache.commons.logging.impl.SimpleLog;
 
+import org.apache.commons.logging.impl.SimpleLog;
 
 /**
  * <p>Decorated instance of SimpleLog to expose internal state and
@@ -31,49 +30,47 @@ import org.apache.commons.logging.impl.SimpleLog;
 
 public class DecoratedSimpleLog extends SimpleLog {
 
-
-    // ------------------------------------------------------------ Constructor
-
-
     /**
      * Generated serial version ID.
      */
     private static final long serialVersionUID = 196544280770017153L;
 
+    // Cache of logged records
+    protected ArrayList<LogRecord> cache = new ArrayList<>();
+
     public DecoratedSimpleLog(final String name) {
         super(name);
     }
 
-
-    // ------------------------------------------------------------- Properties
-
-    public DateFormat getDateTimeFormatter() {
-        return dateFormatter;
+    // Clear cache
+    public void clearCache() {
+        cache.clear();
     }
 
+    // Return cache
+    public List<LogRecord> getCache() {
+        return this.cache;
+    }
 
     public String getDateTimeFormat() {
         return dateTimeFormat;
     }
 
+    public DateFormat getDateTimeFormatter() {
+        return dateFormatter;
+    }
 
     public String getLogName() {
         return logName;
     }
 
-
     public boolean getShowDateTime() {
         return showDateTime;
     }
 
-
     public boolean getShowShortName() {
         return showShortName;
     }
-
-
-    // ------------------------------------------------------- Protected Methods
-
 
     // Cache logged messages
     @Override
@@ -83,25 +80,5 @@ public class DecoratedSimpleLog extends SimpleLog {
         cache.add(new LogRecord(type, message, t));
 
     }
-
-
-    // ---------------------------------------------------------- Public Methods
-
-
-    // Cache of logged records
-    protected ArrayList cache = new ArrayList();
-
-
-    // Clear cache
-    public void clearCache() {
-        cache.clear();
-    }
-
-
-    // Return cache
-    public List getCache() {
-        return this.cache;
-    }
-
 
 }

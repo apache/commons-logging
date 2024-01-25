@@ -18,13 +18,11 @@
 package org.apache.commons.logging.impl;
 
 import java.io.Serializable;
+
 import org.apache.commons.logging.Log;
 
 /**
- * Trivial implementation of Log that throws away all messages.  No
- * configurable system properties are supported.
- *
- * @version $Id$
+ * Trivial implementation of Log that throws away all messages. No configurable system properties are supported.
  */
 public class NoOpLog implements Log, Serializable {
 
@@ -32,45 +30,66 @@ public class NoOpLog implements Log, Serializable {
     private static final long serialVersionUID = 561423906191706148L;
 
     /** Convenience constructor */
-    public NoOpLog() { }
-    /** Base constructor */
-    public NoOpLog(final String name) { }
+    public NoOpLog() {
+        // no-op
+    }
+
+    /**
+     * Base constructor
+     *
+     * @param ignoredName unused.
+     */
+    public NoOpLog(final String ignoredName) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void trace(final Object message) { }
+    public void debug(final Object message) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void trace(final Object message, final Throwable t) { }
+    public void debug(final Object message, final Throwable t) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void debug(final Object message) { }
+    public void error(final Object message) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void debug(final Object message, final Throwable t) { }
+    public void error(final Object message, final Throwable t) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void info(final Object message) { }
+    public void fatal(final Object message) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void info(final Object message, final Throwable t) { }
+    public void fatal(final Object message, final Throwable t) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void warn(final Object message) { }
+    public void info(final Object message) {
+        // no-op
+    }
+
     /** Do nothing */
     @Override
-    public void warn(final Object message, final Throwable t) { }
-    /** Do nothing */
-    @Override
-    public void error(final Object message) { }
-    /** Do nothing */
-    @Override
-    public void error(final Object message, final Throwable t) { }
-    /** Do nothing */
-    @Override
-    public void fatal(final Object message) { }
-    /** Do nothing */
-    @Override
-    public void fatal(final Object message, final Throwable t) { }
+    public void info(final Object message, final Throwable t) {
+        // no-op
+    }
 
     /**
      * Debug is never enabled.
@@ -78,7 +97,9 @@ public class NoOpLog implements Log, Serializable {
      * @return false
      */
     @Override
-    public final boolean isDebugEnabled() { return false; }
+    public final boolean isDebugEnabled() {
+        return false;
+    }
 
     /**
      * Error is never enabled.
@@ -86,7 +107,9 @@ public class NoOpLog implements Log, Serializable {
      * @return false
      */
     @Override
-    public final boolean isErrorEnabled() { return false; }
+    public final boolean isErrorEnabled() {
+        return false;
+    }
 
     /**
      * Fatal is never enabled.
@@ -94,7 +117,9 @@ public class NoOpLog implements Log, Serializable {
      * @return false
      */
     @Override
-    public final boolean isFatalEnabled() { return false; }
+    public final boolean isFatalEnabled() {
+        return false;
+    }
 
     /**
      * Info is never enabled.
@@ -102,7 +127,9 @@ public class NoOpLog implements Log, Serializable {
      * @return false
      */
     @Override
-    public final boolean isInfoEnabled() { return false; }
+    public final boolean isInfoEnabled() {
+        return false;
+    }
 
     /**
      * Trace is never enabled.
@@ -110,7 +137,9 @@ public class NoOpLog implements Log, Serializable {
      * @return false
      */
     @Override
-    public final boolean isTraceEnabled() { return false; }
+    public final boolean isTraceEnabled() {
+        return false;
+    }
 
     /**
      * Warn is never enabled.
@@ -118,5 +147,31 @@ public class NoOpLog implements Log, Serializable {
      * @return false
      */
     @Override
-    public final boolean isWarnEnabled() { return false; }
+    public final boolean isWarnEnabled() {
+        return false;
+    }
+
+    /** Do nothing */
+    @Override
+    public void trace(final Object message) {
+        // no-op
+    }
+
+    /** Do nothing */
+    @Override
+    public void trace(final Object message, final Throwable t) {
+        // no-op
+    }
+
+    /** Do nothing */
+    @Override
+    public void warn(final Object message) {
+        // no-op
+    }
+
+    /** Do nothing */
+    @Override
+    public void warn(final Object message, final Throwable t) {
+        // no-op
+    }
 }

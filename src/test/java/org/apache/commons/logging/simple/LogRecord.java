@@ -15,29 +15,25 @@
  * limitations under the License.
  */
 
-
 package org.apache.commons.logging.simple;
-
 
 import java.io.Serializable;
 
-
 public class LogRecord implements Serializable {
-
 
     /**
      * Generated serial version ID.
      */
     private static final long serialVersionUID = -5254831759209770665L;
 
+    public int type;
+
+    public Object message;
+    public Throwable t;
     public LogRecord(final int type, final Object message, final Throwable t) {
         this.type = type;
         this.message = message;
         this.t = t;
     }
-
-    public int type;
-    public Object message;
-    public Throwable t;
 
 }

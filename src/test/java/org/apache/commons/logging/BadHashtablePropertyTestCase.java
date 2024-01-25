@@ -17,19 +17,20 @@
 
 package org.apache.commons.logging;
 
-import junit.framework.TestCase;
 import java.util.Hashtable;
+
+import junit.framework.TestCase;
 
 /**
  * Tests behavior when the property is misconfigured.
  */
 public class BadHashtablePropertyTestCase extends TestCase {
 
-    public void testType()  {
-        assertTrue(LogFactory.factories instanceof Hashtable);
-    }
-
     public void testPutCalled() throws Exception {
         LogFactory.getLog(BadHashtablePropertyTestCase.class);
+    }
+
+    public void testType()  {
+        assertTrue(LogFactory.factories instanceof Hashtable);
     }
 }

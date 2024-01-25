@@ -17,73 +17,25 @@
 
 package org.apache.commons.logging.jdk14;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with
  * zero configuration, and with Log4J not present (so JDK 1.4 logging
  * should be automatically configured.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
  */
-
 public class DefaultConfigTestCase extends TestCase {
-
-
-    // ----------------------------------------------------------- Constructors
-
-
-    /**
-     * <p>Construct a new instance of this test case.</p>
-     *
-     * @param name Name of the test case
-     */
-    public DefaultConfigTestCase(final String name) {
-        super(name);
-    }
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * <p>The {@link LogFactory} implementation we have selected.</p>
-     */
-    protected LogFactory factory = null;
-
-
-    /**
-     * <p>The {@link Log} implementation we have selected.</p>
-     */
-    protected Log log = null;
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
-
-    /**
-     * Set up instance variables required by this test case.
-     */
-    @Override
-    public void setUp() throws Exception {
-        setUpFactory();
-        setUpLog("TestLogger");
-    }
-
 
     /**
      * Return the tests included in this test suite.
@@ -99,65 +51,23 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
     /**
-     * Tear down instance variables required by this test case.
+     * <p>The {@link LogFactory} implementation we have selected.</p>
      */
-    @Override
-    public void tearDown() {
-        log = null;
-        factory = null;
-        LogFactory.releaseAll();
+    protected LogFactory factory;
+
+    /**
+     * <p>The {@link Log} implementation we have selected.</p>
+     */
+    protected Log log;
+
+    /**
+     * <p>Construct a new instance of this test case.</p>
+     *
+     * @param name Name of the test case
+     */
+    public DefaultConfigTestCase(final String name) {
+        super(name);
     }
-
-
-    // ----------------------------------------------------------- Test Methods
-
-
-    // Test pristine Log instance
-    public void testPristineLog() {
-
-        checkLog();
-
-    }
-
-
-    // Test pristine LogFactory instance
-    public void testPristineFactory() {
-
-        assertNotNull("LogFactory exists", factory);
-        assertEquals("LogFactory class",
-                     "org.apache.commons.logging.impl.LogFactoryImpl",
-                     factory.getClass().getName());
-
-        final String names[] = factory.getAttributeNames();
-        assertNotNull("Names exists", names);
-        assertEquals("Names empty", 0, names.length);
-
-    }
-
-
-    // Test Serializability of Log instance
-    public void testSerializable() throws Exception {
-
-        // Serialize and deserialize the instance
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(log);
-        oos.close();
-        final ByteArrayInputStream bais =
-            new ByteArrayInputStream(baos.toByteArray());
-        final ObjectInputStream ois = new ObjectInputStream(bais);
-        log = (Log) ois.readObject();
-        ois.close();
-
-        // Check the characteristics of the resulting object
-        checkLog();
-
-    }
-
-
-    // -------------------------------------------------------- Support Methods
-
-
 
     // Check the log instance
     protected void checkLog() {
@@ -177,17 +87,69 @@ public class DefaultConfigTestCase extends TestCase {
 
     }
 
+    /**
+     * Sets up instance variables required by this test case.
+     */
+    @Override
+    public void setUp() throws Exception {
+        setUpFactory();
+        setUpLog("TestLogger");
+    }
 
     // Set up factory instance
     protected void setUpFactory() throws Exception {
         factory = LogFactory.getFactory();
     }
 
-
     // Set up log instance
     protected void setUpLog(final String name) throws Exception {
         log = LogFactory.getLog(name);
     }
 
+    /**
+     * Tear down instance variables required by this test case.
+     */
+    @Override
+    public void tearDown() {
+        log = null;
+        factory = null;
+        LogFactory.releaseAll();
+    }
+
+    // Test pristine LogFactory instance
+    public void testPristineFactory() {
+        assertNotNull("LogFactory exists", factory);
+        assertEquals("LogFactory class",
+                     "org.apache.commons.logging.impl.LogFactoryImpl",
+                     factory.getClass().getName());
+
+        final String[] names = factory.getAttributeNames();
+        assertNotNull("Names exists", names);
+        assertEquals("Names empty", 0, names.length);
+    }
+
+    // Test pristine Log instance
+    public void testPristineLog() {
+        checkLog();
+    }
+
+    // Test Serializability of Log instance
+    public void testSerializable() throws Exception {
+
+        // Serialize and deserialize the instance
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(log);
+        oos.close();
+        final ByteArrayInputStream bais =
+            new ByteArrayInputStream(baos.toByteArray());
+        final ObjectInputStream ois = new ObjectInputStream(bais);
+        log = (Log) ois.readObject();
+        ois.close();
+
+        // Check the characteristics of the resulting object
+        checkLog();
+
+    }
 
 }

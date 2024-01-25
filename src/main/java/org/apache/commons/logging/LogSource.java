@@ -24,68 +24,61 @@ import org.apache.commons.logging.impl.NoOpLog;
 
 /**
  * Factory for creating {@link Log} instances.  Applications should call
- * the <code>makeNewLogInstance()</code> method to instantiate new instances
+ * the {@code makeNewLogInstance()} method to instantiate new instances
  * of the configured {@link Log} implementation class.
  * <p>
- * By default, calling <code>getInstance()</code> will use the following
+ * By default, calling {@code getInstance()} will use the following
  * algorithm:
  * <ul>
  * <li>If Log4J is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Log4JLogger</code>.</li>
+ *     {@code org.apache.commons.logging.impl.Log4JLogger}.</li>
  * <li>If JDK 1.4 or later is available, return an instance of
- *     <code>org.apache.commons.logging.impl.Jdk14Logger</code>.</li>
+ *     {@code org.apache.commons.logging.impl.Jdk14Logger}.</li>
  * <li>Otherwise, return an instance of
- *     <code>org.apache.commons.logging.impl.NoOpLog</code>.</li>
+ *     {@code org.apache.commons.logging.impl.NoOpLog}.</li>
  * </ul>
  * <p>
  * You can change the default behavior in one of two ways:
  * <ul>
  * <li>On the startup command line, set the system property
- *     <code>org.apache.commons.logging.log</code> to the name of the
- *     <code>org.apache.commons.logging.Log</code> implementation class
+ *     {@code org.apache.commons.logging.log} to the name of the
+ *     {@code org.apache.commons.logging.Log} implementation class
  *     you want to use.</li>
- * <li>At runtime, call <code>LogSource.setLogImplementation()</code>.</li>
+ * <li>At runtime, call {@code LogSource.setLogImplementation()}.</li>
  * </ul>
  *
  * @deprecated Use {@link LogFactory} instead - The default factory
  *  implementation performs exactly the same algorithm as this class did
- *
- * @version $Id$
  */
 @Deprecated
 public class LogSource {
 
-    // ------------------------------------------------------- Class Attributes
+    /**
+     * Logs.
+     */
+    static protected Hashtable<String, Log> logs = new Hashtable<>();
 
-    static protected Hashtable logs = new Hashtable();
-
-    /** Is log4j available (in the current classpath) */
+    /** Is Log4j available (in the current classpath) */
     static protected boolean log4jIsAvailable;
 
     /** Is JDK 1.4 logging available */
     static protected boolean jdk14IsAvailable;
 
     /** Constructor for current log class */
-    static protected Constructor logImplctor;
+    static protected Constructor<?> logImplctor;
 
-    // ----------------------------------------------------- Class Initializers
+    /**
+     * An empty immutable {@code String} array.
+     */
+    private static final String[] EMPTY_STRING_ARRAY = {};
 
     static {
 
         // Is Log4J Available?
-        try {
-            log4jIsAvailable = null != Class.forName("org.apache.log4j.Logger");
-        } catch (final Throwable t) {
-            log4jIsAvailable = false;
-        }
+        log4jIsAvailable = isClassForName("org.apache.log4j.Logger");
 
         // Is JDK 1.4 Logging Available?
-        try {
-            jdk14IsAvailable = null != Class.forName("java.util.logging.Logger") &&
-                               null != Class.forName("org.apache.commons.logging.impl.Jdk14Logger");
-        } catch (final Throwable t) {
-            jdk14IsAvailable = false;
-        }
+        jdk14IsAvailable = isClassForName("org.apache.commons.logging.impl.Jdk14Logger");
 
         // Set the default Log implementation
         String name = null;
@@ -94,7 +87,8 @@ public class LogSource {
             if (name == null) {
                 name = System.getProperty("org.apache.commons.logging.Log");
             }
-        } catch (final Throwable t) {
+        } catch (final Throwable ignore) {
+            // Ignore
         }
         if (name != null) {
             try {
@@ -102,8 +96,8 @@ public class LogSource {
             } catch (final Throwable t) {
                 try {
                     setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
-                } catch (final Throwable u) {
-                    // ignored
+                } catch (final Throwable ignore) {
+                    // Ignore
                 }
             }
         } else {
@@ -118,65 +112,52 @@ public class LogSource {
             } catch (final Throwable t) {
                 try {
                     setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
-                } catch (final Throwable u) {
-                    // ignored
+                } catch (final Throwable ignore) {
+                    // Ignore
                 }
             }
         }
 
     }
 
-    // ------------------------------------------------------------ Constructor
-
-    /** Don't allow others to create instances. */
-    private LogSource() {
-    }
-
-    // ---------------------------------------------------------- Class Methods
-
     /**
-     * Set the log implementation/log implementation factory
-     * by the name of the class.  The given class must implement {@link Log},
-     * and provide a constructor that takes a single {@link String} argument
-     * (containing the name of the log).
+     * Gets a {@code Log} instance by class.
+     *
+     * @param clazz a Class.
+     * @return a {@code Log} instance.
      */
-    static public void setLogImplementation(final String classname)
-        throws LinkageError, NoSuchMethodException, SecurityException, ClassNotFoundException {
-        try {
-            final Class logclass = Class.forName(classname);
-            final Class[] argtypes = new Class[1];
-            argtypes[0] = "".getClass();
-            logImplctor = logclass.getConstructor(argtypes);
-        } catch (final Throwable t) {
-            logImplctor = null;
-        }
-    }
-
-    /**
-     * Set the log implementation/log implementation factory by class.
-     * The given class must implement {@link Log}, and provide a constructor
-     * that takes a single {@link String} argument (containing the name of the log).
-     */
-    static public void setLogImplementation(final Class logclass)
-        throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
-        final Class[] argtypes = new Class[1];
-        argtypes[0] = "".getClass();
-        logImplctor = logclass.getConstructor(argtypes);
-    }
-
-    /** Get a <code>Log</code> instance by class name. */
-    static public Log getInstance(final String name) {
-        Log log = (Log) logs.get(name);
-        if (null == log) {
-            log = makeNewLogInstance(name);
-            logs.put(name, log);
-        }
-        return log;
-    }
-
-    /** Get a <code>Log</code> instance by class. */
-    static public Log getInstance(final Class clazz) {
+    static public Log getInstance(final Class<?> clazz) {
         return getInstance(clazz.getName());
+    }
+
+    /**
+     * Gets a {@code Log} instance by class name.
+     *
+     * @param name Class name.
+     * @return a {@code Log} instance.
+     */
+    static public Log getInstance(final String name) {
+        return logs.computeIfAbsent(name, k -> makeNewLogInstance(name));
+    }
+
+    /**
+     * Returns a {@link String} array containing the names of
+     * all logs known to me.
+     *
+     * @return a {@link String} array containing the names of
+     * all logs known to me.
+     */
+    static public String[] getLogNames() {
+        return logs.keySet().toArray(EMPTY_STRING_ARRAY);
+    }
+
+    private static boolean isClassForName(final String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
     }
 
     /**
@@ -190,11 +171,12 @@ public class LogSource {
      * (containing the <i>name</i> of the {@link Log} to be constructed.
      * <p>
      * When {@code org.apache.commons.logging.log} is not set, or when no corresponding
-     * class can be found, this method will return a Log4JLogger if the log4j Logger
+     * class can be found, this method will return a Log4JLogger if the Log4j Logger
      * class is available in the {@link LogSource}'s classpath, or a Jdk14Logger if we
      * are on a JDK 1.4 or later system, or NoOpLog if neither of the above conditions is true.
      *
      * @param name the log name (or category)
+     * @return a new instance.
      */
     static public Log makeNewLogInstance(final String name) {
         Log log;
@@ -211,10 +193,42 @@ public class LogSource {
     }
 
     /**
-     * Returns a {@link String} array containing the names of
-     * all logs known to me.
+     * Sets the log implementation/log implementation factory by class. The given class must implement {@link Log}, and provide a constructor that takes a single
+     * {@link String} argument (containing the name of the log).
+     *
+     * @param logClass class.
+     * @throws LinkageError                if there is missing dependency.
+     * @throws ExceptionInInitializerError unexpected exception has occurred in a static initializer.
+     * @throws NoSuchMethodException       if a matching method is not found.
+     * @throws SecurityException           If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the
+     *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
+     *                                     s.checkPackageAccess()} denies access to the package of this class.
      */
-    static public String[] getLogNames() {
-        return (String[]) logs.keySet().toArray(new String[logs.size()]);
+    static public void setLogImplementation(final Class<?> logClass)
+            throws LinkageError, ExceptionInInitializerError, NoSuchMethodException, SecurityException {
+        logImplctor = logClass.getConstructor(String.class);
+    }
+
+    /**
+     * Sets the log implementation/log implementation factory by the name of the class. The given class must implement {@link Log}, and provide a constructor
+     * that takes a single {@link String} argument (containing the name of the log).
+     *
+     * @param className class name.
+     * @throws LinkageError           if there is missing dependency.
+     * @throws SecurityException      If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the class
+     *                                loader for the current class and invocation of {@link SecurityManager#checkPackageAccess s.checkPackageAccess()} denies
+     *                                access to the package of this class.
+     */
+    static public void setLogImplementation(final String className) throws LinkageError, SecurityException {
+        try {
+            final Class<?> logClass = Class.forName(className);
+            logImplctor = logClass.getConstructor(String.class);
+        } catch (final Throwable t) {
+            logImplctor = null;
+        }
+    }
+
+    /** Don't allow others to create instances. */
+    private LogSource() {
     }
 }

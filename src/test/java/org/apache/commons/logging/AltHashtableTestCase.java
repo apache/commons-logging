@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 /**
  * Test the ability to force the LogFactory class to use some
  * arbitrary Hashtable implementation to store its mapping from
- * context-classloader -&gt; LogFactory object.
+ * context class loader -&gt; LogFactory object.
  */
 public class AltHashtableTestCase extends TestCase {
 
@@ -41,15 +41,15 @@ public class AltHashtableTestCase extends TestCase {
     }
 
     /**
-     * Set up before each test.
+     * Sets up before each test.
      * <p>
      * This method ensures that the appropriate system property is defined
      * to force the LogFactory class to use the AltHashtable class as its
      * Hashtable implementation for storing factories in.
      * <p>
      * This does make the assumption that whatever JVM we are running in
-     * doesn't initialise classes until they are actually referenced (ie the
-     * LogFactory class hasn't been initialised before this method is called).
+     * doesn't initialize classes until they are actually referenced (ie the
+     * LogFactory class hasn't been initialized before this method is called).
      * This is true of all JVMs I know of; and if it isn't then this test will
      * fail and someone will tell us.
      */
@@ -61,22 +61,7 @@ public class AltHashtableTestCase extends TestCase {
     }
 
     /**
-     * Verify that initialising the LogFactory class will cause it
-     * to instantiate an object of type specified in system property
-     * "org.apache.commons.logging.LogFactory.HashtableImpl".
-     */
-    public void testType() {
-        // Here, the reference to the LogFactory class should cause the
-        // class to be loaded and initialised. It will see the property
-        // set and use the AltHashtable class. If other tests in this
-        // class have already been run within the same classloader then
-        // LogFactory will already have been initialised, but that
-        // doesn't change the effectiveness of this test.
-        assertTrue(LogFactory.factories instanceof AltHashtable);
-    }
-
-    /**
-     * Verify that when LogFactory sees a context-classloader for the
+     * Verify that when LogFactory sees a context class loader for the
      * first time that it creates a new entry in the LogFactory.factories
      * hashmap. In particular, this checks that this process works ok when
      * a system property has been used to specify an alternative Hashtable
@@ -90,5 +75,20 @@ public class AltHashtableTestCase extends TestCase {
         final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         assertEquals(contextLoader, AltHashtable.lastKey);
         assertNotNull(AltHashtable.lastValue);
+    }
+
+    /**
+     * Verify that initialising the LogFactory class will cause it
+     * to instantiate an object of type specified in system property
+     * "org.apache.commons.logging.LogFactory.HashtableImpl".
+     */
+    public void testType() {
+        // Here, the reference to the LogFactory class should cause the
+        // class to be loaded and initialized. It will see the property
+        // set and use the AltHashtable class. If other tests in this
+        // class have already been run within the same class loader then
+        // LogFactory will already have been initialized, but that
+        // doesn't change the effectiveness of this test.
+        assertTrue(LogFactory.factories instanceof AltHashtable);
     }
 }

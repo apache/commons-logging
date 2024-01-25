@@ -39,7 +39,7 @@ under the License.
         <include>build.xml</include>
         <include>build-testing.xml</include>
         <include>build.properties.sample</include>
-        <include>license-header.txt</include>
+        <include>checkstyle-header.txt</include>
       </includes>
     </fileSet>
     <fileSet>

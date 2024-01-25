@@ -17,12 +17,10 @@
 
 package org.apache.commons.logging.jdk14;
 
+import org.apache.commons.logging.PathableClassLoader;
+import org.apache.commons.logging.PathableTestSuite;
 
 import junit.framework.Test;
-
-import org.apache.commons.logging.PathableTestSuite;
-import org.apache.commons.logging.PathableClassLoader;
-
 
 /**
  * TestCase for Jdk14 logging when the commons-logging jar file is in
@@ -31,12 +29,6 @@ import org.apache.commons.logging.PathableClassLoader;
 
 public class CustomConfigFullTestCase extends CustomConfigTestCase {
 
-
-    public CustomConfigFullTestCase(final String name) {
-        super(name);
-    }
-
-
     /**
      * Return the tests included in this test suite.
      */
@@ -44,7 +36,7 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
 
-        // the TestHandler class must be accessable from the System classloader
+        // the TestHandler class must be accessible from the System class loader
         // in order for java.util.logging.LogManager.readConfiguration to
         // be able to instantiate it. And this test case must see the same
         // class in order to be able to access its data. Yes this is ugly
@@ -59,5 +51,9 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
 
         final Class testClass = child.loadClass(CustomConfigFullTestCase.class.getName());
         return new PathableTestSuite(testClass, child);
+    }
+
+    public CustomConfigFullTestCase(final String name) {
+        super(name);
     }
 }

@@ -21,18 +21,17 @@ import java.io.FilePermission;
 import java.security.Permission;
 import java.security.Permissions;
 
-
 /**
  * Custom implementation of a security manager, so we can control the
  * security environment for tests in this package.
  */
 public class MockSecurityManager extends SecurityManager {
 
-    private final Permissions permissions = new Permissions();
     private static final Permission setSecurityManagerPerm =
         new RuntimePermission("setSecurityManager");
+    private final Permissions permissions = new Permissions();
 
-    private int untrustedCodeCount = 0;
+    private int untrustedCodeCount;
 
     public MockSecurityManager() {
         permissions.add(setSecurityManagerPerm);
@@ -44,18 +43,6 @@ public class MockSecurityManager extends SecurityManager {
      */
     public void addPermission(final Permission p) {
         permissions.add(p);
-    }
-
-    /**
-     * This returns the number of times that a check of a permission failed
-     * due to stack-walking tracing up into untrusted code. Any non-zero
-     * value indicates a bug in JCL, ie a situation where code was not
-     * correctly wrapped in an AccessController block. The result of such a
-     * bug is that signing JCL is not sufficient to allow JCL to perform
-     * the operation; the caller would need to be signed too.
-     */
-    public int getUntrustedCodeCount() {
-        return untrustedCodeCount;
     }
 
     @Override
@@ -116,7 +103,8 @@ public class MockSecurityManager extends SecurityManager {
                 // the call stack.
                 System.out.println("Access controller found: returning");
                 return;
-            } else if (cname.startsWith("java.")
+            }
+            if (cname.startsWith("java.")
                 || cname.startsWith("javax.")
                 || cname.startsWith("junit.")
                 || cname.startsWith("org.apache.tools.ant.")
@@ -130,21 +118,32 @@ public class MockSecurityManager extends SecurityManager {
                 // this is the unit test code; treat this like an untrusted client
                 // app that is using JCL
                 ++untrustedCodeCount;
-                System.out.println("Untrusted code [testcase] found");
-                throw new SecurityException("Untrusted code [testcase] found");
+                System.out.println("Untrusted code [test] found");
+                throw new SecurityException("Untrusted code [test] found");
             } else if (cname.startsWith("org.apache.commons.logging.")) {
-                if (permissions.implies(p)) {
-                    // Code here is trusted if the caller is trusted
-                    System.out.println("Permission in allowed set for JCL class");
-                } else {
+                if (!permissions.implies(p)) {
                     System.out.println("Permission refused:" + p.getClass() + ":" + p);
                     throw new SecurityException("Permission refused:" + p.getClass() + ":" + p);
                 }
+                // Code here is trusted if the caller is trusted
+                System.out.println("Permission in allowed set for JCL class");
             } else {
                 // we found some code that is not trusted to perform this operation.
                 System.out.println("Unexpected code: permission refused:" + p.getClass() + ":" + p);
                 throw new SecurityException("Unexpected code: permission refused:" + p.getClass() + ":" + p);
             }
         }
+    }
+
+    /**
+     * This returns the number of times that a check of a permission failed
+     * due to stack-walking tracing up into untrusted code. Any non-zero
+     * value indicates a bug in JCL, that is, a situation where code was not
+     * correctly wrapped in an AccessController block. The result of such a
+     * bug is that signing JCL is not sufficient to allow JCL to perform
+     * the operation; the caller would need to be signed too.
+     */
+    public int getUntrustedCodeCount() {
+        return untrustedCodeCount;
     }
 }

@@ -19,11 +19,11 @@ package org.apache.commons.logging.pathable;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests for the PathableTestSuite class.
@@ -32,21 +32,17 @@ import org.apache.commons.logging.PathableTestSuite;
 public class GeneralTestCase extends TestCase {
 
     /**
-     * Set up a custom classloader hierarchy for this test case.
+     * Verify that the context class loader is a custom one, then reset it to
+     * a non-custom one.
      */
-    public static Test suite() throws Exception {
-        final Class thisClass = GeneralTestCase.class;
-        final ClassLoader thisClassLoader = thisClass.getClassLoader();
+    private static void checkAndSetContext() {
+        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+        assertEquals("ContextLoader is of unexpected type",
+                contextLoader.getClass().getName(),
+                PathableClassLoader.class.getName());
 
-        final PathableClassLoader loader = new PathableClassLoader(null);
-        loader.useExplicitLoader("junit.", thisClassLoader);
-        loader.addLogicalLib("testclasses");
-
-        // reload this class via the child classloader
-        final Class testClass = loader.loadClass(thisClass.getName());
-
-        // and return our custom TestSuite class
-        return new PathableTestSuite(testClass, loader);
+        final URL[] noUrls = {};
+        Thread.currentThread().setContextClassLoader(new URLClassLoader(noUrls));
     }
 
     /**
@@ -58,6 +54,46 @@ public class GeneralTestCase extends TestCase {
         System.setProperty("no.such.property", "dummy value");
         prop = System.getProperty("no.such.property");
         assertNotNull("no.such.property is unexpectedly undefined", prop);
+    }
+
+    /**
+     * Sets up a custom class loader hierarchy for this test case.
+     */
+    public static Test suite() throws Exception {
+        final Class thisClass = GeneralTestCase.class;
+        final ClassLoader thisClassLoader = thisClass.getClassLoader();
+
+        final PathableClassLoader loader = new PathableClassLoader(null);
+        loader.useExplicitLoader("junit.", thisClassLoader);
+        loader.addLogicalLib("testclasses");
+
+        // reload this class via the child class loader
+        final Class testClass = loader.loadClass(thisClass.getName());
+
+        // and return our custom TestSuite class
+        return new PathableTestSuite(testClass, loader);
+    }
+
+    /**
+     * Verify that when a test method modifies the context class loader it is
+     * reset before the next test is run.
+     * <p>
+     * This method works in conjunction with testResetContext2. There is no
+     * way of knowing which test method junit will run first, but it doesn't
+     * matter; whichever one of them runs first will modify the contextClassloader.
+     * If the PathableTestSuite isn't resetting the contextClassLoader then whichever
+     * of them runs second will fail. Of course if other methods are run in-between
+     * then those methods might also fail...
+     */
+    public void testResetContext1() {
+        checkAndSetContext();
+    }
+
+    /**
+     * See testResetContext1.
+     */
+    public void testResetContext2() {
+        checkAndSetContext();
     }
 
     /**
@@ -80,41 +116,5 @@ public class GeneralTestCase extends TestCase {
      */
     public void testResetProps2() {
         checkAndSetProperties();
-    }
-
-    /**
-     * Verify that the context classloader is a custom one, then reset it to
-     * a non-custom one.
-     */
-    private static void checkAndSetContext() {
-        final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
-        assertEquals("ContextLoader is of unexpected type",
-                contextLoader.getClass().getName(),
-                PathableClassLoader.class.getName());
-
-        final URL[] noUrls = new URL[0];
-        Thread.currentThread().setContextClassLoader(new URLClassLoader(noUrls));
-    }
-
-    /**
-     * Verify that when a test method modifies the context classloader it is
-     * reset before the next test is run.
-     * <p>
-     * This method works in conjunction with testResetContext2. There is no
-     * way of knowing which test method junit will run first, but it doesn't
-     * matter; whichever one of them runs first will modify the contextClassloader.
-     * If the PathableTestSuite isn't resetting the contextClassLoader then whichever
-     * of them runs second will fail. Of course if other methods are run in-between
-     * then those methods might also fail...
-     */
-    public void testResetContext1() {
-        checkAndSetContext();
-    }
-
-    /**
-     * See testResetContext1.
-     */
-    public void testResetContext2() {
-        checkAndSetContext();
     }
 }

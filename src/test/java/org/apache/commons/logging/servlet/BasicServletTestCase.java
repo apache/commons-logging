@@ -17,13 +17,12 @@
 
 package org.apache.commons.logging.servlet;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.ServletContextCleaner;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests for ServletContextCleaner utility class.
@@ -41,7 +40,7 @@ public class BasicServletTestCase extends TestCase {
         //
         // Having the test loaded via a loader above the tccl emulates the situation
         // where a web.xml file specifies ServletContextCleaner as a listener, and
-        // that class is deployed via a shared classloader.
+        // that class is deployed via a shared class loader.
 
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());

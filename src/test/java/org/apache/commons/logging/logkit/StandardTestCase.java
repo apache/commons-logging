@@ -17,13 +17,10 @@
 
 package org.apache.commons.logging.logkit;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import junit.framework.Test;
 
 import org.apache.commons.logging.AbstractLogTest;
 import org.apache.commons.logging.Log;
@@ -32,30 +29,13 @@ import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.LogKitLogger;
 
+import junit.framework.Test;
+
 /**
  * Basic tests for Avalon LogKit logger adapter.
  */
 
 public class StandardTestCase extends AbstractLogTest {
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * <p>The {@link LogFactory} implementation we have selected.</p>
-     */
-    protected LogFactory factory = null;
-
-
-    /**
-     * <p>The {@link Log} implementation we have selected.</p>
-     */
-    protected Log log = null;
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
 
     /**
      * Return the tests included in this test suite.
@@ -74,7 +54,45 @@ public class StandardTestCase extends AbstractLogTest {
     }
 
     /**
-     * Set up instance variables required by this test case.
+     * <p>The {@link LogFactory} implementation we have selected.</p>
+     */
+    protected LogFactory factory;
+
+    /**
+     * <p>The {@link Log} implementation we have selected.</p>
+     */
+    protected Log log;
+
+    // Check the standard log instance
+    protected void checkStandard() {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.LogKitLogger",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        // Note that by default *everything* is enabled for LogKit
+        assertTrue(log.isTraceEnabled());
+        assertTrue(log.isDebugEnabled());
+        assertTrue(log.isInfoEnabled());
+        assertTrue(log.isWarnEnabled());
+        assertTrue(log.isErrorEnabled());
+        assertTrue(log.isFatalEnabled());
+    }
+
+    /**
+     * Override the abstract method from the parent class so that the
+     * inherited tests can access the right Log object type.
+     */
+    @Override
+    public Log getLogObject()
+    {
+        return new LogKitLogger(this.getClass().getName());
+    }
+
+    /**
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {
@@ -98,18 +116,6 @@ public class StandardTestCase extends AbstractLogTest {
         LogFactory.releaseAll();
     }
 
-    // ----------------------------------------------------------- Test Methods
-
-    /**
-     * Override the abstract method from the parent class so that the
-     * inherited tests can access the right Log object type.
-     */
-    @Override
-    public Log getLogObject()
-    {
-        return new LogKitLogger(this.getClass().getName());
-    }
-
     // Test pristine LogFactory instance
     public void testPristineFactory() {
 
@@ -118,7 +124,7 @@ public class StandardTestCase extends AbstractLogTest {
                      "org.apache.commons.logging.impl.LogFactoryImpl",
                      factory.getClass().getName());
 
-        final String names[] = factory.getAttributeNames();
+        final String[] names = factory.getAttributeNames();
         assertNotNull("Names exists", names);
         assertEquals("Names empty", 0, names.length);
     }
@@ -144,26 +150,5 @@ public class StandardTestCase extends AbstractLogTest {
         ois.close();
 
         checkStandard();
-    }
-
-
-    // -------------------------------------------------------- Support Methods
-
-    // Check the standard log instance
-    protected void checkStandard() {
-
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.impl.LogKitLogger",
-                     log.getClass().getName());
-
-        // Can we call level checkers with no exceptions?
-        // Note that by default *everything* is enabled for LogKit
-        assertTrue(log.isTraceEnabled());
-        assertTrue(log.isDebugEnabled());
-        assertTrue(log.isInfoEnabled());
-        assertTrue(log.isWarnEnabled());
-        assertTrue(log.isErrorEnabled());
-        assertTrue(log.isFatalEnabled());
     }
 }

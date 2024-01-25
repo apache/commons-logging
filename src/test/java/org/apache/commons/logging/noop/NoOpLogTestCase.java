@@ -22,20 +22,46 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.commons.logging.AbstractLogTest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.NoOpLog;
-import org.apache.commons.logging.AbstractLogTest;
 
 /**
  * Tests for NoOpLog logging adapter.
  * <p>
  * This simply applies the tests defined in AbstractLogTest to this class.
  */
-public class NoOpLogTestCase extends AbstractLogTest
-{
+public class NoOpLogTestCase extends AbstractLogTest {
+    private void checkLog(final Log log) {
+
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.NoOpLog",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        // Note that *everything* is permanently disabled for NoOpLog
+        assertFalse(log.isTraceEnabled());
+        assertFalse(log.isDebugEnabled());
+        assertFalse(log.isInfoEnabled());
+        assertFalse(log.isWarnEnabled());
+        assertFalse(log.isErrorEnabled());
+        assertFalse(log.isFatalEnabled());
+    }
+
     /**
-     * Set up instance variables required by this test case.
+     * Override the abstract method from the parent class so that the
+     * inherited tests can access the right Log object type.
+     */
+    @Override
+    public Log getLogObject()
+    {
+        return new NoOpLog(this.getClass().getName());
+    }
+
+    /**
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {
@@ -55,16 +81,6 @@ public class NoOpLogTestCase extends AbstractLogTest
         System.getProperties().remove("org.apache.commons.logging.Log");
     }
 
-    /**
-     * Override the abstract method from the parent class so that the
-     * inherited tests can access the right Log object type.
-     */
-    @Override
-    public Log getLogObject()
-    {
-        return new NoOpLog(this.getClass().getName());
-    }
-
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
         Log log = LogFactory.getLog(this.getClass().getName());
@@ -82,25 +98,5 @@ public class NoOpLogTestCase extends AbstractLogTest
         ois.close();
 
         checkLog(log);
-    }
-
-
-    // -------------------------------------------------------- Support Methods
-
-    private void checkLog(final Log log) {
-
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.impl.NoOpLog",
-                     log.getClass().getName());
-
-        // Can we call level checkers with no exceptions?
-        // Note that *everything* is permanently disabled for NoOpLog
-        assertFalse(log.isTraceEnabled());
-        assertFalse(log.isDebugEnabled());
-        assertFalse(log.isInfoEnabled());
-        assertFalse(log.isWarnEnabled());
-        assertFalse(log.isErrorEnabled());
-        assertFalse(log.isFatalEnabled());
     }
 }

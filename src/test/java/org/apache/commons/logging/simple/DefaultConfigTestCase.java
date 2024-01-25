@@ -17,14 +17,10 @@
 
 package org.apache.commons.logging.simple;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,35 +28,15 @@ import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.SimpleLog;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * <p>TestCase for simple logging when running with zero configuration
  * other than selecting the SimpleLog implementation.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
  */
 
 public class DefaultConfigTestCase extends TestCase {
-
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    /**
-     * <p>The {@link LogFactory} implementation we have selected.</p>
-     */
-    protected LogFactory factory = null;
-
-
-    /**
-     * <p>The {@link Log} implementation we have selected.</p>
-     */
-    protected Log log = null;
-
-
-    // ------------------------------------------- JUnit Infrastructure Methods
-
 
     /**
      * Return the tests included in this test suite.
@@ -68,10 +44,10 @@ public class DefaultConfigTestCase extends TestCase {
      * We need to use a PathableClassLoader here because the SimpleLog class
      * is a pile of junk and chock-full of static variables. Any other test
      * (like simple.CustomConfigTestCase) that has used the SimpleLog class
-     * will already have caused it to do once-only initialisation that we
+     * will already have caused it to do once-only initialization that we
      * can't reset, even by calling LogFactory.releaseAll, because of those
      * ugly statics. The only clean solution is to load a clean copy of
-     * commons-logging including SimpleLog via a nice clean classloader.
+     * commons-logging including SimpleLog via a nice clean class loader.
      * Or we could fix SimpleLog to be sane...
      */
     public static Test suite() throws Exception {
@@ -87,7 +63,63 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
     /**
-     * Set system properties that will control the LogFactory/Log objects
+     * <p>The {@link LogFactory} implementation we have selected.</p>
+     */
+    protected LogFactory factory;
+
+    /**
+     * <p>The {@link Log} implementation we have selected.</p>
+     */
+    protected Log log;
+
+    // Check the decorated log instance
+    protected void checkDecorated() {
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.simple.DecoratedSimpleLog",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        assertFalse(log.isDebugEnabled());
+        assertTrue(log.isErrorEnabled());
+        assertTrue(log.isFatalEnabled());
+        assertTrue(log.isInfoEnabled());
+        assertFalse(log.isTraceEnabled());
+        assertTrue(log.isWarnEnabled());
+
+        // Can we retrieve the current log level?
+        assertEquals(SimpleLog.LOG_LEVEL_INFO, ((SimpleLog) log).getLevel());
+
+        // Can we validate the extra exposed properties?
+        assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
+                     ((DecoratedSimpleLog) log).getDateTimeFormat());
+        assertEquals("DecoratedLogger",
+                     ((DecoratedSimpleLog) log).getLogName());
+        assertFalse(((DecoratedSimpleLog) log).getShowDateTime());
+        assertTrue(((DecoratedSimpleLog) log).getShowShortName());
+    }
+
+    // Check the standard log instance
+    protected void checkStandard() {
+        assertNotNull("Log exists", log);
+        assertEquals("Log class",
+                     "org.apache.commons.logging.impl.SimpleLog",
+                     log.getClass().getName());
+
+        // Can we call level checkers with no exceptions?
+        assertFalse(log.isDebugEnabled());
+        assertTrue(log.isErrorEnabled());
+        assertTrue(log.isFatalEnabled());
+        assertTrue(log.isInfoEnabled());
+        assertFalse(log.isTraceEnabled());
+        assertTrue(log.isWarnEnabled());
+
+        // Can we retrieve the current log level?
+        assertEquals(SimpleLog.LOG_LEVEL_INFO, ((SimpleLog) log).getLevel());
+    }
+
+    /**
+     * Sets system properties that will control the LogFactory/Log objects
      * when they are created. Subclasses can override this method to
      * define properties that suit them.
      */
@@ -98,7 +130,7 @@ public class DefaultConfigTestCase extends TestCase {
     }
 
     /**
-     * Set up instance variables required by this test case.
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {
@@ -106,6 +138,21 @@ public class DefaultConfigTestCase extends TestCase {
         setProperties();
         setUpFactory();
         setUpLog("TestLogger");
+    }
+
+    // Set up decorated log instance
+    protected void setUpDecorated(final String name) {
+        log = new DecoratedSimpleLog(name);
+    }
+
+    // Set up factory instance
+    protected void setUpFactory() throws Exception {
+        factory = LogFactory.getFactory();
+    }
+
+    // Set up log instance
+    protected void setUpLog(final String name) throws Exception {
+        log = LogFactory.getLog(name);
     }
 
     /**
@@ -118,134 +165,45 @@ public class DefaultConfigTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-
-    // ----------------------------------------------------------- Test Methods
-
-
     // Test pristine DecoratedSimpleLog instance
     public void testPristineDecorated() {
-
         setUpDecorated("DecoratedLogger");
         checkDecorated();
-
     }
-
-
-    // Test pristine Log instance
-    public void testPristineLog() {
-
-        checkStandard();
-
-    }
-
 
     // Test pristine LogFactory instance
     public void testPristineFactory() {
-
         assertNotNull("LogFactory exists", factory);
         assertEquals("LogFactory class",
                      "org.apache.commons.logging.impl.LogFactoryImpl",
                      factory.getClass().getName());
 
-        final String names[] = factory.getAttributeNames();
+        final String[] names = factory.getAttributeNames();
         assertNotNull("Names exists", names);
         assertEquals("Names empty", 0, names.length);
-
     }
 
+    // Test pristine Log instance
+    public void testPristineLog() {
+        checkStandard();
+    }
 
     // Test Serializability of standard instance
     public void testSerializable() throws Exception {
 
         // Serialize and deserialize the instance
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(log);
-        oos.close();
-        final ByteArrayInputStream bais =
-            new ByteArrayInputStream(baos.toByteArray());
-        final ObjectInputStream ois = new ObjectInputStream(bais);
-        log = (Log) ois.readObject();
-        ois.close();
+        try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(log);
+        }
+        final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        try (ObjectInputStream ois = new ObjectInputStream(bais)) {
+            log = (Log) ois.readObject();
+        }
 
         // Check the characteristics of the resulting object
         checkStandard();
 
     }
-
-
-    // -------------------------------------------------------- Support Methods
-
-
-
-    // Check the decorated log instance
-    protected void checkDecorated() {
-
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.simple.DecoratedSimpleLog",
-                     log.getClass().getName());
-
-        // Can we call level checkers with no exceptions?
-        assertTrue(!log.isDebugEnabled());
-        assertTrue(log.isErrorEnabled());
-        assertTrue(log.isFatalEnabled());
-        assertTrue(log.isInfoEnabled());
-        assertTrue(!log.isTraceEnabled());
-        assertTrue(log.isWarnEnabled());
-
-        // Can we retrieve the current log level?
-        assertEquals(SimpleLog.LOG_LEVEL_INFO, ((SimpleLog) log).getLevel());
-
-        // Can we validate the extra exposed properties?
-        assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
-                     ((DecoratedSimpleLog) log).getDateTimeFormat());
-        assertEquals("DecoratedLogger",
-                     ((DecoratedSimpleLog) log).getLogName());
-        assertTrue(!((DecoratedSimpleLog) log).getShowDateTime());
-        assertTrue(((DecoratedSimpleLog) log).getShowShortName());
-
-    }
-
-
-    // Check the standard log instance
-    protected void checkStandard() {
-
-        assertNotNull("Log exists", log);
-        assertEquals("Log class",
-                     "org.apache.commons.logging.impl.SimpleLog",
-                     log.getClass().getName());
-
-        // Can we call level checkers with no exceptions?
-        assertTrue(!log.isDebugEnabled());
-        assertTrue(log.isErrorEnabled());
-        assertTrue(log.isFatalEnabled());
-        assertTrue(log.isInfoEnabled());
-        assertTrue(!log.isTraceEnabled());
-        assertTrue(log.isWarnEnabled());
-
-        // Can we retrieve the current log level?
-        assertEquals(SimpleLog.LOG_LEVEL_INFO, ((SimpleLog) log).getLevel());
-
-    }
-
-
-    // Set up decorated log instance
-    protected void setUpDecorated(final String name) {
-        log = new DecoratedSimpleLog(name);
-    }
-
-
-    // Set up factory instance
-    protected void setUpFactory() throws Exception {
-        factory = LogFactory.getFactory();
-    }
-
-
-    // Set up log instance
-    protected void setUpLog(final String name) throws Exception {
-        log = LogFactory.getLog(name);
-    }
-
 
 }

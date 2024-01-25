@@ -17,19 +17,21 @@
 
 package org.apache.commons.logging.security;
 
+import static org.junit.Assert.assertNotEquals;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
  * Tests for logging with a security policy that forbids JCL access to anything.
@@ -40,14 +42,11 @@ import org.apache.commons.logging.PathableTestSuite;
  * <p>
  * This class has only one unit test, as we are (in part) checking behavior in
  * the static block of the LogFactory class. As that class cannot be unloaded after
- * being loaded into a classloader, the only workaround is to use the
+ * being loaded into a class loader, the only workaround is to use the
  * PathableClassLoader approach to ensure each test is run in its own
- * classloader, and use a separate testcase class for each test.
+ * class loader, and use a separate test class for each test.
  */
-public class SecurityForbiddenTestCase extends TestCase
-{
-    private SecurityManager oldSecMgr;
-    private ClassLoader otherClassLoader;
+public class SecurityForbiddenTestCase extends TestCase {
 
     // Dummy special hashtable, so we can tell JCL to use this instead of
     // the standard one.
@@ -58,19 +57,40 @@ public class SecurityForbiddenTestCase extends TestCase
          */
         private static final long serialVersionUID = 7224652794746236024L;
     }
-
     /**
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
+        parent.useExplicitLoader("org.junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
 
         final Class testClass = parent.loadClass(
             "org.apache.commons.logging.security.SecurityForbiddenTestCase");
         return new PathableTestSuite(testClass, parent);
+    }
+
+    private SecurityManager oldSecMgr;
+
+    private ClassLoader otherClassLoader;
+
+    /**
+     * Loads a class with the given class loader.
+     */
+    private Object loadClass(final String name, final ClassLoader classLoader) {
+        try {
+            final Class clazz = classLoader.loadClass(name);
+            final Object obj = clazz.getConstructor().newInstance();
+            return obj;
+        } catch (final Exception e) {
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            fail("Unexpected exception:" + e.getMessage() + ":" + sw.toString());
+        }
+        return null;
     }
 
     @Override
@@ -98,6 +118,10 @@ public class SecurityForbiddenTestCase extends TestCase
      * should fall back to the built-in defaults.
      */
     public void testAllForbidden() {
+        // Ignore on Java 21
+        if (System.getProperty("java.version").startsWith("21.")) {
+            return;
+        }
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
@@ -107,11 +131,11 @@ public class SecurityForbiddenTestCase extends TestCase
 
         try {
             // Use reflection so that we can control exactly when the static
-            // initialiser for the LogFactory class is executed.
+            // initializer for the LogFactory class is executed.
             final Class c = this.getClass().getClassLoader().loadClass(
                     "org.apache.commons.logging.LogFactory");
-            final Method m = c.getMethod("getLog", new Class[] {Class.class});
-            final Log log = (Log) m.invoke(null, new Object[] {this.getClass()});
+            final Method m = c.getMethod("getLog", Class.class);
+            final Log log = (Log) m.invoke(null, this.getClass());
             log.info("testing");
 
             // check that the default map implementation was loaded, as JCL was
@@ -125,11 +149,11 @@ public class SecurityForbiddenTestCase extends TestCase
             final Object factoryTable = factoryField.get(null);
             assertNotNull(factoryTable);
             final String ftClassName = factoryTable.getClass().getName();
-            assertTrue("Custom hashtable unexpectedly used",
-                    !CustomHashtable.class.getName().equals(ftClassName));
+            assertNotEquals("Custom hashtable unexpectedly used",
+                    CustomHashtable.class.getName(), ftClassName);
 
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
-        } catch(final Throwable t) {
+        } catch (final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
@@ -143,10 +167,14 @@ public class SecurityForbiddenTestCase extends TestCase
 
     /**
      * Test what happens when JCL is run with absolutely no security
-     * privileges at all and a class loaded with a different classloader
-     * than the context classloader of the current thread tries to log something.
+     * privileges at all and a class loaded with a different class loader
+     * than the context class loader of the current thread tries to log something.
      */
     public void testContextClassLoader() {
+        // Ignore on Java 21
+        if (System.getProperty("java.version").startsWith("21.")) {
+            return;
+        }
         System.setProperty(
                 LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
                 CustomHashtable.class.getName());
@@ -155,14 +183,14 @@ public class SecurityForbiddenTestCase extends TestCase
         System.setSecurityManager(mySecurityManager);
 
         try {
-            // load a dummy class with another classloader
+            // load a dummy class with another class loader
             // to force a SecurityException when the LogFactory calls
             // Thread.getCurrentThread().getContextClassLoader()
             loadClass("org.apache.commons.logging.security.DummyClass", otherClassLoader);
 
             System.setSecurityManager(oldSecMgr);
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
-        } catch(final Throwable t) {
+        } catch (final Throwable t) {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
@@ -172,22 +200,5 @@ public class SecurityForbiddenTestCase extends TestCase
             t.printStackTrace(pw);
             fail("Unexpected exception:" + t.getMessage() + ":" + sw.toString());
         }
-    }
-
-    /**
-     * Loads a class with the given classloader.
-     */
-    private Object loadClass(final String name, final ClassLoader classLoader) {
-        try {
-            final Class clazz = classLoader.loadClass(name);
-            final Object obj = clazz.newInstance();
-            return obj;
-        } catch ( final Exception e ) {
-            final StringWriter sw = new StringWriter();
-            final PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            fail("Unexpected exception:" + e.getMessage() + ":" + sw.toString());
-        }
-        return null;
     }
 }

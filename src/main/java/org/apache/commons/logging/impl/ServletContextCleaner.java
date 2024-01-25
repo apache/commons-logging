@@ -33,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
  * In general, the WeakHashtable support added in commons-logging release 1.1
  * ensures that logging classes do not hold references that prevent an
  * undeployed webapp's memory from being garbage-collected even when multiple
- * copies of commons-logging are deployed via multiple classloaders (a
+ * copies of commons-logging are deployed via multiple class loaders (a
  * situation that earlier versions had problems with). However there are
  * some rare cases where the WeakHashtable approach does not work; in these
  * situations specifying this class as a listener for the web application will
@@ -42,14 +42,13 @@ import org.apache.commons.logging.LogFactory;
  * To use this class, configure the webapp deployment descriptor to call
  * this class on webapp undeploy; the contextDestroyed method will tell
  * every accessible LogFactory class that the entry in its map for the
- * current webapp's context classloader should be cleared.
+ * current webapp's context class loader should be cleared.
  *
- * @version $Id$
  * @since 1.1
  */
 public class ServletContextCleaner implements ServletContextListener {
 
-    private static final Class[] RELEASE_SIGNATURE = {ClassLoader.class};
+    private static final Class<?>[] RELEASE_SIGNATURE = { ClassLoader.class };
 
     /**
      * Invoked when a webapp is undeployed, this tells the LogFactory
@@ -63,7 +62,7 @@ public class ServletContextCleaner implements ServletContextListener {
         final Object[] params = new Object[1];
         params[0] = tccl;
 
-        // Walk up the tree of classloaders, finding all the available
+        // Walk up the tree of class loaders, finding all the available
         // LogFactory classes and releasing any objects associated with
         // the tccl (ie the webapp).
         //
@@ -79,18 +78,18 @@ public class ServletContextCleaner implements ServletContextListener {
         // holding any data associated with the tccl being released.
         //
         // When there are multiple LogFactory classes in the classpath and
-        // child-first classloading is used in any classloader, then multiple
+        // child-first classloading is used in any class loader, then multiple
         // LogFactory instances may hold info about this TCCL; whenever the
-        // webapp makes a call into a class loaded via an ancestor classloader
+        // webapp makes a call into a class loaded via an ancestor class loader
         // and that class calls LogFactory the tccl gets registered in
         // the LogFactory instance that is visible from the ancestor
-        // classloader. However the concrete logging library it points
+        // class loader. However the concrete logging library it points
         // to is expected to have been loaded via the TCCL, so the
-        // underlying logging lib is only initialised/configured once.
+        // underlying logging lib is only initialized/configured once.
         // These references from ancestor LogFactory classes down to
-        // TCCL classloaders are held via weak references and so should
+        // TCCL class loaders are held via weak references and so should
         // be released but there are circumstances where they may not.
-        // Walking up the classloader ancestry ladder releasing
+        // Walking up the class loader ancestry ladder releasing
         // the current tccl at each level tree, though, will definitely
         // clear any problem references.
         ClassLoader loader = tccl;
@@ -99,23 +98,24 @@ public class ServletContextCleaner implements ServletContextListener {
             // via this loader, but is accessible via some ancestor then that class
             // will be returned.
             try {
-                final Class logFactoryClass = loader.loadClass("org.apache.commons.logging.LogFactory");
+                @SuppressWarnings("unchecked")
+                final Class<LogFactory> logFactoryClass = (Class<LogFactory>) loader.loadClass("org.apache.commons.logging.LogFactory");
                 final Method releaseMethod = logFactoryClass.getMethod("release", RELEASE_SIGNATURE);
                 releaseMethod.invoke(null, params);
                 loader = logFactoryClass.getClassLoader().getParent();
-            } catch(final ClassNotFoundException ex) {
-                // Neither the current classloader nor any of its ancestors could find
+            } catch (final ClassNotFoundException ex) {
+                // Neither the current class loader nor any of its ancestors could find
                 // the LogFactory class, so we can stop now.
                 loader = null;
-            } catch(final NoSuchMethodException ex) {
+            } catch (final NoSuchMethodException ex) {
                 // This is not expected; every version of JCL has this method
                 System.err.println("LogFactory instance found which does not support release method!");
                 loader = null;
-            } catch(final IllegalAccessException ex) {
+            } catch (final IllegalAccessException ex) {
                 // This is not expected; every ancestor class should be accessible
-                System.err.println("LogFactory instance found which is not accessable!");
+                System.err.println("LogFactory instance found which is not accessible!");
                 loader = null;
-            } catch(final InvocationTargetException ex) {
+            } catch (final InvocationTargetException ex) {
                 // This is not expected
                 System.err.println("LogFactory instance release method failed!");
                 loader = null;

@@ -17,11 +17,7 @@
 
 package org.apache.commons.logging.tccl.log;
 
-
 import java.net.URL;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogConfigurationException;
@@ -29,9 +25,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
 
 /**
- * Verify that by default LogFactoryImpl is loaded from the tccl classloader.
+ * Verify that by default LogFactoryImpl is loaded from the tccl class loader.
  */
 
 public class TcclDisabledTestCase extends TestCase {
@@ -41,8 +39,6 @@ public class TcclDisabledTestCase extends TestCase {
 
     public static final String MY_LOG_IMPL =
         MY_LOG_PKG + ".MyLog";
-
-    // ------------------------------------------- JUnit Infrastructure Methods
 
     /**
      * Return the tests included in this test suite.
@@ -62,10 +58,10 @@ public class TcclDisabledTestCase extends TestCase {
         final String thisClassPath = thisClass.getName().replace('.', '/') + ".class";
         final URL baseUrl = dummy.findResource(thisClassPath);
 
-        // Now set up the desired classloader hierarchy. Everything goes into
+        // Now set up the desired class loader hierarchy. Everything goes into
         // the parent classpath, but we exclude the custom Log class.
         //
-        // We then create a tccl classloader that can see the custom
+        // We then create a tccl class loader that can see the custom
         // Log class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
         final PathableClassLoader emptyLoader = new PathableClassLoader(null);
@@ -74,7 +70,7 @@ public class TcclDisabledTestCase extends TestCase {
         parentLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
         parentLoader.addLogicalLib("commons-logging");
         parentLoader.addLogicalLib("testclasses");
-        // hack to ensure that the testcase classloader can't see
+        // hack to ensure that the test class loader can't see
         // the custom MyLog
         parentLoader.useExplicitLoader(MY_LOG_PKG + ".", emptyLoader);
 
@@ -89,7 +85,7 @@ public class TcclDisabledTestCase extends TestCase {
     }
 
     /**
-     * Set up instance variables required by this test case.
+     * Sets up instance variables required by this test case.
      */
     @Override
     public void setUp() throws Exception {
@@ -104,8 +100,6 @@ public class TcclDisabledTestCase extends TestCase {
         LogFactory.releaseAll();
     }
 
-    // ----------------------------------------------------------- Test Methods
-
     /**
      * Verify that MyLog is only loadable via the tccl.
      */
@@ -115,14 +109,14 @@ public class TcclDisabledTestCase extends TestCase {
         final ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
         // the tccl loader should NOT be the same as the loader that loaded this test class.
-        assertNotSame("tccl not same as test classloader", thisClassLoader, tcclLoader);
+        assertNotSame("tccl not same as test class loader", thisClassLoader, tcclLoader);
 
         // MyLog should not be loadable via parent loader
         try {
             final Class clazz = thisClassLoader.loadClass(MY_LOG_IMPL);
-            fail("Unexpectedly able to load MyLog via test class classloader");
+            fail("Unexpectedly able to load MyLog via test class class loader");
             assertNotNull(clazz); // silence warnings about unused var
-        } catch(final ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             // ok, expected
         }
 
@@ -130,14 +124,14 @@ public class TcclDisabledTestCase extends TestCase {
         try {
             final Class clazz = tcclLoader.loadClass(MY_LOG_IMPL);
             assertNotNull(clazz);
-        } catch(final ClassNotFoundException ex) {
-            fail("Unexpectedly unable to load MyLog via tccl classloader");
+        } catch (final ClassNotFoundException ex) {
+            fail("Unexpectedly unable to load MyLog via tccl class loader");
         }
     }
 
     /**
-     * Verify that the custom Log implementation which is only accessable
-     * via the TCCL has NOT been loaded. Because this is only accessable via the
+     * Verify that the custom Log implementation which is only accessible
+     * via the TCCL has NOT been loaded. Because this is only accessible via the
      * TCCL, and we've use a commons-logging.properties that disables TCCL loading,
      * we should see the default Log rather than the custom one.
      */
@@ -151,9 +145,9 @@ public class TcclDisabledTestCase extends TestCase {
         try {
             final Log log = instance.getInstance("test");
             fail("Unexpectedly succeeded in loading a custom Log class"
-                + " that is only accessable via the tccl.");
+                + " that is only accessible via the tccl.");
             assertNotNull(log); // silence compiler warning about unused var
-        } catch(final LogConfigurationException ex) {
+        } catch (final LogConfigurationException ex) {
             // ok, expected
             final int index = ex.getMessage().indexOf(MY_LOG_IMPL);
             assertTrue("MyLog not found", index >= 0);

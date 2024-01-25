@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.log4j.log4j12;
 
-
 import java.util.List;
 
 import org.apache.commons.logging.log4j.StandardTests;
@@ -25,29 +24,23 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
- * A custom implementation of <code>org.apache.log4j.Appender</code> which
- * converts the log4j-specific log event record into a representation that
+ * A custom implementation of {@code org.apache.log4j.Appender} which
+ * converts the Log4j-specific log event record into a representation that
  * doesn't have a dependency on log4j and stores that new representation into
  * an external list.
  */
 
 public class TestAppender extends AppenderSkeleton {
 
+    // The set of logged events for this appender
+    private final List events;
+
     /**
-     * Constructor.
+     * Constructs a new instance.
      */
     public TestAppender(final List logEvents) {
         events = logEvents;
     }
-
-    // ----------------------------------------------------- Instance Variables
-
-
-    // The set of logged events for this appender
-    private final List events;
-
-
-    // ------------------------------------------------------- Appender Methods
 
     @Override
     protected void append(final LoggingEvent event) {
@@ -70,16 +63,13 @@ public class TestAppender extends AppenderSkeleton {
         events.add(lev);
     }
 
-
     @Override
     public void close() {
     }
-
 
     @Override
     public boolean requiresLayout() {
         return false;
     }
-
 
 }

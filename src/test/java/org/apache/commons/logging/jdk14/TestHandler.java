@@ -16,58 +16,36 @@
  */
 package org.apache.commons.logging.jdk14;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-
 /**
- * <p>Test implementation of <code>java.util.logging.Handler</code>.</p>
- *
- * @author Craig R. McClanahan
- * @version $Revision$ $Date$
+ * <p>Test implementation of {@link java.util.logging.Handler}.</p>
  */
-
 public class TestHandler extends Handler {
-
-
-
-    // ----------------------------------------------------- Instance Variables
-
 
     // The set of logged records for this handler
     private final List records = new ArrayList();
 
-
-    // --------------------------------------------------------- Public Methods
-
-
-    public Iterator records() {
-        return records.iterator();
-    }
-
-
-    // -------------------------------------------------------- Handler Methods
-
-
     @Override
     public void close() {
     }
-
 
     @Override
     public void flush() {
         records.clear();
     }
 
-
     @Override
     public void publish(final LogRecord record) {
         records.add(record);
     }
 
+    public Iterator records() {
+        return records.iterator();
+    }
 
 }

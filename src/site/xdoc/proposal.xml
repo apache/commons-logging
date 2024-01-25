@@ -53,7 +53,7 @@ implementations.
 The package should :
 <ul>
 <li>Have an API which should be as simple to use as possible</li>
-<li>Provide support for log4j</li>
+<li>Provide support for Log4j</li>
 <li>Provide pluggable support for other logging APIs</li>
 </ul>
 </p>
@@ -83,7 +83,7 @@ Non-goals:
       is selected at runtime).</li>
   <li>Log4J (compile-time dependency only unless this Log
       implementation is selected at runtime)</li>
-  <li><a href="http://sourceforge.net/projects/lumberjack/">Lumberjack</a>
+  <li><a href="https//sourceforge.net/projects/lumberjack/">Lumberjack</a>
       (compile-time dependency only unless this Log
       implementation is selected at runtime)</li>
 </ul>

@@ -25,8 +25,8 @@ import org.apache.log4j.Logger;
 
 /**
  * A concrete class that runs the standard tests, and is compiled
- * specifically against log4j12. The parent class can't call any
- * log4j methods at all as that would mean it has to be compiled
+ * specifically against Log4j 1.2. The parent class can't call any
+ * Log4j methods at all as that would mean it has to be compiled
  * against a particular version of log4j.
  */
 

@@ -24,11 +24,9 @@ import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 
 /**
- * Implementation of the <code>org.apache.commons.logging.Log</code>
+ * Implementation of the {@code org.apache.commons.logging.Log}
  * interface that wraps the standard JDK logging mechanisms that were
  * introduced in the Merlin release (JDK 1.4).
- *
- * @version $Id$
  */
 public class Jdk14Logger implements Log, Serializable {
 
@@ -36,26 +34,12 @@ public class Jdk14Logger implements Log, Serializable {
     private static final long serialVersionUID = 4784713551416303804L;
 
     /**
-     * This member variable simply ensures that any attempt to initialise
+     * This member variable simply ensures that any attempt to initialize
      * this class in a pre-1.4 JVM will result in an ExceptionInInitializerError.
-     * It must not be private, as an optimising compiler could detect that it
-     * is not used and optimise it away.
+     * It must not be private, as an optimizing compiler could detect that it
+     * is not used and optimize it away.
      */
     protected static final Level dummyLevel = Level.FINE;
-
-    // ----------------------------------------------------------- Constructors
-
-    /**
-     * Construct a named instance of this Logger.
-     *
-     * @param name Name of the logger to be constructed
-     */
-    public Jdk14Logger(final String name) {
-        this.name = name;
-        logger = getLogger();
-    }
-
-    // ----------------------------------------------------- Instance Variables
 
     /**
      * The underlying Logger implementation we are using.
@@ -67,34 +51,18 @@ public class Jdk14Logger implements Log, Serializable {
      */
     protected String name;
 
-    // --------------------------------------------------------- Protected Methods
-
-    protected void log( final Level level, final String msg, final Throwable ex ) {
-        final Logger logger = getLogger();
-        if (logger.isLoggable(level)) {
-            // Hack (?) to get the stack trace.
-            final Throwable dummyException = new Throwable();
-            final StackTraceElement locations[] = dummyException.getStackTrace();
-            // LOGGING-132: use the provided logger name instead of the class name
-            final String cname = name;
-            String method = "unknown";
-            // Caller will be the third element
-            if( locations != null && locations.length > 2 ) {
-                final StackTraceElement caller = locations[2];
-                method = caller.getMethodName();
-            }
-            if( ex == null ) {
-                logger.logp( level, cname, method, msg );
-            } else {
-                logger.logp( level, cname, method, msg, ex );
-            }
-        }
+    /**
+     * Constructs a named instance of this Logger.
+     *
+     * @param name Name of the logger to be constructed
+     */
+    public Jdk14Logger(final String name) {
+        this.name = name;
+        logger = getLogger();
     }
 
-    // --------------------------------------------------------- Public Methods
-
     /**
-     * Logs a message with <code>java.util.logging.Level.FINE</code>.
+     * Logs a message with {@link java.util.logging.Level#FINE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#debug(Object)
@@ -105,7 +73,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.FINE</code>.
+     * Logs a message with {@link java.util.logging.Level#FINE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -117,7 +85,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#error(Object)
@@ -128,7 +96,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -140,7 +108,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#fatal(Object)
@@ -151,7 +119,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.SEVERE</code>.
+     * Logs a message with {@link java.util.logging.Level#SEVERE}.
      *
      * @param message to log
      * @param exception log this cause
@@ -163,7 +131,9 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Return the native Logger instance we are using.
+     * Gets the native Logger instance we are using.
+     *
+     * @return  the native Logger instance we are using.
      */
     public Logger getLogger() {
         if (logger == null) {
@@ -173,7 +143,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.INFO</code>.
+     * Logs a message with {@link java.util.logging.Level#INFO}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#info(Object)
@@ -184,7 +154,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.INFO</code>.
+     * Logs a message with {@link java.util.logging.Level#INFO}.
      *
      * @param message to log
      * @param exception log this cause
@@ -244,7 +214,35 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.FINEST</code>.
+     * Logs a message at the given level.
+     * @param level The level.
+     * @param msg The message.
+     * @param ex The exception.
+     */
+    protected void log(final Level level, final String msg, final Throwable ex) {
+        final Logger logger = getLogger();
+        if (logger.isLoggable(level)) {
+            // Hack (?) to get the stack trace.
+            final Throwable dummyException = new Throwable();
+            final StackTraceElement[] locations = dummyException.getStackTrace();
+            // LOGGING-132: use the provided logger name instead of the class name
+            final String cname = name;
+            String method = "unknown";
+            // Caller will be the third element
+            if (locations != null && locations.length > 2) {
+                final StackTraceElement caller = locations[2];
+                method = caller.getMethodName();
+            }
+            if (ex == null) {
+                logger.logp(level, cname, method, msg);
+            } else {
+                logger.logp(level, cname, method, msg, ex);
+            }
+        }
+    }
+
+    /**
+     * Logs a message with {@link java.util.logging.Level#FINEST}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#trace(Object)
@@ -255,7 +253,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.FINEST</code>.
+     * Logs a message with {@link java.util.logging.Level#FINEST}.
      *
      * @param message to log
      * @param exception log this cause
@@ -267,7 +265,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.WARNING</code>.
+     * Logs a message with {@link java.util.logging.Level#WARNING}.
      *
      * @param message to log
      * @see org.apache.commons.logging.Log#warn(Object)
@@ -278,7 +276,7 @@ public class Jdk14Logger implements Log, Serializable {
     }
 
     /**
-     * Logs a message with <code>java.util.logging.Level.WARNING</code>.
+     * Logs a message with {@link java.util.logging.Level#WARNING}.
      *
      * @param message to log
      * @param exception log this cause
