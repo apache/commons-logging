@@ -215,11 +215,11 @@ Configuration of the behavior of the JCL ultimately depends upon the
 logging toolkit being used. Please consult the documentation for the chosen logging system.
         </p>
         <p>
-JCL is NOT responsible for initialisation, configuration or shutdown of the underlying logging library.
+JCL is NOT responsible for initialisation, configuration, or shutdown of the underlying logging library.
 In many cases logging libraries will automatically initialise/configure themselves when first used, and
 need no explicit shutdown process. In these situations an application can simply use JCL and not depend
 directly on the API of the underlying logging system in any way. However if the logging library being used
-requires special initialisation, configuration or shutdown then some logging-library-specific code will
+requires special initialisation, configuration, or shutdown, then some logging-library-specific code will
 be required in the application. JCL simply forwards logging method calls to the correct underlying
 implementation. When writing library code this issue is of course not relevant as the calling application
 is responsible for handling such issues.
