@@ -729,7 +729,7 @@ for details.
   <p>
 JCL is distributed with a very simple <code>Log</code> implementation named 
 <code>org.apache.commons.logging.impl.SimpleLog</code>. This is intended to be a minimal
-implementation and those requiring a fully functional open source logging system are 
+implementation. Developers requiring a fully functional open source logging system are 
 directed to <a href='https://logging.apache.org/log4j'>Log4J</a>.
   </p>
   <p>
