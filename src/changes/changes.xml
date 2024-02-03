@@ -48,7 +48,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Elliotte Rusty Harold">Remove references to very old JDK and Commons Logging versions #201.</action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Dependabot">Bump log4j2.version from 2.21.1 to 2.22.0 #187, #193.</action>
-      <action dev="ggregory" type="update" due-to="Dependabot">Bump org.slf4j:slf4j-api from 2.0.9 to 2.0.10 #194.</action>
+      <action dev="ggregory" type="update" due-to="Dependabot">Bump org.slf4j:slf4j-api from 2.0.9 to 2.0.11.</action>
     </release>
     <release version="1.3.0" date="2023-11-26" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- ADD -->
