@@ -36,8 +36,6 @@ public class AvalonLoggerTestCase extends AbstractLogTest {
 
     @Override
     public Log getLogObject() {
-        // Output does not seem to be used, so don't display it.
-        final Log log = new AvalonLogger(new NullLogger());
-        return log;
+        return new AvalonLogger(new NullLogger());
     }
 }

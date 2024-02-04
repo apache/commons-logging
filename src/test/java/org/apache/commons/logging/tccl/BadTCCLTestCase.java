@@ -32,8 +32,7 @@ public class BadTCCLTestCase extends TestCase {
     public static Test suite() throws Exception {
         final PathableClassLoader contextClassLoader = new PathableClassLoader(null);
         contextClassLoader.useExplicitLoader("junit.", Test.class.getClassLoader());
-        final PathableTestSuite suite = new PathableTestSuite(BadTCCLTestCase.class, contextClassLoader);
-        return suite;
+        return new PathableTestSuite(BadTCCLTestCase.class, contextClassLoader);
     }
 
     // test methods

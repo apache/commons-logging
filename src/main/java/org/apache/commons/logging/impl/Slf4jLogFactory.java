@@ -53,42 +53,42 @@ public final class Slf4jLogFactory extends LogFactory {
         }
 
         @Override
-        public void debug(Object message) {
+        public void debug(final Object message) {
             log(DEBUG_INT, message, null);
         }
 
         @Override
-        public void debug(Object message, Throwable t) {
+        public void debug(final Object message, final Throwable t) {
             log(DEBUG_INT, message, t);
         }
 
         @Override
-        public void error(Object message) {
+        public void error(final Object message) {
             log(ERROR_INT, message, null);
         }
 
         @Override
-        public void error(Object message, Throwable t) {
+        public void error(final Object message, final Throwable t) {
             log(ERROR_INT, message, t);
         }
 
         @Override
-        public void fatal(Object message) {
+        public void fatal(final Object message) {
             error(message);
         }
 
         @Override
-        public void fatal(Object message, Throwable t) {
+        public void fatal(final Object message, final Throwable t) {
             error(message, t);
         }
 
         @Override
-        public void info(Object message) {
+        public void info(final Object message) {
             log(INFO_INT, message, null);
         }
 
         @Override
-        public void info(Object message, Throwable t) {
+        public void info(final Object message, final Throwable t) {
             log(INFO_INT, message, t);
         }
 
@@ -127,22 +127,22 @@ public final class Slf4jLogFactory extends LogFactory {
         }
 
         @Override
-        public void trace(Object message) {
+        public void trace(final Object message) {
             log(TRACE_INT, message, null);
         }
 
         @Override
-        public void trace(Object message, Throwable t) {
+        public void trace(final Object message, final Throwable t) {
             log(TRACE_INT, message, t);
         }
 
         @Override
-        public void warn(Object message) {
+        public void warn(final Object message) {
             log(WARN_INT, message, null);
         }
 
         @Override
-        public void warn(Object message, Throwable t) {
+        public void warn(final Object message, final Throwable t) {
             log(WARN_INT, message, t);
         }
     }
@@ -155,42 +155,42 @@ public final class Slf4jLogFactory extends LogFactory {
         }
 
         @Override
-        public void debug(Object message) {
+        public void debug(final Object message) {
             logger.debug(MARKER, String.valueOf(message));
         }
 
         @Override
-        public void debug(Object message, Throwable t) {
+        public void debug(final Object message, final Throwable t) {
             logger.debug(MARKER, String.valueOf(message), t);
         }
 
         @Override
-        public void error(Object message) {
+        public void error(final Object message) {
             logger.error(MARKER, String.valueOf(message));
         }
 
         @Override
-        public void error(Object message, Throwable t) {
+        public void error(final Object message, final Throwable t) {
             logger.debug(MARKER, String.valueOf(message), t);
         }
 
         @Override
-        public void fatal(Object message) {
+        public void fatal(final Object message) {
             error(message);
         }
 
         @Override
-        public void fatal(Object message, Throwable t) {
+        public void fatal(final Object message, final Throwable t) {
             error(message, t);
         }
 
         @Override
-        public void info(Object message) {
+        public void info(final Object message) {
             logger.info(MARKER, String.valueOf(message));
         }
 
         @Override
-        public void info(Object message, Throwable t) {
+        public void info(final Object message, final Throwable t) {
             logger.info(MARKER, String.valueOf(message), t);
         }
 
@@ -225,22 +225,22 @@ public final class Slf4jLogFactory extends LogFactory {
         }
 
         @Override
-        public void trace(Object message) {
+        public void trace(final Object message) {
             logger.trace(MARKER, String.valueOf(message));
         }
 
         @Override
-        public void trace(Object message, Throwable t) {
+        public void trace(final Object message, final Throwable t) {
             logger.trace(MARKER, String.valueOf(message), t);
         }
 
         @Override
-        public void warn(Object message) {
+        public void warn(final Object message) {
             logger.warn(MARKER, String.valueOf(message));
         }
 
         @Override
-        public void warn(Object message, Throwable t) {
+        public void warn(final Object message, final Throwable t) {
             logger.warn(MARKER, String.valueOf(message), t);
         }
     }

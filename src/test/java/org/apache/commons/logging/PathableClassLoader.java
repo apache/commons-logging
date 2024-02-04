@@ -317,8 +317,7 @@ public class PathableClassLoader extends URLClassLoader {
                 final String prefix = (String) entry.getKey();
                 if (name.startsWith(prefix)) {
                     final ClassLoader loader = (ClassLoader) entry.getValue();
-                    final Class clazz = Class.forName(name, resolve, loader);
-                    return clazz;
+                    return Class.forName(name, resolve, loader);
                 }
             }
         }

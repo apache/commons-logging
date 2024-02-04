@@ -136,7 +136,7 @@ public class SimpleLog implements Log, Serializable {
             if (null != in) {
                 simpleLogProps.load(in);
             }
-        } catch (IOException ignore) {
+        } catch (final IOException ignore) {
             // Ignore
         }
 
