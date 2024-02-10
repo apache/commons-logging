@@ -44,150 +44,6 @@ under the License.
 
   <inceptionYear>2001</inceptionYear>
 
-  <developers>
-    <developer>
-      <id>baliuka</id>
-      <name>Juozas Baliuka</name>
-      <email>baliuka@apache.org</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>morgand</id>
-      <name>Morgan Delagrange</name>
-      <email>morgand@apache.org</email>
-      <organization>Apache</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>donaldp</id>
-      <name>Peter Donald</name>
-      <email>donaldp@apache.org</email>
-    </developer>
-    <developer>
-      <id>rdonkin</id>
-      <name>Robert Burrell Donkin</name>
-      <email>rdonkin@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>skitching</id>
-      <name>Simon Kitching</name>
-      <email>skitching@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>dennisl</id>
-      <name>Dennis Lundberg</name>
-      <email>dennisl@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>costin</id>
-      <name>Costin Manolache</name>
-      <email>costin@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>craigmcc</id>
-      <name>Craig McClanahan</name>
-      <email>craigmcc@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>tn</id>
-      <name>Thomas Neidhart</name>
-      <email>tn@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>sanders</id>
-      <name>Scott Sanders</name>
-      <email>sanders@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>rsitze</id>
-      <name>Richard Sitze</name>
-      <email>rsitze@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>bstansberry</id>
-      <name>Brian Stansberry</name>
-    </developer>
-    <developer>
-      <id>rwaldhoff</id>
-      <name>Rodney Waldhoff</name>
-      <email>rwaldhoff@apache.org</email>
-      <organization>The Apache Software Foundation</organization>
-    </developer>
-    <developer>
-      <id>ggregory</id>
-      <name>Gary Gregory</name>
-      <email>ggregory at apache.org</email>
-      <url>https://www.garygregory.com</url>
-      <organization>The Apache Software Foundation</organization>
-      <organizationUrl>https://www.apache.org/</organizationUrl>      
-      <roles>
-        <role>PMC Member</role>
-      </roles>
-      <timezone>America/New_York</timezone>
-      <properties>
-        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
-      </properties>
-    </developer>
-  </developers>
-  <contributors>
-    <contributor>
-      <name>Matthew P. Del Buono</name>
-      <roles>
-        <role>Provided patch</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Vince Eagen</name>
-      <email>vince256 at comcast dot net</email>
-      <roles>
-        <role>Lumberjack logging abstraction</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Peter Lawrey</name>
-      <roles>
-        <role>Provided patch</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Berin Loritsch</name>
-      <email>bloritsch at apache dot org</email>
-      <roles>
-        <role>Lumberjack logging abstraction</role>
-        <role>JDK 1.4 logging abstraction</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Philippe Mouawad</name>
-      <roles>
-        <role>Provided patch</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Neeme Praks</name>
-      <email>neeme at apache dot org</email>
-      <roles>
-        <role>Avalon logging abstraction</role>
-      </roles>
-    </contributor>
-    <contributor>
-      <name>Arturo Bernal</name>
-      <email>arturobernalg@yahoo.com</email>
-    </contributor>
-  </contributors>
-  
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/commons-logging</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-logging</developerConnection>
@@ -741,4 +597,148 @@ under the License.
     <project.build.outputTimestamp>2024-01-01T00:00:00Z</project.build.outputTimestamp>
   </properties>
 
+  <developers>
+    <developer>
+      <id>baliuka</id>
+      <name>Juozas Baliuka</name>
+      <email>baliuka@apache.org</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>morgand</id>
+      <name>Morgan Delagrange</name>
+      <email>morgand@apache.org</email>
+      <organization>Apache</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>donaldp</id>
+      <name>Peter Donald</name>
+      <email>donaldp@apache.org</email>
+    </developer>
+    <developer>
+      <id>rdonkin</id>
+      <name>Robert Burrell Donkin</name>
+      <email>rdonkin@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>skitching</id>
+      <name>Simon Kitching</name>
+      <email>skitching@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>dennisl</id>
+      <name>Dennis Lundberg</name>
+      <email>dennisl@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>costin</id>
+      <name>Costin Manolache</name>
+      <email>costin@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>craigmcc</id>
+      <name>Craig McClanahan</name>
+      <email>craigmcc@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>tn</id>
+      <name>Thomas Neidhart</name>
+      <email>tn@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>sanders</id>
+      <name>Scott Sanders</name>
+      <email>sanders@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>rsitze</id>
+      <name>Richard Sitze</name>
+      <email>rsitze@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>bstansberry</id>
+      <name>Brian Stansberry</name>
+    </developer>
+    <developer>
+      <id>rwaldhoff</id>
+      <name>Rodney Waldhoff</name>
+      <email>rwaldhoff@apache.org</email>
+      <organization>The Apache Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>ggregory</id>
+      <name>Gary Gregory</name>
+      <email>ggregory at apache.org</email>
+      <url>https://www.garygregory.com</url>
+      <organization>The Apache Software Foundation</organization>
+      <organizationUrl>https://www.apache.org/</organizationUrl>      
+      <roles>
+        <role>PMC Member</role>
+      </roles>
+      <timezone>America/New_York</timezone>
+      <properties>
+        <picUrl>https://people.apache.org/~ggregory/img/garydgregory80.png</picUrl>
+      </properties>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Matthew P. Del Buono</name>
+      <roles>
+        <role>Provided patch</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Vince Eagen</name>
+      <email>vince256 at comcast dot net</email>
+      <roles>
+        <role>Lumberjack logging abstraction</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Peter Lawrey</name>
+      <roles>
+        <role>Provided patch</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Berin Loritsch</name>
+      <email>bloritsch at apache dot org</email>
+      <roles>
+        <role>Lumberjack logging abstraction</role>
+        <role>JDK 1.4 logging abstraction</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Philippe Mouawad</name>
+      <roles>
+        <role>Provided patch</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Neeme Praks</name>
+      <email>neeme at apache dot org</email>
+      <roles>
+        <role>Avalon logging abstraction</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Arturo Bernal</name>
+      <email>arturobernalg@yahoo.com</email>
+    </contributor>
+  </contributors>
+  
 </project>
