@@ -42,9 +42,9 @@ public class LoadTestCase extends TestCase {
             super(parent);
         }
 
-        private Class def(final String name) throws ClassNotFoundException {
+        private Class<?> def(final String name) throws ClassNotFoundException {
 
-            Class result = (Class) classes.get(name);
+            Class<?> result = (Class<?>) classes.get(name);
             if (result != null) {
                 return result;
             }
@@ -130,8 +130,8 @@ public class LoadTestCase extends TestCase {
      * (expected to be a UserClass loaded via a custom class loader), passing
      * it the specified state parameter.
      */
-    private void setAllowFlawedContext(final Class c, final String state) throws Exception {
-        final Class[] params = {String.class};
+    private void setAllowFlawedContext(final Class<?> c, final String state) throws Exception {
+        final Class<?>[] params = {String.class};
         final java.lang.reflect.Method m = c.getDeclaredMethod("setAllowFlawedContext", params);
         m.invoke(null, state);
     }
@@ -165,7 +165,7 @@ public class LoadTestCase extends TestCase {
         // 2. Thread.currentThread().setContextClassLoader(null);
 
         // Context class loader is same as class calling into log
-        Class cls = reload();
+        Class<?> cls = reload();
         Thread.currentThread().setContextClassLoader(cls.getClassLoader());
         execute(cls);
 
