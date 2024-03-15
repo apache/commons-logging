@@ -42,6 +42,8 @@ public class ParentClasspathStandardTestCase extends TestCase {
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("log4j12");
+        parent.addLogicalLib("log4j2-api");
+        parent.addLogicalLib("log4j2-core");
 
         final PathableClassLoader child = new PathableClassLoader(parent);
         child.addLogicalLib("testclasses");
