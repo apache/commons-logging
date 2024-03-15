@@ -348,6 +348,8 @@ under the License.
                 <commons-logging>target/${project.build.finalName}.jar</commons-logging>
                 <commons-logging-api>target/${project.build.finalName}-api.jar</commons-logging-api>
                 <testclasses>target/${project.build.finalName}-tests.jar</testclasses>
+                <!-- Use the Log4j 1.2 version of Log -->
+                <org.apache.commons.logging.LogFactory>org.apache.commons.logging.impl.LogFactoryImpl</org.apache.commons.logging.LogFactory>
               </systemPropertyVariables>
             </configuration>
           </execution>

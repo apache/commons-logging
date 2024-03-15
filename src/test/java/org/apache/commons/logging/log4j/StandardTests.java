@@ -147,7 +147,7 @@ public abstract class StandardTests extends TestCase {
     public void testCreateFactory() {
         final LogFactory factory = LogFactory.getFactory();
         assertNotNull("LogFactory exists", factory);
-        assertEquals("LogFactory class", "org.apache.commons.logging.impl.Log4jApiLogFactory", factory.getClass().getName());
+        assertEquals("LogFactory class", "org.apache.commons.logging.impl.LogFactoryImpl", factory.getClass().getName());
 
         final String[] names = factory.getAttributeNames();
         assertNotNull("Names exists", names);
