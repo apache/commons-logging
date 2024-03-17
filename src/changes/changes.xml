@@ -49,6 +49,7 @@ The <action> type attribute can be add,update,fix,remove.
       <!-- FIX -->
       <action dev="ggregory" type="fix" due-to="Elliotte Rusty Harold">Remove references to very old JDK and Commons Logging versions #201.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory, Piotr P. Karwasz">Update from Logj 1 to the Log4j 2 API compatibility layer #231.</action>
+      <action dev="ggregory" type="fix" due-to="Václav Haisman">Allow Servlet 4 in OSGi environment #191.</action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Dependabot">Bump org.apache.commons:commons-parent from 65 to 67.</action>
       <action dev="ggregory" type="update" due-to="Dependabot, Piotr P. Karwasz">Bump log4j2.version from 2.21.1 to 2.23.1 #187, #230.</action>
