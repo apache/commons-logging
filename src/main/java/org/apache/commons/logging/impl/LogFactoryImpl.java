@@ -263,12 +263,12 @@ public class LogFactoryImpl extends LogFactory {
      * This value is initialized by {@code getLogConstructor()},
      * and then returned repeatedly.
      */
-    protected Constructor logConstructor;
+    protected Constructor<?> logConstructor;
 
     /**
      * The signature of the Constructor to be used.
      */
-    protected Class[] logConstructorSignature = { String.class };
+    protected Class<?>[] logConstructorSignature = { String.class };
 
     /**
      * The one-argument {@code setLogFactory} method of the selected
@@ -279,7 +279,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * The signature of the {@code setLogFactory} method to be used.
      */
-    protected Class[] logMethodSignature = { LogFactory.class };
+    protected Class<?>[] logMethodSignature = { LogFactory.class };
 
     /**
      * See getBaseClassLoader and initConfiguration.
@@ -331,9 +331,9 @@ public class LogFactoryImpl extends LogFactory {
 
         final Object[] params = { logCategory };
         Log logAdapter = null;
-        Constructor constructor = null;
+        Constructor<?> constructor = null;
 
-        Class logAdapterClass = null;
+        Class<?> logAdapterClass = null;
         ClassLoader currentCL = getBaseClassLoader();
 
         for(;;) {
@@ -361,7 +361,7 @@ public class LogFactoryImpl extends LogFactory {
                     }
                 }
 
-                Class clazz;
+                Class<?> clazz;
                 try {
                     clazz = Class.forName(logAdapterClassName, true, currentCL);
                 } catch (final ClassNotFoundException originalClassNotFoundException) {
@@ -872,7 +872,7 @@ public class LogFactoryImpl extends LogFactory {
      * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
-    protected Constructor getLogConstructor()
+    protected Constructor<?> getLogConstructor()
         throws LogConfigurationException {
 
         // Return the previously identified Constructor (if any)
@@ -1023,13 +1023,13 @@ public class LogFactoryImpl extends LogFactory {
      * @throws LogConfigurationException when the situation
      * should not be recovered from.
      */
-    private void handleFlawedHierarchy(final ClassLoader badClassLoader, final Class badClass)
+    private void handleFlawedHierarchy(final ClassLoader badClassLoader, final Class<?> badClass)
         throws LogConfigurationException {
 
         boolean implementsLog = false;
         final String logInterfaceName = Log.class.getName();
-        final Class[] interfaces = badClass.getInterfaces();
-        for (final Class element : interfaces) {
+        final Class<?>[] interfaces = badClass.getInterfaces();
+        for (final Class<?> element : interfaces) {
             if (logInterfaceName.equals(element.getName())) {
                 implementsLog = true;
                 break;
@@ -1157,7 +1157,8 @@ public class LogFactoryImpl extends LogFactory {
         // the context it is intended to manage.
         // Note that this prefix should be kept consistent with that
         // in LogFactory.
-        final Class clazz = this.getClass();
+        @SuppressWarnings("unchecked")
+        final Class<LogFactoryImpl> clazz = (Class<LogFactoryImpl>) this.getClass();
         final ClassLoader classLoader = getClassLoader(clazz);
         String classLoaderName;
         try {
