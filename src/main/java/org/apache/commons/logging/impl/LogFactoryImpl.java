@@ -640,7 +640,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return the configuration attribute with the specified name (if any),
+     * Gets the configuration attribute with the specified name (if any),
      * or {@code null} if there is no such attribute.
      *
      * @param name Name of the attribute to return
@@ -651,7 +651,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return an array containing the names of all currently defined
+     * Gets an array containing the names of all currently defined
      * configuration attributes.  If there are no such attributes, a zero
      * length array is returned.
      */
@@ -661,7 +661,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return the class loader from which we should try to load the logging
+     * Gets the class loader from which we should try to load the logging
      * adapter classes.
      * <p>
      * This method usually returns the context class loader. However if it
@@ -676,7 +676,6 @@ public class LogFactoryImpl extends LogFactory {
      * failed to correctly set the context class loader. This is a bug in
      * the calling application; however we provide the option for JCL to
      * simply generate a warning rather than fail outright.
-     *
      */
     private ClassLoader getBaseClassLoader() throws LogConfigurationException {
         final ClassLoader thisClassLoader = getClassLoader(LogFactoryImpl.class);
@@ -842,7 +841,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Return the fully qualified Java class name of the {@link Log} implementation we will be using.
+     * Gets the fully qualified Java class name of the {@link Log} implementation we will be using.
      *
      * @return the fully qualified Java class name of the {@link Log} implementation we will be using.
      * @deprecated Never invoked by this class; subclasses should not assume it will be.
@@ -858,7 +857,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * <p>
-     * Return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
+     * Gets the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
      * </p>
      *
      * <p>

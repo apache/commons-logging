@@ -82,8 +82,7 @@ public class SecurityForbiddenTestCase extends TestCase {
     private Object loadClass(final String name, final ClassLoader classLoader) {
         try {
             final Class clazz = classLoader.loadClass(name);
-            final Object obj = clazz.getConstructor().newInstance();
-            return obj;
+            return clazz.getConstructor().newInstance();
         } catch (final Exception e) {
             final StringWriter sw = new StringWriter();
             final PrintWriter pw = new PrintWriter(sw);

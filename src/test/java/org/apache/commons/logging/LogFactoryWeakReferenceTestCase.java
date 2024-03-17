@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 import junit.framework.TestCase;
 
 public class LogFactoryWeakReferenceTestCase extends TestCase {
-    private static final long MAX_WAIT_FOR_REF_NULLED_BY_GC = 15000;
+    private static final long MAX_WAIT_FOR_REF_NULLED_BY_GC = 15_000;
 
     public void testNotLeakingThisClassLoader() throws Exception {
         // create an isolated loader

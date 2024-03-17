@@ -297,7 +297,7 @@ public class WeakHashtableTestCase extends TestCase {
             }
             // create garbage:
             final byte[] b =  new byte[bytz];
-            bytz = bytz * 2;
+            bytz *= 2;
         }
 
         // some JVMs seem to take a little time to put references on

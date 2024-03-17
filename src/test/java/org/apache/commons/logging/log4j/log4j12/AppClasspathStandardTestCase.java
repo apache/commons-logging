@@ -42,6 +42,8 @@ public class AppClasspathStandardTestCase extends TestCase {
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("log4j12");
+        loader.addLogicalLib("log4j2-api");
+        loader.addLogicalLib("log4j2-core");
         loader.addLogicalLib("commons-logging");
 
         final Class testClass = loader.loadClass(

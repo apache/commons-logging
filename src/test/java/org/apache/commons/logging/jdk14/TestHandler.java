@@ -23,7 +23,7 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * <p>Test implementation of {@code java.util.logging.Handler}.</p>
+ * <p>Test implementation of {@link java.util.logging.Handler}.</p>
  */
 public class TestHandler extends Handler {
 

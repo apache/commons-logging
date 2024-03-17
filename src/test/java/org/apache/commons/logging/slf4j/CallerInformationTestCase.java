@@ -60,7 +60,7 @@ public class CallerInformationTestCase extends TestCase {
         appender.clearAllFilters();
         appender.addFilter(new Filter<ILoggingEvent>() {
             @Override
-            public FilterReply decide(ILoggingEvent event) {
+            public FilterReply decide(final ILoggingEvent event) {
                 // Force the registration of caller data
                 event.getCallerData();
                 return FilterReply.NEUTRAL;

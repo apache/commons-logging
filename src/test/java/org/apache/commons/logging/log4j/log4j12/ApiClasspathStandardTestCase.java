@@ -45,6 +45,8 @@ public class ApiClasspathStandardTestCase extends TestCase {
 
         final PathableClassLoader child = new PathableClassLoader(parent);
         child.addLogicalLib("log4j12");
+        child.addLogicalLib("log4j2-api");
+        child.addLogicalLib("log4j2-core");
         child.addLogicalLib("commons-logging");
         child.addLogicalLib("testclasses");
 

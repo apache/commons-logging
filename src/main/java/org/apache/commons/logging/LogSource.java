@@ -155,7 +155,7 @@ public class LogSource {
         try {
             Class.forName(className);
             return true;
-        } catch (Throwable e) {
+        } catch (final Throwable e) {
             return false;
         }
     }

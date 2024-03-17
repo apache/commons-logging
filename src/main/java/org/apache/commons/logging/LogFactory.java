@@ -111,7 +111,7 @@ public abstract class LogFactory {
     public static final String FACTORY_PROPERTIES = "commons-logging.properties";
 
     /**
-     * JDK 1.3+ <a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
+     * JDK 1.3+ <a href="https://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
      * 'Service Provider' specification</a>.
      */
     protected static final String SERVICE_ID =
@@ -369,7 +369,7 @@ public abstract class LogFactory {
                         if (implementsLogFactory) {
                             msg.append("The conflict is caused by the presence of multiple LogFactory classes ");
                             msg.append("in incompatible class loaders. ");
-                            msg.append("Background can be found in http://commons.apache.org/logging/tech.html. ");
+                            msg.append("Background can be found in https://commons.apache.org/logging/tech.html. ");
                             msg.append("If you have not explicitly specified a custom LogFactory then it is likely ");
                             msg.append("that the container has set one without your knowledge. ");
                             msg.append("In this case, consider using the commons-logging-adapters.jar file or ");
@@ -377,7 +377,7 @@ public abstract class LogFactory {
                         } else {
                             msg.append("Please check the custom implementation. ");
                         }
-                        msg.append("Help can be found @http://commons.apache.org/logging/troubleshooting.html.");
+                        msg.append("Help can be found at https://commons.apache.org/logging/troubleshooting.html.");
 
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic(msg.toString());
@@ -487,7 +487,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Return the thread context class loader if available; otherwise return null.
+     * Gets the thread context class loader if available; otherwise return null.
      * <p>
      * Most/all code should call getContextClassLoaderInternal rather than
      * calling this method directly.
@@ -731,7 +731,7 @@ public abstract class LogFactory {
      * <li>The {@code org.apache.commons.logging.LogFactory} system property.</li>
      * <li>The JDK 1.3 Service Discovery mechanism</li>
      * <li>Use the properties file {@code commons-logging.properties} file, if found in the class path of this class. The configuration file is in standard
-     * {@code java.util.Properties} format and contains the fully qualified name of the implementation class with the key being the system property defined
+     * {@link java.util.Properties} format and contains the fully qualified name of the implementation class with the key being the system property defined
      * above.</li>
      * <li>Fall back to a default implementation class ({@code org.apache.commons.logging.impl.LogFactoryImpl}).</li>
      * </ul>
@@ -1388,7 +1388,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Return a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
+     * Gets a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
      * used to load this (abstract) LogFactory.
      * <p>
      * <b>ClassLoader conflicts</b>
@@ -1510,11 +1510,7 @@ public abstract class LogFactory {
         // factories is not final and could be replaced in this block.
         final Hashtable<ClassLoader, LogFactory> factories = LogFactory.factories;
         synchronized (factories) {
-            final Enumeration<LogFactory> elements = factories.elements();
-            while (elements.hasMoreElements()) {
-                final LogFactory element = elements.nextElement();
-                element.release();
-            }
+            factories.values().forEach(LogFactory::release);
             factories.clear();
 
             if (nullClassLoaderFactory != null) {
@@ -1539,7 +1535,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Return the configuration attribute with the specified name (if any),
+     * Gets the configuration attribute with the specified name (if any),
      * or {@code null} if there is no such attribute.
      *
      * @param name Name of the attribute to return

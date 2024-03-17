@@ -44,6 +44,8 @@ public class ChildClasspathStandardTestCase extends TestCase {
         final PathableClassLoader child = new PathableClassLoader(parent);
         child.addLogicalLib("testclasses");
         child.addLogicalLib("log4j12");
+        child.addLogicalLib("log4j2-api");
+        child.addLogicalLib("log4j2-core");
         child.addLogicalLib("commons-logging");
 
         final Class testClass = child.loadClass(

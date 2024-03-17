@@ -25,7 +25,7 @@ import org.apache.log.Logger;
 
 /**
  * Implementation of {@code org.apache.commons.logging.Log}
- * that wraps the <a href="http://avalon.apache.org/logkit/">avalon-logkit</a>
+ * that wraps the <a href="https://avalon.apache.org/logkit/">avalon-logkit</a>
  * logging system. Configuration of {@code LogKit} is left to the user.
  * <p>
  * {@code LogKit} accepts only {@code String} messages.

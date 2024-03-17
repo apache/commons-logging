@@ -57,7 +57,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * <li>{@code org.apache.commons.logging.simplelog.dateTimeFormat} -
  *     The date and time format to be used in the output messages.
  *     The pattern describing the date and time format is the same that is
- *     used in {@code java.text.SimpleDateFormat}. If the format is not
+ *     used in {@link java.text.SimpleDateFormat}. If the format is not
  *     specified or is invalid, the default format is used.
  *     The default format is {@code yyyy/MM/dd HH:mm:ss:SSS zzz}.</li>
  * </ul>
@@ -136,7 +136,7 @@ public class SimpleLog implements Log, Serializable {
             if (null != in) {
                 simpleLogProps.load(in);
             }
-        } catch (IOException ignore) {
+        } catch (final IOException ignore) {
             // Ignore
         }
 
@@ -158,7 +158,7 @@ public class SimpleLog implements Log, Serializable {
 
     private static boolean getBooleanProperty(final String name, final boolean defaultValue) {
         final String prop = getStringProperty(name);
-        return prop == null ? defaultValue : "true".equalsIgnoreCase(prop);
+        return prop == null ? defaultValue : Boolean.parseBoolean(prop);
     }
 
     /**
