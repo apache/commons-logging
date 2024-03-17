@@ -32,7 +32,7 @@ under the License.
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
   <name>Apache Commons Logging</name>
-  <version>1.4.0-SNAPSHOT</version>
+  <version>1.3.1-SNAPSHOT</version>
   <description>Apache Commons Logging is a thin adapter allowing configurable bridging to other,
     well-known logging systems.</description>
   <url>https://commons.apache.org/proper/commons-logging/</url>
@@ -651,14 +651,14 @@ under the License.
     <maven.compiler.target>${commons.logging.javaversion}</maven.compiler.target>
     <commons.componentid>logging</commons.componentid>
     <commons.module.name>org.apache.commons.logging</commons.module.name>
-    <commons.release.version>1.4.0</commons.release.version>
-    <commons.release.next>1.4.1</commons.release.next>
+    <commons.release.version>1.3.1</commons.release.version>
+    <commons.release.next>1.3.2</commons.release.next>
     <commons.bc.version>1.3.0</commons.bc.version>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC1</commons.rc.version>
+    <commons.rc.version>RC2</commons.rc.version>
     <skipSurefireReport>true</skipSurefireReport>
     <!-- Since version 3.2 additional classpath dependencies are allowed. -->
     <commons.failsafe.version>3.2.1</commons.failsafe.version>

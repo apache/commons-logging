@@ -1,8 +1,8 @@
 Apache Commons Logging
-Version 1.4.0
+Version 1.3.1
 RELEASE NOTES
 
-The Apache Commons Logging team is pleased to announce the release of Apache Commons Logging 1.4.0
+The Apache Commons Logging team is pleased to announce the release of Apache Commons Logging 1.3.1
 
 Apache Commons Logging is a thin adapter allowing configurable bridging to other,
 well-known logging systems.
@@ -22,6 +22,9 @@ Fixed Bugs
 
 *               Remove references to very old JDK and Commons Logging versions #201. Thanks to Elliotte Rusty Harold.
 *               Update from Logj 1 to the Log4j 2 API compatibility layer #231. Thanks to Gary Gregory, Piotr P. Karwasz.
+*               Allow Servlet 4 in OSGi environment #191. Thanks to Václav Haisman.
+*               Fix generics warnings #213. Thanks to Elliotte Rusty Harold.
+* LOGGING-189:  Fix Import-Package entry for org.slf4j #188. Thanks to Václav Haisman, Sebb, Hannes Wellmann, Gary Gregory, Piotr P. Karwasz.
 
 Changes
 -------
@@ -32,6 +35,7 @@ Changes
 *               Bump ch.qos.logback:logback-classic from 1.3.11 to 1.3.14 #212. Thanks to Dependabot, Gary Gregory.
 *               Bump ch.qos.logback:logback-core from 1.3.11 to 1.3.14 #211. Thanks to Dependabot, Gary Gregory.
 *               Bump com.h3xstream.findsecbugs:findsecbugs-plugin from 1.12.0 to 1.13.0. Thanks to Dependabot.
+*               Bump logkit from 1.0.1 to 2.0 #32. Thanks to Dependabot.
 
 
 Historical list of changes: https://commons.apache.org/proper/commons-logging/changes-report.html
@@ -42,6 +46,7 @@ For complete information on Apache Commons Logging, including instructions on ho
 patches, or suggestions for improvement, see the Apache Commons Logging website:
 
 https://commons.apache.org/proper/commons-logging/
+
 
 -----------------------------------------------------------------------------
 
