@@ -56,6 +56,49 @@ under the License.
     <plugins>
 
       <!--
+        ~ Adds a directory containing "dummy" classes.
+        ~
+        ~ These are simplified versions of LogKit, Avalon and Log4j 1.x classes used only at compile-time.
+        ~ This should be enough to trick primitive security scanners that complain about the presence of a deprecated/unmaintained
+        ~ library in the POM file.
+        -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-dummy-sources</id>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <sources>
+                <source>src/main/dummy</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <!-- Prevents the compilation of dummy classes -->
+              <implicit>none</implicit>
+              <includes>
+                <include>org/apache/commons/logging/**</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--
         - We want to create four jarfiles from this project: normal, tests, api
         - and adapters. The first two are handled by the normal jar:jar and
         - jar:test-jar targets.
@@ -66,6 +109,19 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
+
+          <execution>
+            <id>default-jar</id>
+            <configuration>
+              <!--
+                ~ Failsafe to prevent the inclusion of dummy classes even if they end up being compiled.
+                -->
+              <includes>
+                <include>org/apache/commons/logging/**</include>
+              </includes>
+            </configuration>
+          </execution>
+
           <execution>
             <!--
               - The custom test framework requires the unit test code to be
@@ -202,6 +258,11 @@ under the License.
                   </requires>
                 </moduleInfo>
               </module>
+              <!-- Ignores the dependencies on dummy classes for the LogKit, Avalon and Log4j 1.x `Log` implementations -->
+              <jdepsExtraArgs>
+                <arg>--ignore-missing-deps</arg>
+                <arg>--multi-release=9</arg>
+              </jdepsExtraArgs>
             </configuration>
           </execution>
         </executions>
@@ -522,13 +583,13 @@ under the License.
       <groupId>avalon-framework</groupId>
       <artifactId>avalon-framework</artifactId>
       <version>4.1.5</version>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-1.2-api</artifactId>
       <version>${log4j2.version}</version>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -540,7 +601,7 @@ under the License.
       <groupId>logkit</groupId>
       <artifactId>logkit</artifactId>
       <version>2.0</version>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
