@@ -78,11 +78,10 @@ public class LoadTestCase extends TestCase {
         // but it will delegate to JUnit class loader first
         @Override
         public Class loadClass(final String name) throws ClassNotFoundException {
-
             // isolates all logging classes, application in the same class loader too.
             // filters exceptions to simplify handling in test
             for (final String element : LOG_PCKG) {
-                if (name.startsWith(element) && name.indexOf("Exception") == -1) {
+                if (name.startsWith(element) && !name.contains("Exception")) {
                     return def(name);
                 }
             }

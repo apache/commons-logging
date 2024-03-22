@@ -144,8 +144,7 @@ public class TcclDisabledTestCase extends TestCase {
         } catch (final org.apache.commons.logging.LogConfigurationException ex) {
             // ok, custom MyLogFactoryImpl as specified in props_disable_tccl
             // could not be found.
-            final int index = ex.getMessage().indexOf(MY_LOG_FACTORY_IMPL);
-            assertTrue("MylogFactoryImpl not found", index >= 0);
+            assertTrue("MylogFactoryImpl not found", ex.getMessage().contains(MY_LOG_FACTORY_IMPL));
         }
     }
 }

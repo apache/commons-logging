@@ -149,8 +149,7 @@ public class TcclDisabledTestCase extends TestCase {
             assertNotNull(log); // silence compiler warning about unused var
         } catch (final LogConfigurationException ex) {
             // ok, expected
-            final int index = ex.getMessage().indexOf(MY_LOG_IMPL);
-            assertTrue("MyLog not found", index >= 0);
+            assertTrue("MyLog not found", ex.getMessage().contains(MY_LOG_IMPL));
         }
     }
 }
