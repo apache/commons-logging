@@ -236,7 +236,7 @@ public class Log4JLogger implements Log, Serializable {
      */
     @Override
     public boolean isDebugEnabled() {
-        return getLogger().isDebugEnabled();
+        return getLogger().isEnabledFor(Level.DEBUG);
     }
 
     /**
@@ -260,7 +260,7 @@ public class Log4JLogger implements Log, Serializable {
      */
     @Override
     public boolean isInfoEnabled() {
-        return getLogger().isInfoEnabled();
+        return getLogger().isEnabledFor(Level.INFO);
     }
 
     /**
