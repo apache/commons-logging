@@ -56,6 +56,49 @@ under the License.
     <plugins>
 
       <!--
+        ~ Adds a directory containing "dummy" classes.
+        ~
+        ~ These are simplified versions of LogKit, Avalon and Log4j 1.x classes used only at compile-time.
+        ~ This should be enough to trick primitive security scanners that complain about the presence of a deprecated/unmaintained
+        ~ library in the POM file.
+        -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-dummy-sources</id>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <sources>
+                <source>src/main/dummy</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <!-- Prevents the compilation of dummy classes -->
+              <implicit>none</implicit>
+              <includes>
+                <include>org/apache/commons/logging/**</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--
         - We want to create four jarfiles from this project: normal, tests, api
         - and adapters. The first two are handled by the normal jar:jar and
         - jar:test-jar targets.
@@ -66,6 +109,19 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
+
+          <execution>
+            <id>default-jar</id>
+            <configuration>
+              <!--
+                ~ Failsafe to prevent the inclusion of dummy classes even if they end up being compiled.
+                -->
+              <includes>
+                <include>org/apache/commons/logging/**</include>
+              </includes>
+            </configuration>
+          </execution>
+
           <execution>
             <!--
               - The custom test framework requires the unit test code to be
@@ -202,6 +258,11 @@ under the License.
                   </requires>
                 </moduleInfo>
               </module>
+              <!-- Ignores the dependencies on dummy classes for the LogKit, Avalon and Log4j 1.x `Log` implementations -->
+              <jdepsExtraArgs>
+                <arg>--ignore-missing-deps</arg>
+                <arg>--multi-release=9</arg>
+              </jdepsExtraArgs>
             </configuration>
           </execution>
         </executions>
@@ -541,14 +602,14 @@ under the License.
     <dependency>
       <groupId>avalon-framework</groupId>
       <artifactId>avalon-framework</artifactId>
-      <version>4.1.5</version>
-      <optional>true</optional>
+      <version>${avalon.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-1.2-api</artifactId>
       <version>${log4j2.version}</version>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -559,8 +620,8 @@ under the License.
     <dependency>
       <groupId>logkit</groupId>
       <artifactId>logkit</artifactId>
-      <version>2.0</version>
-      <optional>true</optional>
+      <version>${logkit.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -680,8 +741,10 @@ under the License.
     <commons.failsafe.version>3.2.1</commons.failsafe.version>
     <!-- Allow default test run order to be changed -->
     <failsafe.runorder>filesystem</failsafe.runorder>
+    <avalon.version>4.1.5</avalon.version>
     <log4j2.version>2.23.1</log4j2.version>
     <logback.version>1.3.14</logback.version>
+    <logkit.version>2.0</logkit.version>
     <slf4j.version>2.0.12</slf4j.version>
     <findsecbugs.version>1.13.0</findsecbugs.version>
     <commons.osgi.import>
@@ -696,6 +759,45 @@ under the License.
     <project.build.outputTimestamp>2024-03-24T15:00:55Z</project.build.outputTimestamp>
   </properties>
 
+  <profiles>
+    <!--
+      ~ Overrides the Animal Sniffer profile from the parent POM.
+    -->
+    <profile>
+      <id>animal-sniffer</id>
+      <activation>
+        <jdk>(,9)</jdk>
+        <file>
+          <missing>src/site/resources/profile.noanimal</missing>
+        </file>
+      </activation>
+
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>animal-sniffer-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>checkAPIcompatibility</id>
+                <configuration>
+                  <!-- Ignores the absence of these classes from the compile path -->
+                  <ignores>
+                    <ignore>org.apache.avalon.framework.logger.*</ignore>
+                    <ignore>org.apache.log.*</ignore>
+                    <ignore>org.apache.log4j.*</ignore>
+                  </ignores>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+
+    </profile>
+  </profiles>
   <developers>
     <developer>
       <id>baliuka</id>
