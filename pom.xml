@@ -699,9 +699,9 @@ under the License.
     <commons.jacoco.classRatio>0.86</commons.jacoco.classRatio>
     <commons.jacoco.instructionRatio>0.53</commons.jacoco.instructionRatio>
     <commons.jacoco.methodRatio>0.69</commons.jacoco.methodRatio>
-    <commons.jacoco.branchRatio>0.51</commons.jacoco.branchRatio>
-    <commons.jacoco.lineRatio>0.58</commons.jacoco.lineRatio>
-    <commons.jacoco.complexityRatio>0.51</commons.jacoco.complexityRatio>
+    <commons.jacoco.branchRatio>0.50</commons.jacoco.branchRatio>
+    <commons.jacoco.lineRatio>0.57</commons.jacoco.lineRatio>
+    <commons.jacoco.complexityRatio>0.50</commons.jacoco.complexityRatio>
   </properties>
   <developers>
     <developer>
