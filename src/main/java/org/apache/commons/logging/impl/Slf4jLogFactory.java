@@ -310,6 +310,7 @@ public final class Slf4jLogFactory extends LogFactory {
         try {
             factory.getClass().getMethod("stop").invoke(factory);
         } catch (final ReflectiveOperationException ignored) {
+            // empty
         }
     }
 
