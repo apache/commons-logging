@@ -51,6 +51,13 @@ public class ServletContextCleaner implements ServletContextListener {
     private static final Class<?>[] RELEASE_SIGNATURE = { ClassLoader.class };
 
     /**
+     * Constructs a new instance.
+     */
+    public ServletContextCleaner() {
+        // empty
+    }
+
+    /**
      * Invoked when a webapp is undeployed, this tells the LogFactory
      * class to release any logging information related to the current
      * contextClassloader.

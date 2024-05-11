@@ -266,6 +266,13 @@ public final class Slf4jLogFactory extends LogFactory {
 
     private final ConcurrentMap<String, Object> attributes = new ConcurrentHashMap<>();
 
+    /**
+     * Constructs a new instance.
+     */
+    public Slf4jLogFactory() {
+        // empty
+    }
+
     @Override
     public Object getAttribute(final String name) {
         return attributes.get(name);
@@ -303,6 +310,7 @@ public final class Slf4jLogFactory extends LogFactory {
         try {
             factory.getClass().getMethod("stop").invoke(factory);
         } catch (final ReflectiveOperationException ignored) {
+            // empty
         }
     }
 

@@ -46,6 +46,7 @@ The <action> type attribute can be add,update,fix,remove.
     <release version="1.3.2" date="2024-05-11" description="This is a feature and maintenance release. Java 8 or later is required.">
       <action dev="ggregory" issue="LOGGING-190" type="fix" due-to="Hannes Wellmann, Gary Gregory, Johan Compagner">Add OSGi metadata to enable Service Loader Mediator #234.</action>
       <action dev="ggregory" issue="LOGGING-191" type="fix" due-to="Hannes Wellmann, Gary Gregory, Johan Compagner">Apache commons logging shows 1.4 as latest release instead of 1.3.1.</action>
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Deprecate org.apache.commons.logging.LogSource.jdk14IsAvailable.</action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Dependabot">Bump org.apache.commons:commons-parent from 67 to 69 #240.</action>
       <action dev="ggregory" type="update" due-to="Dependabot">Bump org.slf4j:slf4j-api from 2.0.12 to 2.0.13 #248.</action>

@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import junit.framework.Test;
+
 import org.apache.commons.logging.DummyException;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 import org.apache.commons.logging.impl.SimpleLog;
-
-import junit.framework.Test;
 
 /**
  * <p>TestCase for simple logging when running with custom configuration

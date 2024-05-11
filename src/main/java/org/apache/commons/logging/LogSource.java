@@ -61,8 +61,13 @@ public class LogSource {
     /** Is Log4j available (in the current classpath) */
     static protected boolean log4jIsAvailable;
 
-    /** Is JDK 1.4 logging available */
-    static protected boolean jdk14IsAvailable;
+    /**
+     * Is JDK 1.4 logging available, always true.
+     *
+     * @deprecated Java 8 is the baseline and includes JUL.
+     */
+    @Deprecated
+    static protected boolean jdk14IsAvailable = true;
 
     /** Constructor for current log class */
     static protected Constructor<?> logImplctor;
@@ -76,9 +81,6 @@ public class LogSource {
 
         // Is Log4J Available?
         log4jIsAvailable = isClassForName("org.apache.log4j.Logger");
-
-        // Is JDK 1.4 Logging Available?
-        jdk14IsAvailable = isClassForName("org.apache.commons.logging.impl.Jdk14Logger");
 
         // Set the default Log implementation
         String name = null;
@@ -104,10 +106,8 @@ public class LogSource {
             try {
                 if (log4jIsAvailable) {
                     setLogImplementation("org.apache.commons.logging.impl.Log4JLogger");
-                } else if (jdk14IsAvailable) {
-                    setLogImplementation("org.apache.commons.logging.impl.Jdk14Logger");
                 } else {
-                    setLogImplementation("org.apache.commons.logging.impl.NoOpLog");
+                    setLogImplementation("org.apache.commons.logging.impl.Jdk14Logger");
                 }
             } catch (final Throwable t) {
                 try {

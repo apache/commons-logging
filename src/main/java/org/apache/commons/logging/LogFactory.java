@@ -1424,12 +1424,11 @@ public abstract class LogFactory {
     protected static LogFactory newFactory(final String factoryClass,
                                            final ClassLoader classLoader,
                                            final ClassLoader contextClassLoader)
-        throws LogConfigurationException {
+            throws LogConfigurationException {
         // Note that any unchecked exceptions thrown by the createFactory
         // method will propagate out of this method; in particular a
         // ClassCastException can be thrown.
-        final Object result = AccessController.doPrivileged(
-            (PrivilegedAction) () -> createFactory(factoryClass, classLoader));
+        final Object result = AccessController.doPrivileged((PrivilegedAction<?>) () -> createFactory(factoryClass, classLoader));
 
         if (result instanceof LogConfigurationException) {
             final LogConfigurationException ex = (LogConfigurationException) result;
@@ -1439,8 +1438,7 @@ public abstract class LogFactory {
             throw ex;
         }
         if (isDiagnosticsEnabled()) {
-            logDiagnostic("Created object " + objectId(result) + " to manage class loader " +
-                          objectId(contextClassLoader));
+            logDiagnostic("Created object " + objectId(result) + " to manage class loader " + objectId(contextClassLoader));
         }
         return (LogFactory) result;
     }

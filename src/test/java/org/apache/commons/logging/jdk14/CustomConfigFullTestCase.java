@@ -17,10 +17,10 @@
 
 package org.apache.commons.logging.jdk14;
 
+import junit.framework.Test;
+
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-
-import junit.framework.Test;
 
 /**
  * TestCase for Jdk14 logging when the commons-logging jar file is in

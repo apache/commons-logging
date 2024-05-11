@@ -25,12 +25,12 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.Artifacts;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 /**
  * Tests for the PathableTestSuite and PathableClassLoader functionality,

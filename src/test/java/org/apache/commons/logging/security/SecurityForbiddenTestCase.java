@@ -25,13 +25,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 /**
  * Tests for logging with a security policy that forbids JCL access to anything.

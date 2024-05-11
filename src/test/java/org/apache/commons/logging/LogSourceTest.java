@@ -14,28 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.logging.avalon;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+package org.apache.commons.logging;
 
-import org.apache.avalon.framework.logger.NullLogger;
-import org.apache.commons.logging.AbstractLogTest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.impl.AvalonLogger;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- */
-public class AvalonLoggerTestCase extends AbstractLogTest {
+public class LogSourceTest {
 
-    public static Test suite() {
-        final TestSuite suite = new TestSuite();
-        suite.addTestSuite(AvalonLoggerTestCase.class);
-        return suite;
-    }
-
-    @Override
-    public Log getLogObject() {
-        return new AvalonLogger(new NullLogger());
+    @SuppressWarnings("deprecation")
+    public void testJdk14IsAvailable() throws Exception {
+        assertTrue(LogSource.jdk14IsAvailable);
     }
 }
