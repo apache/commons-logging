@@ -19,12 +19,12 @@ package org.apache.commons.logging.tccl.logfactory;
 
 import java.net.URL;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 /**
  * Verify that by default a custom LogFactoryImpl is loaded from the

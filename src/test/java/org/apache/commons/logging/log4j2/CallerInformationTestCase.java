@@ -18,6 +18,8 @@ package org.apache.commons.logging.log4j2;
 
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.Log4jApiLogFactory;
@@ -30,8 +32,6 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.test.appender.ListAppender;
 import org.apache.logging.log4j.message.ObjectMessage;
 import org.apache.logging.log4j.message.SimpleMessage;
-
-import junit.framework.TestCase;
 
 public class CallerInformationTestCase extends TestCase {
 
@@ -90,9 +90,7 @@ public class CallerInformationTestCase extends TestCase {
                 assertEquals("Correct source file.", "CallerInformationTestCase.java", location.getFileName());
                 assertEquals("Correct method name.", "testLocationInfo", location.getMethodName());
                 assertEquals("Correct location class.", getClass().getName(), location.getClassName());
-                assertEquals("Correct location line.",
-                        currentLineNumber + 2 * lev + hasThrowable + 1,
-                        location.getLineNumber());
+                assertEquals("Correct location line.", currentLineNumber + 2 * lev + hasThrowable + 1, location.getLineNumber());
                 assertEquals("Correct exception", hasThrowable > 0 ? T : null, event.getThrown());
             }
         }

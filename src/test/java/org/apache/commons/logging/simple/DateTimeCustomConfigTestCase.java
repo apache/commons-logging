@@ -21,10 +21,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import junit.framework.Test;
+
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-
-import junit.framework.Test;
 
 /**
  * Tests custom date time format configuration

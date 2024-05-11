@@ -61,7 +61,7 @@ public class LogSource {
     /** Is Log4j available (in the current classpath) */
     static protected boolean log4jIsAvailable;
 
-    /** 
+    /**
      * Is JDK 1.4 logging available, always true.
      *
      * @deprecated Java 8 is the baseline and includes JUL.

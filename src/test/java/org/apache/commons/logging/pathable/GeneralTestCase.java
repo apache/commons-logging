@@ -19,11 +19,11 @@ package org.apache.commons.logging.pathable;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.apache.commons.logging.PathableClassLoader;
-import org.apache.commons.logging.PathableTestSuite;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
+
+import org.apache.commons.logging.PathableClassLoader;
+import org.apache.commons.logging.PathableTestSuite;
 
 /**
  * Tests for the PathableTestSuite class.

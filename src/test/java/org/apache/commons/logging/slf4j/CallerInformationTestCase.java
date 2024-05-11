@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.Slf4jLogFactory;
@@ -35,7 +37,6 @@ import ch.qos.logback.classic.spi.ThrowableProxy;
 import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.read.ListAppender;
 import ch.qos.logback.core.spi.FilterReply;
-import junit.framework.TestCase;
 
 public class CallerInformationTestCase extends TestCase {
 
@@ -75,7 +76,7 @@ public class CallerInformationTestCase extends TestCase {
     public void testLocationInfo() {
         appender.list.clear();
         // The following value must match the line number
-        final int currentLineNumber = 78;
+        final int currentLineNumber = 79;
         log.fatal(STRING);
         log.fatal(STRING, T);
         log.error(STRING);
@@ -100,13 +101,9 @@ public class CallerInformationTestCase extends TestCase {
                 assertTrue("Has location", callerData != null && callerData.length > 0);
                 final StackTraceElement location = callerData[0];
                 assertEquals("Correct location class.", getClass().getName(), location.getClassName());
-                assertEquals("Correct location line.",
-                        currentLineNumber + 2 * lev + hasThrowable + 1,
-                        location.getLineNumber());
+                assertEquals("Correct location line.", currentLineNumber + 2 * lev + hasThrowable + 1, location.getLineNumber());
                 final ThrowableProxy throwableProxy = (ThrowableProxy) event.getThrowableProxy();
-                assertEquals("Correct exception",
-                        hasThrowable > 0 ? T : null,
-                        throwableProxy != null ? throwableProxy.getThrowable() : null);
+                assertEquals("Correct exception", hasThrowable > 0 ? T : null, throwableProxy != null ? throwableProxy.getThrowable() : null);
             }
         }
     }

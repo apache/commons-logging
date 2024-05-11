@@ -22,13 +22,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 
 /**
  * <p>TestCase for JDK 1.4 logging when running on a JDK 1.4 system with

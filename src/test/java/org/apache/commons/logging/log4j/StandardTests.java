@@ -24,11 +24,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.DummyException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import junit.framework.TestCase;
 
 /**
  * Abstract set of tests that can be executed with various classpaths set.
