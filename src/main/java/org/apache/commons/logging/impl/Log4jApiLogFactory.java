@@ -183,6 +183,13 @@ public final class Log4jApiLogFactory extends LogFactory {
 
     private final ConcurrentMap<String, Object> attributes = new ConcurrentHashMap<>();
 
+    /**
+     * Constructs a new instance.
+     */
+    public Log4jApiLogFactory() {
+        // empty
+    }
+
     @Override
     public Object getAttribute(final String name) {
         return attributes.get(name);
