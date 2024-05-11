@@ -87,7 +87,7 @@ public class AvalonLogger implements Log {
      * @param name the name of the avalon logger implementation to delegate to
      */
     public AvalonLogger(final String name) {
-        Objects.requireNonNull(defaultLogger, "default logger has to be specified if this constructor is used!");
+        Objects.requireNonNull(defaultLogger, "defaultLogger");
         this.logger = defaultLogger.getChildLogger(name);
     }
 
