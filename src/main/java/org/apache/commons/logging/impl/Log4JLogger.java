@@ -25,8 +25,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
 /**
- * Implementation of {@link Log} that maps directly to a
- * <strong>Logger</strong> for log4J version 1.2.
+ * Implements {@link Log} to map directly to a
+ * <strong>Logger</strong> for Apache Log4J version 1.2.
  * <p>
  * Initial configuration of the corresponding Logger instances should be done
  * in the usual manner, as outlined in the Log4J documentation.

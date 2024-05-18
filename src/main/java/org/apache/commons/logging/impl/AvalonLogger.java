@@ -23,7 +23,7 @@ import org.apache.avalon.framework.logger.Logger;
 import org.apache.commons.logging.Log;
 
 /**
- * Implementation of commons-logging Log interface that delegates all
+ * Implements Commons Logging's Log interface to delegate all
  * logging calls to the Avalon logging abstraction: the Logger interface.
  * <p>
  * There are two ways in which this class can be used:

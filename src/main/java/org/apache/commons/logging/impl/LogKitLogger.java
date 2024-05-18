@@ -24,13 +24,14 @@ import org.apache.log.Hierarchy;
 import org.apache.log.Logger;
 
 /**
- * Implementation of {@code org.apache.commons.logging.Log}
- * that wraps the <a href="https://avalon.apache.org/logkit/">avalon-logkit</a>
+ * Implements {@code org.apache.commons.logging.Log}
+ * to wrap the <a href="https://avalon.apache.org/logkit/">Apache Avalon Logkit</a>
  * logging system. Configuration of {@code LogKit} is left to the user.
  * <p>
  * {@code LogKit} accepts only {@code String} messages.
  * Therefore, this implementation converts object messages into strings
  * by called their {@code toString()} method before logging them.
+ * </p>
  *
  * @deprecated Scheduled for removal because the Apache Avalon Project has been discontinued.
  */

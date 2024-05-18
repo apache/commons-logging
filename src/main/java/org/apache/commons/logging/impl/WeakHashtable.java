@@ -30,12 +30,13 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Implementation of {@code Hashtable} that uses {@code WeakReference}'s
+ * Implements {@code Hashtable} to use {@code WeakReference}'s
  * to hold its keys thus allowing them to be reclaimed by the garbage collector.
  * The associated values are retained using strong references.
  * <p>
  * This class follows the semantics of {@code Hashtable} as closely as
  * possible. It therefore does not accept null values or keys.
+ * </p>
  * <p>
  * <strong>Note:</strong>
  * This is <em>not</em> intended to be a general purpose hash table replacement.
@@ -43,12 +44,14 @@ import java.util.Set;
  * for {@code Hashtable} in {@code LogFactory}. This application requires
  * good liveliness for {@code get} and {@code put}. Various tradeoffs
  * have been made with this in mind.
+ * </p>
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement
  * for the {@code Hashtable} used in {@code LogFactory} for J2EE environments
  * running 1.3+ JVMs. Use of this class <i>in most cases</i> (see below) will
  * allow class loaders to be collected by the garbage collector without the need
  * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
+ * </p>
  * <p>
  * {@code org.apache.commons.logging.LogFactory} checks whether this class
  * can be supported by the current JVM, and if so then uses it to store
@@ -61,6 +64,7 @@ import java.util.Set;
  * And by the way, this extends {@code Hashtable} rather than {@code HashMap}
  * for backwards compatibility reasons. See the documentation
  * for method {@code LogFactory.createFactoryStore} for more details.
+ * </p>
  * <p>
  * The reason all this is necessary is due to a issue which
  * arises during hot deploy in a J2EE-like containers.
@@ -78,11 +82,13 @@ import java.util.Set;
  * bundles commons-logging by default. However, holding the class loader
  * references weakly ensures that the class loader will be garbage collected
  * without the container performing this step.
+ * </p>
  * <p>
  * <strong>Limitations:</strong>
  * There is still one (unusual) scenario in which a component will not
  * be correctly unloaded without an explicit release. Though weak references
  * are used for its keys, it is necessary to use strong references for its values.
+ * </p>
  * <p>
  * If the abstract class {@code LogFactory} is
  * loaded by the container class loader but a subclass of
@@ -93,17 +99,20 @@ import java.util.Set;
  * the LogFactory1 instance to the component class loader via
  * {@code getClass().getClassLoader()}. This chain of references will prevent
  * collection of the child class loader.
+ * </p>
  * <p>
  * Such a situation occurs when the commons-logging.jar is
  * loaded by a parent class loader (e.g. a server level class loader in a
  * servlet container) and a custom {@code LogFactory} implementation is
  * loaded by a child class loader (e.g. a web app class loader).
+ * </p>
  * <p>
  * To avoid this scenario, ensure
  * that any custom LogFactory subclass is loaded by the same class loader as
  * the base {@code LogFactory}. Creating custom LogFactory subclasses is,
  * however, rare. The standard LogFactoryImpl class should be sufficient
  * for most or all users.
+ * </p>
  *
  * @since 1.1
  * @deprecated No longer used, will be removed in 2.0.

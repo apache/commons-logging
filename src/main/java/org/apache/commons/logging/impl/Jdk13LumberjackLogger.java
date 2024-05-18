@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 
 /**
- * Implementation of the {@code org.apache.commons.logging.Log}
- * interface that wraps the standard JDK logging mechanisms that are
+ * Implements the {@code org.apache.commons.logging.Log}
+ * interface tp wrap the standard JDK logging mechanisms that are
  * available in SourceForge's Lumberjack for JDKs prior to 1.4.
  *
  * @since 1.1
