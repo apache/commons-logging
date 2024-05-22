@@ -508,11 +508,9 @@ public abstract class LogFactory {
      */
     protected static ClassLoader directGetContextClassLoader() throws LogConfigurationException {
         ClassLoader classLoader = null;
-
         try {
             classLoader = Thread.currentThread().getContextClassLoader();
         } catch (final SecurityException ignore) {
-            //
             // getContextClassLoader() throws SecurityException when
             // the context class loader isn't an ancestor of the
             // calling class's class loader, or if security
@@ -520,10 +518,7 @@ public abstract class LogFactory {
             //
             // We ignore this exception to be consistent with the previous
             // behavior (e.g. 1.1.3 and earlier).
-            //
-            // ignore
         }
-
         // Return the selected class loader
         return classLoader;
     }
