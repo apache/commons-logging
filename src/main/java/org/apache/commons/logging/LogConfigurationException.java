@@ -17,6 +17,8 @@
 
 package org.apache.commons.logging;
 
+import java.util.Objects;
+
 /**
  * An exception that is thrown only if a suitable {@code LogFactory} or {@code Log} instance cannot be created by the corresponding factory methods.
  */
@@ -65,7 +67,7 @@ public class LogConfigurationException extends RuntimeException {
      * @param cause The underlying cause
      */
     public LogConfigurationException(final Throwable cause) {
-        this(cause == null ? null : cause.toString(), cause);
+        this(Objects.toString(cause, null), cause);
     }
 
 }
