@@ -48,7 +48,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix PMD UnnecessaryFullyQualifiedName in SimpleLog.</action>
       <!-- ADD -->
       <!-- UPDATE -->
-      <action dev="ggregory" type="update" due-to="Dependabot">Bump org.apache.commons:commons-parent from 69 to 70.</action>
+      <action dev="ggregory" type="update" due-to="Dependabot">Bump org.apache.commons:commons-parent from 69 to 71 #267.</action>
     </release>
     <release version="1.3.2" date="2024-05-11" description="This is a feature and maintenance release. Java 8 or later is required.">
       <action dev="ggregory" issue="LOGGING-190" type="fix" due-to="Hannes Wellmann, Gary Gregory, Johan Compagner">Add OSGi metadata to enable Service Loader Mediator #234.</action>
