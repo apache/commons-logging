@@ -66,6 +66,8 @@ under the License.
       org.apache.log;version="[1.0.1, 1.0.1]";resolution:=optional,
       org.apache.log4j;version="[1.2.15, 2.0.0)";resolution:=optional,
       org.apache.logging.log4j;version="[2.0, 4.0)";resolution:=optional,
+      org.apache.logging.log4j.spi;version="[2.0, 4.0)";resolution:=optional,
+      org.apache.logging.log4j.util;version="[2.0, 4.0)";resolution:=optional,
       org.slf4j;version="[1.7, 3)";resolution:=optional,
       org.slf4j.spi;version="[1.7, 3)";resolution:=optional
     </commons.osgi.import>
