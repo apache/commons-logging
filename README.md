@@ -47,6 +47,7 @@ Apache Commons Logging
 [![Coverage Status](https://codecov.io/gh/apache/commons-logging/branch/master/graph/badge.svg)](https://app.codecov.io/gh/apache/commons-logging)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/?gav=true)
 [![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.3.2.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.3.2)
+[![CodeQL](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging)
 
 Apache Commons Logging is a thin adapter allowing configurable bridging to other,
