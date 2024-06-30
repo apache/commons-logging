@@ -109,8 +109,8 @@ public class ChildFirstTestCase extends TestCase {
      * parent chain starting from the one that loaded the class for
      * this object instance.
      */
-    private Set getAncestorCLs() {
-        final Set s = new HashSet();
+    private Set<ClassLoader> getAncestorCLs() {
+        final Set<ClassLoader> s = new HashSet<>();
         ClassLoader cl = this.getClass().getClassLoader();
         while (cl != null) {
             s.add(cl);
@@ -168,7 +168,7 @@ public class ChildFirstTestCase extends TestCase {
         // in the hierarchy of parent class loaders for this class,
         // though it is accessible due to trickery in the PathableClassLoader.
         final Class junitTest = contextLoader.loadClass("junit.framework.Test");
-        final Set ancestorCLs = getAncestorCLs();
+        final Set<ClassLoader> ancestorCLs = getAncestorCLs();
         assertFalse("Junit not loaded by ancestor class loader",
                 ancestorCLs.contains(junitTest.getClassLoader()));
 
