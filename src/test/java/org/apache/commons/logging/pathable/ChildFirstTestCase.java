@@ -95,13 +95,13 @@ public class ChildFirstTestCase extends TestCase {
     /**
      * Utility method to convert an enumeration-of-URLs into an array of URLs.
      */
-    private static URL[] toURLArray(final Enumeration e) {
-        final ArrayList l = new ArrayList();
+    private static URL[] toURLArray(final Enumeration<URL> e) {
+        final ArrayList<URL> l = new ArrayList<>();
         while (e.hasMoreElements()) {
-            l.add((URL) e.nextElement());
+            l.add(e.nextElement());
         }
         final URL[] tmp = new URL[l.size()];
-        return (URL[]) l.toArray(tmp);
+        return l.toArray(tmp);
     }
 
     /**
@@ -266,7 +266,7 @@ public class ChildFirstTestCase extends TestCase {
      * Test that the various flavors of ClassLoader.getResources work as expected.
      */
     public void testResources() throws Exception {
-        Enumeration resources;
+        Enumeration<URL> resources;
         URL[] urls;
 
         // verify the class loader hierarchy
