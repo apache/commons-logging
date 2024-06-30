@@ -245,33 +245,33 @@ public class SimpleLog implements Log, Serializable {
         setLevel(LOG_LEVEL_INFO);
 
         // Set log level from properties
-        String lvl = getStringProperty(systemPrefix + "log." + logName);
+        String level = getStringProperty(systemPrefix + "log." + logName);
         int i = String.valueOf(name).lastIndexOf(".");
-        while(null == lvl && i > -1) {
-            name = name.substring(0,i);
-            lvl = getStringProperty(systemPrefix + "log." + name);
+        while (null == level && i > -1) {
+            name = name.substring(0, i);
+            level = getStringProperty(systemPrefix + "log." + name);
             i = String.valueOf(name).lastIndexOf(".");
         }
 
-        if (null == lvl) {
-            lvl =  getStringProperty(systemPrefix + "defaultlog");
+        if (null == level) {
+            level = getStringProperty(systemPrefix + "defaultlog");
         }
 
-        if ("all".equalsIgnoreCase(lvl)) {
+        if ("all".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_ALL);
-        } else if ("trace".equalsIgnoreCase(lvl)) {
+        } else if ("trace".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_TRACE);
-        } else if ("debug".equalsIgnoreCase(lvl)) {
+        } else if ("debug".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_DEBUG);
-        } else if ("info".equalsIgnoreCase(lvl)) {
+        } else if ("info".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_INFO);
-        } else if ("warn".equalsIgnoreCase(lvl)) {
+        } else if ("warn".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_WARN);
-        } else if ("error".equalsIgnoreCase(lvl)) {
+        } else if ("error".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_ERROR);
-        } else if ("fatal".equalsIgnoreCase(lvl)) {
+        } else if ("fatal".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_FATAL);
-        } else if ("off".equalsIgnoreCase(lvl)) {
+        } else if ("off".equalsIgnoreCase(level)) {
             setLevel(LOG_LEVEL_OFF);
         }
     }
