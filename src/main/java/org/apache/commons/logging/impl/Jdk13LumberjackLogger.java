@@ -161,7 +161,7 @@ public class Jdk13LumberjackLogger implements Log, Serializable {
             final StringWriter stringWriter = new StringWriter();
             final PrintWriter printWriter = new PrintWriter(stringWriter);
             throwable.printStackTrace(printWriter);
-            final String traceString = stringWriter.getBuffer().toString();
+            final String traceString = stringWriter.toString();
             final StringTokenizer tokenizer = new StringTokenizer(traceString, "\n");
             tokenizer.nextToken();
             String line = tokenizer.nextToken();
