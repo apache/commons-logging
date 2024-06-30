@@ -43,6 +43,7 @@ import java.util.ServiceLoader;
  * <strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.
+ * </p>
  */
 public abstract class LogFactory {
     // Implementation note re AccessController usage
@@ -156,15 +157,19 @@ public abstract class LogFactory {
      * class loaders to be substituted by an alternative implementation.
      * <p>
      * <strong>Note:</strong> {@code LogFactory} will print:
+     * </p>
      * <pre>
      * [ERROR] LogFactory: Load of custom hashtable failed
      * </pre>
+     * <p>
      * to system error and then continue using a standard Hashtable.
+     * </p>
      * <p>
      * <strong>Usage:</strong> Set this property when Java is invoked
      * and {@code LogFactory} will attempt to load a new instance
      * of the given implementation class.
      * For example, running the following ant scriplet:
+     * </p>
      * <pre>
      *  &lt;java classname="${test.runner}" fork="yes" failonerror="${test.failonerror}"&gt;
      *     ...
@@ -173,13 +178,16 @@ public abstract class LogFactory {
      *        value="org.apache.commons.logging.AltHashtable"/&gt;
      *  &lt;/java&gt;
      * </pre>
+     * <p>
      * will mean that {@code LogFactory} will load an instance of
      * {@code org.apache.commons.logging.AltHashtable}.
+     * </p>
      * <p>
      * A typical use case is to allow a custom
      * Hashtable implementation using weak references to be substituted.
      * This will allow class loaders to be garbage collected without
      * the need to release them (on 1.3+ JVMs only, of course ;).
+     * </p>
      */
     public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
         "org.apache.commons.logging.LogFactory.HashtableImpl";
@@ -445,6 +453,7 @@ public abstract class LogFactory {
      * Note that the correct way to ensure no memory leaks occur is to ensure
      * that LogFactory.release(contextClassLoader) is called whenever a
      * webapp is undeployed.
+     * </p>
      */
     private static Hashtable<ClassLoader, LogFactory> createFactoryStore() {
         Hashtable<ClassLoader, LogFactory> result = null;
@@ -491,13 +500,16 @@ public abstract class LogFactory {
      * <p>
      * Most/all code should call getContextClassLoaderInternal rather than
      * calling this method directly.
+     * </p>
      * <p>
      * The thread context class loader is available for JDK 1.2
      * or later, if certain security conditions are met.
+     * </p>
      * <p>
      * Note that no internal logging is done within this method because
      * this method is called every time LogFactory.getLogger() is called,
      * and we don't want too much output generated here.
+     * </p>
      *
      * @throws LogConfigurationException if a suitable class loader
      *  cannot be identified.
@@ -600,9 +612,11 @@ public abstract class LogFactory {
      * null is returned. If more than one is found, then the file with the greatest
      * value for its PRIORITY property is returned. If multiple files have the
      * same PRIORITY value then the first in the classpath is returned.
+     * </p>
      * <p>
      * This differs from the 1.0.x releases; those always use the first one found.
      * However as the priority is a new field, this change is backwards compatible.
+     * </p>
      * <p>
      * The purpose of the priority field is to allow a webserver administrator to
      * override logging settings in all webapps by placing a commons-logging.properties
@@ -610,6 +624,7 @@ public abstract class LogFactory {
      * commons-logging.properties files without priorities which are in the
      * webapps. Webapps can also use explicit priorities to override a configuration
      * file in the shared classpath if needed.
+     * </p>
      */
     private static Properties getConfigurationFile(final ClassLoader classLoader, final String fileName) {
         Properties props = null;
@@ -686,11 +701,13 @@ public abstract class LogFactory {
      * In versions prior to 1.1, this method did not use an AccessController.
      * In version 1.1, an AccessController wrapper was incorrectly added to
      * this method, causing a minor security flaw.
+     * </p>
      * <p>
      * In version 1.1.1 this change was reverted; this method no longer uses
      * an AccessController. User code wishing to obtain the context class loader
      * must invoke this method via AccessController.doPrivileged if it needs
      * support for that.
+     * </p>
      *
      * @return the context class loader associated with the current thread,
      *  or null if security doesn't allow it.
@@ -999,6 +1016,7 @@ public abstract class LogFactory {
      * This method must therefore remain private to avoid security issues.
      * <p>
      * {@code Null} is returned if the URL cannot be opened.
+     * </p>
      */
     private static Properties getProperties(final URL url) {
         return AccessController.doPrivileged((PrivilegedAction<Properties>) () -> {
@@ -1037,10 +1055,12 @@ public abstract class LogFactory {
      * operation is done under an AccessController so that this method will
      * succeed when this jarfile is privileged but the caller is not.
      * This method must therefore remain private to avoid security issues.
+     * </p>
      * <p>
      * If no instances are found, an Enumeration is returned whose
      * hasMoreElements method returns false (ie an "empty" enumeration).
      * If resources could not be listed for some reason, null is returned.
+     * </p>
      */
     private static Enumeration<URL> getResources(final ClassLoader loader, final String name) {
         return AccessController.doPrivileged((PrivilegedAction<Enumeration<URL>>) () -> {
@@ -1071,6 +1091,7 @@ public abstract class LogFactory {
      * Take care not to expose the value returned by this method to the
      * calling application in any way; otherwise the calling app can use that
      * info to access data that should not be available to it.
+     * </p>
      */
     private static String getSystemProperty(final String key, final String def)
             throws SecurityException {
@@ -1110,6 +1131,7 @@ public abstract class LogFactory {
      * @return true if the {@code logFactoryClass} does extend
      * {@code LogFactory} when that class is loaded via the same
      * class loader that loaded the {@code logFactoryClass}.
+     * </p>
      */
     private static boolean implementsLogFactory(final Class<?> logFactoryClass) {
         boolean implementsLogFactory = false;
@@ -1213,6 +1235,7 @@ public abstract class LogFactory {
      * <p>
      * By the way, sorry for the incorrect grammar, but calling this method
      * areDiagnosticsEnabled just isn't Java beans style.
+     * </p>
      *
      * @return true if calls to logDiagnostic will have any effect.
      * @since 1.1
@@ -1227,6 +1250,7 @@ public abstract class LogFactory {
      * <p>
      * As an example, if the specified class was loaded via a webapp's
      * class loader, then you may get the following output:
+     * </p>
      * <pre>
      * Class com.acme.Foo was loaded via class loader 11111
      * ClassLoader tree: 11111 -> 22222 (SYSTEM) -> 33333 -> BOOT
@@ -1234,6 +1258,7 @@ public abstract class LogFactory {
      * <p>
      * This method returns immediately if isDiagnosticsEnabled()
      * returns false.
+     * </p>
      *
      * @param clazz is the class whose class loader + tree are to be
      * output.
@@ -1275,14 +1300,17 @@ public abstract class LogFactory {
      * should not call it because the diagnosticPrefix string this
      * method puts in front of all its messages is LogFactory@....,
      * while subclasses should put SomeSubClass@...
+     * </p>
      * <p>
      * Subclasses should instead compute their own prefix, then call
      * logRawDiagnostic. Note that calling isDiagnosticsEnabled is
      * fine for subclasses.
+     * </p>
      * <p>
      * Note that it is safe to call this method before initDiagnostics
      * is called; any output will just be ignored (as isDiagnosticsEnabled
      * will return false).
+     * </p>
      *
      * @param msg is the diagnostic message to be output.
      */
