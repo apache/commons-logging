@@ -94,14 +94,13 @@ public class ParentFirstTestCase extends TestCase {
     /**
      * Utility method to convert an enumeration-of-URLs into an array of URLs.
      */
-    private static URL[] toURLArray(final Enumeration e) {
-        final ArrayList l = new ArrayList();
+    private static URL[] toURLArray(final Enumeration<URL> e) {
+        final ArrayList<URL> l = new ArrayList<>();
         while (e.hasMoreElements()) {
-            final URL u = (URL) e.nextElement();
-            l.add(u);
+            l.add(e.nextElement());
         }
         final URL[] tmp = new URL[l.size()];
-        return (URL[]) l.toArray(tmp);
+        return l.toArray(tmp);
     }
 
     /**
@@ -109,8 +108,8 @@ public class ParentFirstTestCase extends TestCase {
      * parent chain starting from the one that loaded the class for
      * this object instance.
      */
-    private Set getAncestorCLs() {
-        final Set s = new HashSet();
+    private Set<ClassLoader> getAncestorCLs() {
+        final Set<ClassLoader> s = new HashSet<>();
         ClassLoader cl = this.getClass().getClassLoader();
         while (cl != null) {
             s.add(cl);
