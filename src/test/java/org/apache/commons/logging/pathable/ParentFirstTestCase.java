@@ -55,7 +55,7 @@ public class ParentFirstTestCase extends TestCase {
      * </ul>
      */
     public static Test suite() throws Exception {
-        final Class thisClass = ParentFirstTestCase.class;
+        final Class<ParentFirstTestCase> thisClass = ParentFirstTestCase.class;
         final ClassLoader thisClassLoader = thisClass.getClassLoader();
 
         // Make the parent a direct child of the bootloader to hide all
@@ -85,7 +85,7 @@ public class ParentFirstTestCase extends TestCase {
         final PathableClassLoader context = new PathableClassLoader(child);
 
         // reload this class via the child class loader
-        final Class testClass = child.loadClass(thisClass.getName());
+        final Class<?> testClass = child.loadClass(thisClass.getName());
 
         // and return our custom TestSuite class
         return new PathableTestSuite(testClass, context);
@@ -165,30 +165,30 @@ public class ParentFirstTestCase extends TestCase {
         // junit classes should be visible; their class loader is not
         // in the hierarchy of parent class loaders for this class,
         // though it is accessible due to trickery in the PathableClassLoader.
-        final Class junitTest = contextLoader.loadClass("junit.framework.Test");
-        final Set ancestorCLs = getAncestorCLs();
+        final Class<?> junitTest = contextLoader.loadClass("junit.framework.Test");
+        final Set<?> ancestorCLs = getAncestorCLs();
         assertFalse("Junit not loaded by ancestor class loader",
                 ancestorCLs.contains(junitTest.getClassLoader()));
 
         // jcl api classes should be visible only via the parent
-        final Class logClass = contextLoader.loadClass("org.apache.commons.logging.Log");
+        final Class<?> logClass = contextLoader.loadClass("org.apache.commons.logging.Log");
         assertSame("Log class not loaded via parent",
                 logClass.getClassLoader(), parentLoader);
 
         // jcl adapter classes should be visible via both parent and child. However
         // as the class loaders are parent-first we should see the parent one.
-        final Class log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4JLogger");
+        final Class<?> log4jClass = contextLoader.loadClass("org.apache.commons.logging.impl.Log4JLogger");
         assertSame("Log4JLogger not loaded via parent",
                 log4jClass.getClassLoader(), parentLoader);
 
         // test classes should be visible via the child only
-        final Class testClass = contextLoader.loadClass("org.apache.commons.logging.PathableTestSuite");
+        final Class<?> testClass = contextLoader.loadClass("org.apache.commons.logging.PathableTestSuite");
         assertSame("PathableTestSuite not loaded via child",
                 testClass.getClassLoader(), thisLoader);
 
         // test loading of class that is not available
         try {
-            final Class noSuchClass = contextLoader.loadClass("no.such.class");
+            final Class<?> noSuchClass = contextLoader.loadClass("no.such.class");
             fail("Class no.such.class is unexpectedly available");
             assertNotNull(noSuchClass); // silence warning about unused var
         } catch (final ClassNotFoundException ex) {
@@ -196,7 +196,7 @@ public class ParentFirstTestCase extends TestCase {
         }
 
         // String class class loader is null
-        final Class stringClass = contextLoader.loadClass("java.lang.String");
+        final Class<?> stringClass = contextLoader.loadClass("java.lang.String");
         assertNull("String class class loader is not null!",
                 stringClass.getClassLoader());
     }
@@ -264,7 +264,7 @@ public class ParentFirstTestCase extends TestCase {
      * Test that the various flavors of ClassLoader.getResources work as expected.
      */
     public void testResources() throws Exception {
-        Enumeration resources;
+        Enumeration<URL> resources;
         URL[] urls;
 
         // verify the class loader hierarchy
