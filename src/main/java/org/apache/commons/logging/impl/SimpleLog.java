@@ -27,6 +27,7 @@ import java.security.PrivilegedAction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -247,32 +248,45 @@ public class SimpleLog implements Log, Serializable {
         // Set log level from properties
         String level = getStringProperty(systemPrefix + "log." + logName);
         int i = String.valueOf(name).lastIndexOf(".");
-        while (null == level && i > -1) {
+        while (level == null && i > -1) {
             name = name.substring(0, i);
             level = getStringProperty(systemPrefix + "log." + name);
             i = String.valueOf(name).lastIndexOf(".");
         }
 
-        if (null == level) {
+        if (level == null) {
             level = getStringProperty(systemPrefix + "defaultlog");
         }
-
-        if ("all".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_ALL);
-        } else if ("trace".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_TRACE);
-        } else if ("debug".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_DEBUG);
-        } else if ("info".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_INFO);
-        } else if ("warn".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_WARN);
-        } else if ("error".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_ERROR);
-        } else if ("fatal".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_FATAL);
-        } else if ("off".equalsIgnoreCase(level)) {
-            setLevel(LOG_LEVEL_OFF);
+        if (level != null) {
+            level = level.toLowerCase(Locale.ROOT);
+        }
+        if (level != null) {
+            switch (level) {
+            case "all":
+                setLevel(LOG_LEVEL_ALL);
+                break;
+            case "trace":
+                setLevel(LOG_LEVEL_TRACE);
+                break;
+            case "debug":
+                setLevel(LOG_LEVEL_DEBUG);
+                break;
+            case "info":
+                setLevel(LOG_LEVEL_INFO);
+                break;
+            case "warn":
+                setLevel(LOG_LEVEL_WARN);
+                break;
+            case "error":
+                setLevel(LOG_LEVEL_ERROR);
+                break;
+            case "fatal":
+                setLevel(LOG_LEVEL_FATAL);
+                break;
+            case "off":
+                setLevel(LOG_LEVEL_OFF);
+                break;
+            }
         }
     }
 
