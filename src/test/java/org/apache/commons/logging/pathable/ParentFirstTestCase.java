@@ -18,6 +18,7 @@ package org.apache.commons.logging.pathable;
 
 import static org.junit.Assert.assertNotEquals;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -236,8 +237,6 @@ public class ParentFirstTestCase extends TestCase {
      * Test that getResourceAsStream works.
      */
     public void testResourceAsStream() throws Exception {
-        java.io.InputStream is;
-
         // verify the class loader hierarchy
         final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         final ClassLoader childLoader = contextLoader.getParent();
@@ -246,7 +245,7 @@ public class ParentFirstTestCase extends TestCase {
         assertNull("Unexpected class loader hierarchy", bootLoader);
 
         // getResourceAsStream where no instances exist
-        is = childLoader.getResourceAsStream("nosuchfile");
+        InputStream is = childLoader.getResourceAsStream("nosuchfile");
         assertNull("Invalid resource returned non-null stream", is);
 
         // getResourceAsStream where resource does exist
@@ -264,9 +263,6 @@ public class ParentFirstTestCase extends TestCase {
      * Test that the various flavors of ClassLoader.getResources work as expected.
      */
     public void testResources() throws Exception {
-        Enumeration<URL> resources;
-        URL[] urls;
-
         // verify the class loader hierarchy
         final ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
         final ClassLoader childLoader = contextLoader.getParent();
@@ -275,8 +271,8 @@ public class ParentFirstTestCase extends TestCase {
         assertNull("Unexpected class loader hierarchy", bootLoader);
 
         // getResources where no instances exist
-        resources = childLoader.getResources("nosuchfile");
-        urls = toURLArray(resources);
+        Enumeration<URL> resources = childLoader.getResources("nosuchfile");
+        URL[] urls = toURLArray(resources);
         assertEquals("Non-null URL returned for invalid resource name", 0, urls.length);
 
         // getResources where the resource only exists in the parent
