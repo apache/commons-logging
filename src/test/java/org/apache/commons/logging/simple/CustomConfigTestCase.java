@@ -70,7 +70,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     /**
      * <p>The expected log records.</p>
      */
-    protected List expected;
+    protected List<LogRecord> expected;
 
     /**
      * <p>The message strings that should have been logged.</p>
@@ -109,18 +109,17 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     /** Hook for subclasses */
     protected void checkDecoratedDateTime() {
-            assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz",
-                     ((DecoratedSimpleLog) log).getDateTimeFormat());
+        assertEquals("yyyy/MM/dd HH:mm:ss:SSS zzz", ((DecoratedSimpleLog) log).getDateTimeFormat());
     }
 
     // Check the actual log records against the expected ones
     protected void checkExpected() {
-        final List acts = ((DecoratedSimpleLog) log).getCache();
-        final Iterator exps = expected.iterator();
+        final List<LogRecord> acts = ((DecoratedSimpleLog) log).getCache();
+        final Iterator<LogRecord> exps = expected.iterator();
         int n = 0;
         while (exps.hasNext()) {
-            final LogRecord exp = (LogRecord) exps.next();
-            final LogRecord act = (LogRecord) acts.get(n++);
+            final LogRecord exp = exps.next();
+            final LogRecord act = acts.get(n++);
             assertEquals("Row " + n + " type", exp.type, act.type);
             assertEquals("Row " + n + " message", exp.message, act.message);
             assertEquals("Row " + n + " throwable", exp.t, act.t);
@@ -197,7 +196,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     public void setUp() throws Exception {
         LogFactory.releaseAll();
         setProperties();
-        expected = new ArrayList();
+        expected = new ArrayList<>();
         setUpFactory();
         setUpLog("DecoratedLogger");
     }
