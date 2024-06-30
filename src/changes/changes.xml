@@ -45,8 +45,8 @@ The <action> type attribute can be add,update,fix,remove.
   <body>
     <release version="1.3.3" date="YYYY-MM-DD" description="This is a feature and maintenance release. Java 8 or later is required.">
       <!-- FIX -->
-      <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix PMD UnnecessaryFullyQualifiedName in SimpleLog.</action>
       <action dev="ggregory" type="fix" issue="LOGGING-193" due-to="Philippe Marschall">Update Log4j 2 OSGi imports #268.</action> 
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix PMD UnnecessaryFullyQualifiedName in SimpleLog.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix NullPointerException in SimpleLog#write(Object) on null input.</action>
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix NullPointerException in SimpleLog#write(StringBuffer) on null input.</action>
       <!-- ADD -->

@@ -12,8 +12,8 @@ This is a feature and maintenance release. Java 8 or later is required.
 Fixed Bugs
 ----------
 
-*               Fix PMD UnnecessaryFullyQualifiedName in SimpleLog. Thanks to Gary Gregory.
 * LOGGING-193:  Update Log4j 2 OSGi imports #268. Thanks to Philippe Marschall.
+*               Fix PMD UnnecessaryFullyQualifiedName in SimpleLog. Thanks to Gary Gregory.
 *               Fix NullPointerException in SimpleLog#write(Object) on null input. Thanks to Gary Gregory.
 *               Fix NullPointerException in SimpleLog#write(StringBuffer) on null input. Thanks to Gary Gregory.
 
