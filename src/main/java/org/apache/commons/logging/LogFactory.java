@@ -898,10 +898,8 @@ public abstract class LogFactory {
                     factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
 
                     // TODO: think about whether we need to handle exceptions from newFactory
-                } else {
-                    if (isDiagnosticsEnabled()) {
-                        logDiagnostic("[LOOKUP] Properties file has no entry specifying LogFactory subclass.");
-                    }
+                } else if (isDiagnosticsEnabled()) {
+                    logDiagnostic("[LOOKUP] Properties file has no entry specifying LogFactory subclass.");
                 }
             } else if (isDiagnosticsEnabled()) {
                 logDiagnostic("[LOOKUP] No properties file available to determine" + " LogFactory subclass from..");
