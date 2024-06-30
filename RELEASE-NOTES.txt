@@ -1,3 +1,39 @@
+Apache Commons Logging 1.3.3-SNAPSHOT Release Notes
+---------------------------------------------------
+
+The Apache Commons Logging team is pleased to announce the release of Apache Commons Logging 1.3.3-SNAPSHOT.
+
+Apache Commons Logging is a thin adapter allowing configurable bridging to other,
+well-known logging systems.
+
+This is a feature and maintenance release. Java 8 or later is required.
+
+
+Fixed Bugs
+----------
+
+*               Fix PMD UnnecessaryFullyQualifiedName in SimpleLog. Thanks to Gary Gregory.
+* LOGGING-193:  Update Log4j 2 OSGi imports #268. Thanks to Philippe Marschall.
+*               Fix NullPointerException in SimpleLog#write(Object) on null input. Thanks to Gary Gregory.
+*               Fix NullPointerException in SimpleLog#write(StringBuffer) on null input. Thanks to Gary Gregory.
+
+Changes
+-------
+
+*               Bump org.apache.commons:commons-parent from 69 to 71 #267. Thanks to Dependabot.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-logging/changes-report.html
+
+Download it from https://commons.apache.org/proper/commons-logging/download_logging.cgi
+
+For complete information on Apache Commons Logging, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons Logging website:
+
+https://commons.apache.org/proper/commons-logging/
+
+-----------------------------------------------------------------------------
+
 Apache Commons Logging 1.3.2 Release Notes
 ------------------------------------------
 

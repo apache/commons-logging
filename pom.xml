@@ -50,7 +50,7 @@ under the License.
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC3</commons.rc.version>
+    <commons.rc.version>RC1</commons.rc.version>
     <skipSurefireReport>true</skipSurefireReport>
     <!-- Since version 3.2 additional classpath dependencies are allowed. -->
     <commons.failsafe.version>3.2.1</commons.failsafe.version>
