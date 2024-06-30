@@ -1245,7 +1245,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Generate useful diagnostics regarding the class loader tree for
+     * Generates useful diagnostics regarding the class loader tree for
      * the specified class.
      * <p>
      * As an example, if the specified class was loaded via a webapp's
@@ -1371,7 +1371,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Write the specified message to the internal logging destination.
+     * Writes the specified message to the internal logging destination.
      *
      * @param msg is the diagnostic message to be output.
      * @since 1.1
@@ -1485,7 +1485,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Release any internal references to previously created {@link LogFactory}
+     * Releases any internal references to previously created {@link LogFactory}
      * instances that have been associated with the specified class loader
      * (if any), after calling the instance method {@code release()} on
      * each of them.
@@ -1594,7 +1594,7 @@ public abstract class LogFactory {
         throws LogConfigurationException;
 
     /**
-     * Release any internal references to previously created {@link Log}
+     * Releases any internal references to previously created {@link Log}
      * instances returned by this factory.  This is useful in environments
      * like servlet containers, which implement application reloading by
      * throwing away a ClassLoader.  Dangling references to objects in that
@@ -1603,7 +1603,7 @@ public abstract class LogFactory {
     public abstract void release();
 
     /**
-     * Remove any configuration attribute associated with the specified name.
+     * Removes any configuration attribute associated with the specified name.
      * If there is no such attribute, no action is taken.
      *
      * @param name Name of the attribute to remove
