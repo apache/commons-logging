@@ -286,6 +286,8 @@ public class SimpleLog implements Log, Serializable {
             case "off":
                 setLevel(LOG_LEVEL_OFF);
                 break;
+            default:
+                // do nothing
             }
         }
     }
