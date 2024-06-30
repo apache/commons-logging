@@ -98,8 +98,7 @@ public class ChildFirstTestCase extends TestCase {
     private static URL[] toURLArray(final Enumeration e) {
         final ArrayList l = new ArrayList();
         while (e.hasMoreElements()) {
-            final URL u = (URL) e.nextElement();
-            l.add(u);
+            l.add((URL) e.nextElement());
         }
         final URL[] tmp = new URL[l.size()];
         return (URL[]) l.toArray(tmp);
