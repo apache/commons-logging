@@ -213,7 +213,7 @@ public final class WeakHashtable extends Hashtable {
                     // objects could test equal but have different hash codes.
                     // We can reduce (not eliminate) the chance of this
                     // happening by comparing hash codes.
-                    result = result && this.hashCode() == otherKey.hashCode();
+                    result = result && hashCode() == otherKey.hashCode();
                     // In any case, as our c'tor does not allow null referants
                     // and Hashtable does not do equality checks between
                     // existing keys, normal hashtable operations should never
