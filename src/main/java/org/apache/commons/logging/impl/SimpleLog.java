@@ -653,7 +653,7 @@ public class SimpleLog implements Log, Serializable {
      *  text to be logged
      */
     protected void write(final StringBuffer buffer) {
-        System.err.println(buffer.toString());
+        System.err.println(Objects.toString(buffer));
     }
 }
 
