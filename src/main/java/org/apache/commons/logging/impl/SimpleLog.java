@@ -66,6 +66,7 @@ import org.apache.commons.logging.LogConfigurationException;
  * above, this implementation also checks for a class loader resource named
  * {@code "simplelog.properties"}, and includes any matching definitions
  * from this resource (if it exists).
+ * </p>
  */
 public class SimpleLog implements Log, Serializable {
 
@@ -394,11 +395,12 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Are debug messages currently enabled?
+     * Tests whether debug messages are enabled.
      * <p>
      * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
+     * </p>
      */
     @Override
     public final boolean isDebugEnabled() {
@@ -406,11 +408,12 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Are error messages currently enabled?
+     * Tests whether error messages are enabled.
      * <p>
      * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
+     * </p>
      */
     @Override
     public final boolean isErrorEnabled() {
@@ -418,11 +421,12 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Are fatal messages currently enabled?
+     * Tests whether fatal messages are enabled.
      * <p>
      * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
+     * </p>
      */
     @Override
     public final boolean isFatalEnabled() {
@@ -430,11 +434,12 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Are info messages currently enabled?
+     * Tests whether info messages are enabled.
      * <p>
      * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
+     * </p>
      */
     @Override
     public final boolean isInfoEnabled() {
@@ -442,7 +447,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Tests whether the given log level currently enabled.
+     * Tests whether the given level is enabled.
      *
      * @param logLevel is this level enabled?
      * @return whether the given log level currently enabled.
@@ -454,11 +459,12 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Are trace messages currently enabled?
+     * Tests whether trace messages are enabled.
      * <p>
      * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
+     * </p>
      */
     @Override
     public final boolean isTraceEnabled() {
@@ -466,11 +472,12 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Are warn messages currently enabled?
+     * Tests whether warn messages are enabled.
      * <p>
      * This allows expensive operations such as {@code String}
      * concatenation to be avoided when the message will be ignored by the
      * logger.
+     * </p>
      */
     @Override
     public final boolean isWarnEnabled() {
@@ -482,6 +489,7 @@ public class SimpleLog implements Log, Serializable {
      * <p>
      * This method assembles the message and then calls {@code write()}
      * to cause it to be written.
+     * </p>
      *
      * @param type One of the LOG_LEVEL_XXX constants defining the log level
      * @param message The message itself (typically a String)
@@ -624,7 +632,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Write the content of the message accumulated in the specified
+     * Writes the content of the message accumulated in the specified
      * {@code StringBuffer} to the appropriate output destination.  The
      * default implementation writes to {@code System.err}.
      *
@@ -636,7 +644,7 @@ public class SimpleLog implements Log, Serializable {
     }
 
     /**
-     * Write the content of the message accumulated in the specified
+     * Writes the content of the message accumulated in the specified
      * {@code StringBuffer} to the appropriate output destination.  The
      * default implementation writes to {@code System.err}.
      *
