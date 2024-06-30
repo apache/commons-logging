@@ -47,6 +47,7 @@ The <action> type attribute can be add,update,fix,remove.
       <!-- FIX -->
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix PMD UnnecessaryFullyQualifiedName in SimpleLog.</action>
       <action dev="ggregory" type="fix" issue="LOGGING-193" due-to="Philippe Marschall">Update Log4j 2 Imports #268.</action> 
+      <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix NullPointerException in SimpleLog#write(Object) on null input.</action>
       <!-- ADD -->
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Dependabot">Bump org.apache.commons:commons-parent from 69 to 71 #267.</action>

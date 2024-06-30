@@ -27,6 +27,7 @@ import java.security.PrivilegedAction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -640,7 +641,7 @@ public class SimpleLog implements Log, Serializable {
      *  text to be logged
      */
     private void write(final Object buffer) {
-        System.err.println(buffer.toString());
+        System.err.println(Objects.toString(buffer));
     }
 
     /**
