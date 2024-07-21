@@ -44,7 +44,7 @@ import org.apache.commons.logging.Log;
  * because the constructors available for it make this impossible to achieve in all
  * circumstances; there is no way to "reconnect" to an underlying Logger object on
  * deserialization if one was just passed in to the constructor of the original
- * object. This class <i>was</i> marked Serializable in the 1.0.4 release of
+ * object. This class <em>was</em> marked Serializable in the 1.0.4 release of
  * commons-logging, but this never actually worked (a NullPointerException would
  * be thrown as soon as the deserialized object was used), so removing this marker
  * is not considered to be an incompatible change.

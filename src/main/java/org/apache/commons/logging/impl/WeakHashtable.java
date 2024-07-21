@@ -48,7 +48,7 @@ import java.util.Set;
  * <p>
  * <strong>Usage:</strong> typical use case is as a drop-in replacement
  * for the {@code Hashtable} used in {@code LogFactory} for J2EE environments
- * running 1.3+ JVMs. Use of this class <i>in most cases</i> (see below) will
+ * running 1.3+ JVMs. Use of this class <em>in most cases</em> (see below) will
  * allow class loaders to be collected by the garbage collector without the need
  * to call {@link org.apache.commons.logging.LogFactory#release(ClassLoader) LogFactory.release(ClassLoader)}.
  * </p>
@@ -78,7 +78,7 @@ import java.util.Set;
  * reference to the component's class loader from a key in the "global"
  * {@code LogFactory}'s factories member! If {@code LogFactory.release()}
  * is called whenever component is unloaded, the class loaders will be correctly
- * garbage collected; this <i>should</i> be done by any container that
+ * garbage collected; this <em>should</em> be done by any container that
  * bundles commons-logging by default. However, holding the class loader
  * references weakly ensures that the class loader will be garbage collected
  * without the container performing this step.

@@ -228,7 +228,7 @@ public abstract class LogFactory {
      * <li>using JDK1.2+ and the calling code is loaded via the boot
      *  class loader (only likely for embedded systems work).</li>
      * </ul>
-     * Note that {@code factories} is a <i>Hashtable</i> (not a HashMap),
+     * Note that {@code factories} is a <em>Hashtable</em> (not a HashMap),
      * and hashtables don't allow null as a key.
      * @deprecated since 1.1.2
      */

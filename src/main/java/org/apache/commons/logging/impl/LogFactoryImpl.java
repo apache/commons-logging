@@ -666,7 +666,7 @@ public class LogFactoryImpl extends LogFactory {
      * <p>
      * This method usually returns the context class loader. However if it
      * is discovered that the class loader which loaded this class is a child
-     * of the context class loader <i>and</i> the allowFlawedContext option
+     * of the context class loader <em>and</em> the allowFlawedContext option
      * has been set then the class loader which loaded this class is returned
      * instead.
      * <p>
@@ -1213,7 +1213,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Utility method to check whether a particular logging library is
-     * present and available for use. Note that this does <i>not</i>
+     * present and available for use. Note that this does <em>not</em>
      * affect the future behavior of this class.
      */
     private boolean isLogLibraryAvailable(final String name, final String className) {

@@ -25,7 +25,7 @@ public class UserClass {
      * associated with this class' class loader.
      * <p>
      * Don't forget to set the context class loader to whatever it will be
-     * when an instance of this class is actually created <i>before</i> calling
+     * when an instance of this class is actually created <em>before</em> calling
      * this method!
      */
     public static void setAllowFlawedContext(final String state) {

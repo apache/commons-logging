@@ -161,14 +161,14 @@ public class LogSource {
     }
 
     /**
-     * Create a new {@link Log} implementation, based on the given <i>name</i>.
+     * Create a new {@link Log} implementation, based on the given <em>name</em>.
      * <p>
      * The specific {@link Log} implementation returned is determined by the
      * value of the {@code org.apache.commons.logging.log} property. The value
      * of {@code org.apache.commons.logging.log} may be set to the fully specified
      * name of a class that implements the {@link Log} interface. This class must
      * also have a public constructor that takes a single {@link String} argument
-     * (containing the <i>name</i> of the {@link Log} to be constructed.
+     * (containing the <em>name</em> of the {@link Log} to be constructed.
      * <p>
      * When {@code org.apache.commons.logging.log} is not set, or when no corresponding
      * class can be found, this method will return a Log4JLogger if the Log4j Logger
@@ -200,7 +200,7 @@ public class LogSource {
      * @throws LinkageError                if there is missing dependency.
      * @throws ExceptionInInitializerError unexpected exception has occurred in a static initializer.
      * @throws NoSuchMethodException       if a matching method is not found.
-     * @throws SecurityException           If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the
+     * @throws SecurityException           If a security manager, <em>s</em>, is present and the caller's class loader is not the same as or an ancestor of the
      *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
      *                                     s.checkPackageAccess()} denies access to the package of this class.
      */
@@ -215,7 +215,7 @@ public class LogSource {
      *
      * @param className class name.
      * @throws LinkageError           if there is missing dependency.
-     * @throws SecurityException      If a security manager, <i>s</i>, is present and the caller's class loader is not the same as or an ancestor of the class
+     * @throws SecurityException      If a security manager, <em>s</em>, is present and the caller's class loader is not the same as or an ancestor of the class
      *                                loader for the current class and invocation of {@link SecurityManager#checkPackageAccess s.checkPackageAccess()} denies
      *                                access to the package of this class.
      */

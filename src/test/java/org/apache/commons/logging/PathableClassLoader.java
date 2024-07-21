@@ -412,7 +412,7 @@ public class PathableClassLoader extends URLClassLoader {
 
     /**
      * For classes with the specified prefix, get them from the system
-     * classpath <i>which is active at the point this method is called</i>.
+     * classpath <em>which is active at the point this method is called</em>.
      * <p>
      * This method is just a shortcut for
      * <pre>
