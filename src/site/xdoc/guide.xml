@@ -148,7 +148,7 @@ advanced users only, so will not be addressed here.
               <li>if <a href="https://logging.apache.org/log4j/2.x/manual/api-separation">Log4j API</a>
                   is present on the classpath and it is not redirected to SLF4J, then <code>Log4jApiLogFactory</code>
                   is used. This factory redirects all output to Log4j API.</li>
-              <li>otherwise if <a href="https://www.slf4j.org">SLF4J</a> is presend on the classpath,
+              <li>otherwise if <a href="https://www.slf4j.org">SLF4J</a> is present on the classpath,
                   then <code>Slf4jLogFactory</code> is used. This factory redirects all output to SLF4J.</li>
               <li>otherwise the legacy <code>LogFactoryImpl</code> is used.</li>
             </ol>
