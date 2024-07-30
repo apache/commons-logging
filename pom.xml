@@ -43,9 +43,9 @@ under the License.
     <maven.compiler.target>${commons.logging.javaversion}</maven.compiler.target>
     <commons.componentid>logging</commons.componentid>
     <commons.module.name>org.apache.commons.logging</commons.module.name>
-    <commons.release.version>1.3.3</commons.release.version>
-    <commons.release.next>1.3.4</commons.release.next>
-    <commons.bc.version>1.3.2</commons.bc.version>
+    <commons.release.version>1.3.4</commons.release.version>
+    <commons.release.next>1.3.5</commons.release.next>
+    <commons.bc.version>1.3.3</commons.bc.version>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
