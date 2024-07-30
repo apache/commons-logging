@@ -43,7 +43,7 @@ import org.apache.commons.logging.PathableTestSuite;
  */
 public class SecurityAllowedTestCase extends TestCase {
 
-    // Dummy special hashtable, so we can tell JCL to use this instead of
+    // Dummy special Hashtable, so we can tell JCL to use this instead of
     // the standard one.
     public static class CustomHashtable extends Hashtable {
 

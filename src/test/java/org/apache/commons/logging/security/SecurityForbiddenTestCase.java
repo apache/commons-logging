@@ -39,24 +39,28 @@ import org.apache.commons.logging.PathableTestSuite;
  * Performing tests with security permissions disabled is tricky, as building error
  * messages on failure requires certain security permissions. If the security manager
  * blocks these, then the test can fail without the error messages being output.
+ * </p>
  * <p>
  * This class has only one unit test, as we are (in part) checking behavior in
  * the static block of the LogFactory class. As that class cannot be unloaded after
  * being loaded into a class loader, the only workaround is to use the
  * PathableClassLoader approach to ensure each test is run in its own
  * class loader, and use a separate test class for each test.
+ * </p>
  */
 public class SecurityForbiddenTestCase extends TestCase {
 
-    // Dummy special hashtable, so we can tell JCL to use this instead of
-    // the standard one.
-    public static class CustomHashtable extends Hashtable {
+    /**
+     * Dummy special Hashtable, so we can tell JCL to use this instead of the standard one.
+     */
+    public static class CustomHashtable extends Hashtable<Object, Object> {
 
         /**
          * Generated serial version ID.
          */
         private static final long serialVersionUID = 7224652794746236024L;
     }
+
     /**
      * Return the tests included in this test suite.
      */
@@ -112,7 +116,7 @@ public class SecurityForbiddenTestCase extends TestCase {
     }
 
     /**
-     * Test what happens when JCL is run with absolutely no security
+     * Tests what happens when JCL is run with absolutely no security
      * privileges at all, including reading system properties. Everything
      * should fall back to the built-in defaults.
      */
@@ -148,7 +152,7 @@ public class SecurityForbiddenTestCase extends TestCase {
             final Object factoryTable = factoryField.get(null);
             assertNotNull(factoryTable);
             final String ftClassName = factoryTable.getClass().getName();
-            assertNotEquals("Custom hashtable unexpectedly used",
+            assertNotEquals("Custom Hashtable unexpectedly used",
                     CustomHashtable.class.getName(), ftClassName);
 
             assertEquals(0, mySecurityManager.getUntrustedCodeCount());
@@ -165,7 +169,7 @@ public class SecurityForbiddenTestCase extends TestCase {
     }
 
     /**
-     * Test what happens when JCL is run with absolutely no security
+     * Tests what happens when JCL is run with absolutely no security
      * privileges at all and a class loaded with a different class loader
      * than the context class loader of the current thread tries to log something.
      */

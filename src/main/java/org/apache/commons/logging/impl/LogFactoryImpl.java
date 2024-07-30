@@ -50,7 +50,7 @@ import org.apache.commons.logging.LogFactory;
  * </ul>
  * <p>
  * If the selected {@link Log} implementation class has a
- * <code>setLogFactory()</code> method that accepts a {@link LogFactory}
+ * {@code setLogFactory()} method that accepts a {@link LogFactory}
  * parameter, this method will be called on each newly created instance
  * to identify the associated factory.  This makes factory configuration
  * attributes available to the Log instance, if it so desires.

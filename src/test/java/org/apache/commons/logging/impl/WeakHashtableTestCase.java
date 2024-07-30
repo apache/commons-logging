@@ -212,7 +212,7 @@ public class WeakHashtableTestCase extends TestCase {
 
         assertEquals(Long.valueOf(1066), weakHashtable.get(anotherKey));
 
-        // Test compliance with the hashtable API re nulls
+        // Test compliance with the Hashtable API re nulls
         Exception caught = null;
         try {
             weakHashtable.put(null, new Object());

@@ -82,7 +82,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Constructs an {@code AvalonLogger} that will log to a child
-     * of the <code>Logger</code> set by calling {@link #setDefaultLogger}.
+     * of the {@code Logger} set by calling {@link #setDefaultLogger}.
      *
      * @param name the name of the avalon logger implementation to delegate to
      */

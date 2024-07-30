@@ -216,7 +216,7 @@ public final class WeakHashtable extends Hashtable {
                     result = result && hashCode() == otherKey.hashCode();
                     // In any case, as our c'tor does not allow null referants
                     // and Hashtable does not do equality checks between
-                    // existing keys, normal hashtable operations should never
+                    // existing keys, normal hash table operations should never
                     // result in an equals comparison between null referants
                 }
                 else

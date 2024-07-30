@@ -159,7 +159,7 @@ public abstract class LogFactory {
      * <strong>Note:</strong> {@code LogFactory} will print:
      * </p>
      * <pre>
-     * [ERROR] LogFactory: Load of custom hashtable failed
+     * [ERROR] LogFactory: Load of custom hash table failed
      * </pre>
      * <p>
      * to system error and then continue using a standard Hashtable.
@@ -192,7 +192,7 @@ public abstract class LogFactory {
     public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
         "org.apache.commons.logging.LogFactory.HashtableImpl";
 
-    /** Name used to load the weak hashtable implementation by names. */
+    /** Name used to load the weak hash table implementation by names. */
     private static final String WEAK_HASHTABLE_CLASSNAME =
         "org.apache.commons.logging.impl.WeakHashtable";
 
@@ -229,7 +229,7 @@ public abstract class LogFactory {
      *  class loader (only likely for embedded systems work).</li>
      * </ul>
      * Note that {@code factories} is a <em>Hashtable</em> (not a HashMap),
-     * and hashtables don't allow null as a key.
+     * and hash tables don't allow null as a key.
      * @deprecated since 1.1.2
      */
     @Deprecated
@@ -440,7 +440,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Create the hashtable which will be used to store a map of
+     * Create the hash table which will be used to store a map of
      * (context class loader -> logfactory-object). Version 1.2+ of Java
      * supports "weak references", allowing a custom Hashtable class
      * to be used which uses only weak references to its keys. Using weak
@@ -462,7 +462,7 @@ public abstract class LogFactory {
             storeImplementationClass = getSystemProperty(HASHTABLE_IMPLEMENTATION_PROPERTY, null);
         } catch (final SecurityException ex) {
             // Permissions don't allow this to be accessed. Default to the "modern"
-            // weak hashtable implementation if it is available.
+            // weak hash table implementation if it is available.
             storeImplementationClass = null;
         }
 

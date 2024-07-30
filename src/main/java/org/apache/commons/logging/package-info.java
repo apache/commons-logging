@@ -29,10 +29,10 @@
  * <li><a href="https://java.sun.com/j2se/1.4/docs/guide/util/logging/index.html">
  * JDK Logging API</a>, included in JDK 1.4 or later systems.  Each named
  * <a href="Log.html">Log</a> instance is connected to a corresponding
- * <code>java.util.logging.Logger</code> instance.</li>
+ * {@code java.util.logging.Logger} instance.</li>
  * <li><a href="https://avalon.apache.org/logkit/">LogKit</a> from Apache's
  * Avalon project.  Each named <a href="Log.html">Log</a> instance is
- * connected to a corresponding LogKit <code>Logger</code>.</li>
+ * connected to a corresponding LogKit {@code Logger}.</li>
  * <li><a href="impl/NoOpLog.html">NoOpLog</a> implementation that simply swallows
  * all log output, for all named <a href="Log.html">Log</a> instances.</li>
  * <li><a href="impl/SimpleLog.html">SimpleLog</a> implementation that writes all
@@ -66,66 +66,66 @@
  * this page in order to understand how to configure logging for your
  * application.</p>
  * <h2>Configuring the Commons Logging Package</h2>
- * <h3>Choosing a <code>LogFactory</code> Implementation</h3>
+ * <h3>Choosing a {@code LogFactory} Implementation</h3>
  * <p>From an application perspective, the first requirement is to retrieve an
- * object reference to the <code>LogFactory</code> instance that will be used
- * to create <code><a href="Log.html">Log</a></code> instances for this
+ * object reference to the {@code LogFactory} instance that will be used
+ * to create {@code <a href="Log.html">Log</a>} instances for this
  * application.  This is normally accomplished by calling the static
- * <code>getFactory()</code> method.  This method implements the following
- * discovery algorithm to select the name of the <code>LogFactory</code>
+ * {@code getFactory()} method.  This method implements the following
+ * discovery algorithm to select the name of the {@code LogFactory}
  * implementation class this application wants to use:</p>
  * <ul>
  * <li>Check for a system property named
- * <code>org.apache.commons.logging.LogFactory</code>.</li>
+ * {@code org.apache.commons.logging.LogFactory}.</li>
  * <li>Use the JDK 1.3 JAR Services Discovery mechanism (see
  * <a href="https://java.sun.com/j2se/1.3/docs/guide/jar/jar.html">
  * https://java.sun.com/j2se/1.3/docs/guide/jar/jar.html</a> for
  * more information) to look for a resource named
- * <code>META-INF/services/org.apache.commons.logging.LogFactory</code>
+ * {@code META-INF/services/org.apache.commons.logging.LogFactory}
  * whose first line is assumed to contain the desired class name.</li>
- * <li>Look for a properties file named <code>commons-logging.properties</code>
+ * <li>Look for a properties file named {@code commons-logging.properties}
  * visible in the application class path, with a property named
- * <code>org.apache.commons.logging.LogFactory</code> defining the
+ * {@code org.apache.commons.logging.LogFactory} defining the
  * desired implementation class name.</li>
  * <li>Fall back to a default implementation, which is described
  * further below.</li>
  * </ul>
- * <p>If a <code>commons-logging.properties</code> file is found, all of the
+ * <p>If a {@code commons-logging.properties} file is found, all of the
  * properties defined there are also used to set configuration attributes on
- * the instantiated <code>LogFactory</code> instance.</p>
+ * the instantiated {@code LogFactory} instance.</p>
  * <p>Once an implementation class name is selected, the corresponding class is
  * loaded from the current Thread context class loader (if there is one), or
- * from the class loader that loaded the <code>LogFactory</code> class itself
- * otherwise.  This allows a copy of <code>commons-logging.jar</code> to be
+ * from the class loader that loaded the {@code LogFactory} class itself
+ * otherwise.  This allows a copy of {@code commons-logging.jar} to be
  * shared in a multiple class loader environment (such as a servlet container),
- * but still allow each web application to provide its own <code>LogFactory</code>
+ * but still allow each web application to provide its own {@code LogFactory}
  * implementation, if it so desires.  An instance of this class will then be
  * created, and cached per class loader.
- * <h3>The Default <code>LogFactory</code> Implementation</h3>
- * <p>The Logging Package APIs include a default <code>LogFactory</code>
+ * <h3>The Default {@code LogFactory} Implementation</h3>
+ * <p>The Logging Package APIs include a default {@code LogFactory}
  * implementation class (<a href="impl/LogFactoryImpl.html">
  * org.apache.commons.logging.impl.LogFactoryImpl</a>) that is selected if no
  * other implementation class name can be discovered.  Its primary purpose is
  * to create (as necessary) and return <a href="Log.html">Log</a> instances
- * in response to calls to the <code>getInstance()</code> method.  The default
+ * in response to calls to the {@code getInstance()} method.  The default
  * implementation uses the following rules:</p>
  * <ul>
- * <li>At most one <code>Log</code> instance of the same name will be created.
- * Subsequent <code>getInstance()</code> calls to the same
- * <code>LogFactory</code> instance, with the same name or <code>Class</code>
- * parameter, will return the same <code>Log</code> instance.</li>
- * <li>When a new <code>Log</code> instance must be created, the default
- * <code>LogFactory</code> implementation uses the following discovery
+ * <li>At most one {@code Log} instance of the same name will be created.
+ * Subsequent {@code getInstance()} calls to the same
+ * {@code LogFactory} instance, with the same name or {@code Class}
+ * parameter, will return the same {@code Log} instance.</li>
+ * <li>When a new {@code Log} instance must be created, the default
+ * {@code LogFactory} implementation uses the following discovery
  * process:
  * <ul>
  * <li>Look for a configuration attribute of this factory named
- * <code>org.apache.commons.logging.Log</code> (for backwards
+ * {@code org.apache.commons.logging.Log} (for backwards
  * compatibility to pre-1.0 versions of this API, an attribute
- * <code>org.apache.commons.logging.log</code> is also consulted).</li>
+ * {@code org.apache.commons.logging.log} is also consulted).</li>
  * <li>Look for a system property named
- * <code>org.apache.commons.logging.Log</code> (for backwards
+ * {@code org.apache.commons.logging.Log} (for backwards
  * compatibility to pre-1.0 versions of this API, a system property
- * <code>org.apache.commons.logging.log</code> is also consulted).</li>
+ * {@code org.apache.commons.logging.log} is also consulted).</li>
  * <li>If the Log4J logging system is available in the application
  * class path, use the corresponding wrapper class
  * (<a href="impl/Log4JLogger.html">Log4JLogger</a>).</li>
@@ -137,8 +137,8 @@
  * </ul></li>
  * <li>Load the class of the specified name from the thread context class
  * loader (if any), or from the class loader that loaded the
- * <code>LogFactory</code> class otherwise.</li>
- * <li>Instantiate an instance of the selected <code>Log</code>
+ * {@code LogFactory} class otherwise.</li>
+ * <li>Instantiate an instance of the selected {@code Log}
  * implementation class, passing the specified name as the single
  * argument to its constructor.</li>
  * </ul>
@@ -151,7 +151,7 @@
  * <p>Each individual <a href="Log.html">Log</a> implementation may
  * support its own configuration properties.  These will be documented in the
  * class descriptions for the corresponding implementation class.</p>
- * <p>Finally, some <code>Log</code> implementations (such as the one for Log4J)
+ * <p>Finally, some {@code Log} implementations (such as the one for Log4J)
  * require an external configuration file for the entire logging environment.
  * This file should be prepared in a manner that is specific to the actual logging
  * technology being used.</p>
@@ -168,12 +168,12 @@
  * purposes.  A typical scenario for a server application is to have each
  * major component of the server use its own Log instance.</li>
  * <li>Cause messages to be logged (if the corresponding detail level is enabled)
- * by calling appropriate methods (<code>trace()</code>, <code>debug()</code>,
- * <code>info()</code>, <code>warn()</code>, <code>error</code>, and
- * <code>fatal()</code>).</li>
+ * by calling appropriate methods ({@code trace()}, {@code debug()},
+ * {@code info()}, {@code warn()}, {@code error}, and
+ * {@code fatal()}).</li>
  * </ol>
- * <p>For convenience, <code>LogFactory</code> also offers a static method
- * <code>getLog()</code> that combines the typical two-step pattern:</p>
+ * <p>For convenience, {@code LogFactory} also offers a static method
+ * {@code getLog()} that combines the typical two-step pattern:</p>
  * <pre>
  * Log log = LogFactory.getFactory().getInstance(Foo.class);
  * </pre>
