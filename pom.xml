@@ -283,6 +283,7 @@ under the License.
                   <org.apache.commons.logging.diagnostics.dest>STDOUT</org.apache.commons.logging.diagnostics.dest>
                 -->
                 <log4j12>${org.apache.logging.log4j:log4j-1.2-api:jar}</log4j12>
+                <log4j-api>${org.apache.logging.log4j:log4j-api:jar}</log4j-api>
                 <logkit>${logkit:logkit:jar}</logkit>
                 <servlet-api>${javax.servlet:javax.servlet-api:jar}</servlet-api>
                 <commons-logging>target/${project.build.finalName}.jar</commons-logging>

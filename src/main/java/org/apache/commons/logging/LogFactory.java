@@ -331,8 +331,8 @@ public abstract class LogFactory {
                                 + " does not extend '" + LogFactory.class.getName() + "' as loaded by this class loader.");
                         logHierarchy("[BAD CL TREE] ", classLoader);
                     }
-
-                    return logFactoryClass.getConstructor().newInstance();
+                    // Force a ClassCastException
+                    return LogFactory.class.cast(logFactoryClass.getConstructor().newInstance());
 
                 } catch (final ClassNotFoundException ex) {
                     if (classLoader == thisClassLoaderRef.get()) {
@@ -425,7 +425,8 @@ public abstract class LogFactory {
                         "Unable to load factory class via class loader " + objectId(classLoader) + " - trying the class loader associated with this LogFactory.");
             }
             logFactoryClass = Class.forName(factoryClassName);
-            return logFactoryClass.newInstance();
+            // Force a ClassCastException
+            return LogFactory.class.cast(logFactoryClass.getConstructor().newInstance());
         } catch (final Exception e) {
             // Check to see if we've got a bad configuration
             if (isDiagnosticsEnabled()) {
@@ -796,22 +797,31 @@ public abstract class LogFactory {
 
         // Determine whether we will be using the thread context class loader to
         // load logging classes or not by checking the loaded properties file (if any).
-        ClassLoader baseClassLoader = contextClassLoader;
+        boolean useTccl = contextClassLoader != null;
         if (props != null) {
             final String useTCCLStr = props.getProperty(TCCL_KEY);
-            // The Boolean.valueOf(useTCCLStr).booleanValue() formulation
-            // is required for Java 1.2 compatibility.
-            if (useTCCLStr != null && !Boolean.parseBoolean(useTCCLStr)) {
-                // Don't use current context class loader when locating any
-                // LogFactory or Log classes, just use the class that loaded
-                // this abstract class. When this class is deployed in a shared
-                // classpath of a container, it means webapps cannot deploy their
-                // own logging implementations. It also means that it is up to the
-                // implementation whether to load library-specific config files
-                // from the TCCL or not.
-                baseClassLoader = thisClassLoaderRef.get();
+            useTccl &= useTCCLStr == null || Boolean.parseBoolean(useTCCLStr);
+        }
+        // If TCCL is still enabled at this point, we check if it resolves this class
+        if (useTccl) {
+            try {
+                if (!LogFactory.class.equals(
+                        Class.forName(LogFactory.class.getName(), false, contextClassLoader))) {
+                    logDiagnostic("The class " + LogFactory.class.getName() + " loaded by the context class loader " + objectId(contextClassLoader)
+                            + " and this class differ. Disabling the usage of the context class loader."
+                            + "Background can be found in https://commons.apache.org/logging/tech.html. ");
+                    logHierarchy("[BAD CL TREE] ", contextClassLoader);
+                    useTccl = false;
+                }
+            } catch (ClassNotFoundException ignored) {
+                logDiagnostic("The class " + LogFactory.class.getName() + " is not present in the the context class loader " + objectId(contextClassLoader)
+                        + ". Disabling the usage of the context class loader."
+                        + "Background can be found in https://commons.apache.org/logging/tech.html. ");
+                logHierarchy("[BAD CL TREE] ", contextClassLoader);
+                useTccl = false;
             }
         }
+        final ClassLoader baseClassLoader = useTccl ? contextClassLoader : thisClassLoaderRef.get();
 
         // Determine which concrete LogFactory subclass to use.
         // First, try a global system property
@@ -864,7 +874,7 @@ public abstract class LogFactory {
                 logDiagnostic("[LOOKUP] Using ServiceLoader  to define the LogFactory subclass to use...");
             }
             try {
-                final ServiceLoader<LogFactory> serviceLoader = ServiceLoader.load(LogFactory.class);
+                final ServiceLoader<LogFactory> serviceLoader = ServiceLoader.load(LogFactory.class, baseClassLoader);
                 final Iterator<LogFactory> iterator = serviceLoader.iterator();
 
                 int i = MAX_BROKEN_SERVICES;
@@ -923,31 +933,19 @@ public abstract class LogFactory {
             }
         }
 
-        // Fourth, try one of the 3 provided factories
-
-        try {
-            // We prefer Log4j API, since it does not stringify objects.
-            if (factory == null && isClassAvailable(LOG4J_API_LOGGER, baseClassLoader)) {
-                // If the Log4j API is redirected to SLF4J, we use SLF4J directly.
-                if (isClassAvailable(LOG4J_TO_SLF4J_BRIDGE, baseClassLoader)) {
-                    logDiagnostic(
-                            "[LOOKUP] Log4j API to SLF4J redirection detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
-                    factory = newFactory(FACTORY_SLF4J, baseClassLoader, contextClassLoader);
-                } else {
-                    logDiagnostic("[LOOKUP] Log4j API detected. Loading the Log4j API LogFactory implementation '" + FACTORY_LOG4J_API + "'.");
-                    factory = newFactory(FACTORY_LOG4J_API, baseClassLoader, contextClassLoader);
-                }
-            }
-
-            if (factory == null && isClassAvailable(SLF4J_API_LOGGER, baseClassLoader)) {
-                logDiagnostic("[LOOKUP] SLF4J detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
-                factory = newFactory(FACTORY_SLF4J, baseClassLoader, contextClassLoader);
-            }
-        } catch (final Exception e) {
-            logDiagnostic("[LOOKUP] An exception occurred while creating LogFactory: " + e.getMessage());
-        }
-
+        // Fourth, try one of the three provided factories first from the specified classloader
+        // and then from the current one.
         if (factory == null) {
+            factory = newStandardFactory(baseClassLoader);
+        }
+        if (factory == null) {
+            factory = newStandardFactory(thisClassLoaderRef.get());
+        }
+        if (factory != null) {
+            if (isDiagnosticsEnabled()) {
+                logDiagnostic("Created object " + objectId(factory) + " to manage class loader " + objectId(contextClassLoader));
+            }
+        } else {
             if (isDiagnosticsEnabled()) {
                 logDiagnostic(
                     "[LOOKUP] Loading the default LogFactory implementation '" + FACTORY_DEFAULT +
@@ -1406,6 +1404,45 @@ public abstract class LogFactory {
     protected static LogFactory newFactory(final String factoryClass,
                                            final ClassLoader classLoader) {
         return newFactory(factoryClass, classLoader, null);
+    }
+
+    /**
+     * Tries to load one of the standard three implementations from the given classloader.
+     * <p>
+     *     We assume that {@code classLoader} can load this class.
+     * </p>
+     * @param classLoader The classloader to use.
+     * @return An implementation of this class.
+     */
+    private static LogFactory newStandardFactory(final ClassLoader classLoader) {
+        if (isClassAvailable(LOG4J_TO_SLF4J_BRIDGE, classLoader)) {
+            try {
+                return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
+            } catch (final LinkageError | ReflectiveOperationException ignored) {
+            } finally {
+                logDiagnostic(
+                        "[LOOKUP] Log4j API to SLF4J redirection detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
+            }
+        }
+        try {
+            return (LogFactory) Class.forName(FACTORY_LOG4J_API, true, classLoader).getConstructor().newInstance();
+        } catch (final LinkageError | ReflectiveOperationException ignored) {
+        } finally {
+            logDiagnostic("[LOOKUP] Loading the Log4j API LogFactory implementation '" + FACTORY_LOG4J_API + "'.");
+        }
+        try {
+            return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
+        } catch (final LinkageError | ReflectiveOperationException ignored) {
+        } finally {
+            logDiagnostic("[LOOKUP] Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
+        }
+        try {
+            return (LogFactory) Class.forName(FACTORY_DEFAULT, true, classLoader).getConstructor().newInstance();
+        } catch (final LinkageError | ReflectiveOperationException ignored) {
+        } finally {
+            logDiagnostic("[LOOKUP] Loading the legacy LogFactory implementation '" + FACTORY_DEFAULT + "'.");
+        }
+        return null;
     }
 
     /**
