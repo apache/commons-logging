@@ -17,6 +17,8 @@
 package org.apache.commons.logging;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -36,7 +38,7 @@ public class LoadTestCase extends TestCase {
      */
     static class AppClassLoader extends ClassLoader {
 
-        java.util.Map classes = new java.util.HashMap();
+        Map<String, Class<?>> classes = new HashMap<>();
 
         AppClassLoader(final ClassLoader parent) {
             super(parent);
@@ -44,7 +46,7 @@ public class LoadTestCase extends TestCase {
 
         private Class<?> def(final String name) throws ClassNotFoundException {
 
-            Class<?> result = (Class<?>) classes.get(name);
+            Class<?> result = classes.get(name);
             if (result != null) {
                 return result;
             }
