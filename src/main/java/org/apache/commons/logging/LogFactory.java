@@ -938,7 +938,7 @@ public abstract class LogFactory {
         if (factory == null) {
             factory = newStandardFactory(baseClassLoader);
         }
-        if (factory == null) {
+        if ((factory == null) && (baseClassLoader != thisClassLoaderRef.get())) {
             factory = newStandardFactory(thisClassLoaderRef.get());
         }
         if (factory != null) {
@@ -1217,13 +1217,12 @@ public abstract class LogFactory {
     }
 
     private static boolean isClassAvailable(final String className, final ClassLoader classLoader) {
-        final ClassLoader loader = LogFactory.class.getClassLoader();
-        logDiagnostic("Checking if class '" + className + "' is available in class loader " + objectId(loader));
+        logDiagnostic("Checking if class '" + className + "' is available in class loader " + objectId(classLoader));
         try {
             Class.forName(className, true, classLoader);
             return true;
         } catch (final ClassNotFoundException | LinkageError e) {
-            logDiagnostic("Failed to load class '" + className + "' from class loader " + objectId(loader) + ": " + e.getMessage());
+            logDiagnostic("Failed to load class '" + className + "' from class loader " + objectId(classLoader) + ": " + e.getMessage());
         }
         return false;
     }
