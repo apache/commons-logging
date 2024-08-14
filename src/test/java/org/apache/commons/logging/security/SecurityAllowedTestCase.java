@@ -27,6 +27,8 @@ import java.util.Hashtable;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
+import org.apache.commons.lang3.JavaVersion;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
@@ -35,11 +37,12 @@ import org.apache.commons.logging.PathableTestSuite;
 /**
  * Tests for logging with a security policy that allows JCL access to everything.
  * <p>
- * This class has only one unit test, as we are (in part) checking behavior in
- * the static block of the LogFactory class. As that class cannot be unloaded after
- * being loaded into a class loader, the only workaround is to use the
- * PathableClassLoader approach to ensure each test is run in its own
- * class loader, and use a separate test class for each test.
+ * This test cannot run on Java 21 and up: {@code java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release}.
+ * </p>
+ * This class has only one unit test, as we are (in part) checking behavior in the static block of the LogFactory class. As that class cannot be unloaded after
+ * being loaded into a class loader, the only workaround is to use the PathableClassLoader approach to ensure each test is run in its own class loader, and use
+ * a separate test class for each test.
+ * </p>
  */
 public class SecurityAllowedTestCase extends TestCase {
 
@@ -62,9 +65,9 @@ public class SecurityAllowedTestCase extends TestCase {
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
+        parent.addLogicalLib("commons-lang3");
 
-        final Class<?> testClass = parent.loadClass(
-            "org.apache.commons.logging.security.SecurityAllowedTestCase");
+        final Class<?> testClass = parent.loadClass("org.apache.commons.logging.security.SecurityAllowedTestCase");
         return new PathableTestSuite(testClass, parent);
     }
 
@@ -72,30 +75,38 @@ public class SecurityAllowedTestCase extends TestCase {
 
     @Override
     public void setUp() {
+        // Ignore on Java 21 and up
+        // TODO Port tests to JUnit 5
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_21)) {
+            return;
+        }
         // save security manager so it can be restored in tearDown
         oldSecMgr = System.getSecurityManager();
     }
 
     @Override
     public void tearDown() {
+        // Ignore on Java 21 and up
+        // TODO Port tests to JUnit 5
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_21)) {
+            return;
+        }
         // Restore, so other tests don't get stuffed up if a test
         // sets a custom security manager.
-        // Java 22: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
+        // Java 21 and up: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
         System.setSecurityManager(oldSecMgr);
     }
 
     /**
-     * Test what happens when JCL is run with all permissions enabled. Custom
-     * overrides should take effect.
+     * Test what happens when JCL is run with all permissions enabled. Custom overrides should take effect.
      */
     public void testAllAllowed() {
-        // Ignore on Java 21
-        if (System.getProperty("java.version").startsWith("21.")) {
+        // Ignore on Java 21 and up
+        // TODO Port tests to JUnit 5
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_21)) {
             return;
         }
-        System.setProperty(
-                LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY,
-                CustomHashtable.class.getName());
+        System.setProperty(LogFactory.HASHTABLE_IMPLEMENTATION_PROPERTY, CustomHashtable.class.getName());
         final MockSecurityManager mySecurityManager = new MockSecurityManager();
         mySecurityManager.addPermission(new AllPermission());
         // Java 22: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
@@ -104,8 +115,7 @@ public class SecurityAllowedTestCase extends TestCase {
         try {
             // Use reflection so that we can control exactly when the static
             // initializer for the LogFactory class is executed.
-            final Class<?> c = this.getClass().getClassLoader().loadClass(
-                    "org.apache.commons.logging.LogFactory");
+            final Class<?> c = this.getClass().getClassLoader().loadClass("org.apache.commons.logging.LogFactory");
             final Method m = c.getMethod("getLog", Class.class);
             final Log log = (Log) m.invoke(null, this.getClass());
 

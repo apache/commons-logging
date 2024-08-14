@@ -28,6 +28,8 @@ import java.util.Hashtable;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
+import org.apache.commons.lang3.JavaVersion;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
@@ -35,6 +37,9 @@ import org.apache.commons.logging.PathableTestSuite;
 
 /**
  * Tests for logging with a security policy that forbids JCL access to anything.
+ * <p>
+ * This test cannot run on Java 22: {@code java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release}.
+ * </p>
  * <p>
  * Performing tests with security permissions disabled is tricky, as building error
  * messages on failure requires certain security permissions. If the security manager
@@ -70,9 +75,9 @@ public class SecurityForbiddenTestCase extends TestCase {
         parent.useExplicitLoader("org.junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
+        parent.addLogicalLib("commons-lang3");
 
-        final Class<?> testClass = parent.loadClass(
-            "org.apache.commons.logging.security.SecurityForbiddenTestCase");
+        final Class<?> testClass = parent.loadClass("org.apache.commons.logging.security.SecurityForbiddenTestCase");
         return new PathableTestSuite(testClass, parent);
     }
 
@@ -110,6 +115,11 @@ public class SecurityForbiddenTestCase extends TestCase {
 
     @Override
     public void tearDown() {
+        // Ignore on Java 21 and up
+        // TODO Port tests to JUnit 5
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_21)) {
+            return;
+        }
         // Restore, so other tests don't get stuffed up if a test
         // sets a custom security manager.
         // Java 22: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
@@ -122,8 +132,9 @@ public class SecurityForbiddenTestCase extends TestCase {
      * should fall back to the built-in defaults.
      */
     public void testAllForbidden() {
-        // Ignore on Java 21
-        if (System.getProperty("java.version").startsWith("21.")) {
+        // Ignore on Java 21 and up
+        // TODO Port tests to JUnit 5
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_21)) {
             return;
         }
         System.setProperty(
@@ -177,8 +188,9 @@ public class SecurityForbiddenTestCase extends TestCase {
      * than the context class loader of the current thread tries to log something.
      */
     public void testContextClassLoader() {
-        // Ignore on Java 21
-        if (System.getProperty("java.version").startsWith("21.")) {
+        // Ignore on Java 21 and up
+        // TODO Port tests to JUnit 5
+        if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_21)) {
             return;
         }
         System.setProperty(

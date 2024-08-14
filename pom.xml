@@ -289,6 +289,7 @@ under the License.
                 <commons-logging-api>target/${project.build.finalName}-api.jar</commons-logging-api>
                 <commons-logging-adapters>target/${project.build.finalName}-adapters.jar</commons-logging-adapters>
                 <testclasses>target/${project.build.finalName}-tests.jar</testclasses>
+                <commons-lang3>${org.apache.commons:commons-lang3:jar}</commons-lang3>
               </systemPropertyVariables>
             </configuration>
           </execution>
@@ -596,6 +597,12 @@ under the License.
       <version>4.0.1</version>
       <scope>provided</scope>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.16.0</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
