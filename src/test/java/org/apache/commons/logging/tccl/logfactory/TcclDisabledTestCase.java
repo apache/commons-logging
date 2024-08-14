@@ -27,10 +27,9 @@ import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
 /**
- * Verify that a commons-logging.properties file can prevent a custom
- * LogFactoryImpl being loaded from the tccl class loader.
+ * Verifies that a commons-logging.properties file can prevent a custom
+ * LogFactoryImpl being loaded from the TCCL class loader.
  */
-
 public class TcclDisabledTestCase extends TestCase {
 
     public static final String MY_LOG_FACTORY_PKG =
@@ -40,7 +39,7 @@ public class TcclDisabledTestCase extends TestCase {
         MY_LOG_FACTORY_PKG + ".MyLogFactoryImpl";
 
     /**
-     * Return the tests included in this test suite.
+     * Returns the tests included in this test suite.
      */
     public static Test suite() throws Exception {
         final Class thisClass = TcclDisabledTestCase.class;
@@ -61,7 +60,7 @@ public class TcclDisabledTestCase extends TestCase {
         // the parent classpath, but we exclude the custom LogFactoryImpl
         // class.
         //
-        // We then create a tccl class loader that can see the custom
+        // We then create a TCCL class loader that can see the custom
         // LogFactory class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
         final PathableClassLoader emptyLoader = new PathableClassLoader(null);
@@ -94,7 +93,7 @@ public class TcclDisabledTestCase extends TestCase {
     }
 
     /**
-     * Tear down instance variables required by this test case.
+     * Tears down instance variables required by this test case.
      */
     @Override
     public void tearDown() {
@@ -102,7 +101,7 @@ public class TcclDisabledTestCase extends TestCase {
     }
 
     /**
-     * Verify that MyLogFactoryImpl is only loadable via the tccl.
+     * Verifies that MyLogFactoryImpl is only loadable via the TCCL.
      */
     public void testLoader() throws Exception {
 
@@ -110,7 +109,7 @@ public class TcclDisabledTestCase extends TestCase {
         final ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
         // the tccl loader should NOT be the same as the loader that loaded this test class.
-        assertNotSame("tccl not same as test class loader", thisClassLoader, tcclLoader);
+        assertNotSame("TCCL not same as test class loader", thisClassLoader, tcclLoader);
 
         // MyLogFactoryImpl should not be loadable via parent loader
         try {
@@ -118,20 +117,20 @@ public class TcclDisabledTestCase extends TestCase {
             fail("Unexpectedly able to load MyLogFactoryImpl via test class class loader");
             assertNotNull(clazz); // silence warning about unused var
         } catch (final ClassNotFoundException ex) {
-            // ok, expected
+            // OK, expected
         }
 
-        // MyLogFactoryImpl should be loadable via tccl loader
+        // MyLogFactoryImpl should be loadable via TCCL loader
         try {
             final Class clazz = tcclLoader.loadClass(MY_LOG_FACTORY_IMPL);
             assertNotNull(clazz);
         } catch (final ClassNotFoundException ex) {
-            fail("Unexpectedly unable to load MyLogFactoryImpl via tccl class loader");
+            fail("Unexpectedly unable to load MyLogFactoryImpl via TCCL class loader");
         }
     }
 
     /**
-     * Verify that the custom LogFactory implementation which is only accessible
+     * Verifies that the custom LogFactory implementation which is only accessible
      * via the TCCL has NOT been loaded. Because this is only accessible via the
      * TCCL, and we've use a commons-logging.properties that disables TCCL loading,
      * we should see the default LogFactoryImpl rather than the custom one.
@@ -142,7 +141,7 @@ public class TcclDisabledTestCase extends TestCase {
             fail("Unexpectedly succeeded in loading custom factory, though TCCL disabled.");
             assertNotNull(instance); // silence warning about unused var
         } catch (final org.apache.commons.logging.LogConfigurationException ex) {
-            // ok, custom MyLogFactoryImpl as specified in props_disable_tccl
+            // OK, custom MyLogFactoryImpl as specified in props_disable_tccl
             // could not be found.
             assertTrue("MylogFactoryImpl not found", ex.getMessage().contains(MY_LOG_FACTORY_IMPL));
         }

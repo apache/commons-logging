@@ -27,10 +27,9 @@ import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
 /**
- * Verify that by default a custom LogFactoryImpl is loaded from the
- * tccl class loader.
+ * Verifies that by default a custom LogFactoryImpl is loaded from the
+ * TCCL class loader.
  */
-
 public class TcclEnabledTestCase extends TestCase {
 
     /**
@@ -88,7 +87,7 @@ public class TcclEnabledTestCase extends TestCase {
     }
 
     /**
-     * Tear down instance variables required by this test case.
+     * Tears down instance variables required by this test case.
      */
     @Override
     public void tearDown() {
@@ -96,14 +95,14 @@ public class TcclEnabledTestCase extends TestCase {
     }
 
     /**
-     * Verify that MyLogFactoryImpl is only loadable via the tccl.
+     * Verifies that MyLogFactoryImpl is only loadable via the tccl.
      */
     public void testLoader() throws Exception {
 
         final ClassLoader thisClassLoader = this.getClass().getClassLoader();
         final ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
-        // the tccl loader should NOT be the same as the loader that loaded this test class.
+        // the TCCL loader should NOT be the same as the loader that loaded this test class.
         assertNotSame("tccl not same as test class loader", thisClassLoader, tcclLoader);
 
         // MyLogFactoryImpl should not be loadable via parent loader
@@ -113,16 +112,16 @@ public class TcclEnabledTestCase extends TestCase {
             fail("Unexpectedly able to load MyLogFactoryImpl via test class class loader");
             assertNotNull(clazz); // silence warning about unused var
         } catch (final ClassNotFoundException ex) {
-            // ok, expected
+            // OK, expected
         }
 
-        // MyLogFactoryImpl should be loadable via tccl loader
+        // MyLogFactoryImpl should be loadable via TCCL loader
         try {
             final Class clazz = tcclLoader.loadClass(
                 "org.apache.commons.logging.tccl.custom.MyLogFactoryImpl");
             assertNotNull(clazz);
         } catch (final ClassNotFoundException ex) {
-            fail("Unexpectedly unable to load MyLogFactoryImpl via tccl class loader");
+            fail("Unexpectedly unable to load MyLogFactoryImpl via TCCL class loader");
         }
     }
 
