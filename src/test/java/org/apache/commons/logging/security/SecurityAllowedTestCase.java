@@ -80,6 +80,7 @@ public class SecurityAllowedTestCase extends TestCase {
     public void tearDown() {
         // Restore, so other tests don't get stuffed up if a test
         // sets a custom security manager.
+        // Java 22: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
         System.setSecurityManager(oldSecMgr);
     }
 
@@ -97,6 +98,7 @@ public class SecurityAllowedTestCase extends TestCase {
                 CustomHashtable.class.getName());
         final MockSecurityManager mySecurityManager = new MockSecurityManager();
         mySecurityManager.addPermission(new AllPermission());
+        // Java 22: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
         System.setSecurityManager(mySecurityManager);
 
         try {
