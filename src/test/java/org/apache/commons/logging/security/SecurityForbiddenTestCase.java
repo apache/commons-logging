@@ -147,6 +147,7 @@ public class SecurityForbiddenTestCase extends TestCase {
             //
             // The default is either the java Hashtable class (java < 1.2) or the
             // JCL WeakHashtable (java >= 1.3).
+            // Java 22: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
             System.setSecurityManager(oldSecMgr);
             final Field factoryField = c.getDeclaredField("factories");
             factoryField.setAccessible(true);
@@ -161,6 +162,7 @@ public class SecurityForbiddenTestCase extends TestCase {
             // Restore original security manager so output can be generated; the
             // PrintWriter constructor tries to read the line.separator
             // system property.
+            // Java 22: java.lang.UnsupportedOperationException: The Security Manager is deprecated and will be removed in a future release
             System.setSecurityManager(oldSecMgr);
             final StringWriter sw = new StringWriter();
             final PrintWriter pw = new PrintWriter(sw);
