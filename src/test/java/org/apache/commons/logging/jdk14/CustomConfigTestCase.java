@@ -17,7 +17,6 @@
 
 package org.apache.commons.logging.jdk14;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Iterator;
@@ -29,6 +28,7 @@ import java.util.logging.Logger;
 
 import junit.framework.Test;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.DummyException;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
@@ -85,19 +85,10 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     protected static byte[] readClass(final String name, final ClassLoader srcCL) throws Exception {
         final String resName = name.replace('.', '/') + ".class";
         System.err.println("Trying to load resource [" + resName + "]");
-        final InputStream is = srcCL.getResourceAsStream(resName);
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        System.err.println("Reading resource [" + resName + "]");
-        final byte[] buf = new byte[1000];
-        for(;;) {
-            final int read = is.read(buf);
-            if (read <= 0) {
-                break;
-            }
-            baos.write(buf, 0, read);
+        try (InputStream is = srcCL.getResourceAsStream(resName)) {
+            System.err.println("Reading resource [" + resName + "]");
+            return IOUtils.toByteArray(is);
         }
-        is.close();
-        return baos.toByteArray();
     }
 
     /**
@@ -184,10 +175,10 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     // Check the recorded messages
     protected void checkLogRecords(final boolean thrown) {
-        final Iterator records = handler.records();
+        final Iterator<LogRecord> records = handler.records();
         for (int i = 0; i < testMessages.length; i++) {
             assertTrue(records.hasNext());
-            final LogRecord record = (LogRecord) records.next();
+            final LogRecord record = records.next();
             assertEquals("LogRecord level",
                          testLevels[i], record.getLevel());
             assertEquals("LogRecord message",
@@ -286,10 +277,9 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     // Set up LogManager instance
     protected void setUpManager(final String config) throws Exception {
         manager = LogManager.getLogManager();
-        final InputStream is =
-            this.getClass().getClassLoader().getResourceAsStream(config);
-        manager.readConfiguration(is);
-        is.close();
+        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(config)) {
+            manager.readConfiguration(is);
+        }
     }
 
     /**
@@ -305,33 +295,26 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
 
     // Test logging message strings with exceptions
     public void testExceptionMessages() throws Exception {
-
         logExceptionMessages();
         checkLogRecords(true);
-
     }
 
     // Test logging plain message strings
     public void testPlainMessages() throws Exception {
-
         logPlainMessages();
         checkLogRecords(false);
-
     }
 
     // Test pristine Handlers instances
     public void testPristineHandlers() {
-
         assertNotNull(handlers);
         assertEquals(1, handlers.length);
         assertTrue(handlers[0] instanceof TestHandler);
         assertNotNull(handler);
-
     }
 
     // Test pristine Logger instance
     public void testPristineLogger() {
-
         assertNotNull("Logger exists", logger);
         assertEquals("Logger name", this.getClass().getName(), logger.getName());
 
@@ -343,16 +326,13 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         assertTrue(logger.isLoggable(Level.FINE));
         assertFalse(logger.isLoggable(Level.FINER));
         assertFalse(logger.isLoggable(Level.FINEST));
-
     }
 
     // Test Serializability of Log instance
     @Override
     public void testSerializable() throws Exception {
-
         super.testSerializable();
         testExceptionMessages();
-
     }
 
 }
