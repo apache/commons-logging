@@ -18,7 +18,6 @@
 package org.apache.commons.logging.simple;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Test;
@@ -115,10 +114,8 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     // Check the actual log records against the expected ones
     protected void checkExpected() {
         final List<LogRecord> acts = ((DecoratedSimpleLog) log).getCache();
-        final Iterator<LogRecord> exps = expected.iterator();
         int n = 0;
-        while (exps.hasNext()) {
-            final LogRecord exp = exps.next();
+        for (LogRecord exp : expected) {
             final LogRecord act = acts.get(n++);
             assertEquals("Row " + n + " type", exp.type, act.type);
             assertEquals("Row " + n + " message", exp.message, act.message);
