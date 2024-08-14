@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotEquals;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
@@ -93,10 +94,11 @@ public class SecurityForbiddenTestCase extends TestCase {
             final Class<?> clazz = classLoader.loadClass(name);
             return clazz.getConstructor().newInstance();
         } catch (final Exception e) {
+            final Throwable wrapped = e instanceof InvocationTargetException ? ((InvocationTargetException) e).getTargetException() : e;
             final StringWriter sw = new StringWriter();
             final PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            fail("Unexpected exception:" + e.getMessage() + ":" + sw.toString());
+            wrapped.printStackTrace(pw);
+            fail("Unexpected exception:" + wrapped.getMessage() + ":" + sw);
         }
         return null;
     }
