@@ -41,7 +41,6 @@
       <item name="Proposal" href="/proposal.html" />
       <item name="Tech Guide" href="/tech.html" />
       <item name="Wiki" href="https://wiki.apache.org/commons/Logging" />
-      <item name='Javadoc (latest)' href='/apidocs/index.html' />
     </menu>
   </body>
 </project>
