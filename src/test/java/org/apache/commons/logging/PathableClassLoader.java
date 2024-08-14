@@ -66,7 +66,7 @@ public class PathableClassLoader extends URLClassLoader {
      * Normally, only a class loader created with a null parent needs to
      * have any lookasides defined.
      */
-    private HashMap lookasides;
+    private HashMap<String, ClassLoader> lookasides;
 
     /**
      * See setParentFirst.
@@ -127,8 +127,7 @@ public class PathableClassLoader extends URLClassLoader {
                 if (!file.exists()) {
                     Assert.fail("Unable to add logical library " + fileName);
                 }
-                final URL libUrl = file.toURL();
-                addURL(libUrl);
+                addURL(file.toURL());
                 return;
             } catch (final java.net.MalformedURLException e) {
                 throw new UnknownError(
@@ -216,12 +215,11 @@ public class PathableClassLoader extends URLClassLoader {
      * it's declared final in java1.4 (thought that's been removed for 1.5).
      * The inherited implementation always behaves as if parentFirst=true.
      */
-    public Enumeration getResourcesInOrder(final String name) throws IOException {
+    public Enumeration<URL> getResourcesInOrder(final String name) throws IOException {
         if (parentFirst) {
             return super.getResources(name);
         }
-        final Enumeration localUrls = super.findResources(name);
-
+        final Enumeration<URL> localUrls = super.findResources(name);
         final ClassLoader parent = getParent();
         if (parent == null) {
             // Alas, there is no method to get matching resources
@@ -236,10 +234,9 @@ public class PathableClassLoader extends URLClassLoader {
             // path!
             return localUrls;
         }
-        final Enumeration parentUrls = parent.getResources(name);
-
-        final ArrayList localItems = toList(localUrls);
-        final ArrayList parentItems = toList(parentUrls);
+        final Enumeration<URL> parentUrls = parent.getResources(name);
+        final ArrayList<URL> localItems = toList(localUrls);
+        final ArrayList<URL> parentItems = toList(parentUrls);
         localItems.addAll(parentItems);
         return Collections.enumeration(localItems);
     }
@@ -312,11 +309,10 @@ public class PathableClassLoader extends URLClassLoader {
         }
 
         if (lookasides != null) {
-            for (final Object element : lookasides.entrySet()) {
-                final Map.Entry entry = (Map.Entry) element;
-                final String prefix = (String) entry.getKey();
+            for (final Map.Entry<String, ClassLoader> entry : lookasides.entrySet()) {
+                final String prefix = entry.getKey();
                 if (name.startsWith(prefix)) {
-                    final ClassLoader loader = (ClassLoader) entry.getValue();
+                    final ClassLoader loader = entry.getValue();
                     return Class.forName(name, resolve, loader);
                 }
             }
@@ -366,12 +362,11 @@ public class PathableClassLoader extends URLClassLoader {
      * @return {@code ArrayList} containing the enumerated
      * elements in the enumerated order, not null
      */
-    private ArrayList toList(final Enumeration en) {
-        final ArrayList results = new ArrayList();
+    private <E> ArrayList<E> toList(final Enumeration<E> en) {
+        final ArrayList<E> results = new ArrayList<>();
         if (en != null) {
             while (en.hasMoreElements()) {
-                final Object element = en.nextElement();
-                results.add(element);
+                results.add(en.nextElement());
             }
         }
         return results;
@@ -404,7 +399,7 @@ public class PathableClassLoader extends URLClassLoader {
      */
     public void useExplicitLoader(final String prefix, final ClassLoader loader) {
         if (lookasides == null) {
-            lookasides = new HashMap();
+            lookasides = new HashMap<>();
         }
         lookasides.put(prefix, loader);
     }
