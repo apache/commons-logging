@@ -45,10 +45,10 @@ While logging-implementation independence is not as important for applications
 as it is for libraries, using commons-logging does allow the application to
 change to a different logging implementation without recompiling code. 
 </p><p>
-Note that commons-logging does not attempt to initialise or terminate the underlying
+Note that commons-logging does not attempt to initialize or terminate the underlying
 logging implementation that is used at runtime; that is the responsibility of
 the application. However many popular logging implementations do automatically
-initialise themselves; in this case an application may be able to avoid
+initialize themselves; in this case an application may be able to avoid
 containing any code that is specific to the logging implementation used.</p>
 
 </section>
