@@ -16,11 +16,15 @@
  */
 package org.apache.commons.logging;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * test to emulate container and application isolated from container
@@ -45,35 +49,22 @@ public class LoadTestCase extends TestCase {
         }
 
         private Class<?> def(final String name) throws ClassNotFoundException {
-
             Class<?> result = classes.get(name);
             if (result != null) {
                 return result;
             }
-
             try {
-
                 final ClassLoader cl = this.getClass().getClassLoader();
                 final String classFileName = name.replace('.', '/') + ".class";
-                final java.io.InputStream is = cl.getResourceAsStream(classFileName);
-                final java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-
-                while (is.available() > 0) {
-                    out.write(is.read());
+                try (InputStream is = cl.getResourceAsStream(classFileName)) {
+                    final byte[] data = IOUtils.toByteArray(is);
+                    result = super.defineClass(name, data, 0, data.length);
+                    classes.put(name, result);
+                    return result;
                 }
-
-                final byte[] data = out.toByteArray();
-
-                result = super.defineClass(name, data, 0, data.length);
-                classes.put(name, result);
-
-                return result;
-
-            } catch (final java.io.IOException ioe) {
-
+            } catch (final IOException ioe) {
                 throw new ClassNotFoundException(name + " caused by " + ioe.getMessage());
             }
-
         }
 
         // not very trivial to emulate we must implement "findClass",
