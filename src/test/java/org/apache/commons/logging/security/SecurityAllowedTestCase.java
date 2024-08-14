@@ -43,9 +43,10 @@ import org.apache.commons.logging.PathableTestSuite;
  */
 public class SecurityAllowedTestCase extends TestCase {
 
-    // Dummy special Hashtable, so we can tell JCL to use this instead of
-    // the standard one.
-    public static class CustomHashtable extends Hashtable {
+    /**
+     * Dummy special Hashtable, so we can tell JCL to use this instead of the standard one.
+     */
+    public static class CustomHashtable<K, V> extends Hashtable<K, V> {
 
         /**
          * Generated serial version ID.
