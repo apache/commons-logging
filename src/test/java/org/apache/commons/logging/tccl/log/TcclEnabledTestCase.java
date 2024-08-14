@@ -28,10 +28,9 @@ import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
 
 /**
- * Verify that by default the standard LogFactoryImpl class loads a
+ * Verifies that by default the standard LogFactoryImpl class loads a
  * custom Log implementation via the TCCL.
  */
-
 public class TcclEnabledTestCase extends TestCase {
 
     public static final String MY_LOG_PKG =
@@ -41,10 +40,10 @@ public class TcclEnabledTestCase extends TestCase {
         MY_LOG_PKG + ".MyLog";
 
     /**
-     * Return the tests included in this test suite.
+     * Returns the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        final Class thisClass = TcclEnabledTestCase.class;
+        final Class<TcclEnabledTestCase> thisClass = TcclEnabledTestCase.class;
 
         // Determine the URL to this .class file, so that we can then
         // append the priority dirs to it. For tidiness, load this
@@ -61,7 +60,7 @@ public class TcclEnabledTestCase extends TestCase {
         // Now set up the desired class loader hierarchy. Everything goes into
         // the parent classpath, but we exclude the custom Log class.
         //
-        // We then create a tccl class loader that can see the custom
+        // We then create a TCCL class loader that can see the custom
         // Log class. Therefore if that class can be found, then the
         // TCCL must have been used to load it.
         final PathableClassLoader emptyLoader = new PathableClassLoader(null);
@@ -80,7 +79,7 @@ public class TcclEnabledTestCase extends TestCase {
         final PathableClassLoader tcclLoader = new PathableClassLoader(parentLoader);
         tcclLoader.addLogicalLib("testclasses");
 
-        final Class testClass = parentLoader.loadClass(thisClass.getName());
+        final Class<?> testClass = parentLoader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, tcclLoader);
     }
 
@@ -93,7 +92,7 @@ public class TcclEnabledTestCase extends TestCase {
     }
 
     /**
-     * Tear down instance variables required by this test case.
+     * Tears down instance variables required by this test case.
      */
     @Override
     public void tearDown() {
@@ -101,36 +100,36 @@ public class TcclEnabledTestCase extends TestCase {
     }
 
     /**
-     * Verify that MyLogFactoryImpl is only loadable via the tccl.
+     * Verifies that MyLogFactoryImpl is only loadable via the TCCL.
      */
     public void testLoader() throws Exception {
 
         final ClassLoader thisClassLoader = this.getClass().getClassLoader();
         final ClassLoader tcclLoader = Thread.currentThread().getContextClassLoader();
 
-        // the tccl loader should NOT be the same as the loader that loaded this test class.
-        assertNotSame("tccl not same as test class loader", thisClassLoader, tcclLoader);
+        // the TCCL loader should NOT be the same as the loader that loaded this test class.
+        assertNotSame("TCCL not same as test class loader", thisClassLoader, tcclLoader);
 
         // MyLog should not be loadable via parent loader
         try {
-            final Class clazz = thisClassLoader.loadClass(MY_LOG_IMPL);
+            final Class<?> clazz = thisClassLoader.loadClass(MY_LOG_IMPL);
             fail("Unexpectedly able to load MyLog via test class class loader");
             assertNotNull(clazz); // silence warnings about unused var
         } catch (final ClassNotFoundException ex) {
             // ok, expected
         }
 
-        // MyLog should be loadable via tccl loader
+        // MyLog should be loadable via TCCL loader
         try {
-            final Class clazz = tcclLoader.loadClass(MY_LOG_IMPL);
+            final Class<?> clazz = tcclLoader.loadClass(MY_LOG_IMPL);
             assertNotNull(clazz);
         } catch (final ClassNotFoundException ex) {
-            fail("Unexpectedly unable to load MyLog via tccl class loader");
+            fail("Unexpectedly unable to load MyLog via TCCL class loader");
         }
     }
 
     /**
-     * Verify that the custom Log implementation which is only accessible
+     * Verifies that the custom Log implementation which is only accessible
      * via the TCCL has successfully been loaded as specified in the config file.
      * This proves that the TCCL was used to load that class.
      */
