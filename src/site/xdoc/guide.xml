@@ -117,7 +117,7 @@ JCL tries to be as unobtrusive as possible.
 In most cases, including the (full) <code>commons-logging.jar</code> in the classpath
 should result in JCL configuring itself in a reasonable manner.
 There's a good chance that it'll guess (discover) your preferred logging system, and you won't
-need to do any configuration of JCL at all! 
+need to do any configuration of JCL at all.
     </p><p>
 Note, however, that if you have a particular preference, then providing a simple
 <code>commons-logging.properties</code> file which specifies the concrete logging library to be
