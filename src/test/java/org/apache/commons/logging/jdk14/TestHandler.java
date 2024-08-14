@@ -28,7 +28,7 @@ import java.util.logging.LogRecord;
 public class TestHandler extends Handler {
 
     // The set of logged records for this handler
-    private final List records = new ArrayList();
+    private final List<LogRecord> records = new ArrayList<>();
 
     @Override
     public void close() {
@@ -44,7 +44,7 @@ public class TestHandler extends Handler {
         records.add(record);
     }
 
-    public Iterator records() {
+    public Iterator<LogRecord> records() {
         return records.iterator();
     }
 
