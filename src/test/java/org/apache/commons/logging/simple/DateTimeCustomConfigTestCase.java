@@ -44,14 +44,14 @@ public class DateTimeCustomConfigTestCase extends CustomConfigTestCase {
      * Or we could fix SimpleLog to be sane...
      */
     public static Test suite() throws Exception {
-        final Class thisClass = DateTimeCustomConfigTestCase.class;
+        final Class<DateTimeCustomConfigTestCase> thisClass = DateTimeCustomConfigTestCase.class;
 
         final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
 
-        final Class testClass = loader.loadClass(thisClass.getName());
+        final Class<?> testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 

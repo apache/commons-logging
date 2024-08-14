@@ -46,7 +46,7 @@ public class AppClasspathStandardTestCase extends TestCase {
         loader.addLogicalLib("log4j2-core");
         loader.addLogicalLib("commons-logging");
 
-        final Class testClass = loader.loadClass(
+        final Class<?> testClass = loader.loadClass(
             "org.apache.commons.logging.log4j.log4j12.Log4j12StandardTests");
         return new PathableTestSuite(testClass, loader);
     }

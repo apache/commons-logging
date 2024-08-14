@@ -60,7 +60,7 @@ public class GeneralTestCase extends TestCase {
      * Sets up a custom class loader hierarchy for this test case.
      */
     public static Test suite() throws Exception {
-        final Class thisClass = GeneralTestCase.class;
+        final Class<GeneralTestCase> thisClass = GeneralTestCase.class;
         final ClassLoader thisClassLoader = thisClass.getClassLoader();
 
         final PathableClassLoader loader = new PathableClassLoader(null);
@@ -68,7 +68,7 @@ public class GeneralTestCase extends TestCase {
         loader.addLogicalLib("testclasses");
 
         // reload this class via the child class loader
-        final Class testClass = loader.loadClass(thisClass.getName());
+        final Class<?> testClass = loader.loadClass(thisClass.getName());
 
         // and return our custom TestSuite class
         return new PathableTestSuite(testClass, loader);

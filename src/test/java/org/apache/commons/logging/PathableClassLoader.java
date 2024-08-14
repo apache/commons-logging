@@ -304,7 +304,7 @@ public class PathableClassLoader extends URLClassLoader {
      * that entries' class loader.
      */
     @Override
-    protected Class loadClass(final String name, final boolean resolve)
+    protected Class<?> loadClass(final String name, final boolean resolve)
     throws ClassNotFoundException {
         // just for performance, check java and javax
         if (name.startsWith("java.") || name.startsWith("javax.")) {
@@ -326,7 +326,7 @@ public class PathableClassLoader extends URLClassLoader {
             return super.loadClass(name, resolve);
         }
         try {
-            Class clazz = findLoadedClass(name);
+            Class<?> clazz = findLoadedClass(name);
             if (clazz == null) {
                 clazz = super.findClass(name);
             }
@@ -360,7 +360,6 @@ public class PathableClassLoader extends URLClassLoader {
     }
 
     /**
-     *
      * Clean implementation of list function of
      * {@link java.util.Collection} added in JDK 1.4
      * @param en {@code Enumeration}, possibly null

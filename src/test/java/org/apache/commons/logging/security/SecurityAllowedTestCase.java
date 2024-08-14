@@ -62,7 +62,7 @@ public class SecurityAllowedTestCase extends TestCase {
         parent.addLogicalLib("commons-logging");
         parent.addLogicalLib("testclasses");
 
-        final Class testClass = parent.loadClass(
+        final Class<?> testClass = parent.loadClass(
             "org.apache.commons.logging.security.SecurityAllowedTestCase");
         return new PathableTestSuite(testClass, parent);
     }
@@ -101,7 +101,7 @@ public class SecurityAllowedTestCase extends TestCase {
         try {
             // Use reflection so that we can control exactly when the static
             // initializer for the LogFactory class is executed.
-            final Class c = this.getClass().getClassLoader().loadClass(
+            final Class<?> c = this.getClass().getClassLoader().loadClass(
                     "org.apache.commons.logging.LogFactory");
             final Method m = c.getMethod("getLog", Class.class);
             final Log log = (Log) m.invoke(null, this.getClass());

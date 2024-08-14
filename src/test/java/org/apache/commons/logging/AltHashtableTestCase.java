@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 public class AltHashtableTestCase extends TestCase {
 
     public static Test suite() throws Exception {
-        final Class thisClass = AltHashtableTestCase.class;
+        final Class<AltHashtableTestCase> thisClass = AltHashtableTestCase.class;
         final ClassLoader thisClassLoader = thisClass.getClassLoader();
 
         final PathableClassLoader loader = new PathableClassLoader(null);
@@ -36,7 +36,7 @@ public class AltHashtableTestCase extends TestCase {
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
 
-        final Class testClass = loader.loadClass(thisClass.getName());
+        final Class<?> testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 

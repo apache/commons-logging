@@ -49,7 +49,7 @@ public class CustomConfigFullTestCase extends CustomConfigTestCase {
         final PathableClassLoader child = new PathableClassLoader(parent);
         child.addLogicalLib("testclasses");
 
-        final Class testClass = child.loadClass(CustomConfigFullTestCase.class.getName());
+        final Class<?> testClass = child.loadClass(CustomConfigFullTestCase.class.getName());
         return new PathableTestSuite(testClass, child);
     }
 

@@ -77,7 +77,7 @@ public class LoadTestCase extends TestCase {
         // not very trivial to emulate we must implement "findClass",
         // but it will delegate to JUnit class loader first
         @Override
-        public Class loadClass(final String name) throws ClassNotFoundException {
+        public Class<?> loadClass(final String name) throws ClassNotFoundException {
             // isolates all logging classes, application in the same class loader too.
             // filters exceptions to simplify handling in test
             for (final String element : LOG_PCKG) {
@@ -96,7 +96,7 @@ public class LoadTestCase extends TestCase {
 
     private ClassLoader origContextClassLoader;
 
-    private void execute(final Class cls) throws Exception {
+    private void execute(final Class<?> cls) throws Exception {
         cls.getConstructor().newInstance();
     }
 
@@ -104,8 +104,8 @@ public class LoadTestCase extends TestCase {
      * Load class UserClass via a temporary class loader which is a child of
      * the class loader used to load this test class.
      */
-    private Class reload() throws Exception {
-        Class testObjCls = null;
+    private Class<?> reload() throws Exception {
+        Class<?> testObjCls = null;
         final AppClassLoader appLoader = new AppClassLoader(this.getClass().getClassLoader());
         try {
 

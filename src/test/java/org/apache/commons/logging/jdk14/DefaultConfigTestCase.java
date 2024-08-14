@@ -46,7 +46,7 @@ public class DefaultConfigTestCase extends TestCase {
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
 
-        final Class testClass = loader.loadClass(DefaultConfigTestCase.class.getName());
+        final Class<?> testClass = loader.loadClass(DefaultConfigTestCase.class.getName());
         return new PathableTestSuite(testClass, loader);
     }
 

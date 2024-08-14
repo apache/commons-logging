@@ -56,7 +56,7 @@ public class BasicServletTestCase extends TestCase {
         tccl.setParentFirst(false);
         tccl.addLogicalLib("commons-logging");
 
-        final Class testClass = child.loadClass(BasicServletTestCase.class.getName());
+        final Class<?> testClass = child.loadClass(BasicServletTestCase.class.getName());
         return new PathableTestSuite(testClass, tccl);
     }
 

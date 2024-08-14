@@ -48,14 +48,14 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
      * Or we could fix SimpleLog to be sane...
      */
     public static Test suite() throws Exception {
-        final Class thisClass = CustomConfigTestCase.class;
+        final Class<CustomConfigTestCase> thisClass = CustomConfigTestCase.class;
 
         final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
         loader.addLogicalLib("testclasses");
         loader.addLogicalLib("commons-logging");
 
-        final Class testClass = loader.loadClass(thisClass.getName());
+        final Class<?> testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 

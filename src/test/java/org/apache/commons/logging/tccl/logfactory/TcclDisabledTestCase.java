@@ -42,7 +42,7 @@ public class TcclDisabledTestCase extends TestCase {
      * Returns the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        final Class thisClass = TcclDisabledTestCase.class;
+        final Class<TcclDisabledTestCase> thisClass = TcclDisabledTestCase.class;
 
         // Determine the URL to this .class file, so that we can then
         // append the priority dirs to it. For tidiness, load this
@@ -80,7 +80,7 @@ public class TcclDisabledTestCase extends TestCase {
         final PathableClassLoader tcclLoader = new PathableClassLoader(parentLoader);
         tcclLoader.addLogicalLib("testclasses");
 
-        final Class testClass = parentLoader.loadClass(thisClass.getName());
+        final Class<?> testClass = parentLoader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, tcclLoader);
     }
 
@@ -113,7 +113,7 @@ public class TcclDisabledTestCase extends TestCase {
 
         // MyLogFactoryImpl should not be loadable via parent loader
         try {
-            final Class clazz = thisClassLoader.loadClass(MY_LOG_FACTORY_IMPL);
+            final Class<?> clazz = thisClassLoader.loadClass(MY_LOG_FACTORY_IMPL);
             fail("Unexpectedly able to load MyLogFactoryImpl via test class class loader");
             assertNotNull(clazz); // silence warning about unused var
         } catch (final ClassNotFoundException ex) {
@@ -122,7 +122,7 @@ public class TcclDisabledTestCase extends TestCase {
 
         // MyLogFactoryImpl should be loadable via TCCL loader
         try {
-            final Class clazz = tcclLoader.loadClass(MY_LOG_FACTORY_IMPL);
+            final Class<?> clazz = tcclLoader.loadClass(MY_LOG_FACTORY_IMPL);
             assertNotNull(clazz);
         } catch (final ClassNotFoundException ex) {
             fail("Unexpectedly unable to load MyLogFactoryImpl via TCCL class loader");

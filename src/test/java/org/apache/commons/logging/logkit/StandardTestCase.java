@@ -41,7 +41,7 @@ public class StandardTestCase extends AbstractLogTest {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        final Class thisClass = StandardTestCase.class;
+        final Class<StandardTestCase> thisClass = StandardTestCase.class;
 
         final PathableClassLoader loader = new PathableClassLoader(null);
         loader.useExplicitLoader("junit.", Test.class.getClassLoader());
@@ -49,7 +49,7 @@ public class StandardTestCase extends AbstractLogTest {
         loader.addLogicalLib("commons-logging");
         loader.addLogicalLib("logkit");
 
-        final Class testClass = loader.loadClass(thisClass.getName());
+        final Class<?> testClass = loader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, loader);
     }
 

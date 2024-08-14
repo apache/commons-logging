@@ -48,7 +48,7 @@ public class ChildClasspathStandardTestCase extends TestCase {
         child.addLogicalLib("log4j2-core");
         child.addLogicalLib("commons-logging");
 
-        final Class testClass = child.loadClass(
+        final Class<?> testClass = child.loadClass(
             "org.apache.commons.logging.log4j.log4j12.Log4j12StandardTests");
         return new PathableTestSuite(testClass, child);
     }

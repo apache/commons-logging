@@ -62,7 +62,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
             final ClassLoader srcCL = CustomConfigAPITestCase.class.getClassLoader();
             final byte[] classData = readClass(className, srcCL);
 
-            final Class[] params = { String.class, classData.getClass(), Integer.TYPE, Integer.TYPE };
+            final Class<?>[] params = { String.class, classData.getClass(), Integer.TYPE, Integer.TYPE };
             final Method m = ClassLoader.class.getDeclaredMethod("defineClass", params);
 
             final Object[] args = new Object[4];
@@ -118,7 +118,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
         cl.addLogicalLib("commons-logging");
         cl.addLogicalLib("testclasses");
 
-        final Class testClass = cl.loadClass(CustomConfigTestCase.class.getName());
+        final Class<?> testClass = cl.loadClass(CustomConfigTestCase.class.getName());
         return new PathableTestSuite(testClass, cl);
     }
 

@@ -50,7 +50,7 @@ public class CustomConfigAPITestCase extends CustomConfigTestCase {
         child.addLogicalLib("testclasses");
         child.addLogicalLib("commons-logging");
 
-        final Class testClass = child.loadClass(CustomConfigAPITestCase.class.getName());
+        final Class<?> testClass = child.loadClass(CustomConfigAPITestCase.class.getName());
         return new PathableTestSuite(testClass, child);
     }
 

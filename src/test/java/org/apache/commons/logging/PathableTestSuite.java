@@ -120,7 +120,7 @@ public class PathableTestSuite extends TestSuite {
      * calls to Thread.currentThread.getContextClassLoader from test methods
      * (or any method called by test methods).
      */
-    public PathableTestSuite(final Class testClass, final ClassLoader contextClassLoader) {
+    public PathableTestSuite(final Class<?> testClass, final ClassLoader contextClassLoader) {
         super(testClass);
         contextLoader = contextClassLoader;
     }

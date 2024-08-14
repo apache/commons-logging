@@ -50,7 +50,7 @@ public class PriorityConfigTestCase extends TestCase {
      * Return the tests included in this test suite.
      */
     public static Test suite() throws Exception {
-        final Class thisClass = PriorityConfigTestCase.class;
+        final Class<PriorityConfigTestCase> thisClass = PriorityConfigTestCase.class;
 
         // Determine the URL to this .class file, so that we can then
         // append the priority dirs to it. For tidiness, load this
@@ -93,7 +93,7 @@ public class PriorityConfigTestCase extends TestCase {
 
         // load the test class via webapp loader, and use the webapp loader
         // as the tccl loader too.
-        final Class testClass = webappLoader.loadClass(thisClass.getName());
+        final Class<?> testClass = webappLoader.loadClass(thisClass.getName());
         return new PathableTestSuite(testClass, webappLoader);
     }
 
