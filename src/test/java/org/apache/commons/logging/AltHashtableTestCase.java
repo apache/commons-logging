@@ -78,7 +78,7 @@ public class AltHashtableTestCase extends TestCase {
     }
 
     /**
-     * Verify that initialising the LogFactory class will cause it
+     * Verify that initializing the LogFactory class will cause it
      * to instantiate an object of type specified in system property
      * "org.apache.commons.logging.LogFactory.HashtableImpl".
      */
