@@ -167,7 +167,7 @@ pre-1.0 versions of this API, an attribute
 <code>org.apache.commons.logging.log</code> is also consulted).
                     </p>
                     <p>
-Configuration attributes can be set explicitly by java code, but they are more
+Configuration attributes can be set explicitly by Java code, but they are more
 commonly set by placing a file named <code>commons-logging.properties</code> in the classpath.
 When such a file exists, every entry in the properties file becomes an "attribute"
 of the LogFactory. When there is more than one such file in the classpath, releases
