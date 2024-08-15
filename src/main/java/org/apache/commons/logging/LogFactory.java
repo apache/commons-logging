@@ -34,6 +34,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
+import java.util.function.Supplier;
 
 /**
  * Factory for creating {@link Log} instances, with discovery and
@@ -94,11 +95,10 @@ public abstract class LogFactory {
     public static final String FACTORY_PROPERTY = "org.apache.commons.logging.LogFactory";
 
     private static final String FACTORY_LOG4J_API = "org.apache.commons.logging.impl.Log4jApiLogFactory";
-    private static final String LOG4J_API_LOGGER = "org.apache.logging.log4j.Logger";
+
     private static final String LOG4J_TO_SLF4J_BRIDGE = "org.apache.logging.slf4j.SLF4JProvider";
 
     private static final String FACTORY_SLF4J = "org.apache.commons.logging.impl.Slf4jLogFactory";
-    private static final String SLF4J_API_LOGGER = "org.slf4j.Logger";
 
     /**
      * The fully qualified class name of the fallback {@code LogFactory}
@@ -115,8 +115,7 @@ public abstract class LogFactory {
      * JDK 1.3+ <a href="https://java.sun.com/j2se/1.3/docs/guide/jar/jar.html#Service%20Provider">
      * 'Service Provider' specification</a>.
      */
-    protected static final String SERVICE_ID =
-        "META-INF/services/org.apache.commons.logging.LogFactory";
+    protected static final String SERVICE_ID = "META-INF/services/org.apache.commons.logging.LogFactory";
 
     /**
      * The name ({@code org.apache.commons.logging.diagnostics.dest})
@@ -133,8 +132,7 @@ public abstract class LogFactory {
      * Diagnostic logging should be used only to debug problematic
      * configurations and should not be set in normal production use.
      */
-    public static final String DIAGNOSTICS_DEST_PROPERTY =
-        "org.apache.commons.logging.diagnostics.dest";
+    public static final String DIAGNOSTICS_DEST_PROPERTY = "org.apache.commons.logging.diagnostics.dest";
 
     /**
      * When null (the usual case), no diagnostic output will be
@@ -148,7 +146,7 @@ public abstract class LogFactory {
      * logDiagnostic method, so that users can clearly see which
      * LogFactory class is generating the output.
      */
-    private static final String diagnosticPrefix;
+    private static final String DIAGNOSTICS_PREFIX;
 
     /**
      * Setting this system property
@@ -189,12 +187,10 @@ public abstract class LogFactory {
      * the need to release them (on 1.3+ JVMs only, of course ;).
      * </p>
      */
-    public static final String HASHTABLE_IMPLEMENTATION_PROPERTY =
-        "org.apache.commons.logging.LogFactory.HashtableImpl";
+    public static final String HASHTABLE_IMPLEMENTATION_PROPERTY = "org.apache.commons.logging.LogFactory.HashtableImpl";
 
     /** Name used to load the weak hash table implementation by names. */
-    private static final String WEAK_HASHTABLE_CLASSNAME =
-        "org.apache.commons.logging.impl.WeakHashtable";
+    private static final String WEAK_HASHTABLE_CLASSNAME = "org.apache.commons.logging.impl.WeakHashtable";
 
     /**
      * A reference to the class loader that loaded this class. This is the
@@ -251,21 +247,15 @@ public abstract class LogFactory {
         // output diagnostics from this class are static.
         String classLoaderName;
         try {
-            if (thisClassLoader == null) {
-                classLoaderName = "BOOTLOADER";
-            } else {
-                classLoaderName = objectId(thisClassLoader);
-            }
+            classLoaderName = thisClassLoader != null ? objectId(thisClassLoader) : "BOOTLOADER"; 
         } catch (final SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
-        diagnosticPrefix = "[LogFactory from " + classLoaderName + "] ";
+        DIAGNOSTICS_PREFIX = "[LogFactory from " + classLoaderName + "] ";
         DIAGNOSTICS_STREAM = initDiagnostics();
         logClassLoaderEnvironment(LogFactory.class);
         factories = createFactoryStore();
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("BOOTSTRAP COMPLETED");
-        }
+        logDiagnostic("BOOTSTRAP COMPLETED");
     }
 
     /**
@@ -280,7 +270,6 @@ public abstract class LogFactory {
     private static void cacheFactory(final ClassLoader classLoader, final LogFactory factory) {
         // Ideally we would assert(factory != null) here. However reporting
         // errors from within a logging implementation is a little tricky!
-
         if (factory != null) {
             if (classLoader == null) {
                 nullClassLoaderFactory = factory;
@@ -359,41 +348,30 @@ public abstract class LogFactory {
                         // tries again with thisClassLoaderRef, because we've just tried
                         // loading with that loader (not the TCCL). Just throw an
                         // appropriate exception here.
-
                         final boolean implementsLogFactory = implementsLogFactory(logFactoryClass);
-
                         //
                         // Construct a good message: users may not actual expect that a custom implementation
                         // has been specified. Several well known containers use this mechanism to adapt JCL
                         // to their native logging system.
                         //
                         final StringBuilder msg = new StringBuilder();
-                        msg.append("The application has specified that a custom LogFactory implementation ");
-                        msg.append("should be used but Class '");
+                        msg.append("The application has specified that a custom LogFactory implementation should be used but Class '");
                         msg.append(factoryClassName);
                         msg.append("' cannot be converted to '");
                         msg.append(LogFactory.class.getName());
                         msg.append("'. ");
                         if (implementsLogFactory) {
-                            msg.append("The conflict is caused by the presence of multiple LogFactory classes ");
-                            msg.append("in incompatible class loaders. ");
-                            msg.append("Background can be found in https://commons.apache.org/logging/tech.html. ");
-                            msg.append("If you have not explicitly specified a custom LogFactory then it is likely ");
-                            msg.append("that the container has set one without your knowledge. ");
-                            msg.append("In this case, consider using the commons-logging-adapters.jar file or ");
-                            msg.append("specifying the standard LogFactory from the command line. ");
+                            msg.append("The conflict is caused by the presence of multiple LogFactory classes in incompatible class loaders. Background can");
+                            msg.append(" be found in https://commons.apache.org/logging/tech.html. If you have not explicitly specified a custom LogFactory");
+                            msg.append(" then it is likely that the container has set one without your knowledge. In this case, consider using the ");
+                            msg.append("commons-logging-adapters.jar file or specifying the standard LogFactory from the command line. ");
                         } else {
                             msg.append("Please check the custom implementation. ");
                         }
                         msg.append("Help can be found at https://commons.apache.org/logging/troubleshooting.html.");
-
-                        if (isDiagnosticsEnabled()) {
-                            logDiagnostic(msg.toString());
-                        }
-
+                        logDiagnostic(msg.toString());
                         throw new ClassCastException(msg.toString());
                     }
-
                     // Ignore exception, continue. Presumably the class loader was the
                     // TCCL; the code below will try to load the class via thisClassLoaderRef.
                     // This will handle the case where the original calling class is in
@@ -433,8 +411,7 @@ public abstract class LogFactory {
                 logDiagnostic("Unable to create LogFactory instance.");
             }
             if (logFactoryClass != null && !LogFactory.class.isAssignableFrom(logFactoryClass)) {
-                return new LogConfigurationException("The chosen LogFactory implementation does not extend LogFactory." + " Please check your configuration.",
-                        e);
+                return new LogConfigurationException("The chosen LogFactory implementation does not extend LogFactory. Please check your configuration.", e);
             }
             return new LogConfigurationException(e);
         }
@@ -466,7 +443,6 @@ public abstract class LogFactory {
             // weak hash table implementation if it is available.
             storeImplementationClass = null;
         }
-
         if (storeImplementationClass == null) {
             storeImplementationClass = WEAK_HASHTABLE_CLASSNAME;
         }
@@ -476,7 +452,6 @@ public abstract class LogFactory {
             result = implementationClass.getConstructor().newInstance();
         } catch (final Throwable t) {
             handleThrowable(t); // may re-throw t
-
             // ignore
             if (!WEAK_HASHTABLE_CLASSNAME.equals(storeImplementationClass)) {
                 // if the user's trying to set up a custom implementation, give a clue
@@ -598,9 +573,7 @@ public abstract class LogFactory {
         try {
             return clazz.getClassLoader();
         } catch (final SecurityException ex) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("Unable to get class loader for class '" + clazz + "' due to security restrictions - " + ex.getMessage());
-            }
+            logDiagnostic(() -> "Unable to get class loader for class '" + clazz + "' due to security restrictions - " + ex.getMessage());
             throw ex;
         }
     }
@@ -633,14 +606,11 @@ public abstract class LogFactory {
         URL propsUrl = null;
         try {
             final Enumeration<URL> urls = getResources(classLoader, fileName);
-
             if (urls == null) {
                 return null;
             }
-
             while (urls.hasMoreElements()) {
                 final URL url = urls.nextElement();
-
                 final Properties newProps = getProperties(url);
                 if (newProps != null) {
                     if (props == null) {
@@ -651,7 +621,6 @@ public abstract class LogFactory {
                         if (priorityStr != null) {
                             priority = Double.parseDouble(priorityStr);
                         }
-
                         if (isDiagnosticsEnabled()) {
                             logDiagnostic("[LOOKUP] Properties file found at '" + url + "'" + " with priority " + priority);
                         }
@@ -661,13 +630,11 @@ public abstract class LogFactory {
                         if (newPriorityStr != null) {
                             newPriority = Double.parseDouble(newPriorityStr);
                         }
-
                         if (newPriority > priority) {
                             if (isDiagnosticsEnabled()) {
                                 logDiagnostic("[LOOKUP] Properties file at '" + url + "'" + " with priority " + newPriority + " overrides file at '" + propsUrl
                                         + "'" + " with priority " + priority);
                             }
-
                             propsUrl = url;
                             props = newProps;
                             priority = newPriority;
@@ -680,11 +647,8 @@ public abstract class LogFactory {
                 }
             }
         } catch (final SecurityException e) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("SecurityException thrown while trying to find/read config files.");
-            }
+            logDiagnostic("SecurityException thrown while trying to find/read config files.");
         }
-
         if (isDiagnosticsEnabled()) {
             if (props == null) {
                 logDiagnostic("[LOOKUP] No properties file of name '" + fileName + "' found.");
@@ -692,7 +656,6 @@ public abstract class LogFactory {
                 logDiagnostic("[LOOKUP] Properties file of name '" + fileName + "' found at '" + propsUrl + '"');
             }
         }
-
         return props;
     }
 
@@ -766,7 +729,7 @@ public abstract class LogFactory {
         // This is an odd enough situation to report about. This
         // output will be a nuisance on JDK1.1, as the system
         // class loader is null in that environment.
-        if (contextClassLoader == null && isDiagnosticsEnabled()) {
+        if (contextClassLoader == null) {
             logDiagnostic("Context class loader is null.");
         }
 
@@ -805,17 +768,16 @@ public abstract class LogFactory {
         // If TCCL is still enabled at this point, we check if it resolves this class
         if (useTccl) {
             try {
-                if (!LogFactory.class.equals(
-                        Class.forName(LogFactory.class.getName(), false, contextClassLoader))) {
-                    logDiagnostic("The class " + LogFactory.class.getName() + " loaded by the context class loader " + objectId(contextClassLoader)
+                if (!LogFactory.class.equals(Class.forName(LogFactory.class.getName(), false, contextClassLoader))) {
+                    logDiagnostic(() -> "The class " + LogFactory.class.getName() + " loaded by the context class loader " + objectId(contextClassLoader)
                             + " and this class differ. Disabling the usage of the context class loader."
                             + "Background can be found in https://commons.apache.org/logging/tech.html. ");
                     logHierarchy("[BAD CL TREE] ", contextClassLoader);
                     useTccl = false;
                 }
             } catch (final ClassNotFoundException ignored) {
-                logDiagnostic("The class " + LogFactory.class.getName() + " is not present in the the context class loader " + objectId(contextClassLoader)
-                        + ". Disabling the usage of the context class loader."
+                logDiagnostic(() -> "The class " + LogFactory.class.getName() + " is not present in the the context class loader "
+                        + objectId(contextClassLoader) + ". Disabling the usage of the context class loader."
                         + "Background can be found in https://commons.apache.org/logging/tech.html. ");
                 logHierarchy("[BAD CL TREE] ", contextClassLoader);
                 useTccl = false;
@@ -825,28 +787,21 @@ public abstract class LogFactory {
 
         // Determine which concrete LogFactory subclass to use.
         // First, try a global system property
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("[LOOKUP] Looking for system property [" + FACTORY_PROPERTY +
-                          "] to define the LogFactory subclass to use...");
-        }
+        logDiagnostic(() -> "[LOOKUP] Looking for system property [" + FACTORY_PROPERTY +
+                      "] to define the LogFactory subclass to use...");
 
         try {
             final String factoryClass = getSystemProperty(FACTORY_PROPERTY, null);
             if (factoryClass != null) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("[LOOKUP] Creating an instance of LogFactory class '" + factoryClass +
-                                  "' as specified by system property " + FACTORY_PROPERTY);
-                }
+                logDiagnostic(() -> "[LOOKUP] Creating an instance of LogFactory class '" + factoryClass +
+                              "' as specified by system property " + FACTORY_PROPERTY);
                 factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
-            } else if (isDiagnosticsEnabled()) {
-                logDiagnostic("[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
+            } else {
+                logDiagnostic(() -> "[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
             }
         } catch (final SecurityException e) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("[LOOKUP] A security exception occurred while trying to create an" +
-                              " instance of the custom factory class" + ": [" + trim(e.getMessage()) +
-                              "]. Trying alternative implementations...");
-            }
+            logDiagnostic(() -> "[LOOKUP] A security exception occurred while trying to create an instance of the custom factory class" + ": ["
+                    + trim(e.getMessage()) + "]. Trying alternative implementations...");
             // ignore
         } catch (final RuntimeException e) {
             // This is not consistent with the behavior when a bad LogFactory class is
@@ -854,25 +809,18 @@ public abstract class LogFactory {
             //
             // One possible exception that can occur here is a ClassCastException when
             // the specified class wasn't castable to this LogFactory type.
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("[LOOKUP] An exception occurred while trying to create an" +
-                              " instance of the custom factory class" + ": [" +
-                              trim(e.getMessage()) +
-                              "] as specified by a system property.");
-            }
+            logDiagnostic(() -> "[LOOKUP] An exception occurred while trying to create an instance of the custom factory class: [" + trim(e.getMessage())
+                    + "] as specified by a system property.");
             throw e;
         }
-
+        //
         // Second, try to find a service by using the JDK 1.3 class
         // discovery mechanism, which involves putting a file with the name
         // of an interface class in the META-INF/services directory, where the
         // contents of the file is a single line specifying a concrete class
         // that implements the desired interface.
-
         if (factory == null) {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("[LOOKUP] Using ServiceLoader  to define the LogFactory subclass to use...");
-            }
+            logDiagnostic("[LOOKUP] Using ServiceLoader  to define the LogFactory subclass to use...");
             try {
                 final ServiceLoader<LogFactory> serviceLoader = ServiceLoader.load(LogFactory.class, baseClassLoader);
                 final Iterator<LogFactory> iterator = serviceLoader.iterator();
@@ -884,55 +832,40 @@ public abstract class LogFactory {
                             factory = iterator.next();
                         }
                     } catch (final ServiceConfigurationError | LinkageError ex) {
-                        if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP] An exception occurred while trying to find an" +
-                                    " instance of LogFactory" +
-                                    ": [" + trim(ex.getMessage()) +
-                                    "]. Trying alternative implementations...");
-                        }
+                        logDiagnostic(() -> "[LOOKUP] An exception occurred while trying to find an instance of LogFactory: [" + trim(ex.getMessage())
+                                + "]. Trying alternative implementations...");
                     }
                 }
             } catch (final Exception ex) {
                 // note: if the specified LogFactory class wasn't compatible with LogFactory
                 // for some reason, a ClassCastException will be caught here, and attempts will
                 // continue to find a compatible class.
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic(
-                        "[LOOKUP] A security exception occurred while trying to create an" +
-                        " instance of the custom factory class" +
-                        ": [" + trim(ex.getMessage()) +
-                        "]. Trying alternative implementations...");
-                }
+                logDiagnostic(() -> "[LOOKUP] A security exception occurred while trying to create an instance of the custom factory class: ["
+                        + trim(ex.getMessage()) + "]. Trying alternative implementations...");
                 // ignore
             }
         }
-
+        //
         // Third try looking into the properties file read earlier (if found)
-
         if (factory == null) {
             if (props != null) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic(
-                        "[LOOKUP] Looking in properties file for entry with key '" + FACTORY_PROPERTY +
-                        "' to define the LogFactory subclass to use...");
-                }
+                logDiagnostic(() -> 
+                    "[LOOKUP] Looking in properties file for entry with key '" + FACTORY_PROPERTY +
+                    "' to define the LogFactory subclass to use...");
                 final String factoryClass = props.getProperty(FACTORY_PROPERTY);
                 if (factoryClass != null) {
-                    if (isDiagnosticsEnabled()) {
-                        logDiagnostic(
-                            "[LOOKUP] Properties file specifies LogFactory subclass '" + factoryClass + "'");
-                    }
+                    logDiagnostic(() -> 
+                        "[LOOKUP] Properties file specifies LogFactory subclass '" + factoryClass + "'");
                     factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
-
                     // TODO: think about whether we need to handle exceptions from newFactory
-                } else if (isDiagnosticsEnabled()) {
+                } else {
                     logDiagnostic("[LOOKUP] Properties file has no entry specifying LogFactory subclass.");
                 }
-            } else if (isDiagnosticsEnabled()) {
-                logDiagnostic("[LOOKUP] No properties file available to determine" + " LogFactory subclass from..");
+            } else {
+                logDiagnostic("[LOOKUP] No properties file available to determine LogFactory subclass from..");
             }
         }
-
+        //
         // Fourth, try one of the three provided factories first from the specified classloader
         // and then from the current one.
         if (factory == null) {
@@ -946,13 +879,9 @@ public abstract class LogFactory {
                 logDiagnostic("Created object " + objectId(factory) + " to manage class loader " + objectId(contextClassLoader));
             }
         } else {
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic(
-                    "[LOOKUP] Loading the default LogFactory implementation '" + FACTORY_DEFAULT +
-                    "' via the same class loader that loaded this LogFactory" +
-                    " class (ie not looking in the context class loader).");
-            }
-
+            logDiagnostic(() -> 
+                "[LOOKUP] Loading the default LogFactory implementation '" + FACTORY_DEFAULT +
+                "' via the same class loader that loaded this LogFactory class (ie not looking in the context class loader).");
             // Note: unlike the above code which can try to load custom LogFactory
             // implementations via the TCCL, we don't try to load the default LogFactory
             // implementation via the context class loader because:
@@ -964,13 +893,11 @@ public abstract class LogFactory {
             // necessarily a good idea anyway.
             factory = newFactory(FACTORY_DEFAULT, thisClassLoaderRef.get(), contextClassLoader);
         }
-
         if (factory != null) {
             /**
              * Always cache using context class loader.
              */
             cacheFactory(contextClassLoader, factory);
-
             if (props != null) {
                 final Enumeration<?> names = props.propertyNames();
                 while (names.hasMoreElements()) {
@@ -980,7 +907,6 @@ public abstract class LogFactory {
                 }
             }
         }
-
         return factory;
     }
 
@@ -1031,14 +957,10 @@ public abstract class LogFactory {
                         return props;
                     }
                 } catch (final IOException e) {
-                    if (isDiagnosticsEnabled()) {
-                        logDiagnostic("Unable to close stream for URL " + url);
-                    }
+                    logDiagnostic(() -> "Unable to close stream for URL " + url);
                 }
             } catch (final IOException e) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("Unable to read URL " + url);
-                }
+                logDiagnostic(() -> "Unable to read URL " + url);
             }
 
             return null;
@@ -1068,9 +990,7 @@ public abstract class LogFactory {
                 }
                 return ClassLoader.getSystemResources(name);
             } catch (final IOException e) {
-                if (isDiagnosticsEnabled()) {
-                    logDiagnostic("Exception while trying to find configuration file " + name + ":" + e.getMessage());
-                }
+                logDiagnostic(() -> "Exception while trying to find configuration file " + name + ":" + e.getMessage());
                 return null;
             } catch (final NoSuchMethodError e) {
                 // we must be running on a 1.1 JVM which doesn't support
@@ -1144,9 +1064,9 @@ public abstract class LogFactory {
                     implementsLogFactory = factoryFromCustomLoader.isAssignableFrom(logFactoryClass);
                     final String logFactoryClassName = logFactoryClass.getName();
                     if (implementsLogFactory) {
-                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClassName + " implements LogFactory but was loaded by an incompatible class loader.");
+                        logDiagnostic(() -> "[CUSTOM LOG FACTORY] " + logFactoryClassName + " implements LogFactory but was loaded by an incompatible class loader.");
                     } else {
-                        logDiagnostic("[CUSTOM LOG FACTORY] " + logFactoryClassName + " does not implement LogFactory.");
+                        logDiagnostic(() -> "[CUSTOM LOG FACTORY] " + logFactoryClassName + " does not implement LogFactory.");
                     }
                 }
             } catch (final SecurityException e) {
@@ -1155,8 +1075,9 @@ public abstract class LogFactory {
                 // This will make it very hard to diagnose issues with JCL.
                 // Consider running less securely whilst debugging this issue.
                 //
-                logDiagnostic("[CUSTOM LOG FACTORY] SecurityException caught trying to determine whether "
-                        + "the compatibility was caused by a class loader conflict: " + e.getMessage());
+                logDiagnostic(
+                        () -> "[CUSTOM LOG FACTORY] SecurityException caught trying to determine whether the compatibility was caused by a class loader conflict: "
+                                + e.getMessage());
             } catch (final LinkageError e) {
                 //
                 // This should be an unusual circumstance.
@@ -1164,8 +1085,9 @@ public abstract class LogFactory {
                 // Another possibility may be an exception thrown by an initializer.
                 // Time for a clean rebuild?
                 //
-                logDiagnostic("[CUSTOM LOG FACTORY] LinkageError caught trying to determine whether "
-                        + "the compatibility was caused by a class loader conflict: " + e.getMessage());
+                logDiagnostic(
+                        () -> "[CUSTOM LOG FACTORY] LinkageError caught trying to determine whether the compatibility was caused by a class loader conflict: "
+                                + e.getMessage());
             } catch (final ClassNotFoundException e) {
                 //
                 // LogFactory cannot be loaded by the class loader which loaded the custom factory implementation.
@@ -1174,7 +1096,7 @@ public abstract class LogFactory {
                 // Running with diagnostics on should give information about the class loaders used
                 // to load the custom factory.
                 //
-                logDiagnostic("[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by the class loader which loaded "
+                logDiagnostic(() -> "[CUSTOM LOG FACTORY] LogFactory class cannot be loaded by the class loader which loaded "
                         + "the custom LogFactory implementation. Is the custom factory in the right class loader?");
             }
         }
@@ -1217,12 +1139,12 @@ public abstract class LogFactory {
     }
 
     private static boolean isClassAvailable(final String className, final ClassLoader classLoader) {
-        logDiagnostic("Checking if class '" + className + "' is available in class loader " + objectId(classLoader));
+        logDiagnostic(() -> "Checking if class '" + className + "' is available in class loader " + objectId(classLoader));
         try {
             Class.forName(className, true, classLoader);
             return true;
         } catch (final ClassNotFoundException | LinkageError e) {
-            logDiagnostic("Failed to load class '" + className + "' from class loader " + objectId(classLoader) + ": " + e.getMessage());
+            logDiagnostic(() -> "Failed to load class '" + className + "' from class loader " + objectId(classLoader) + ": " + e.getMessage());
         }
         return false;
     }
@@ -1264,7 +1186,6 @@ public abstract class LogFactory {
         if (!isDiagnosticsEnabled()) {
             return;
         }
-
         try {
             // Deliberately use System.getProperty here instead of getSystemProperty; if
             // the overall security policy for the calling application forbids access to
@@ -1274,10 +1195,8 @@ public abstract class LogFactory {
         } catch (final SecurityException ex) {
             logDiagnostic("[ENV] Security setting prevent interrogation of system classpaths.");
         }
-
         final String className = clazz.getName();
         ClassLoader classLoader;
-
         try {
             classLoader = getClassLoader(clazz);
         } catch (final SecurityException ex) {
@@ -1285,7 +1204,6 @@ public abstract class LogFactory {
             logDiagnostic("[ENV] Security forbids determining the class loader for " + className);
             return;
         }
-
         logDiagnostic("[ENV] Class " + className + " was loaded via class loader " + objectId(classLoader));
         logHierarchy("[ENV] Ancestry of class loader which loaded " + className + " is ", classLoader);
     }
@@ -1313,10 +1231,41 @@ public abstract class LogFactory {
      */
     private static void logDiagnostic(final String msg) {
         if (DIAGNOSTICS_STREAM != null) {
-            DIAGNOSTICS_STREAM.print(diagnosticPrefix);
-            DIAGNOSTICS_STREAM.println(msg);
-            DIAGNOSTICS_STREAM.flush();
+            logDiagnosticDirect(msg);
         }
+    }
+
+    /**
+     * Writes the specified message to the internal logging destination.
+     * <p>
+     * Note that this method is private; concrete subclasses of this class
+     * should not call it because the diagnosticPrefix string this
+     * method puts in front of all its messages is LogFactory@....,
+     * while subclasses should put SomeSubClass@...
+     * </p>
+     * <p>
+     * Subclasses should instead compute their own prefix, then call
+     * logRawDiagnostic. Note that calling isDiagnosticsEnabled is
+     * fine for subclasses.
+     * </p>
+     * <p>
+     * Note that it is safe to call this method before initDiagnostics
+     * is called; any output will just be ignored (as isDiagnosticsEnabled
+     * will return false).
+     * </p>
+     *
+     * @param msg is the diagnostic message to be output.
+     */
+    private static void logDiagnostic(final Supplier<String> msg) {
+        if (DIAGNOSTICS_STREAM != null) {
+            logDiagnosticDirect(msg.get());
+        }
+    }
+
+    private static void logDiagnosticDirect(final String msg) {
+        DIAGNOSTICS_STREAM.print(DIAGNOSTICS_PREFIX);
+        DIAGNOSTICS_STREAM.println(msg);
+        DIAGNOSTICS_STREAM.flush();
     }
 
     /**
@@ -1332,10 +1281,8 @@ public abstract class LogFactory {
         }
         ClassLoader systemClassLoader;
         if (classLoader != null) {
-            final String classLoaderString = classLoader.toString();
-            logDiagnostic(prefix + objectId(classLoader) + " == '" + classLoaderString + "'");
+            logDiagnostic(prefix + objectId(classLoader) + " == '" + classLoader.toString() + "'");
         }
-
         try {
             systemClassLoader = ClassLoader.getSystemClassLoader();
         } catch (final SecurityException ex) {
@@ -1349,14 +1296,12 @@ public abstract class LogFactory {
                 if (classLoader == systemClassLoader) {
                     buf.append(" (SYSTEM) ");
                 }
-
                 try {
                     classLoader = classLoader.getParent();
                 } catch (final SecurityException ex) {
                     buf.append(" --> SECRET");
                     break;
                 }
-
                 buf.append(" --> ");
                 if (classLoader == null) {
                     buf.append("BOOT");
@@ -1447,17 +1392,12 @@ public abstract class LogFactory {
         // method will propagate out of this method; in particular a
         // ClassCastException can be thrown.
         final Object result = AccessController.doPrivileged((PrivilegedAction<?>) () -> createFactory(factoryClass, classLoader));
-
         if (result instanceof LogConfigurationException) {
             final LogConfigurationException ex = (LogConfigurationException) result;
-            if (isDiagnosticsEnabled()) {
-                logDiagnostic("An error occurred while loading the factory class:" + ex.getMessage());
-            }
+            logDiagnostic(() -> "An error occurred while loading the factory class:" + ex.getMessage());
             throw ex;
         }
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("Created object " + objectId(result) + " to manage class loader " + objectId(contextClassLoader));
-        }
+        logDiagnostic(() -> "Created object " + objectId(result) + " to manage class loader " + objectId(contextClassLoader));
         return (LogFactory) result;
     }
 
@@ -1475,7 +1415,7 @@ public abstract class LogFactory {
                 return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
             } catch (final LinkageError | ReflectiveOperationException ignored) {
             } finally {
-                logDiagnostic(
+                logDiagnostic(() ->
                         "[LOOKUP] Log4j API to SLF4J redirection detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
             }
         }
@@ -1483,19 +1423,19 @@ public abstract class LogFactory {
             return (LogFactory) Class.forName(FACTORY_LOG4J_API, true, classLoader).getConstructor().newInstance();
         } catch (final LinkageError | ReflectiveOperationException ignored) {
         } finally {
-            logDiagnostic("[LOOKUP] Loading the Log4j API LogFactory implementation '" + FACTORY_LOG4J_API + "'.");
+            logDiagnostic(() -> "[LOOKUP] Loading the Log4j API LogFactory implementation '" + FACTORY_LOG4J_API + "'.");
         }
         try {
             return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
         } catch (final LinkageError | ReflectiveOperationException ignored) {
         } finally {
-            logDiagnostic("[LOOKUP] Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
+            logDiagnostic(() -> "[LOOKUP] Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
         }
         try {
             return (LogFactory) Class.forName(FACTORY_DEFAULT, true, classLoader).getConstructor().newInstance();
         } catch (final LinkageError | ReflectiveOperationException ignored) {
         } finally {
-            logDiagnostic("[LOOKUP] Loading the legacy LogFactory implementation '" + FACTORY_DEFAULT + "'.");
+            logDiagnostic(() -> "[LOOKUP] Loading the legacy LogFactory implementation '" + FACTORY_DEFAULT + "'.");
         }
         return null;
     }
@@ -1504,13 +1444,13 @@ public abstract class LogFactory {
      * Returns a string that uniquely identifies the specified object, including
      * its class.
      * <p>
-     * The returned string is of form "className@hashCode", that is, is the same as
-     * the return value of the Object.toString() method, but works even when
+     * The returned string is of form {@code "className@hashCode"}, that is, is the same as
+     * the return value of the {@link Object#toString()} method, but works even when
      * the specified object's class has overridden the toString method.
      * </p>
      *
      * @param obj may be null.
-     * @return a string of form className@hashCode, or "null" if param o is null.
+     * @return a string of form {@code className@hashCode}, or "null" if obj is null.
      * @since 1.1
      */
     public static String objectId(final Object obj) {
@@ -1529,9 +1469,7 @@ public abstract class LogFactory {
      * @param classLoader ClassLoader for which to release the LogFactory
      */
     public static void release(final ClassLoader classLoader) {
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("Releasing factory for class loader " + objectId(classLoader));
-        }
+        logDiagnostic(() -> "Releasing factory for class loader " + objectId(classLoader));
         // factories is not final and could be replaced in this block.
         final Hashtable<ClassLoader, LogFactory> factories = LogFactory.factories;
         synchronized (factories) {
@@ -1559,15 +1497,12 @@ public abstract class LogFactory {
      * garbage collection.
      */
     public static void releaseAll() {
-        if (isDiagnosticsEnabled()) {
-            logDiagnostic("Releasing factory for all class loaders.");
-        }
+        logDiagnostic("Releasing factory for all class loaders.");
         // factories is not final and could be replaced in this block.
         final Hashtable<ClassLoader, LogFactory> factories = LogFactory.factories;
         synchronized (factories) {
             factories.values().forEach(LogFactory::release);
             factories.clear();
-
             if (nullClassLoaderFactory != null) {
                 nullClassLoaderFactory.release();
                 nullClassLoaderFactory = null;
@@ -1575,12 +1510,9 @@ public abstract class LogFactory {
         }
     }
 
-    /** Utility method to safely trim a string. */
+    /** Trims the given string in a null-safe manner. */
     private static String trim(final String src) {
-        if (src == null) {
-            return null;
-        }
-        return src.trim();
+        return src != null ? src.trim() : null;
     }
 
     /**
