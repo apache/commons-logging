@@ -115,7 +115,7 @@ public class CustomConfigTestCase extends DefaultConfigTestCase {
     protected void checkExpected() {
         final List<LogRecord> acts = ((DecoratedSimpleLog) log).getCache();
         int n = 0;
-        for (LogRecord exp : expected) {
+        for (final LogRecord exp : expected) {
             final LogRecord act = acts.get(n++);
             assertEquals("Row " + n + " type", exp.type, act.type);
             assertEquals("Row " + n + " message", exp.message, act.message);
