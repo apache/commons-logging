@@ -19,6 +19,7 @@ package org.apache.commons.logging.tccl.logfactory;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
+
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
