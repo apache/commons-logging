@@ -1406,45 +1406,6 @@ public abstract class LogFactory {
     }
 
     /**
-     * Tries to load one of the standard three implementations from the given classloader.
-     * <p>
-     *     We assume that {@code classLoader} can load this class.
-     * </p>
-     * @param classLoader The classloader to use.
-     * @return An implementation of this class.
-     */
-    private static LogFactory newStandardFactory(final ClassLoader classLoader) {
-        if (isClassAvailable(LOG4J_TO_SLF4J_BRIDGE, classLoader)) {
-            try {
-                return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
-            } catch (final LinkageError | ReflectiveOperationException ignored) {
-            } finally {
-                logDiagnostic(
-                        "[LOOKUP] Log4j API to SLF4J redirection detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
-            }
-        }
-        try {
-            return (LogFactory) Class.forName(FACTORY_LOG4J_API, true, classLoader).getConstructor().newInstance();
-        } catch (final LinkageError | ReflectiveOperationException ignored) {
-        } finally {
-            logDiagnostic("[LOOKUP] Loading the Log4j API LogFactory implementation '" + FACTORY_LOG4J_API + "'.");
-        }
-        try {
-            return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
-        } catch (final LinkageError | ReflectiveOperationException ignored) {
-        } finally {
-            logDiagnostic("[LOOKUP] Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
-        }
-        try {
-            return (LogFactory) Class.forName(FACTORY_DEFAULT, true, classLoader).getConstructor().newInstance();
-        } catch (final LinkageError | ReflectiveOperationException ignored) {
-        } finally {
-            logDiagnostic("[LOOKUP] Loading the legacy LogFactory implementation '" + FACTORY_DEFAULT + "'.");
-        }
-        return null;
-    }
-
-    /**
      * Gets a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
      * used to load this (abstract) LogFactory.
      * <p>
@@ -1498,6 +1459,45 @@ public abstract class LogFactory {
             logDiagnostic("Created object " + objectId(result) + " to manage class loader " + objectId(contextClassLoader));
         }
         return (LogFactory) result;
+    }
+
+    /**
+     * Tries to load one of the standard three implementations from the given classloader.
+     * <p>
+     *     We assume that {@code classLoader} can load this class.
+     * </p>
+     * @param classLoader The classloader to use.
+     * @return An implementation of this class.
+     */
+    private static LogFactory newStandardFactory(final ClassLoader classLoader) {
+        if (isClassAvailable(LOG4J_TO_SLF4J_BRIDGE, classLoader)) {
+            try {
+                return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
+            } catch (final LinkageError | ReflectiveOperationException ignored) {
+            } finally {
+                logDiagnostic(
+                        "[LOOKUP] Log4j API to SLF4J redirection detected. Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
+            }
+        }
+        try {
+            return (LogFactory) Class.forName(FACTORY_LOG4J_API, true, classLoader).getConstructor().newInstance();
+        } catch (final LinkageError | ReflectiveOperationException ignored) {
+        } finally {
+            logDiagnostic("[LOOKUP] Loading the Log4j API LogFactory implementation '" + FACTORY_LOG4J_API + "'.");
+        }
+        try {
+            return (LogFactory) Class.forName(FACTORY_SLF4J, true, classLoader).getConstructor().newInstance();
+        } catch (final LinkageError | ReflectiveOperationException ignored) {
+        } finally {
+            logDiagnostic("[LOOKUP] Loading the SLF4J LogFactory implementation '" + FACTORY_SLF4J + "'.");
+        }
+        try {
+            return (LogFactory) Class.forName(FACTORY_DEFAULT, true, classLoader).getConstructor().newInstance();
+        } catch (final LinkageError | ReflectiveOperationException ignored) {
+        } finally {
+            logDiagnostic("[LOOKUP] Loading the legacy LogFactory implementation '" + FACTORY_DEFAULT + "'.");
+        }
+        return null;
     }
 
     /**
