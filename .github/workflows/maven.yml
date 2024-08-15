@@ -33,6 +33,8 @@ jobs:
         include:
             - java: 23-ea
               experimental: true
+            - java: 24-ea
+              experimental: true
 
     steps:
     - name: Checkout repository
