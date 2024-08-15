@@ -291,7 +291,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Implements the operations described in the Javadoc for newFactory.
+     * Creates a LogFactory object or a LogConfigurationException object.
      *
      * @param factoryClassName Factory class.
      * @param classLoader      used to load the specified factory class. This is expected to be either the TCCL or the class loader which loaded this class.
@@ -441,7 +441,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Create the hash table which will be used to store a map of
+     * Creates the hash table which will be used to store a map of
      * (context class loader -> logfactory-object). Version 1.2+ of Java
      * supports "weak references", allowing a custom Hashtable class
      * to be used which uses only weak references to its keys. Using weak
@@ -537,7 +537,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Check cached factories (keyed by contextClassLoader)
+     * Gets a cached log factory (keyed by contextClassLoader)
      *
      * @param contextClassLoader is the context class loader associated
      * with the current thread. This allows separate LogFactory objects
@@ -606,7 +606,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Locate a user-provided configuration file.
+     * Gets a user-provided configuration file.
      * <p>
      * The classpath of the specified classLoader (usually the context class loader)
      * is searched for properties files of the specified name. If none is found,
@@ -697,7 +697,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Returns the current context class loader.
+     * Gets the current context class loader.
      * <p>
      * In versions prior to 1.1, this method did not use an AccessController.
      * In version 1.1, an AccessController wrapper was incorrectly added to
@@ -720,7 +720,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Calls LogFactory.directGetContextClassLoader under the control of an
+     * Calls {@link LogFactory#directGetContextClassLoader()} under the control of an
      * AccessController class. This means that Java code running under a
      * security manager that forbids access to ClassLoaders will still work
      * if this class is given appropriate privileges, even when the caller
@@ -985,7 +985,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Convenience method to return a named logger, without the application having to care about factories.
+     * Gets a named logger, without the application having to care about factories.
      *
      * @param clazz Class from which a log name will be derived
      * @return a named logger.
@@ -996,7 +996,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Convenience method to return a named logger, without the application having to care about factories.
+     * Gets a named logger, without the application having to care about factories.
      *
      * @param name Logical name of the {@code Log} instance to be returned (the meaning of this name is only known to the underlying logging implementation that
      *             is being wrapped)
@@ -1182,7 +1182,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Determines whether the user wants internal diagnostic output. If so,
+     * Tests whether the user wants internal diagnostic output. If so,
      * returns an appropriate writer object. Users can enable diagnostic
      * output by setting the system property named {@link #DIAGNOSTICS_DEST_PROPERTY} to
      * a file name, or the special values STDOUT or STDERR.
@@ -1228,7 +1228,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Indicates true if the user has enabled internal logging.
+     * Tests whether the user enabled internal logging.
      * <p>
      * By the way, sorry for the incorrect grammar, but calling this method
      * areDiagnosticsEnabled just isn't Java beans style.
@@ -1291,7 +1291,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Write the specified message to the internal logging destination.
+     * Writes the specified message to the internal logging destination.
      * <p>
      * Note that this method is private; concrete subclasses of this class
      * should not call it because the diagnosticPrefix string this
@@ -1509,15 +1509,15 @@ public abstract class LogFactory {
      * the specified object's class has overridden the toString method.
      * </p>
      *
-     * @param o may be null.
+     * @param obj may be null.
      * @return a string of form className@hashCode, or "null" if param o is null.
      * @since 1.1
      */
-    public static String objectId(final Object o) {
-        if (o == null) {
+    public static String objectId(final Object obj) {
+        if (obj == null) {
             return "null";
         }
-        return o.getClass().getName() + "@" + System.identityHashCode(o);
+        return obj.getClass().getName() + "@" + System.identityHashCode(obj);
     }
 
     /**
@@ -1584,7 +1584,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Protected constructor that is not available for public use.
+     * Constructs a new instance.
      */
     protected LogFactory() {
     }
@@ -1606,7 +1606,7 @@ public abstract class LogFactory {
     public abstract String[] getAttributeNames();
 
     /**
-     * Convenience method to derive a name from the specified class and call {@code getInstance(String)} with it.
+     * Gets a Log for the given class.
      *
      * @param clazz Class for which a suitable Log name will be derived
      * @return a name from the specified class.
@@ -1615,7 +1615,7 @@ public abstract class LogFactory {
     public abstract Log getInstance(Class<?> clazz) throws LogConfigurationException;
 
     /**
-     * Constructs (if necessary) and return a {@code Log} instance, using the factory's current set of configuration attributes.
+     * Gets a (possibly new) {@code Log} instance, using the factory's current set of configuration attributes.
      * <p>
      * <strong>NOTE</strong> - Depending upon the implementation of the {@code LogFactory} you are using, the {@code Log} instance you are returned may or may
      * not be local to the current application, and may or may not be returned again on a subsequent call with the same name argument.
