@@ -45,7 +45,7 @@ Apache Commons Logging
 
 [![Java CI](https://github.com/apache/commons-logging/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/maven.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/commons-logging/commons-logging/?gav=true)
-[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.3.3.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.3.3)
+[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.3.4.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.3.4)
 [![CodeQL](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging)
 
@@ -63,20 +63,20 @@ Getting the latest release
 --------------------------
 You can download source and binaries from our [download page](https://commons.apache.org/proper/commons-logging/download_logging.cgi).
 
-Alternatively, you can pull it from  the central Maven repositories:
+Alternatively, you can pull it from the central Maven repositories:
 
 ```xml
 <dependency>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
-  <version>1.3.3</version>
+  <version>1.3.4</version>
 </dependency>
 ```
 
 Building
 --------
 
-Building requires a Java JDK and [Apache Maven](https://maven.apache.org/). 
+Building requires a Java JDK and [Apache Maven](https://maven.apache.org/).
 The required Java version is found in the `pom.xml` as the `maven.compiler.source` property.
 
 From a command shell, run `mvn` without arguments to invoke the default Maven goal to run all tests and checks.
