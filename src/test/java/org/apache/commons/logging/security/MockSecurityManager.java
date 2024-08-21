@@ -113,7 +113,7 @@ public class MockSecurityManager extends SecurityManager {
                 //
                 // TODO: maybe check class is loaded via system loader or similar rather
                 // than checking name? Trusted domains may be different in alternative
-                // jvms..
+                // jvms.
             } else if (cname.startsWith("org.apache.commons.logging.security")) {
                 // this is the unit test code; treat this like an untrusted client
                 // app that is using JCL

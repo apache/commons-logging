@@ -367,7 +367,7 @@ public class LogFactoryImpl extends LogFactory {
                 } catch (final ClassNotFoundException originalClassNotFoundException) {
                     // The current class loader was unable to find the log adapter
                     // in this or any ancestor class loader. There's no point in
-                    // trying higher up in the hierarchy in this case..
+                    // trying higher up in the hierarchy in this case.
                     String msg = originalClassNotFoundException.getMessage();
                     logDiagnostic("The log adapter '" + logAdapterClassName + "' is not available via class loader " +
                                   objectId(currentCL) + ": " + trim(msg));
@@ -418,7 +418,7 @@ public class LogFactoryImpl extends LogFactory {
                 // other classes that could not be found. This simply means that
                 // the underlying logger library is not present in this or any
                 // ancestor class loader. There's no point in trying higher up
-                // in the hierarchy in this case..
+                // in the hierarchy in this case.
                 final String msg = e.getMessage();
                 logDiagnostic("The log adapter '" + logAdapterClassName +
                               "' is missing dependencies when loaded via class loader " + objectId(currentCL) +

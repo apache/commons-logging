@@ -751,7 +751,7 @@ public abstract class LogFactory {
         // If the properties file exists, then its contents are used as
         // "attributes" on the LogFactory implementation class. One particular
         // property may also control which LogFactory concrete subclass is
-        // used, but only if other discovery mechanisms fail..
+        // used, but only if other discovery mechanisms fail.
         //
         // As the properties file (if it exists) will be used one way or
         // another in the end we may as well look for it first.
@@ -1118,7 +1118,7 @@ public abstract class LogFactory {
             }
         } catch (final SecurityException ex) {
             // We must be running in some very secure environment.
-            // We just have to assume output is not wanted..
+            // We just have to assume output is not wanted.
             return null;
         }
 
