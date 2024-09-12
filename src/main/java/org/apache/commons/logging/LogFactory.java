@@ -247,7 +247,7 @@ public abstract class LogFactory {
         // output diagnostics from this class are static.
         String classLoaderName;
         try {
-            classLoaderName = thisClassLoader != null ? objectId(thisClassLoader) : "BOOTLOADER"; 
+            classLoaderName = thisClassLoader != null ? objectId(thisClassLoader) : "BOOTLOADER";
         } catch (final SecurityException e) {
             classLoaderName = "UNKNOWN";
         }
@@ -849,12 +849,12 @@ public abstract class LogFactory {
         // Third try looking into the properties file read earlier (if found)
         if (factory == null) {
             if (props != null) {
-                logDiagnostic(() -> 
+                logDiagnostic(() ->
                     "[LOOKUP] Looking in properties file for entry with key '" + FACTORY_PROPERTY +
                     "' to define the LogFactory subclass to use...");
                 final String factoryClass = props.getProperty(FACTORY_PROPERTY);
                 if (factoryClass != null) {
-                    logDiagnostic(() -> 
+                    logDiagnostic(() ->
                         "[LOOKUP] Properties file specifies LogFactory subclass '" + factoryClass + "'");
                     factory = newFactory(factoryClass, baseClassLoader, contextClassLoader);
                     // TODO: think about whether we need to handle exceptions from newFactory
@@ -879,7 +879,7 @@ public abstract class LogFactory {
                 logDiagnostic("Created object " + objectId(factory) + " to manage class loader " + objectId(contextClassLoader));
             }
         } else {
-            logDiagnostic(() -> 
+            logDiagnostic(() ->
                 "[LOOKUP] Loading the default LogFactory implementation '" + FACTORY_DEFAULT +
                 "' via the same class loader that loaded this LogFactory class (ie not looking in the context class loader).");
             // Note: unlike the above code which can try to load custom LogFactory
