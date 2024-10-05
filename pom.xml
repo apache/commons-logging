@@ -206,22 +206,6 @@ under the License.
         </configuration>
       </plugin>
       <plugin>
-        <!--
-            Many of JCL's tests use tricky techniques to place the generated
-            JCL jarfiles on the classpath in various configurations. This means
-            that those tests must be run *after* the "package" build phase.
-           
-            Disable cobertura report generation as this does not work correctly
-            with integration-tests and the normal unit tests are disabled too.
-          -->
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${commons.cobertura.version}</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.moditect</groupId>
         <artifactId>moditect-maven-plugin</artifactId>
         <executions>
