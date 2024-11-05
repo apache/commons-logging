@@ -214,7 +214,7 @@ public final class WeakHashtable extends Hashtable {
                     // We can reduce (not eliminate) the chance of this
                     // happening by comparing hash codes.
                     result = result && hashCode() == otherKey.hashCode();
-                    // In any case, as our c'tor does not allow null referants
+                    // In any case, as our constructor does not allow null referants
                     // and Hashtable does not do equality checks between
                     // existing keys, normal hash table operations should never
                     // result in an equals comparison between null referants
