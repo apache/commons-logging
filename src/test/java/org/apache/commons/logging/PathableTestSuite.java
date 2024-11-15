@@ -76,7 +76,7 @@ import junit.framework.TestSuite;
  * tests that need specific system properties can simply set them in the
  * fixture or at the start of a test method.
  * <p>
- * <b>Important!</b> When the test case is run, "this.getClass()" refers of
+ * <strong>Important!</strong> When the test case is run, "this.getClass()" refers of
  * course to the Class object passed to the constructor of this class - which
  * is different from the class whose suite() method was executed to determine
  * the classpath. This means that the suite method cannot communicate with

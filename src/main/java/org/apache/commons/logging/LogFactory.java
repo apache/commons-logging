@@ -1354,7 +1354,7 @@ public abstract class LogFactory {
      * Gets a new instance of the specified {@code LogFactory} implementation class, loaded by the specified class loader. If that fails, try the class loader
      * used to load this (abstract) LogFactory.
      * <p>
-     * <b>ClassLoader conflicts</b>
+     * <strong>ClassLoader conflicts</strong>
      * </p>
      * <p>
      * Note that there can be problems if the specified ClassLoader is not the same as the class loader that loaded this class, that is, when loading a concrete
