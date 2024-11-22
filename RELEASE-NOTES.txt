@@ -35,6 +35,43 @@ https://commons.apache.org/proper/commons-logging/
 
 -----------------------------------------------------------------------------
 
+Apache Commons Logging 1.3.4 Release Notes
+------------------------------------------
+
+The Apache Commons Logging team is pleased to announce the release of Apache Commons Logging 1.3.4.
+
+Apache Commons Logging is a thin adapter allowing configurable bridging to other,
+well-known logging systems.
+
+This is a feature and maintenance release. Java 8 or later is required.
+
+Changes in this version
+-----------------------
+
+
+Fixed Bugs
+----------
+
+* LOGGING-192:  Fix factory loading from context class loader #280, #281. Thanks to Björn Kautler, Piotr Karwasz.
+
+Changes
+-------
+
+*               Bump org.apache.commons:commons-parent from 71 to 72. Thanks to Gary Gregory.
+*               Bump org.slf4j:slf4j-api from 2.0.13 to 2.0.16 #276, #282. Thanks to Gary Gregory, Dependabot.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-logging/changes-report.html
+
+Download it from https://commons.apache.org/proper/commons-logging/download_logging.cgi
+
+For complete information on Apache Commons Logging, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons Logging website:
+
+https://commons.apache.org/proper/commons-logging/
+
+-----------------------------------------------------------------------------
+
 Apache Commons Logging 1.3.3 Release Notes
 ------------------------------------------
 
