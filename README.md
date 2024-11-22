@@ -45,7 +45,7 @@ Apache Commons Logging
 
 [![Java CI](https://github.com/apache/commons-logging/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/commons-logging/commons-logging?label=Maven%20Central)](https://search.maven.org/artifact/commons-logging/commons-logging)
-[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.3.4.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.3.4)
+[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.3.5.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.3.5)
 [![CodeQL](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging)
 
@@ -69,7 +69,7 @@ Alternatively, you can pull it from the central Maven repositories:
 <dependency>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
-  <version>1.3.4</version>
+  <version>1.3.5</version>
 </dependency>
 ```
 
