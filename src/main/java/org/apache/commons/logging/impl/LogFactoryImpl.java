@@ -490,7 +490,6 @@ public class LogFactoryImpl extends LogFactory {
      * Follows the discovery process described in the class Javadoc.
      *
      * @param logCategory the name of the log category
-     *
      * @throws LogConfigurationException if an error in discovery occurs,
      * or if no adapter at all can be instantiated
      */
@@ -809,7 +808,6 @@ public class LogFactoryImpl extends LogFactory {
      * call {@code getInstance(String)} with it.
      *
      * @param clazz Class for which a suitable Log name will be derived
-     *
      * @throws LogConfigurationException if a suitable {@code Log}
      *  instance cannot be returned
      */
@@ -866,7 +864,6 @@ public class LogFactoryImpl extends LogFactory {
      * </p>
      *
      * @return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
-     *
      * @throws LogConfigurationException if a suitable constructor cannot be returned
      *
      * @deprecated Never invoked by this class; subclasses should not assume it will be.
@@ -891,7 +888,6 @@ public class LogFactoryImpl extends LogFactory {
      * <p>
      * @param c1 is a class loader (including the null class loader)
      * @param c2 is a class loader (including the null class loader)
-     *
      * @return c1 if it has c2 as an ancestor, c2 if it has c1 as an ancestor,
      * and null if neither is an ancestor of the other.
      */
@@ -956,7 +952,6 @@ public class LogFactoryImpl extends LogFactory {
      * @param logAdapterClassName is the class name of the Log implementation
      * that could not be instantiated. Cannot be {@code null}.
      * @param discoveryFlaw is the Throwable created by the class loader
-     *
      * @throws LogConfigurationException    ALWAYS
      */
     private void handleFlawedDiscovery(final String logAdapterClassName,
@@ -1191,7 +1186,6 @@ public class LogFactoryImpl extends LogFactory {
      * which is required by Jdk14Logger.
      *
      * @return Whether <em>JDK 1.4 or later</em> logging is available.
-     *
      * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
@@ -1203,7 +1197,6 @@ public class LogFactoryImpl extends LogFactory {
      * Tests whether a <em>Log4J</em> implementation available.
      *
      * @return whether a <em>Log4J</em> implementation available.
-     *
      * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
@@ -1262,7 +1255,6 @@ public class LogFactoryImpl extends LogFactory {
      *
      * @param name Name of the new logger
      * @return a new {@link org.apache.commons.logging.Log}
-     *
      * @throws LogConfigurationException if a new instance cannot be created
      */
     protected Log newInstance(final String name) throws LogConfigurationException {

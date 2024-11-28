@@ -566,7 +566,6 @@ public abstract class LogFactory {
      *
      * @param clazz Class.
      * @return a ClassLoader.
-     *
      * @since 1.1
      */
     protected static ClassLoader getClassLoader(final Class<?> clazz) {
