@@ -865,7 +865,6 @@ public class LogFactoryImpl extends LogFactory {
      *
      * @return the {@code Constructor} that can be called to instantiate new {@link org.apache.commons.logging.Log} instances.
      * @throws LogConfigurationException if a suitable constructor cannot be returned
-     *
      * @deprecated Never invoked by this class; subclasses should not assume it will be.
      */
     @Deprecated
