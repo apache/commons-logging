@@ -884,7 +884,7 @@ public class LogFactoryImpl extends LogFactory {
     /**
      * Given two related class loaders, return the one which is a child of
      * the other.
-     * <p>
+     *
      * @param c1 is a class loader (including the null class loader)
      * @param c2 is a class loader (including the null class loader)
      * @return c1 if it has c2 as an ancestor, c2 if it has c1 as an ancestor,
