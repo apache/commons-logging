@@ -30,9 +30,9 @@ import junit.framework.TestCase;
 
 public class WeakHashtableTestCase extends TestCase {
 
-    public static class StupidThread extends Thread {
+    public static class TestThread extends Thread {
 
-        public StupidThread(final String name) {
+        public TestThread(final String name) {
             super(name);
         }
 
@@ -183,7 +183,7 @@ public class WeakHashtableTestCase extends TestCase {
         for (int j=1; j <= OUTER_LOOP; j++) {
             hashtable = new WeakHashtable();
             for (int i = 0; i < t.length; i++) {
-                t[i] = new StupidThread("Thread:" + i);
+                t[i] = new TestThread("Thread:" + i);
                 t[i].setDaemon(true); // Otherwise we cannot exit
                 t[i].start();
             }
