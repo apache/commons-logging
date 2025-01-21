@@ -72,5 +72,6 @@ limitations under the License.
     </module>
     <module name="WhitespaceAfter" />
     <module name="ParenPad" />
+    <module name="TypecastParenPad" />
   </module>
 </module>
