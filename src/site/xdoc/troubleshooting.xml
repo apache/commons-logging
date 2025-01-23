@@ -19,8 +19,9 @@
 
 -->
 
-<document>
-
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 https://maven.apache.org/xsd/xdoc-2.0.xsd">
  <properties>
   <title>Troubleshooting Guide</title>
   <author email="dev@commons.apache.org">Commons Documentation Team</author>
@@ -37,7 +38,6 @@
 <ul>
 <li>
 <a href="#When To Use Diagnostic Logging">When To Use Diagnostic Logging</a>
-<ul/>
 </li>
 <li>
 <a href="#How To Use Diagnostic logging">How To Use Diagnostic logging</a>
@@ -86,15 +86,12 @@
 <ul>
 <li>
 <a href="#Apache Tomcat">Apache Tomcat</a>
-<ul/>
 </li>
 <li>
 <a href="#JBoss Application Server">JBoss Application Server</a>
-<ul/>
 </li>
 <li>
 <a href="#Other Containers">Other Containers</a>
-<ul/>
 </li>
 </ul>
 </li>
@@ -134,19 +131,19 @@ Diagnostics uses the concept of an Object ID (OID). This allows the identity of 
 to be tracked without relying on useful <code>toString</code> implementations. 
 These are of the form: 
       </p>
-<code><pre>
+<code>
 <em>classname</em>@<em>system identity hash code</em>
-</pre></code>
+</code>
       <p>
 The <em>system identity hash code</em> is found by calling <code>System.identityHashCode()</code> 
 which should uniquely identify a particular instance. The classname is usually the fully qualified
 class name though in a few cases, <code>org.apache.commons.logging.impl.LogFactoryImpl</code> may be
 shortened to <code>LogFactoryImpl</code> to increase ease of reading. For example:
       </p>
-<code><pre>
+<code>
 sun.misc.Launcher$AppClassLoader@20120943
 LogFactoryImpl@1671711
-</pre></code>
+</code>
       <p>
 OIDs are intended to be used to cross-reference. They allow particular instances of classloaders
 and JCL classes to be tracked in different contexts. This plays a vital role in building
@@ -158,9 +155,9 @@ up the understanding of the classloader environment required to diagnose JCL pro
 Each diagnostic message is prefixed with details of the relevant class in a standard format.
 This takes the form:
     </p>
-<code><pre>
+<code>
 [<em>class-identifier</em> from <em>ClassLoader OID</em>]
-</pre></code>
+</code>
     <p>
 <em>ClassLoader OID</em> is the <a href='#OIDs'>OID</a> of a classloader which loaded 
 the class issuing the message.
@@ -170,19 +167,19 @@ the class issuing the message.
 In the case of 
 <code>LogFactory</code>, this is just <code>LogFactory</code>. For example (line split):
     </p>
-<code><pre>
+<code>
 [LogFactory 
    from sun.misc.Launcher$AppClassLoader@20120943] BOOTSTRAP COMPLETED
-</pre></code>
+</code>
     <p>
 In the case of 
 <code>LogFactoryImpl</code>, the prefix is the instance OID. This can be cross referenced
 to discover the details of the TCCL used to manage this instance. For example (line split):
     </p>
-<code><pre>
+<code>
 [LogFactoryImpl@1671711 
    from sun.misc.Launcher$AppClassLoader@20120943] Instance created.
-</pre></code>
+</code>
     </subsection>
     <subsection name='ClassLoader Hierarchy Tree'>
       <p>
@@ -193,12 +190,12 @@ Each classloader is represented (visually) by an OID (to allow cross referencing
 and the relationship indicated in <code><em>child</em> --> <em>parent</em></code> fashion.
 For example (line split for easy reading):
       </p>
-<code><pre>
+<code>
 ClassLoader tree:java.net.URLClassLoader@3526198  
       --> sun.misc.Launcher$AppClassLoader@20120943 (SYSTEM) 
       --> sun.misc.Launcher$ExtClassLoader@11126876 
       --> BOOT
-</pre></code>
+</code>
       <p>
 Represents a hierarchy with four elements ending in the boot classloader.
       </p>
@@ -216,15 +213,15 @@ are logged.
       <p>
 Many Sun classloaders have confusing <code>toString</code> values. For example, the OID may be
       </p>
-<code><pre>
+<code>
 sun.misc.Launcher$AppClassLoader@20120943
-</pre></code>
+</code>
       <p>
 with a <code>toString</code> value of
       </p>
-<code><pre>
+<code>
 sun.misc.Launcher$AppClassLoader@133056f
-</pre></code>
+</code>
       <p>
 Other classloader implementations may give very useful information (such as the local classpath).
       </p>
@@ -252,7 +249,7 @@ allowing the <a href='#OIDs'>OID</a> later to be cross-referenced to the <code>t
 and the <a href='#ClassLoader%20Hierarchy%20Tree'>classloader tree</a>. For example, the 
 following log snippet details the TCCL (lines split):
       </p>
-<code><pre>
+<code>
 [LogFactory from sun.misc.Launcher$AppClassLoader@20120943] 
     [LOOKUP] LogFactory implementation requested for the first time for context 
         classloader java.net.URLClassLoader@3526198
@@ -263,7 +260,7 @@ following log snippet details the TCCL (lines split):
         --> sun.misc.Launcher$AppClassLoader@20120943 (SYSTEM)  
           --> sun.misc.Launcher$ExtClassLoader@11126876 
             --> BOOT
-</pre></code>
+</code>
     </subsection>
     <subsection name='Log Discovery Diagnostics'>
       <p>
@@ -305,11 +302,11 @@ The Apache Commons team would be grateful if reports were posted to the developm
 of other containers using a custom implementation.
     </p>
     <subsection name='The Incompatible LogFactory Issue'>
-      <subsection name='Symptoms'>
+      <h4 id='Symptoms'>Symptoms</h4>
         <p>
   An exception is thrown by JCL with a message similar to:
         </p>
-  <code><pre>
+  <code>
   The chosen LogFactory implementation does not extend LogFactory. Please check your configuration. 
   (Caused by java.lang.ClassCastException: The application has specified that a custom LogFactory 
   implementation should be used but Class 'com.ibm.ws.commons.logging.TrLogFactory' cannot be converted 
@@ -319,14 +316,13 @@ of other containers using a custom implementation.
   LogFactory then it is likely that the container has set one without your knowledge. 
   In this case, consider using the commons-logging-adapters.jar file or specifying the standard 
   LogFactory from the command line. Help can be found @https//commons.apache.org/logging.
-  </pre></code>
+  </code>
         <p>
   This is a WebSphere example so the name of the custom LogFactory is 
   <code>com.ibm.ws.commons.logging.TrLogFactory</code>. For other containers, this class name will
   differ.
         </p>
-      </subsection>
-      <subsection name='Explanation'>
+      <h4 id='Explanation'>Explanation</h4>
       <p>
  A custom <code>LogFactory</code> implementation can only be used if the implementation class loaded 
  dynamically at runtime can be cast to the <code>LogFactory</code> class that loaded it. There are 
@@ -357,8 +353,7 @@ containers which have custom implementations: the above runtime exception may be
 under certain classloading policies without the user knowingly specifying a custom 
 implementation.
       </p>
-      </subsection>
-      <subsection name='Fixes'>
+      <h4 id='Fixes'>Fixes</h4>
         <p>
  There are various ways to fix this problem. Which fix is right depends on the circumstances.
         </p>
@@ -371,9 +366,9 @@ implementation.
  If you want to bypass the container adaption mechanism then set the appropriate system property 
  to the default value when the container is started:
         </p>
- <code><pre>
+ <code>
  -Dorg.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl
- </pre></code>
+ </code>
       <p>
  If you want to continue to use the default container mechanism then:
       </p>
@@ -392,7 +387,6 @@ implementation.
  If you encounter difficulties when applying the fixes recommended, please turn on
  <a href='#Using JCL Diagnostics'>diagnostics</a> and consult the logs.
       </p>
-      </subsection>
     </subsection>
   </section>
   <section name='Containers With Custom ClassLoading Behaviour for Logging'>

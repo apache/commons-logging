@@ -19,8 +19,9 @@
 
 -->
 
-<document>
-
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 https://maven.apache.org/xsd/xdoc-2.0.xsd">
  <properties>
   <title>User Guide</title>
   <author email="dev@commons.apache.org">Commons Documentation Team</author>
@@ -28,7 +29,6 @@
 
  <body>
     <section name='Contents'>
-        <p>
             <ol>
                 <li><a href='#Introduction'>Introduction</a></li>
                 <li><a href='#Quick Start'>Quick Start</a>
@@ -85,7 +85,6 @@
                 <li><a href='#Frequently Asked Questions'>Frequently Asked Questions</a>
                 </li>
             </ol>
-        </p>
     </section>
     <section name="Introduction">
         <p>
@@ -228,18 +227,16 @@ is responsible for handling such issues.
 </section>
     <section name='Developing With JCL'>
     <subsection name="Obtaining a Log Object">
-        <p>
+      <p>
 To use the JCL SPI from a Java class,
 include the following import statements:
-    </p>
-        <ul>
-            <code>
+      </p>
+      <code>
 import org.apache.commons.logging.Log;
 <br/>
 import org.apache.commons.logging.LogFactory;
 <br/>
         </code>
-    </ul>
         <p>
 Note that some components using JCL may
 either extend Log,
@@ -251,7 +248,6 @@ on how commons-logging should be used in such components.
 For each class definition, declare and initialize a
 <code>log</code> attribute as follows:
     </p>
-        <ul>
             <source>
 public class CLASS
 {
@@ -259,7 +255,6 @@ public class CLASS
     ...
     ;
         </source>
-    </ul>
     <p>
 Note that for application code, declaring the log member as "static" is more
 efficient as one Log object is created per class, and is recommended.
@@ -278,7 +273,6 @@ The <code>org.apache.commons.logging.Log</code> interface defines the
 following methods for use
 in writing log/trace messages to the log:
     </p>
-        <ul>
             <source>
     log.fatal(Object message);
     log.fatal(Object message, Throwable t);
@@ -293,7 +287,6 @@ in writing log/trace messages to the log:
     log.trace(Object message);
     log.trace(Object message, Throwable t);
         </source>
-    </ul>
         <p>
 Semantics for these methods are such that it is expected
 that the severity, from highest to lowest, of messages is ordered as above.
@@ -301,7 +294,6 @@ that the severity, from highest to lowest, of messages is ordered as above.
         <p>
 In addition to the logging methods, the following are provided for code guards:
     </p>
-        <ul>
             <source>
     log.isFatalEnabled();
     log.isErrorEnabled();
@@ -310,7 +302,6 @@ In addition to the logging methods, the following are provided for code guards:
     log.isDebugEnabled();
     log.isTraceEnabled();
         </source>
-    </ul>
     </subsection>
     <subsection name="Serialization Issues">
     <p>Prior to release 1.0.4, none of the standard Log implementations were
@@ -434,13 +425,13 @@ The following guidelines are suggested:
                 <li>
 <b>fatal</b> - Severe errors that cause premature termination.
 Expect these to be immediately visible on a status console.
-See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+See also <a href="#National%20Language%20Support%20And%20Internationalization">
 Internationalization</a>.
             </li>
                 <li>
 <b>error</b> - Other runtime errors or unexpected conditions.
 Expect these to be immediately visible on a status console.
-See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+See also <a href="#National%20Language%20Support%20And%20Internationalization">
 Internationalization</a>.
             </li>
                 <li>
@@ -448,14 +439,14 @@ Internationalization</a>.
 other runtime situations that are undesirable or unexpected, but not
 necessarily "wrong".
 Expect these to be immediately visible on a status console.
-See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+See also <a href="#National%20Language%20Support%20And%20Internationalization">
 Internationalization</a>.
             </li>
                 <li>
 <b>info</b> - Interesting runtime events (startup/shutdown).
 Expect these to be immediately visible on a console,
 so be conservative and keep to a minimum.
-See also <a HREF="#National%20Language%20Support%20And%20Internationalization">
+See also <a href="#National%20Language%20Support%20And%20Internationalization">
 Internationalization</a>.
             </li>
                 <li>
@@ -561,11 +552,9 @@ If more control is desired for the level of detail of these
 'enterprise' exceptions, then consider creating a special
 logger just for these exceptions:
             </p>
-                <ul>
 <source>
    Log log = LogFactory.getLog("org.apache.<i>component</i>.enterprise");
 </source>
-            </ul>
                 <p>
 This allows the 'enterprise' level information to be turned on/off explicitly
 by most logger implementations.
@@ -669,29 +658,29 @@ new <code>LogFactory</code> implementations that provide alternative discovery s
 When creating new implementations for <code>Log</code> and <code>LogFactory</code>,
 it is important to understand the implied contract between the factory 
 and the log implementations:
-                <ul>
-                    <li><b>Life cycle</b>
-                        <blockquote>
+            </p>
+            <ul>
+                <li><b>Life cycle</b>
+                    <blockquote>
 The JCL LogFactory implementation must assume responsibility for
 either connecting/disconnecting to a logging toolkit,
 or instantiating/initializing/destroying a logging toolkit.
-                        </blockquote>
+                    </blockquote>
                 </li>
-                    <li><b>Exception handling</b>
-                        <blockquote>
+                <li><b>Exception handling</b>
+                    <blockquote>
 The JCL Log interface doesn't specify any exceptions to be handled,
 the implementation must catch any exceptions.
                     </blockquote>
                 </li>
-                    <li><b>Multiple threads</b>
-                        <blockquote>
+                <li><b>Multiple threads</b>
+                    <blockquote>
 The JCL Log and LogFactory implementations must ensure
 that any synchronization required by the logging toolkit
 is met.
                     </blockquote>
                 </li>
             </ul>
-        </p>
     </subsection>
     <subsection name='Creating a Log Implementation'>
         <p>
