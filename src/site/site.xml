@@ -17,30 +17,39 @@
  limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/DECORATION/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 https://maven.apache.org/xsd/decoration-1.1.0.xsd">
-  <bannerRight>
-    <name>Commons Logging</name>
-    <src>/images/logo.png</src>
-    <href>https://commons.apache.org/logging/</href>
+<site xmlns="http://maven.apache.org/SITE/2.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd"
+  name="Apache Commons Logging">
+  <bannerRight name="Commons Logging" href="/index.html">
+    <image src="/images/logo.png"/>
   </bannerRight>
   <body>
     <menu name="Commons Logging">
-      <item name="Overview" href="/index.html" />
+      <!-- Start: For all components. -->
+      <item name="About" href="/index.html" />
+      <item name="Asking Questions" href="/mail-lists.html" />
+      <item name="Release History" href="/changes.html" />
+      <item name="Issue Tracking" href="/issue-management.html" />
+      <item name="Dependency Management" href="/dependency-info.html" />
+      <item name="Sources" href="/scm.html" />
+      <item name="Security" href="security.html" />
+      <item name="License" href="https://www.apache.org/licenses/LICENSE-2.0" />
+      <item name="Code of Conduct" href="https://www.apache.org/foundation/policies/conduct.html" />
       <item name="Download" href="/download_logging.cgi" />
+      <item name="Javadoc">
+        <item name="Javadoc Current" href="apidocs/index.html" />
+        <item name="Javadoc Archive" href="https://javadoc.io/doc/commons-logging/commons-logging" />
+      </item>
+      <!-- End: For all components. -->
+      <!-- Specific to this component: -->
       <item name="User Guide" href="/guide.html" />
       <item name="Troubleshooting Guide" href="/troubleshooting.html" />
-      <item name="Release Notes" href="/RELEASE-NOTES.txt" />
-      <item name='Javadoc (Latest release)' href='/apidocs/index.html' />
-      <item name='Javadoc Archive' href='https://javadoc.io/doc/commons-logging/commons-logging' />
-    </menu>
-    <menu name="Development">
       <item name="Building" href="/building.html" />
-      <item name="Mailing Lists" href="/mail-lists.html" />
-      <item name="Issue Tracking" href="/issue-tracking.html" />
       <item name="Proposal" href="/proposal.html" />
       <item name="Tech Guide" href="/tech.html" />
       <item name="Wiki" href="https://wiki.apache.org/commons/Logging" />
+      <item name="Release Notes" href="/RELEASE-NOTES.txt" />
     </menu>
   </body>
-</project>
+</site>
