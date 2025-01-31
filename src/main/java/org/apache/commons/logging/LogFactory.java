@@ -566,7 +566,6 @@ public abstract class LogFactory {
      *
      * @param clazz Class.
      * @return a ClassLoader.
-     *
      * @since 1.1
      */
     protected static ClassLoader getClassLoader(final Class<?> clazz) {
@@ -886,7 +885,7 @@ public abstract class LogFactory {
             // implementations via the TCCL, we don't try to load the default LogFactory
             // implementation via the context class loader because:
             // * that can cause problems (see comments in newFactory method)
-            // * no-one should be customising the code of the default class
+            // * no-one should be customizing the code of the default class
             // Yes, we do give up the ability for the child to ship a newer
             // version of the LogFactoryImpl class and have it used dynamically
             // by an old LogFactory class in the parent, but that isn't

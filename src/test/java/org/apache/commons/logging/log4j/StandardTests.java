@@ -59,7 +59,6 @@ public abstract class StandardTests extends TestCase {
      * </ul>
      *
      * @param logEvents is the list of log events received.
-     *
      * @param thrown False if logPlainMessages was called
      * (ie the TestAppender is expected to have received
      * logevents with no associated exception info). True if

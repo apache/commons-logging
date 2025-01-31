@@ -17,7 +17,9 @@
 
 -->
 
-<document>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 https://maven.apache.org/xsd/xdoc-2.0.xsd">
 <properties>
 <title>Proposal for Logging Library Package</title>
 </properties>
@@ -51,21 +53,21 @@ implementations.
 
 <p>
 The package should :
+</p>
 <ul>
 <li>Have an API which should be as simple to use as possible</li>
 <li>Provide support for Log4j</li>
 <li>Provide pluggable support for other logging APIs</li>
 </ul>
-</p>
 
 <p>
 Non-goals:
+</p>
 <ul>
 <li>This package will not perform logging itself, except at the most basic
     level.</li>
 <li>We do not seek to become a "standard" API.</li>
 </ul>
-</p>
 
 </subsection>
 <subsection name="(1.5) Interaction With Other Packages">
