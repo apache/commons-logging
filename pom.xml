@@ -494,6 +494,7 @@ under the License.
                 <groupId>com.h3xstream.findsecbugs</groupId>
                 <artifactId>findsecbugs-plugin</artifactId>
                 <version>${findsecbugs.version}</version>
+                <scope>test</scope>
               </plugin>
             </plugins>
           </configuration>
