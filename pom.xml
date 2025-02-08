@@ -297,9 +297,7 @@ under the License.
               </includes>
             </configuration>
           </execution>
-          <!--
-              Tests logging through the Log4j 2 API.
-            -->
+          <!-- Tests logging through the Log4j 2 API. -->
           <execution>
             <id>log4j-test</id>
             <goals>
@@ -326,9 +324,7 @@ under the License.
               </systemPropertyVariables>
             </configuration>
           </execution>
-          <!--
-              Tests logging through the Log4j 2 API for 1.2.
-            -->
+          <!-- Tests logging through the Log4j 2 API for 1.2. -->
           <execution>
             <id>log4j12-test</id>
             <goals>
@@ -373,9 +369,7 @@ under the License.
               </systemPropertyVariables>
             </configuration>
           </execution>
-          <!--
-              Tests falling back to the SLF4J API, when the Log4j API is absent.
-          -->
+          <!-- Tests falling back to the SLF4J API, when the Log4j API is absent. -->
           <execution>
             <id>slf4j-test</id>
             <goals>
@@ -398,9 +392,7 @@ under the License.
               </includes>
             </configuration>
           </execution>
-          <!--
-              Tests falling back to the SLF4J API, when the Log4j API is present, but redirected to SLF4J.
-          -->
+          <!-- Tests falling back to the SLF4J API, when the Log4j API is present, but redirected to SLF4J. -->
           <execution>
             <id>log4j-to-slf4j-test</id>
             <goals>
@@ -499,9 +491,7 @@ under the License.
             </plugins>
           </configuration>
       </plugin>
-      <!--
-          Ban Commons Logging clones
-        -->
+      <!-- Ban Commons Logging clones. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
