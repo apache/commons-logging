@@ -935,7 +935,7 @@ public abstract class LogFactory {
     /**
      * Given a URL that refers to a .properties file, load that file.
      * This is done under an AccessController so that this method will
-     * succeed when this jarfile is privileged but the caller is not.
+     * succeed when this JAR file is privileged but the caller is not.
      * This method must therefore remain private to avoid security issues.
      * <p>
      * {@code Null} is returned if the URL cannot be opened.
