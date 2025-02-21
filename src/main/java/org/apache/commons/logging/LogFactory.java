@@ -41,7 +41,7 @@ import java.util.function.Supplier;
  * configuration features similar to that employed by standard Java APIs
  * such as JAXP.
  * <p>
- * <strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
+ * <strong>IMPLEMENTATION NOTE</strong> - This implementation is
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.
  * </p>
