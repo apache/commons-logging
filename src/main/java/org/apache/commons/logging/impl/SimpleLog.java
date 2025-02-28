@@ -108,6 +108,9 @@ public class SimpleLog implements Log, Serializable {
      * in 1.1.1 to fix an existing thread safety bug (SimpleDateFormat.format
      * is not thread-safe).
      * </p>
+     * <p>
+     * Statically initialized to a {@link SimpleDateFormat}.
+     * </p>
      */
     static protected DateFormat dateFormatter;
 
@@ -142,20 +145,13 @@ public class SimpleLog implements Log, Serializable {
         } catch (final IOException ignore) {
             // Ignore
         }
-
         showLogName = getBooleanProperty(systemPrefix + "showlogname", showLogName);
         showShortName = getBooleanProperty(systemPrefix + "showShortLogname", showShortName);
         showDateTime = getBooleanProperty(systemPrefix + "showdatetime", showDateTime);
-
         if (showDateTime) {
-            dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat", dateTimeFormat);
-            try {
-                dateFormatter = new SimpleDateFormat(dateTimeFormat);
-            } catch (final IllegalArgumentException e) {
-                // If the format pattern is invalid - use the default format
-                dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
-                dateFormatter = new SimpleDateFormat(dateTimeFormat);
-            }
+            SimpleDateFormat simpleDateFormatter = getSimpleDateFormat();
+            dateFormatter = simpleDateFormatter;
+            dateTimeFormat = simpleDateFormatter.toPattern();
         }
     }
 
@@ -208,6 +204,15 @@ public class SimpleLog implements Log, Serializable {
             }
             return ClassLoader.getSystemResourceAsStream(name);
         });
+    }
+
+    private static SimpleDateFormat getSimpleDateFormat() {
+        try {
+            return  new SimpleDateFormat(getStringProperty(systemPrefix + "dateTimeFormat", dateTimeFormat));
+        } catch (final IllegalArgumentException e) {
+            // If the format pattern is invalid - use the default format
+            return  new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
+        }
     }
 
     private static String getStringProperty(final String name) {
