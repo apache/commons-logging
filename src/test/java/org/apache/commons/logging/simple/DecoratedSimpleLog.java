@@ -24,10 +24,8 @@ import java.util.List;
 import org.apache.commons.logging.impl.SimpleLog;
 
 /**
- * <p>Decorated instance of SimpleLog to expose internal state and
- * support buffered output.</p>
+ * Decorated instance of SimpleLog to expose internal state and support buffered output.
  */
-
 public class DecoratedSimpleLog extends SimpleLog {
 
     /**
@@ -35,7 +33,7 @@ public class DecoratedSimpleLog extends SimpleLog {
      */
     private static final long serialVersionUID = 196544280770017153L;
 
-    // Cache of logged records
+    /** Cache of logged records. */
     protected ArrayList<LogRecord> cache = new ArrayList<>();
 
     public DecoratedSimpleLog(final String name) {
@@ -75,10 +73,7 @@ public class DecoratedSimpleLog extends SimpleLog {
     // Cache logged messages
     @Override
     protected void log(final int type, final Object message, final Throwable t) {
-
         super.log(type, message, t);
         cache.add(new LogRecord(type, message, t));
-
     }
-
 }
