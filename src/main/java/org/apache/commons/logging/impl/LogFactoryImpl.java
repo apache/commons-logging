@@ -198,7 +198,7 @@ public class LogFactoryImpl extends LogFactory {
     }
 
     /**
-     * Read the specified system property, using an AccessController so that
+     * Reads the specified system property, using an AccessController so that
      * the property can be read if JCL has been granted the appropriate
      * security rights even if the calling code has not.
      * <p>
