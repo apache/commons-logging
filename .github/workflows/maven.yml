@@ -31,7 +31,7 @@ jobs:
         java: [ 8, 11, 17, 21, 24 ]
         experimental: [false]
         include:
-            - java: 25-ea
+            - java: 26-ea
               experimental: true
 
     steps:
