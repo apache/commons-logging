@@ -19,6 +19,7 @@ package org.apache.commons.logging;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -129,7 +130,7 @@ public class PathableClassLoader extends URLClassLoader {
                 }
                 addURL(file.toURI().toURL());
                 return;
-            } catch (final java.net.MalformedURLException e) {
+            } catch (final MalformedURLException e) {
                 throw new UnknownError(
                     "Invalid file [" + fileName + "] for logical lib [" + logicalLib + "]");
             }
