@@ -127,7 +127,7 @@ public class PathableClassLoader extends URLClassLoader {
                 if (!file.exists()) {
                     Assert.fail("Unable to add logical library " + fileName);
                 }
-                addURL(file.toURL());
+                addURL(file.toURI().toURL());
                 return;
             } catch (final java.net.MalformedURLException e) {
                 throw new UnknownError(
