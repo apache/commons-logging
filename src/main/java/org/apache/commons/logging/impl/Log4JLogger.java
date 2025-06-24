@@ -52,7 +52,7 @@ public class Log4JLogger implements Log, Serializable {
     /** The fully qualified name of the Log4JLogger class. */
     private static final String FQCN = Log4JLogger.class.getName();
 
-    private static final Priority traceLevel;
+    private static final Priority TRACE_LEVEL;
 
     //
     // Note that this must come after the static variable declarations
@@ -69,19 +69,17 @@ public class Log4JLogger implements Log, Serializable {
             // nope, this is Log4j 1.3, so force an ExceptionInInitializerError
             throw new InstantiationError("Log4J 1.2 not available");
         }
-
         // Releases of Log4j 1.2 >= 1.2.12 have Priority.TRACE available, earlier
         // versions do not. If TRACE is not available, then we have to map
         // calls to Log.trace(...) onto the DEBUG level.
-
-        Priority _traceLevel;
+        Priority traceLevel;
         try {
-            _traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
+            traceLevel = (Priority) Level.class.getDeclaredField("TRACE").get(null);
         } catch (final Exception ex) {
             // ok, trace not available
-            _traceLevel = Level.DEBUG;
+            traceLevel = Level.DEBUG;
         }
-        traceLevel = _traceLevel;
+        TRACE_LEVEL = traceLevel;
     }
 
     /** Log to this logger */
@@ -104,8 +102,7 @@ public class Log4JLogger implements Log, Serializable {
      */
     public Log4JLogger(final Logger logger) {
         if (logger == null) {
-            throw new IllegalArgumentException(
-                "Warning - null logger in constructor; possible Log4j misconfiguration.");
+            throw new IllegalArgumentException("Warning - null logger in constructor; possible Log4j misconfiguration.");
         }
         this.name = logger.getName();
         this.logger = logger;
@@ -270,7 +267,7 @@ public class Log4JLogger implements Log, Serializable {
      */
     @Override
     public boolean isTraceEnabled() {
-        return getLogger().isEnabledFor(traceLevel);
+        return getLogger().isEnabledFor(TRACE_LEVEL);
     }
 
     /**
@@ -291,7 +288,7 @@ public class Log4JLogger implements Log, Serializable {
      */
     @Override
     public void trace(final Object message) {
-        getLogger().log(FQCN, traceLevel, message, null);
+        getLogger().log(FQCN, TRACE_LEVEL, message, null);
     }
 
     /**
@@ -305,7 +302,7 @@ public class Log4JLogger implements Log, Serializable {
      */
     @Override
     public void trace(final Object message, final Throwable t) {
-        getLogger().log(FQCN, traceLevel, message, t);
+        getLogger().log(FQCN, TRACE_LEVEL, message, t);
     }
 
     /**
