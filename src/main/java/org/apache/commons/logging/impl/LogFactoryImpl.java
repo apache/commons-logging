@@ -147,7 +147,7 @@ public class LogFactoryImpl extends LogFactory {
      * other error indicates that the underlying logging library is available
      * but broken/unusable for some reason.
      */
-    private static final String[] classesToDiscover = {
+    private static final String[] DISCOVER_CLASSES = {
             LOGGING_IMPL_JDK14_LOGGER,
             LOGGING_IMPL_SIMPLE_LOGGER
     };
@@ -494,32 +494,23 @@ public class LogFactoryImpl extends LogFactory {
      * or if no adapter at all can be instantiated
      */
     private Log discoverLogImplementation(final String logCategory)
-        throws LogConfigurationException {
+            throws LogConfigurationException {
         if (isDiagnosticsEnabled()) {
             logDiagnostic("Discovering a Log implementation...");
         }
-
         initConfiguration();
-
         Log result = null;
-
         // See if the user specified the Log implementation to use
         final String specifiedLogClassName = findUserSpecifiedLogClassName();
-
         if (specifiedLogClassName != null) {
             if (isDiagnosticsEnabled()) {
-                logDiagnostic("Attempting to load user-specified log class '" +
-                    specifiedLogClassName + "'...");
+                logDiagnostic("Attempting to load user-specified log class '" + specifiedLogClassName + "'...");
             }
-
-            result = createLogFromClass(specifiedLogClassName,
-                                        logCategory,
-                                        true);
+            result = createLogFromClass(specifiedLogClassName, logCategory, true);
             if (result == null) {
-                final StringBuilder messageBuffer =  new StringBuilder("User-specified log class '");
+                final StringBuilder messageBuffer = new StringBuilder("User-specified log class '");
                 messageBuffer.append(specifiedLogClassName);
                 messageBuffer.append("' cannot be found or is not useable.");
-
                 // Mistyping or misspelling names is a common fault.
                 // Construct a good error message, if we can
                 informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_LOG4J_LOGGER);
@@ -528,23 +519,21 @@ public class LogFactoryImpl extends LogFactory {
                 informUponSimilarName(messageBuffer, specifiedLogClassName, LOGGING_IMPL_SIMPLE_LOGGER);
                 throw new LogConfigurationException(messageBuffer.toString());
             }
-
             return result;
         }
-
         // No user specified log; try to discover what's on the classpath
         //
         // Note that we deliberately loop here over classesToDiscover and
         // expect method createLogFromClass to loop over the possible source
         // class loaders. The effect is:
-        //   for each discoverable log adapter
-        //      for each possible class loader
-        //          see if it works
+        // for each discoverable log adapter
+        // for each possible class loader
+        // see if it works
         //
         // It appears reasonable at first glance to do the opposite:
-        //   for each possible class loader
-        //     for each discoverable log adapter
-        //        see if it works
+        // for each possible class loader
+        // for each discoverable log adapter
+        // see if it works
         //
         // The latter certainly has advantages for user-installable logging
         // libraries such as Log4j; in a webapp for example this code should
@@ -559,21 +548,15 @@ public class LogFactoryImpl extends LogFactory {
         // in a webapp should use a commons-logging.properties file or a
         // service file in META-INF to force use of that logging lib anyway,
         // rather than relying on discovery.
-
         if (isDiagnosticsEnabled()) {
-            logDiagnostic(
-                "No user-specified Log implementation; performing discovery" +
-                " using the standard supported logging implementations...");
+            logDiagnostic("No user-specified Log implementation; performing discovery" + " using the standard supported logging implementations...");
         }
-        for(int i=0; i<classesToDiscover.length && result == null; ++i) {
-            result = createLogFromClass(classesToDiscover[i], logCategory, true);
+        for (int i = 0; i < DISCOVER_CLASSES.length && result == null; ++i) {
+            result = createLogFromClass(DISCOVER_CLASSES[i], logCategory, true);
         }
-
         if (result == null) {
-            throw new LogConfigurationException
-                        ("No suitable Log implementation");
+            throw new LogConfigurationException("No suitable Log implementation");
         }
-
         return result;
     }
 
