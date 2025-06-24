@@ -136,12 +136,8 @@ public final class WeakHashtable extends Hashtable {
             boolean result = false;
             if (o instanceof Map.Entry) {
                 final Map.Entry entry = (Map.Entry) o;
-                result =    (getKey()==null ?
-                                            entry.getKey() == null :
-                                            getKey().equals(entry.getKey())) &&
-                            (getValue()==null ?
-                                            entry.getValue() == null :
-                                            getValue().equals(entry.getValue()));
+                result = (getKey() == null ? entry.getKey() == null : getKey().equals(entry.getKey()))
+                        && (getValue() == null ? entry.getValue() == null : getValue().equals(entry.getValue()));
             }
             return result;
         }
@@ -158,8 +154,7 @@ public final class WeakHashtable extends Hashtable {
 
         @Override
         public int hashCode() {
-            return (getKey()==null ? 0 : getKey().hashCode()) ^
-                (getValue()==null ? 0 : getValue().hashCode());
+            return (getKey() == null ? 0 : getKey().hashCode()) ^ (getValue() == null ? 0 : getValue().hashCode());
         }
 
         @Override
@@ -172,7 +167,7 @@ public final class WeakHashtable extends Hashtable {
     private final static class Referenced {
 
         private final WeakReference reference;
-        private final int           hashCode;
+        private final int hashCode;
 
         /**
          *
@@ -182,7 +177,7 @@ public final class WeakHashtable extends Hashtable {
             reference = new WeakReference(referant);
             // Calc a permanent hashCode so calls to Hashtable.remove()
             // work if the WeakReference has been cleared
-            hashCode  = referant.hashCode();
+            hashCode = referant.hashCode();
         }
 
         /**
@@ -193,8 +188,7 @@ public final class WeakHashtable extends Hashtable {
             reference = new WeakKey(key, queue, this);
             // Calc a permanent hashCode so calls to Hashtable.remove()
             // work if the WeakReference has been cleared
-            hashCode  = key.hashCode();
-
+            hashCode = key.hashCode();
         }
 
         @Override
@@ -206,7 +200,6 @@ public final class WeakHashtable extends Hashtable {
                 final Object otherKeyValue = otherKey.getValue();
                 if (thisKeyValue == null) {
                     result = otherKeyValue == null;
-
                     // Since our hash code was calculated from the original
                     // non-null referant, the above check breaks the
                     // hash code/equals contract, as two cleared Referenced
@@ -218,9 +211,7 @@ public final class WeakHashtable extends Hashtable {
                     // and Hashtable does not do equality checks between
                     // existing keys, normal hash table operations should never
                     // result in an equals comparison between null referants
-                }
-                else
-                {
+                } else {
                     result = thisKeyValue.equals(otherKeyValue);
                 }
             }
@@ -246,9 +237,7 @@ public final class WeakHashtable extends Hashtable {
 
         private final Referenced referenced;
 
-        private WeakKey(final Object key,
-                        final ReferenceQueue queue,
-                        final Referenced referenced) {
+        private WeakKey(final Object key, final ReferenceQueue queue, final Referenced referenced) {
             super(key, queue);
             this.referenced = referenced;
         }
@@ -256,7 +245,7 @@ public final class WeakHashtable extends Hashtable {
         private Referenced getReferenced() {
             return referenced;
         }
-     }
+    }
 
     /** Serializable version identifier. */
     private static final long serialVersionUID = -1546036869799732453L;
@@ -271,7 +260,7 @@ public final class WeakHashtable extends Hashtable {
      * The maximum number of times put() or remove() can be called before
      * the map will be purged of one cleared entry.
      */
-    private static final int PARTIAL_PURGE_COUNT     = 10;
+    private static final int PARTIAL_PURGE_COUNT = 10;
 
     /** ReferenceQueue we check for GC'd keys. */
     private final transient ReferenceQueue queue = new ReferenceQueue();
@@ -283,7 +272,9 @@ public final class WeakHashtable extends Hashtable {
      * Constructs a WeakHashtable with the Hashtable default
      * capacity and load factor.
      */
-    public WeakHashtable() {}
+    public WeakHashtable() {
+        // empty
+    }
 
     /**
      *@see Hashtable
@@ -291,8 +282,7 @@ public final class WeakHashtable extends Hashtable {
     @Override
     public boolean containsKey(final Object key) {
         // purge should not be required
-        final Referenced referenced = new Referenced(key);
-        return super.containsKey(referenced);
+        return super.containsKey(new Referenced(key));
     }
 
     /**
@@ -331,8 +321,7 @@ public final class WeakHashtable extends Hashtable {
     @Override
     public Object get(final Object key) {
         // for performance reasons, no purge
-        final Referenced referenceKey = new Referenced(key);
-        return super.get(referenceKey);
+        return super.get(new Referenced(key));
     }
 
     /**
@@ -387,14 +376,13 @@ public final class WeakHashtable extends Hashtable {
      * have been garbage collected.
      */
     private void purge() {
-        final List toRemove = new ArrayList();
+        final List toRemove = new ArrayList<>();
         synchronized (queue) {
             WeakKey key;
             while ((key = (WeakKey) queue.poll()) != null) {
                 toRemove.add(key.getReferenced());
             }
         }
-
         // LOGGING-119: do the actual removal of the keys outside the sync block
         // to prevent deadlock scenarios as purge() may be called from
         // non-synchronized methods too
@@ -425,7 +413,6 @@ public final class WeakHashtable extends Hashtable {
         // check for nulls, ensuring semantics match superclass
         Objects.requireNonNull(key, "key");
         Objects.requireNonNull(value, "value");
-
         // for performance reasons, only purge every
         // MAX_CHANGES_BEFORE_PURGE times
         if (changeCount++ > MAX_CHANGES_BEFORE_PURGE) {
@@ -436,7 +423,6 @@ public final class WeakHashtable extends Hashtable {
         else if (changeCount % PARTIAL_PURGE_COUNT == 0) {
             purgeOne();
         }
-
         final Referenced keyRef = new Referenced(key, queue);
         return super.put(keyRef, value);
     }
