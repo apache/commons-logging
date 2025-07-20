@@ -538,7 +538,7 @@ public class LogFactoryImpl extends LogFactory {
         // service file in META-INF to force use of that logging lib anyway,
         // rather than relying on discovery.
         if (isDiagnosticsEnabled()) {
-            logDiagnostic("No user-specified Log implementation; performing discovery" + " using the standard supported logging implementations...");
+            logDiagnostic("No user-specified Log implementation; performing discovery using the standard supported logging implementations...");
         }
         for (int i = 0; i < DISCOVER_CLASSES.length && result == null; ++i) {
             result = createLogFromClass(DISCOVER_CLASSES[i], logCategory, true);

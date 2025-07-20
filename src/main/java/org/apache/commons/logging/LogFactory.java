@@ -336,7 +336,7 @@ public abstract class LogFactory {
                     if (classLoader == thisClassLoaderRef.get()) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Class '" + factoryClassName + "' cannot be loaded" + " via class loader " + objectId(classLoader)
+                            logDiagnostic("Class '" + factoryClassName + "' cannot be loaded via class loader " + objectId(classLoader)
                                     + " - it depends on some other class that cannot be found.");
                         }
                         throw e;
@@ -621,7 +621,7 @@ public abstract class LogFactory {
                             priority = Double.parseDouble(priorityStr);
                         }
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP] Properties file found at '" + url + "'" + " with priority " + priority);
+                            logDiagnostic("[LOOKUP] Properties file found at '" + url + "' with priority " + priority);
                         }
                     } else {
                         final String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
@@ -631,15 +631,15 @@ public abstract class LogFactory {
                         }
                         if (newPriority > priority) {
                             if (isDiagnosticsEnabled()) {
-                                logDiagnostic("[LOOKUP] Properties file at '" + url + "'" + " with priority " + newPriority + " overrides file at '" + propsUrl
-                                        + "'" + " with priority " + priority);
+                                logDiagnostic("[LOOKUP] Properties file at '" + url + "' with priority " + newPriority + " overrides file at '" + propsUrl
+                                        + "' with priority " + priority);
                             }
                             propsUrl = url;
                             props = newProps;
                             priority = newPriority;
                         } else if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP] Properties file at '" + url + "'" + " with priority " + newPriority + " does not override file at '"
-                                    + propsUrl + "'" + " with priority " + priority);
+                            logDiagnostic("[LOOKUP] Properties file at '" + url + "' with priority " + newPriority + " does not override file at '"
+                                    + propsUrl + "' with priority " + priority);
                         }
                     }
 
@@ -799,7 +799,7 @@ public abstract class LogFactory {
                 logDiagnostic(() -> "[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
             }
         } catch (final SecurityException e) {
-            logDiagnostic(() -> "[LOOKUP] A security exception occurred while trying to create an instance of the custom factory class" + ": ["
+            logDiagnostic(() -> "[LOOKUP] A security exception occurred while trying to create an instance of the custom factory class: ["
                     + trim(e.getMessage()) + "]. Trying alternative implementations...");
             // ignore
         } catch (final RuntimeException e) {

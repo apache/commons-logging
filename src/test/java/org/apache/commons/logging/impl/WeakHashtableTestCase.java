@@ -39,7 +39,7 @@ public class WeakHashtableTestCase extends TestCase {
         @Override
         public void run() {
             for (int i = 0; i < RUN_LOOPS; i++) {
-                hashtable.put("key" + ":" + i % 10, Boolean.TRUE);
+                hashtable.put("key:" + i % 10, Boolean.TRUE);
                 if (i % 50 == 0) {
                     yield();
                 }
