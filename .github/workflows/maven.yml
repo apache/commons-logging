@@ -28,10 +28,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ 8, 11, 17, 21, 24 ]
+        java: [ 8, 11, 17, 21, 25 ]
         experimental: [false]
         include:
-            - java: 25-ea
+            - java: 26-ea
               experimental: true
 
     steps:
