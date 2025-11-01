@@ -264,7 +264,7 @@ public class WeakHashtableTestCase extends TestCase {
     }
 
     /**
-     * Disabled this test as it makes wrong assumptions wrt the GC.
+     * Disabled this test as it makes wrong assumptions with regard to the GC.
      * This test especially fails with:
      *
      * Java(TM) SE Runtime Environment (build pxi3260sr12-20121025_01(SR12))
