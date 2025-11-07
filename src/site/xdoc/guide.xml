@@ -392,7 +392,7 @@ The general principles are fairly clear.Enterprise practices are a bit more invo
 and it is not always as clear as to why they are important.
         </p>
             <p>
-Enterprise best-practice principles apply to middleware components
+Enterprise best practice principles apply to middleware components
 and tooling that is expected to execute in an "Enterprise" level
 environment.
 These issues relate to Logging as Internationalization,
