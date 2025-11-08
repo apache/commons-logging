@@ -226,7 +226,7 @@ public abstract class LogFactory {
      * </ul>
      * Note that {@code factories} is a <em>Hashtable</em> (not a HashMap),
      * and hash tables don't allow null as a key.
-     * @deprecated since 1.1.2
+     * @deprecated Since 1.1.2
      */
     @Deprecated
     protected static volatile LogFactory nullClassLoaderFactory;
