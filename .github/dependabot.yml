@@ -20,6 +20,10 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
+    ignore:
+      # post-1.3 versions require Java 11
+      - dependency-name: "ch.qos.logback:logback-*"
+        versions: "[1.4,)"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
