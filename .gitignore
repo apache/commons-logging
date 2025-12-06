@@ -30,3 +30,7 @@
 ### VS Code ###
 .vscode/
 /.DS_Store
+
+# NetBeans files
+nb-configuration.xml
+nbactions.xml
