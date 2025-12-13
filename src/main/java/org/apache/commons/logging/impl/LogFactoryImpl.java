@@ -923,9 +923,9 @@ public class LogFactoryImpl extends LogFactory {
      * </p>
      * <ol>
      * <li>the specific class just doesn't implement the Log interface
-     *     (user screwed up), or
+     *     (user screwed up), or</li>
      * <li> the specified class has bound to a Log class loaded by some other
-     *      class loader; Log@ClassLoaderX cannot be cast to Log@ClassLoaderY.
+     *      class loader; Log@ClassLoaderX cannot be cast to Log@ClassLoaderY.</li>
      * </ol>
      * <p>
      * Here we try to figure out which case has occurred so we can give the
