@@ -149,7 +149,7 @@ public class SimpleLog implements Log, Serializable {
         showShortName = getBooleanProperty(systemPrefix + "showShortLogname", showShortName);
         showDateTime = getBooleanProperty(systemPrefix + "showdatetime", showDateTime);
         if (showDateTime) {
-            SimpleDateFormat simpleDateFormatter = getSimpleDateFormat();
+            final SimpleDateFormat simpleDateFormatter = getSimpleDateFormat();
             dateFormatter = simpleDateFormatter;
             dateTimeFormat = simpleDateFormatter.toPattern();
         }
