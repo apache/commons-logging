@@ -775,7 +775,7 @@ public abstract class LogFactory {
                     useTccl = false;
                 }
             } catch (final ClassNotFoundException ignored) {
-                logDiagnostic(() -> "The class " + LogFactory.class.getName() + " is not present in the the context class loader "
+                logDiagnostic(() -> "The class " + LogFactory.class.getName() + " is not present in the context class loader "
                         + objectId(contextClassLoader) + ". Disabling the usage of the context class loader."
                         + "Background can be found in https://commons.apache.org/logging/tech.html. ");
                 logHierarchy("[BAD CL TREE] ", contextClassLoader);
