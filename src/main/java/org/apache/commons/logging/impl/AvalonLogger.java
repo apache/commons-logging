@@ -210,6 +210,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.debug} enabled?
+     *
      * @see org.apache.commons.logging.Log#isDebugEnabled()
      */
     @Override
@@ -219,6 +220,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.error} enabled?
+     *
      * @see org.apache.commons.logging.Log#isErrorEnabled()
      */
     @Override
@@ -228,6 +230,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.fatalError} enabled?
+     *
      * @see org.apache.commons.logging.Log#isFatalEnabled()
      */
     @Override
@@ -237,6 +240,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.info} enabled?
+     *
      * @see org.apache.commons.logging.Log#isInfoEnabled()
      */
     @Override
@@ -246,6 +250,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.debug} enabled?
+     *
      * @see org.apache.commons.logging.Log#isTraceEnabled()
      */
     @Override
@@ -255,6 +260,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.warn} enabled?
+     *
      * @see org.apache.commons.logging.Log#isWarnEnabled()
      */
     @Override

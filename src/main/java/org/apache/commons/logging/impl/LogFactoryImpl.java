@@ -1009,6 +1009,7 @@ public class LogFactoryImpl extends LogFactory {
 
     /**
      * Appends message if the given name is similar to the candidate.
+     *
      * @param messageBuffer {@code StringBuffer} the message should be appended to,
      * not null
      * @param name the (trimmed) name to be test against the candidate, not null

@@ -226,6 +226,7 @@ public abstract class LogFactory {
      * </ul>
      * Note that {@code factories} is a <em>Hashtable</em> (not a HashMap),
      * and hash tables don't allow null as a key.
+     *
      * @deprecated Since 1.1.2
      */
     @Deprecated
@@ -1044,6 +1045,7 @@ public abstract class LogFactory {
      * <strong>Usage:</strong> to diagnose whether a class loader conflict is the cause
      * of incompatibility. The test used is whether the class is assignable from
      * the {@code LogFactory} class loaded by the class's class loader.
+     *
      * @param logFactoryClass {@code Class} which may implement {@code LogFactory}
      * @return true if the {@code logFactoryClass} does extend
      * {@code LogFactory} when that class is loaded via the same
@@ -1271,6 +1273,7 @@ public abstract class LogFactory {
      * Logs diagnostic messages about the given class loader
      * and it's hierarchy. The prefix is prepended to the message
      * and is intended to make it easier to understand the logs.
+     *
      * @param prefix
      * @param classLoader
      */
@@ -1405,6 +1408,7 @@ public abstract class LogFactory {
      * <p>
      *     We assume that {@code classLoader} can load this class.
      * </p>
+     *
      * @param classLoader The classloader to use.
      * @return An implementation of this class.
      */
