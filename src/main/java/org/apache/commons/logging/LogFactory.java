@@ -894,9 +894,9 @@ public abstract class LogFactory {
             factory = newFactory(FACTORY_DEFAULT, thisClassLoaderRef.get(), contextClassLoader);
         }
         if (factory != null) {
-            /**
-             * Always cache using context class loader.
-             */
+            //
+            // Always cache using context class loader.
+            //
             cacheFactory(contextClassLoader, factory);
             if (props != null) {
                 final Enumeration<?> names = props.propertyNames();
