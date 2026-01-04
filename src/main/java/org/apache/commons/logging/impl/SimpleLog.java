@@ -116,14 +116,19 @@ public class SimpleLog implements Log, Serializable {
 
     /** "Trace" level logging. */
     public static final int LOG_LEVEL_TRACE  = 1;
+
     /** "Debug" level logging. */
     public static final int LOG_LEVEL_DEBUG  = 2;
+
     /** "Info" level logging. */
     public static final int LOG_LEVEL_INFO   = 3;
+
     /** "Warn" level logging. */
     public static final int LOG_LEVEL_WARN   = 4;
+
     /** "Error" level logging. */
     public static final int LOG_LEVEL_ERROR  = 5;
+
     /** "Fatal" level logging. */
     public static final int LOG_LEVEL_FATAL  = 6;
 
@@ -174,6 +179,7 @@ public class SimpleLog implements Log, Serializable {
         try {
             classLoader = Thread.currentThread().getContextClassLoader();
         } catch (final RuntimeException e) {
+
             /**
              * getContextClassLoader() throws SecurityException when the context class loader isn't an ancestor of the calling class's class loader, or if
              * security permissions are restricted.
@@ -228,6 +234,7 @@ public class SimpleLog implements Log, Serializable {
         final String prop = getStringProperty(name);
         return prop == null ? defaultValue : prop;
     }
+
     /** The name of this simple log instance */
     protected volatile String logName;
 

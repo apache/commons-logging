@@ -20,6 +20,7 @@ public class LogTestCase extends AbstractLogTest {
 
     @Override
     public Log getLogObject() {
+
         /**
          * Pickup whatever is found/configured!
          */
