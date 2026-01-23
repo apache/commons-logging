@@ -52,7 +52,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Fix malformed Javadoc comments.</action>
       <!-- ADD -->
       <!-- UPDATE -->
-      <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 95 #361, #367, #388, #409, #410.</action>
+      <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump org.apache.commons:commons-parent from 81 to 96 #361, #367, #388, #409, #410.</action>
       <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump org.slf4j:slf4j-api from 2.0.16 to 2.0.17 #344.</action>
       <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump com.h3xstream.findsecbugs:findsecbugs-plugin from 1.13.0 to 1.14.0 #360.</action>
       <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump log4j2.version from 2.24.3 to 2.25.3 #371, #412.</action>
