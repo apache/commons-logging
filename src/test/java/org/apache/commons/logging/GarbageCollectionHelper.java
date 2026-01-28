@@ -17,6 +17,8 @@
 
 package org.apache.commons.logging;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 // after: https://github.com/apache/logging-log4j2/blob/c47e98423b461731f7791fcb9ea1079cd451f365/log4j-core/src/test/java/org/apache/logging/log4j/core/GarbageCollectionHelper.java
 public final class GarbageCollectionHelper implements Closeable, Runnable {
+
     final class GcTask implements Runnable {
         @Override
         public void run() {
@@ -59,18 +62,18 @@ public final class GarbageCollectionHelper implements Closeable, Runnable {
         public void write(final int b) {
         }
     };
+
     private final AtomicBoolean running = new AtomicBoolean();
     private final CountDownLatch latch = new CountDownLatch(1);
-
     private final Thread gcThread = new Thread(new GcTask());
 
     @Override
     public void close() {
         running.set(false);
         try {
-            junit.framework.TestCase.assertTrue("GarbageCollectionHelper did not shut down cleanly",
-                    latch.await(10, TimeUnit.SECONDS));
+            assertTrue(latch.await(10, TimeUnit.SECONDS), "GarbageCollectionHelper did not shut down cleanly");
         } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
     }
