@@ -683,7 +683,7 @@ New Features
                    class loaders that closely simulate the scenario of using
                    commons-logging in a servlet container.
 
-[documentation]    Overall cleanup and correction of the JavaDoc documentation
+[documentation]    Overall cleanup and correction of the Javadoc documentation
                    to correctly reflect the current behavior.  In particular,
                    the default logging implementation (selected if nothing
                    else is configured) is now SimpleLog, not NoOpLog.
