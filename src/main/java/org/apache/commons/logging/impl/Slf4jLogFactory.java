@@ -171,7 +171,7 @@ public final class Slf4jLogFactory extends LogFactory {
 
         @Override
         public void error(final Object message, final Throwable t) {
-            logger.debug(MARKER, String.valueOf(message), t);
+            logger.error(MARKER, String.valueOf(message), t);
         }
 
         @Override
