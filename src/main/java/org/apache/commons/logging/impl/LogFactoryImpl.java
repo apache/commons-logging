@@ -653,8 +653,8 @@ public class LogFactoryImpl extends LogFactory {
             // UnifiedLoaderRepository) this can still work, so if user hasn't
             // forbidden it, just return the contextClassLoader.
             if (!allowFlawedContext) {
-                throw new LogConfigurationException("Bad class loader hierarchy; LogFactoryImpl was loaded via" +
-                        " a class loader that is not related to the current context class loader.");
+                throw new LogConfigurationException(
+                        "Bad class loader hierarchy; LogFactoryImpl was loaded via a class loader that is not related to the current context class loader.");
             }
             if (isDiagnosticsEnabled()) {
                 logDiagnostic(
@@ -672,8 +672,8 @@ public class LogFactoryImpl extends LogFactory {
             // custom class loaders but fail to set the context class loader so
             // we handle those flawed systems anyway.
             if (!allowFlawedContext) {
-                throw new LogConfigurationException("Bad class loader hierarchy; LogFactoryImpl was loaded via" +
-                        " a class loader that is not related to the current context class loader.");
+                throw new LogConfigurationException(
+                        "Bad class loader hierarchy; LogFactoryImpl was loaded via a class loader that is not related to the current context class loader.");
             }
             if (isDiagnosticsEnabled()) {
                 logDiagnostic("Warning: the context class loader is an ancestor of the class loader that loaded LogFactoryImpl; it should be" +
