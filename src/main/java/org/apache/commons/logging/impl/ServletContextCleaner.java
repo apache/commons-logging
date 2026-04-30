@@ -20,8 +20,8 @@ package org.apache.commons.logging.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 import org.apache.commons.logging.LogFactory;
 
@@ -143,3 +143,4 @@ public class ServletContextCleaner implements ServletContextListener {
         // do nothing
     }
 }
+
