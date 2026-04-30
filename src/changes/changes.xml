@@ -50,6 +50,7 @@ The <action> type attribute can be add,update,fix,remove.
       <action dev="ggregory" type="fix" due-to="Gary Gregory">Use the new Apache oak leaf logo.</action>
       <action dev="ggregory" type="fix" due-to="Stanimir Stamenkov, Gary Gregory">Fix broken URLs in website links.</action>
       <!-- ADD -->
+      <action dev="ggregory" type="fix" due-to="Kiril Keranov, Gary Gregory">Add support for Jakarta servlets, see org.apache.commons.logging.jakarta.ServletContextCleaner #419.</action>
       <!-- UPDATE -->
       <action dev="ggregory" type="update" due-to="Gary Gregory">Bump org.apache.commons:commons-parent from 97 to 99.</action>
       <action dev="ggregory" type="update" due-to="Gary Gregory, Dependabot">Bump log4j2.version from 2.25.3 to 2.25.4.</action>
