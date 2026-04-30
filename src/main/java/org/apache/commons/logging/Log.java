@@ -24,6 +24,7 @@ package org.apache.commons.logging;
  * parameter representing the "name" of this Log.
  * <p>
  * The six logging levels used by {@code Log} are (in order):
+ * </p>
  * <ol>
  * <li>trace (the least serious)</li>
  * <li>debug</li>
@@ -32,17 +33,21 @@ package org.apache.commons.logging;
  * <li>error</li>
  * <li>fatal (the most serious)</li>
  * </ol>
+ * <p>
  * The mapping of these log levels to the concepts used by the underlying
  * logging system is implementation dependent.
  * The implementation should ensure, though, that this ordering behaves
  * as expected.
+ * </p>
  * <p>
  * Performance is often a logging concern.
  * By examining the appropriate property,
  * a component can avoid expensive operations (producing information
  * to be logged).
+ * </p>
  * <p>
- * For example,
+ * For example:
+ * </p>
  * <pre>
  *    if (log.isDebugEnabled()) {
  *        ... do something expensive ...
@@ -53,6 +58,7 @@ package org.apache.commons.logging;
  * Configuration of the underlying logging system will generally be done
  * external to the Logging APIs, through whatever mechanism is supported by
  * that system.
+ * </p>
  */
 public interface Log {
 

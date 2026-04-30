@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
  * logging calls to the Avalon logging abstraction: the Logger interface.
  * <p>
  * There are two ways in which this class can be used:
+ * </p>
  * <ul>
  * <li>the instance can be constructed with an Avalon logger
  * (by calling {@link #AvalonLogger(Logger)}). In this case, it acts
@@ -48,6 +49,7 @@ import org.apache.commons.logging.Log;
  * commons-logging, but this never actually worked (a NullPointerException would
  * be thrown as soon as the deserialized object was used), so removing this marker
  * is not considered to be an incompatible change.
+ * </p>
  *
  * @deprecated Scheduled for removal because the Apache Avalon Project has been discontinued.
  */

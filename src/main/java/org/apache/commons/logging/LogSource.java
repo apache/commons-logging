@@ -29,6 +29,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * <p>
  * By default, calling {@code getInstance()} will use the following
  * algorithm:
+ * </p>
  * <ul>
  * <li>If Log4J is available, return an instance of
  *     {@code org.apache.commons.logging.impl.Log4JLogger}.</li>
@@ -39,6 +40,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * </ul>
  * <p>
  * You can change the default behavior in one of two ways:
+ * </p>
  * <ul>
  * <li>On the startup command line, set the system property
  *     {@code org.apache.commons.logging.log} to the name of the
@@ -47,7 +49,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * <li>At runtime, call {@code LogSource.setLogImplementation()}.</li>
  * </ul>
  *
- * @deprecated Use {@link LogFactory} instead - The default factory
+ * @deprecated Use {@link LogFactory} instead. The default factory
  *  implementation performs exactly the same algorithm as this class did
  */
 @Deprecated

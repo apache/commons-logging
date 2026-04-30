@@ -38,11 +38,13 @@ import org.apache.commons.logging.LogFactory;
  * some rare cases where the WeakHashtable approach does not work; in these
  * situations specifying this class as a listener for the web application will
  * ensure that all references held by commons-logging are fully released.
+ * </p>
  * <p>
  * To use this class, configure the webapp deployment descriptor to call
  * this class on webapp undeploy; the contextDestroyed method will tell
  * every accessible LogFactory class that the entry in its map for the
  * current webapp's context class loader should be cleared.
+ * </p>
  *
  * @since 1.1
  */
