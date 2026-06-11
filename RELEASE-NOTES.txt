@@ -1,3 +1,42 @@
+Apache Commons Logging 1.4.0 Release Notes
+------------------------------------------
+
+The Apache Commons Logging team is pleased to announce the release of Apache Commons Logging 1.4.0.
+
+Apache Commons Logging is a thin adapter allowing configurable bridging to other,
+well-known logging systems.
+
+This is a feature and maintenance release. Java 8 or later is required.
+
+Changes in this version
+-----------------------
+
+
+Fixed Bugs
+----------
+
+*               Use the new Apache oak leaf logo. Thanks to Gary Gregory.
+*               Fix broken URLs in website links. Thanks to Stanimir Stamenkov, Gary Gregory.
+*               Add support for Jakarta servlets, see org.apache.commons.logging.jakarta.ServletContextCleaner #419. Thanks to Kiril Keranov, Gary Gregory.
+
+Changes
+-------
+
+*               Bump org.apache.commons:commons-parent from 97 to 102. Thanks to Gary Gregory.
+*               Bump log4j2.version from 2.25.3 to 2.26.0. Thanks to Gary Gregory, Dependabot.
+*               Bump org.slf4j:slf4j-api from 2.0.17 to 2.0.18. Thanks to Gary Gregory, Dependabot.
+
+
+Historical list of changes: https://commons.apache.org/proper/commons-logging/changes.html
+
+Download it from https://commons.apache.org/proper/commons-logging/download_logging.cgi
+
+For complete information on Apache Commons Logging, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons Logging website:
+
+https://commons.apache.org/proper/commons-logging/
+
+-----------------------------------------------------------------------------
 Apache Commons Logging 1.3.6 Release Notes
 ------------------------------------------
 

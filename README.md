@@ -45,7 +45,7 @@ Apache Commons Logging
 
 [![Java CI](https://github.com/apache/commons-logging/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/commons-logging/commons-logging?label=Maven%20Central)](https://search.maven.org/artifact/commons-logging/commons-logging)
-[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.3.6.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.3.6)
+[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.4.0.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.4.0)
 [![CodeQL](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging)
 
@@ -69,7 +69,7 @@ Alternatively, you can pull it from the central Maven repositories:
 <dependency>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
-  <version>1.3.6</version>
+  <version>1.4.0</version>
 </dependency>
 ```
 
@@ -116,4 +116,5 @@ Additional Resources
 Apache Commons Components
 -------------------------
 
-Please see the [list of components](https://commons.apache.org/components.html)
++ [List of Apache Commons components](https://commons.apache.org/components.html): homepages and documentation for all components.
++ [`REPOSITORIES.md`](https://github.com/apache/commons-parent/blob/master/REPOSITORIES.md): overview of the code repositories and their build status.
