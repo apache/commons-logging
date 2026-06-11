@@ -26,24 +26,17 @@ import jakarta.servlet.ServletContextListener;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * This class is capable of receiving notifications about the undeployment of
- * a webapp, and responds by ensuring that commons-logging releases all
- * memory associated with the undeployed webapp.
+ * This class is capable of receiving notifications about the undeployment of a webapp, and responds by ensuring that commons-logging releases all memory
+ * associated with the undeployed webapp.
  * <p>
- * In general, the WeakHashtable support added in commons-logging release 1.1
- * ensures that logging classes do not hold references that prevent an
- * undeployed webapp's memory from being garbage-collected even when multiple
- * copies of commons-logging are deployed via multiple class loaders (a
- * situation that earlier versions had problems with). However there are
- * some rare cases where the WeakHashtable approach does not work; in these
- * situations specifying this class as a listener for the web application will
- * ensure that all references held by commons-logging are fully released.
+ * In general, we ensurs that logging classes do not hold references that prevent an undeployed webapp's memory from being garbage-collected even when multiple
+ * copies of commons-logging are deployed via multiple class loaders (a situation that earlier versions had problems with). However there are some rare cases
+ * where the this approach does not work; in these situations specifying this class as a listener for the web application will ensure that all
+ * references held by commons-logging are fully released.
  * </p>
  * <p>
- * To use this class, configure the webapp deployment descriptor to call
- * this class on webapp undeploy; the contextDestroyed method will tell
- * every accessible LogFactory class that the entry in its map for the
- * current webapp's context class loader should be cleared.
+ * To use this class, configure the webapp deployment descriptor to call this class on webapp undeploy; the contextDestroyed method will tell every accessible
+ * LogFactory class that the entry in its map for the current webapp's context class loader should be cleared.
  * </p>
  *
  * @since 1.4.0
@@ -60,17 +53,13 @@ public class ServletContextCleaner implements ServletContextListener {
     }
 
     /**
-     * Invoked when a webapp is undeployed, this tells the LogFactory
-     * class to release any logging information related to the current
-     * contextClassloader.
+     * Invoked when a webapp is undeployed, this tells the LogFactory class to release any logging information related to the current contextClassloader.
      */
     @Override
     public void contextDestroyed(final ServletContextEvent sce) {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
-
         final Object[] params = new Object[1];
         params[0] = tccl;
-
         // Walk up the tree of class loaders, finding all the available
         // LogFactory classes and releasing any objects associated with
         // the tccl (ie the webapp).
@@ -93,7 +82,7 @@ public class ServletContextCleaner implements ServletContextListener {
         // and that class calls LogFactory the tccl gets registered in
         // the LogFactory instance that is visible from the ancestor
         // class loader. However the concrete logging library it points
-        // to is expected to have been loaded via the TCCL, so the
+        // to is expected to have been loaded via the TCCL, so the7
         // underlying logging lib is only initialized/configured once.
         // These references from ancestor LogFactory classes down to
         // TCCL class loaders are held via weak references and so should
@@ -130,7 +119,6 @@ public class ServletContextCleaner implements ServletContextListener {
                 loader = null;
             }
         }
-
         // Just to be sure, invoke release on the LogFactory that is visible from
         // this ServletContextCleaner class too. This should already have been caught
         // by the above loop but just in case...
