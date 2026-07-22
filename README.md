@@ -6,7 +6,7 @@
  (the "License"); you may not use this file except in compliance with
  the License.  You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+      https://www.apache.org/licenses/LICENSE-2.0
 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,7 +45,7 @@ Apache Commons Logging
 
 [![Java CI](https://github.com/apache/commons-logging/actions/workflows/maven.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/commons-logging/commons-logging?label=Maven%20Central)](https://search.maven.org/artifact/commons-logging/commons-logging)
-[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.3.5.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.3.5)
+[![Javadocs](https://javadoc.io/badge/commons-logging/commons-logging/1.4.0.svg)](https://javadoc.io/doc/commons-logging/commons-logging/1.4.0)
 [![CodeQL](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/apache/commons-logging/actions/workflows/codeql-analysis.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging/badge)](https://api.securityscorecards.dev/projects/github.com/apache/commons-logging)
 
@@ -69,7 +69,7 @@ Alternatively, you can pull it from the central Maven repositories:
 <dependency>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
-  <version>1.3.5</version>
+  <version>1.4.0</version>
 </dependency>
 ```
 
@@ -90,8 +90,8 @@ There are some guidelines which will make applying PRs easier for us:
 + Respect the existing code style for each file.
 + Create minimal diffs - disable on save actions like reformat source code or organize imports. If you feel the source code should be reformatted create a separate PR for this change.
 + Provide JUnit tests for your changes and make sure your changes don't break any existing tests by running `mvn`.
-+ Before you pushing a PR, run `mvn` (by itself), this runs the default goal, which contains all build checks.
-+ To see the code coverage report, regardless of coverage failures, run `mvn clean site -Dcommons.jacoco.haltOnFailure=false`
++ Before you push a PR, run `mvn` (without arguments). This runs the default goal which contains all build checks.
++ To see the code coverage report, regardless of coverage failures, run `mvn clean site -Dcommons.jacoco.haltOnFailure=false -Pjacoco`
 
 If you plan to contribute on a regular basis, please consider filing a [contributor license agreement](https://www.apache.org/licenses/#clas).
 You can learn more about contributing via GitHub in our [contribution guidelines](CONTRIBUTING.md).
@@ -112,9 +112,9 @@ Additional Resources
 + [Apache Commons Homepage](https://commons.apache.org/)
 + [Apache Issue Tracker (JIRA)](https://issues.apache.org/jira/browse/LOGGING)
 + [Apache Commons Slack Channel](https://the-asf.slack.com/archives/C60NVB8AD)
-+ [Apache Commons Twitter Account](https://twitter.com/ApacheCommons)
 
 Apache Commons Components
 -------------------------
 
-Please see the [list of components](https://commons.apache.org/components.html)
++ [List of Apache Commons components](https://commons.apache.org/components.html): homepages and documentation for all components.
++ [`REPOSITORIES.md`](https://github.com/apache/commons-parent/blob/master/REPOSITORIES.md): overview of the code repositories and their build status.

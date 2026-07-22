@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -108,19 +108,27 @@ public class SimpleLog implements Log, Serializable {
      * in 1.1.1 to fix an existing thread safety bug (SimpleDateFormat.format
      * is not thread-safe).
      * </p>
+     * <p>
+     * Statically initialized to a {@link SimpleDateFormat}.
+     * </p>
      */
     static protected DateFormat dateFormatter;
 
     /** "Trace" level logging. */
     public static final int LOG_LEVEL_TRACE  = 1;
+
     /** "Debug" level logging. */
     public static final int LOG_LEVEL_DEBUG  = 2;
+
     /** "Info" level logging. */
     public static final int LOG_LEVEL_INFO   = 3;
+
     /** "Warn" level logging. */
     public static final int LOG_LEVEL_WARN   = 4;
+
     /** "Error" level logging. */
     public static final int LOG_LEVEL_ERROR  = 5;
+
     /** "Fatal" level logging. */
     public static final int LOG_LEVEL_FATAL  = 6;
 
@@ -136,26 +144,19 @@ public class SimpleLog implements Log, Serializable {
     static {
         // Add props from the resource simplelog.properties
         try (InputStream in = getResourceAsStream("simplelog.properties")) {
-            if (null != in) {
+            if (in != null) {
                 simpleLogProps.load(in);
             }
         } catch (final IOException ignore) {
             // Ignore
         }
-
         showLogName = getBooleanProperty(systemPrefix + "showlogname", showLogName);
         showShortName = getBooleanProperty(systemPrefix + "showShortLogname", showShortName);
         showDateTime = getBooleanProperty(systemPrefix + "showdatetime", showDateTime);
-
         if (showDateTime) {
-            dateTimeFormat = getStringProperty(systemPrefix + "dateTimeFormat", dateTimeFormat);
-            try {
-                dateFormatter = new SimpleDateFormat(dateTimeFormat);
-            } catch (final IllegalArgumentException e) {
-                // If the format pattern is invalid - use the default format
-                dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;
-                dateFormatter = new SimpleDateFormat(dateTimeFormat);
-            }
+            final SimpleDateFormat simpleDateFormatter = getSimpleDateFormat();
+            dateFormatter = simpleDateFormatter;
+            dateTimeFormat = simpleDateFormatter.toPattern();
         }
     }
 
@@ -178,6 +179,7 @@ public class SimpleLog implements Log, Serializable {
         try {
             classLoader = Thread.currentThread().getContextClassLoader();
         } catch (final RuntimeException e) {
+
             /**
              * getContextClassLoader() throws SecurityException when the context class loader isn't an ancestor of the calling class's class loader, or if
              * security permissions are restricted.
@@ -210,6 +212,15 @@ public class SimpleLog implements Log, Serializable {
         });
     }
 
+    private static SimpleDateFormat getSimpleDateFormat() {
+        try {
+            return  new SimpleDateFormat(getStringProperty(systemPrefix + "dateTimeFormat", dateTimeFormat));
+        } catch (final IllegalArgumentException e) {
+            // If the format pattern is invalid - use the default format
+            return  new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
+        }
+    }
+
     private static String getStringProperty(final String name) {
         String prop = null;
         try {
@@ -223,6 +234,7 @@ public class SimpleLog implements Log, Serializable {
         final String prop = getStringProperty(name);
         return prop == null ? defaultValue : prop;
     }
+
     /** The name of this simple log instance */
     protected volatile String logName;
 

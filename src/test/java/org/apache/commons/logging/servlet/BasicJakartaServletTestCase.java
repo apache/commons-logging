@@ -22,13 +22,12 @@ import junit.framework.TestCase;
 
 import org.apache.commons.logging.PathableClassLoader;
 import org.apache.commons.logging.PathableTestSuite;
-import org.apache.commons.logging.impl.ServletContextCleaner;
+import org.apache.commons.logging.jakarta.ServletContextCleaner;
 
 /**
  * Tests for ServletContextCleaner utility class.
  */
-
-public class BasicServletTestCase extends TestCase {
+public class BasicJakartaServletTestCase extends TestCase {
 
     /**
      * Return the tests included in this test suite.
@@ -45,7 +44,7 @@ public class BasicServletTestCase extends TestCase {
         final PathableClassLoader parent = new PathableClassLoader(null);
         parent.useExplicitLoader("junit.", Test.class.getClassLoader());
         parent.addLogicalLib("commons-logging");
-        parent.addLogicalLib("servlet-api");
+        parent.addLogicalLib("jakarta-servlet-api");
 
         final PathableClassLoader child = new PathableClassLoader(parent);
         child.setParentFirst(false);
@@ -56,7 +55,7 @@ public class BasicServletTestCase extends TestCase {
         tccl.setParentFirst(false);
         tccl.addLogicalLib("commons-logging");
 
-        final Class<?> testClass = child.loadClass(BasicServletTestCase.class.getName());
+        final Class<?> testClass = child.loadClass(BasicJakartaServletTestCase.class.getName());
         return new PathableTestSuite(testClass, tccl);
     }
 

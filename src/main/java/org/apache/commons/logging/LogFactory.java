@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,7 @@ import java.util.function.Supplier;
  * configuration features similar to that employed by standard Java APIs
  * such as JAXP.
  * <p>
- * <strong>IMPLEMENTATION NOTE</strong> - This implementation is heavily
+ * <strong>IMPLEMENTATION NOTE</strong> - This implementation is
  * based on the SAXParserFactory and DocumentBuilderFactory implementations
  * (corresponding to the JAXP pluggability APIs) found in Apache Xerces.
  * </p>
@@ -226,7 +226,8 @@ public abstract class LogFactory {
      * </ul>
      * Note that {@code factories} is a <em>Hashtable</em> (not a HashMap),
      * and hash tables don't allow null as a key.
-     * @deprecated since 1.1.2
+     *
+     * @deprecated Since 1.1.2
      */
     @Deprecated
     protected static volatile LogFactory nullClassLoaderFactory;
@@ -336,7 +337,7 @@ public abstract class LogFactory {
                     if (classLoader == thisClassLoaderRef.get()) {
                         // Nothing more to try, onwards.
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("Class '" + factoryClassName + "' cannot be loaded" + " via class loader " + objectId(classLoader)
+                            logDiagnostic("Class '" + factoryClassName + "' cannot be loaded via class loader " + objectId(classLoader)
                                     + " - it depends on some other class that cannot be found.");
                         }
                         throw e;
@@ -489,7 +490,7 @@ public abstract class LogFactory {
      *
      * @throws LogConfigurationException if a suitable class loader
      *  cannot be identified.
-     * @return the thread's context class loader or {@code null} if the Java security
+     * @return The thread's context class loader or {@code null} if the Java security
      *  policy forbids access to the context class loader from one of the classes
      *  in the current call stack.
      * @since 1.1
@@ -521,7 +522,7 @@ public abstract class LogFactory {
      * in JDK1.1, and in embedded systems where jcl-using code is
      * placed in the bootclasspath.
      *
-     * @return the factory associated with the specified class loader if
+     * @return The factory associated with the specified class loader if
      *  one has previously been created, or null if this is the first time
      *  we have seen this particular class loader.
      */
@@ -565,7 +566,7 @@ public abstract class LogFactory {
      * </p>
      *
      * @param clazz Class.
-     * @return a ClassLoader.
+     * @return A ClassLoader.
      * @since 1.1
      */
     protected static ClassLoader getClassLoader(final Class<?> clazz) {
@@ -621,7 +622,7 @@ public abstract class LogFactory {
                             priority = Double.parseDouble(priorityStr);
                         }
                         if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP] Properties file found at '" + url + "'" + " with priority " + priority);
+                            logDiagnostic("[LOOKUP] Properties file found at '" + url + "' with priority " + priority);
                         }
                     } else {
                         final String newPriorityStr = newProps.getProperty(PRIORITY_KEY);
@@ -631,15 +632,15 @@ public abstract class LogFactory {
                         }
                         if (newPriority > priority) {
                             if (isDiagnosticsEnabled()) {
-                                logDiagnostic("[LOOKUP] Properties file at '" + url + "'" + " with priority " + newPriority + " overrides file at '" + propsUrl
-                                        + "'" + " with priority " + priority);
+                                logDiagnostic("[LOOKUP] Properties file at '" + url + "' with priority " + newPriority + " overrides file at '" + propsUrl
+                                        + "' with priority " + priority);
                             }
                             propsUrl = url;
                             props = newProps;
                             priority = newPriority;
                         } else if (isDiagnosticsEnabled()) {
-                            logDiagnostic("[LOOKUP] Properties file at '" + url + "'" + " with priority " + newPriority + " does not override file at '"
-                                    + propsUrl + "'" + " with priority " + priority);
+                            logDiagnostic("[LOOKUP] Properties file at '" + url + "' with priority " + newPriority + " does not override file at '"
+                                    + propsUrl + "' with priority " + priority);
                         }
                     }
 
@@ -672,7 +673,7 @@ public abstract class LogFactory {
      * support for that.
      * </p>
      *
-     * @return the context class loader associated with the current thread,
+     * @return The context class loader associated with the current thread,
      *  or null if security doesn't allow it.
      * @throws LogConfigurationException if there was some weird error while
      *  attempting to get the context class loader.
@@ -690,7 +691,7 @@ public abstract class LogFactory {
      * the entire call stack must have the privilege before the call is
      * allowed.
      *
-     * @return the context class loader associated with the current thread,
+     * @return The context class loader associated with the current thread,
      *  or null if security doesn't allow it.
      * @throws LogConfigurationException if there was some weird error while
      *  attempting to get the context class loader.
@@ -718,7 +719,7 @@ public abstract class LogFactory {
      * <em>NOTE</em> - In a multi-threaded environment it is possible that two different instances will be returned for the same class loader environment.
      * </p>
      *
-     * @return a {@code LogFactory}.
+     * @return A {@code LogFactory}.
      * @throws LogConfigurationException if the implementation class is not available or cannot be instantiated.
      */
     public static LogFactory getFactory() throws LogConfigurationException {
@@ -775,7 +776,7 @@ public abstract class LogFactory {
                     useTccl = false;
                 }
             } catch (final ClassNotFoundException ignored) {
-                logDiagnostic(() -> "The class " + LogFactory.class.getName() + " is not present in the the context class loader "
+                logDiagnostic(() -> "The class " + LogFactory.class.getName() + " is not present in the context class loader "
                         + objectId(contextClassLoader) + ". Disabling the usage of the context class loader."
                         + "Background can be found in https://commons.apache.org/logging/tech.html. ");
                 logHierarchy("[BAD CL TREE] ", contextClassLoader);
@@ -799,7 +800,7 @@ public abstract class LogFactory {
                 logDiagnostic(() -> "[LOOKUP] No system property [" + FACTORY_PROPERTY + "] defined.");
             }
         } catch (final SecurityException e) {
-            logDiagnostic(() -> "[LOOKUP] A security exception occurred while trying to create an instance of the custom factory class" + ": ["
+            logDiagnostic(() -> "[LOOKUP] A security exception occurred while trying to create an instance of the custom factory class: ["
                     + trim(e.getMessage()) + "]. Trying alternative implementations...");
             // ignore
         } catch (final RuntimeException e) {
@@ -885,7 +886,7 @@ public abstract class LogFactory {
             // implementations via the TCCL, we don't try to load the default LogFactory
             // implementation via the context class loader because:
             // * that can cause problems (see comments in newFactory method)
-            // * no-one should be customising the code of the default class
+            // * no-one should be customizing the code of the default class
             // Yes, we do give up the ability for the child to ship a newer
             // version of the LogFactoryImpl class and have it used dynamically
             // by an old LogFactory class in the parent, but that isn't
@@ -893,9 +894,9 @@ public abstract class LogFactory {
             factory = newFactory(FACTORY_DEFAULT, thisClassLoaderRef.get(), contextClassLoader);
         }
         if (factory != null) {
-            /**
-             * Always cache using context class loader.
-             */
+            //
+            // Always cache using context class loader.
+            //
             cacheFactory(contextClassLoader, factory);
             if (props != null) {
                 final Enumeration<?> names = props.propertyNames();
@@ -913,7 +914,7 @@ public abstract class LogFactory {
      * Gets a named logger, without the application having to care about factories.
      *
      * @param clazz Class from which a log name will be derived
-     * @return a named logger.
+     * @return A named logger.
      * @throws LogConfigurationException if a suitable {@code Log} instance cannot be returned
      */
     public static Log getLog(final Class<?> clazz) throws LogConfigurationException {
@@ -925,7 +926,7 @@ public abstract class LogFactory {
      *
      * @param name Logical name of the {@code Log} instance to be returned (the meaning of this name is only known to the underlying logging implementation that
      *             is being wrapped)
-     * @return a named logger.
+     * @return A named logger.
      * @throws LogConfigurationException if a suitable {@code Log} instance cannot be returned
      */
     public static Log getLog(final String name) throws LogConfigurationException {
@@ -935,7 +936,7 @@ public abstract class LogFactory {
     /**
      * Given a URL that refers to a .properties file, load that file.
      * This is done under an AccessController so that this method will
-     * succeed when this jarfile is privileged but the caller is not.
+     * succeed when this JAR file is privileged but the caller is not.
      * This method must therefore remain private to avoid security issues.
      * <p>
      * {@code Null} is returned if the URL cannot be opened.
@@ -1001,7 +1002,7 @@ public abstract class LogFactory {
     }
 
     /**
-     * Read the specified system property, using an AccessController so that
+     * Reads the specified system property, using an AccessController so that
      * the property can be read if JCL has been granted the appropriate
      * security rights even if the calling code has not.
      * <p>
@@ -1025,7 +1026,7 @@ public abstract class LogFactory {
      *   <li>VirtualMachineError</li>
      * </ul>
      *
-     * @param t the Throwable to check
+     * @param t The Throwable to check
      */
     protected static void handleThrowable(final Throwable t) {
         if (t instanceof ThreadDeath) {
@@ -1044,6 +1045,7 @@ public abstract class LogFactory {
      * <strong>Usage:</strong> to diagnose whether a class loader conflict is the cause
      * of incompatibility. The test used is whether the class is assignable from
      * the {@code LogFactory} class loaded by the class's class loader.
+     *
      * @param logFactoryClass {@code Class} which may implement {@code LogFactory}
      * @return true if the {@code logFactoryClass} does extend
      * {@code LogFactory} when that class is loaded via the same
@@ -1271,6 +1273,7 @@ public abstract class LogFactory {
      * Logs diagnostic messages about the given class loader
      * and it's hierarchy. The prefix is prepended to the message
      * and is intended to make it easier to understand the logs.
+     *
      * @param prefix
      * @param classLoader
      */
@@ -1342,7 +1345,7 @@ public abstract class LogFactory {
      *
      * @param factoryClass factory class.
      * @param classLoader class loader.
-     * @return a LogFactory.
+     * @return A LogFactory.
      */
     protected static LogFactory newFactory(final String factoryClass,
                                            final ClassLoader classLoader) {
@@ -1379,7 +1382,7 @@ public abstract class LogFactory {
      * @param factoryClass       Fully qualified name of the {@code LogFactory} implementation class
      * @param classLoader        ClassLoader from which to load this class
      * @param contextClassLoader is the context that this new factory will manage logging for.
-     * @return a new instance of the specified {@code LogFactory}.
+     * @return A new instance of the specified {@code LogFactory}.
      * @throws LogConfigurationException if a suitable instance cannot be created
      * @since 1.1
      */
@@ -1405,6 +1408,7 @@ public abstract class LogFactory {
      * <p>
      *     We assume that {@code classLoader} can load this class.
      * </p>
+     *
      * @param classLoader The classloader to use.
      * @return An implementation of this class.
      */
@@ -1449,7 +1453,7 @@ public abstract class LogFactory {
      * </p>
      *
      * @param obj may be null.
-     * @return a string of form {@code className@hashCode}, or "null" if obj is null.
+     * @return A string of form {@code className@hashCode}, or "null" if obj is null.
      * @since 1.1
      */
     public static String objectId(final Object obj) {
@@ -1525,14 +1529,14 @@ public abstract class LogFactory {
      * or {@code null} if there is no such attribute.
      *
      * @param name Name of the attribute to return
-     * @return the configuration attribute with the specified name.
+     * @return The configuration attribute with the specified name.
      */
     public abstract Object getAttribute(String name);
 
     /**
      * Gets an array containing the names of all currently defined configuration attributes. If there are no such attributes, a zero length array is returned.
      *
-     * @return an array containing the names of all currently defined configuration attributes
+     * @return An array containing the names of all currently defined configuration attributes
      */
     public abstract String[] getAttributeNames();
 
@@ -1540,7 +1544,7 @@ public abstract class LogFactory {
      * Gets a Log for the given class.
      *
      * @param clazz Class for which a suitable Log name will be derived
-     * @return a name from the specified class.
+     * @return A name from the specified class.
      * @throws LogConfigurationException if a suitable {@code Log} instance cannot be returned
      */
     public abstract Log getInstance(Class<?> clazz) throws LogConfigurationException;
@@ -1554,7 +1558,7 @@ public abstract class LogFactory {
      *
      * @param name Logical name of the {@code Log} instance to be returned (the meaning of this name is only known to the underlying logging implementation that
      *             is being wrapped)
-     * @return a {@code Log} instance.
+     * @return A {@code Log} instance.
      * @throws LogConfigurationException if a suitable {@code Log} instance cannot be returned
      */
     public abstract Log getInstance(String name)

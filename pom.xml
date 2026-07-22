@@ -7,7 +7,7 @@ to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+  https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <!--
       Note that due to the special requirements of logging unit-tests, most
       tests are executed in the "integration-test" phase rather than the
@@ -26,13 +26,13 @@ under the License.
   <parent>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-parent</artifactId>
-    <version>78</version>
+    <version>103</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>commons-logging</groupId>
   <artifactId>commons-logging</artifactId>
   <name>Apache Commons Logging</name>
-  <version>1.3.5-SNAPSHOT</version>
+  <version>1.4.1-SNAPSHOT</version>
   <description>Apache Commons Logging is a thin adapter allowing configurable bridging to other,
     well-known logging systems.</description>
   <url>https://commons.apache.org/proper/commons-logging/</url>
@@ -43,25 +43,27 @@ under the License.
     <maven.compiler.target>${commons.logging.javaversion}</maven.compiler.target>
     <commons.componentid>logging</commons.componentid>
     <commons.module.name>org.apache.commons.logging</commons.module.name>
-    <commons.release.version>1.3.5</commons.release.version>
-    <commons.release.next>1.3.6</commons.release.next>
-    <commons.bc.version>1.3.4</commons.bc.version>
+    <commons.release.version>1.4.1</commons.release.version>
+    <commons.release.next>1.4.2</commons.release.next>
+    <commons.bc.version>1.4.0</commons.bc.version>
     <commons.release.isDistModule>true</commons.release.isDistModule>
     <commons.jira.id>LOGGING</commons.jira.id>
     <commons.jira.pid>12310484</commons.jira.pid>
     <!-- The RC version used in the staging repository URL. -->
-    <commons.rc.version>RC2</commons.rc.version>
+    <commons.rc.version>RC1</commons.rc.version>
     <skipSurefireReport>true</skipSurefireReport>
     <!-- Since version 3.2 additional classpath dependencies are allowed. -->
     <commons.failsafe.version>3.2.1</commons.failsafe.version>
     <!-- Allow default test run order to be changed -->
     <failsafe.runorder>filesystem</failsafe.runorder>
-    <log4j2.version>2.24.3</log4j2.version>
-    <logback.version>1.3.14</logback.version>
-    <slf4j.version>2.0.16</slf4j.version>
-    <findsecbugs.version>1.13.0</findsecbugs.version>
+    <log4j2.version>2.26.1</log4j2.version>
+    <logback.version>1.3.16</logback.version>
+    <slf4j.version>2.0.18</slf4j.version>
+    <findsecbugs.version>1.14.0</findsecbugs.version>
+    <jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
     <commons.osgi.import>
       javax.servlet;version="[2.1.0, 5.0.0)";resolution:=optional,
+      jakarta.servlet;version="[4.0.2, 7.0.0)";resolution:=optional,
       org.apache.avalon.framework.logger;version="[4.1.3, 4.1.5]";resolution:=optional,
       org.apache.log;version="[1.0.1, 1.0.1]";resolution:=optional,
       org.apache.log4j;version="[1.2.15, 2.0.0)";resolution:=optional,
@@ -71,7 +73,8 @@ under the License.
       org.slf4j;version="[1.7, 3)";resolution:=optional,
       org.slf4j.spi;version="[1.7, 3)";resolution:=optional
     </commons.osgi.import>
-    <project.build.outputTimestamp>2024-08-19T13:43:35Z</project.build.outputTimestamp>
+    <!-- project.build.outputTimestamp is managed by Maven plugins, see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
+    <project.build.outputTimestamp>2026-06-17T13:39:01Z</project.build.outputTimestamp>
     <!-- JaCoCo: Don't make code coverage worse than: -->
     <commons.jacoco.haltOnFailure>true</commons.jacoco.haltOnFailure>
     <commons.jacoco.classRatio>0.42</commons.jacoco.classRatio>
@@ -91,6 +94,10 @@ under the License.
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/commons-logging</developerConnection>
     <url>https://gitbox.apache.org/repos/asf/commons-logging</url>
   </scm>
+  <ciManagement>
+    <system>GitHub</system>
+    <url>https://github.com/apache/commons-logging/actions</url>
+  </ciManagement>
   <build>
     <!-- TODO spotbugs:check -->
     <defaultGoal>clean verify apache-rat:check japicmp:cmp javadoc:javadoc checkstyle:check pmd:check</defaultGoal>
@@ -270,6 +277,7 @@ under the License.
                 <log4j-api>${org.apache.logging.log4j:log4j-api:jar}</log4j-api>
                 <logkit>${logkit:logkit:jar}</logkit>
                 <servlet-api>${javax.servlet:javax.servlet-api:jar}</servlet-api>
+                <jakarta-servlet-api>${jakarta.servlet:jakarta.servlet-api:jar}</jakarta-servlet-api>
                 <commons-logging>target/${project.build.finalName}.jar</commons-logging>
                 <commons-logging-api>target/${project.build.finalName}-api.jar</commons-logging-api>
                 <commons-logging-adapters>target/${project.build.finalName}-adapters.jar</commons-logging-adapters>
@@ -296,9 +304,7 @@ under the License.
               </includes>
             </configuration>
           </execution>
-          <!--
-              Tests logging through the Log4j 2 API.
-            -->
+          <!-- Tests logging through the Log4j 2 API. -->
           <execution>
             <id>log4j-test</id>
             <goals>
@@ -325,9 +331,7 @@ under the License.
               </systemPropertyVariables>
             </configuration>
           </execution>
-          <!--
-              Tests logging through the Log4j 2 API for 1.2.
-            -->
+          <!-- Tests logging through the Log4j 2 API for 1.2. -->
           <execution>
             <id>log4j12-test</id>
             <goals>
@@ -372,9 +376,7 @@ under the License.
               </systemPropertyVariables>
             </configuration>
           </execution>
-          <!--
-              Tests falling back to the SLF4J API, when the Log4j API is absent.
-          -->
+          <!-- Tests falling back to the SLF4J API, when the Log4j API is absent. -->
           <execution>
             <id>slf4j-test</id>
             <goals>
@@ -397,9 +399,7 @@ under the License.
               </includes>
             </configuration>
           </execution>
-          <!--
-              Tests falling back to the SLF4J API, when the Log4j API is present, but redirected to SLF4J.
-          -->
+          <!-- Tests falling back to the SLF4J API, when the Log4j API is present, but redirected to SLF4J. -->
           <execution>
             <id>log4j-to-slf4j-test</id>
             <goals>
@@ -486,20 +486,18 @@ under the License.
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-          <configuration>
-            <excludeFilterFile>src/conf/spotbugs-excludes.xml</excludeFilterFile>
-            <plugins>
-              <plugin>
-                <groupId>com.h3xstream.findsecbugs</groupId>
-                <artifactId>findsecbugs-plugin</artifactId>
-                <version>${findsecbugs.version}</version>
-              </plugin>
-            </plugins>
-          </configuration>
+        <configuration>
+          <excludeFilterFile>src/conf/spotbugs-excludes.xml</excludeFilterFile>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>${findsecbugs.version}</version>
+            </plugin>
+          </plugins>
+        </configuration>
       </plugin>
-      <!--
-          Ban Commons Logging clones
-        -->
+      <!-- Ban Commons Logging clones. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -584,9 +582,16 @@ under the License.
       <optional>true</optional>
     </dependency>
     <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${jakarta.servlet-api.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.17.0</version>
+      <version>3.20.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -641,16 +646,16 @@ under the License.
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-          <configuration>
-            <excludeFilterFile>src/conf/spotbugs-excludes.xml</excludeFilterFile>
-              <plugins>
-                <plugin>
-                  <groupId>com.h3xstream.findsecbugs</groupId>
-                  <artifactId>findsecbugs-plugin</artifactId>
-                  <version>${findsecbugs.version}</version>
-                </plugin>
-              </plugins>
-          </configuration>
+        <configuration>
+          <excludeFilterFile>src/conf/spotbugs-excludes.xml</excludeFilterFile>
+            <plugins>
+              <plugin>
+                <groupId>com.h3xstream.findsecbugs</groupId>
+                <artifactId>findsecbugs-plugin</artifactId>
+                <version>${findsecbugs.version}</version>
+              </plugin>
+            </plugins>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -758,7 +763,7 @@ under the License.
       <email>ggregory at apache.org</email>
       <url>https://www.garygregory.com</url>
       <organization>The Apache Software Foundation</organization>
-      <organizationUrl>https://www.apache.org/</organizationUrl>      
+      <organizationUrl>https://www.apache.org/</organizationUrl>
       <roles>
         <role>PMC Member</role>
       </roles>

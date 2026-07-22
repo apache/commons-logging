@@ -7,7 +7,7 @@
  (the "License"); you may not use this file except in compliance with
  the License.  You may obtain a copy of the License at
  
-      http://www.apache.org/licenses/LICENSE-2.0
+      https://www.apache.org/licenses/LICENSE-2.0
  
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,9 @@
 
 -->
 
-<document>
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 https://maven.apache.org/xsd/xdoc-2.0.xsd">
 <properties>
 <title>Proposal for Logging Library Package</title>
 </properties>
@@ -51,21 +53,21 @@ implementations.
 
 <p>
 The package should :
+</p>
 <ul>
 <li>Have an API which should be as simple to use as possible</li>
 <li>Provide support for Log4j</li>
 <li>Provide pluggable support for other logging APIs</li>
 </ul>
-</p>
 
 <p>
 Non-goals:
+</p>
 <ul>
 <li>This package will not perform logging itself, except at the most basic
     level.</li>
 <li>We do not seek to become a "standard" API.</li>
 </ul>
-</p>
 
 </subsection>
 <subsection name="(1.5) Interaction With Other Packages">
@@ -83,7 +85,7 @@ Non-goals:
       is selected at runtime).</li>
   <li>Log4J (compile-time dependency only unless this Log
       implementation is selected at runtime)</li>
-  <li><a href="https//sourceforge.net/projects/lumberjack/">Lumberjack</a>
+  <li><a href="https://sourceforge.net/projects/lumberjack/">Lumberjack</a>
       (compile-time dependency only unless this Log
       implementation is selected at runtime)</li>
 </ul>

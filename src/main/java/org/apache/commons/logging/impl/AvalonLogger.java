@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
  * logging calls to the Avalon logging abstraction: the Logger interface.
  * <p>
  * There are two ways in which this class can be used:
+ * </p>
  * <ul>
  * <li>the instance can be constructed with an Avalon logger
  * (by calling {@link #AvalonLogger(Logger)}). In this case, it acts
@@ -48,6 +49,7 @@ import org.apache.commons.logging.Log;
  * commons-logging, but this never actually worked (a NullPointerException would
  * be thrown as soon as the deserialized object was used), so removing this marker
  * is not considered to be an incompatible change.
+ * </p>
  *
  * @deprecated Scheduled for removal because the Apache Avalon Project has been discontinued.
  */
@@ -60,7 +62,7 @@ public class AvalonLogger implements Log {
     /**
      * Sets the ancestral Avalon logger from which the delegating loggers will descend.
      *
-     * @param logger the default avalon logger,
+     * @param logger The default avalon logger,
      * in case there is no logger instance supplied in constructor
      */
     public static void setDefaultLogger(final Logger logger) {
@@ -74,7 +76,7 @@ public class AvalonLogger implements Log {
      * Constructs an {@code AvalonLogger} that outputs to the given
      * {@code Logger} instance.
      *
-     * @param logger the Avalon logger implementation to delegate to
+     * @param logger The Avalon logger implementation to delegate to
      */
     public AvalonLogger(final Logger logger) {
         this.logger = logger;
@@ -84,7 +86,7 @@ public class AvalonLogger implements Log {
      * Constructs an {@code AvalonLogger} that will log to a child
      * of the {@code Logger} set by calling {@link #setDefaultLogger}.
      *
-     * @param name the name of the avalon logger implementation to delegate to
+     * @param name The name of the avalon logger implementation to delegate to
      */
     public AvalonLogger(final String name) {
         Objects.requireNonNull(defaultLogger, "defaultLogger");
@@ -210,6 +212,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.debug} enabled?
+     *
      * @see org.apache.commons.logging.Log#isDebugEnabled()
      */
     @Override
@@ -219,6 +222,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.error} enabled?
+     *
      * @see org.apache.commons.logging.Log#isErrorEnabled()
      */
     @Override
@@ -228,6 +232,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.fatalError} enabled?
+     *
      * @see org.apache.commons.logging.Log#isFatalEnabled()
      */
     @Override
@@ -237,6 +242,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.info} enabled?
+     *
      * @see org.apache.commons.logging.Log#isInfoEnabled()
      */
     @Override
@@ -246,6 +252,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.debug} enabled?
+     *
      * @see org.apache.commons.logging.Log#isTraceEnabled()
      */
     @Override
@@ -255,6 +262,7 @@ public class AvalonLogger implements Log {
 
     /**
      * Is logging to {@code org.apache.avalon.framework.logger.Logger.warn} enabled?
+     *
      * @see org.apache.commons.logging.Log#isWarnEnabled()
      */
     @Override

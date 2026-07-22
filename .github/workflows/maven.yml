@@ -5,7 +5,7 @@
 # (the "License"); you may not use this file except in compliance with
 # the License.  You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#      https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,11 @@
 
 name: Java CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request: {}
 
 permissions:
   contents: read
@@ -26,20 +30,21 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
+      max-parallel: 20
       fail-fast: false
       matrix:
-        java: [ 8, 11, 17, 21, 23 ]
+        java: [ 8, 11, 17, 21, 25 ]
         experimental: [false]
         include:
-            - java: 24-ea
+            - java: 26-ea
               experimental: true
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4.6.0
+      uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # 5.6.0
       with:
         distribution: 'temurin'
         java-version: ${{ matrix.java }}

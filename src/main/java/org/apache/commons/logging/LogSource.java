@@ -6,7 +6,7 @@
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * <p>
  * By default, calling {@code getInstance()} will use the following
  * algorithm:
+ * </p>
  * <ul>
  * <li>If Log4J is available, return an instance of
  *     {@code org.apache.commons.logging.impl.Log4JLogger}.</li>
@@ -39,6 +40,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * </ul>
  * <p>
  * You can change the default behavior in one of two ways:
+ * </p>
  * <ul>
  * <li>On the startup command line, set the system property
  *     {@code org.apache.commons.logging.log} to the name of the
@@ -47,7 +49,7 @@ import org.apache.commons.logging.impl.NoOpLog;
  * <li>At runtime, call {@code LogSource.setLogImplementation()}.</li>
  * </ul>
  *
- * @deprecated Use {@link LogFactory} instead - The default factory
+ * @deprecated Use {@link LogFactory} instead. The default factory
  *  implementation performs exactly the same algorithm as this class did
  */
 @Deprecated
@@ -123,8 +125,8 @@ public class LogSource {
     /**
      * Gets a {@code Log} instance by class.
      *
-     * @param clazz a Class.
-     * @return a {@code Log} instance.
+     * @param clazz A Class.
+     * @return A {@code Log} instance.
      */
     static public Log getInstance(final Class<?> clazz) {
         return getInstance(clazz.getName());
@@ -134,7 +136,7 @@ public class LogSource {
      * Gets a {@code Log} instance by class name.
      *
      * @param name Class name.
-     * @return a {@code Log} instance.
+     * @return A {@code Log} instance.
      */
     static public Log getInstance(final String name) {
         return logs.computeIfAbsent(name, k -> makeNewLogInstance(name));
@@ -144,7 +146,7 @@ public class LogSource {
      * Returns a {@link String} array containing the names of
      * all logs known to me.
      *
-     * @return a {@link String} array containing the names of
+     * @return A {@link String} array containing the names of
      * all logs known to me.
      */
     static public String[] getLogNames() {
@@ -175,8 +177,8 @@ public class LogSource {
      * class is available in the {@link LogSource}'s classpath, or a Jdk14Logger if we
      * are on a JDK 1.4 or later system, or NoOpLog if neither of the above conditions is true.
      *
-     * @param name the log name (or category)
-     * @return a new instance.
+     * @param name The log name (or category)
+     * @return A new instance.
      */
     static public Log makeNewLogInstance(final String name) {
         Log log;
@@ -186,7 +188,7 @@ public class LogSource {
         } catch (final Throwable t) {
             log = null;
         }
-        if (null == log) {
+        if (log == null) {
             log = new NoOpLog(name);
         }
         return log;
