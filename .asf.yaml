@@ -16,6 +16,8 @@
 github:
   description: "Apache Commons Logging"
   homepage: https://commons.apache.org/logging/
+  autolink_jira:
+    - LOGGING
   
   pull_requests:
     # allow auto-merge
