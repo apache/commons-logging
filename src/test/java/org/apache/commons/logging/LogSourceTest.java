@@ -19,9 +19,12 @@ package org.apache.commons.logging;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Test;
+
 public class LogSourceTest {
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testJdk14IsAvailable() throws Exception {
         assertTrue(LogSource.jdk14IsAvailable);
     }
