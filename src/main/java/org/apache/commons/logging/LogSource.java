@@ -199,8 +199,8 @@ public class LogSource {
      * {@link String} argument (containing the name of the log).
      *
      * @param logClass class.
-     * @throws LinkageError                if there is missing dependency.
-     * @throws ExceptionInInitializerError unexpected exception has occurred in a static initializer.
+     * @throws LinkageError                if there is a missing dependency.
+     * @throws ExceptionInInitializerError if an unexpected exception has occurred in a static initializer.
      * @throws NoSuchMethodException       if a matching method is not found.
      * @throws SecurityException           If a security manager, <em>s</em>, is present and the caller's class loader is not the same as or an ancestor of the
      *                                     class loader for the current class and invocation of {@link SecurityManager#checkPackageAccess
@@ -216,7 +216,7 @@ public class LogSource {
      * that takes a single {@link String} argument (containing the name of the log).
      *
      * @param className class name.
-     * @throws LinkageError           if there is missing dependency.
+     * @throws LinkageError           if there is a missing dependency.
      * @throws SecurityException      If a security manager, <em>s</em>, is present and the caller's class loader is not the same as or an ancestor of the class
      *                                loader for the current class and invocation of {@link SecurityManager#checkPackageAccess s.checkPackageAccess()} denies
      *                                access to the package of this class.
