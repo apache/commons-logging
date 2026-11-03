@@ -27,6 +27,7 @@ public class UserClass {
      * Don't forget to set the context class loader to whatever it will be
      * when an instance of this class is actually created <em>before</em> calling
      * this method!
+     * </p>
      */
     public static void setAllowFlawedContext(final String state) {
         final LogFactory f = LogFactory.getFactory();
@@ -34,7 +35,7 @@ public class UserClass {
     }
 
     public UserClass() {
-        final Log log = LogFactory.getLog(LoadTestCase.class);
+        final Log log = LogFactory.getLog(LoadTest.class);
       }
 
 }

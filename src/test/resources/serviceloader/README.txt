@@ -1,1 +1,1 @@
-Contains resources used exclusively by `ServiceLoaderTestCase`
+Contains resources used exclusively by `ServiceLoaderTest`

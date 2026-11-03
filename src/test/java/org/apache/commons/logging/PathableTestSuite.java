@@ -29,7 +29,7 @@ import junit.framework.TestSuite;
  * For tests that need to control exactly what the class loader hierarchy is
  * like when the test is run, something like the following is recommended:
  * <pre>
- * class SomeTestCase extends TestCase {
+ * class SomeTest extends TestCase {
  *  public static Test suite() throws Exception {
  *   PathableClassLoader parent = new PathableClassLoader(null);
  *   parent.useSystemLoader("junit.");
@@ -39,7 +39,7 @@ import junit.framework.TestSuite;
  *   child.addLogicalLib("log4j12");
  *   child.addLogicalLib("commons-logging");
  *
- *   Class testClass = child.loadClass(SomeTestCase.class.getName());
+ *   Class testClass = child.loadClass(SomeTest.class.getName());
  *   ClassLoader contextClassLoader = child;
  *
  *   PathableTestSuite suite = new PathableTestSuite(testClass, child);
