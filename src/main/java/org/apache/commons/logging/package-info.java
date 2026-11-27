@@ -61,10 +61,9 @@
  * ...
  * }
  * </pre>
- * <p>Unless you configure things differently, all log output will be written
- * to System.err.  Therefore, you really will want to review the remainder of
- * this page in order to understand how to configure logging for your
- * application.</p>
+ * <p>
+ * Log output is handled by the selected logging backend. Review the remainder of this page to configure logging for your application.
+ * </p>
  * <h2>Configuring the Commons Logging Package</h2>
  * <h3>Choosing a {@code LogFactory} Implementation</h3>
  * <p>From an application perspective, the first requirement is to retrieve an
@@ -87,8 +86,9 @@
  * visible in the application class path, with a property named
  * {@code org.apache.commons.logging.LogFactory} defining the
  * desired implementation class name.</li>
- * <li>Fall back to a default implementation, which is described
- * further below.</li>
+ * <li>Automatically select {@link org.apache.commons.logging.impl.Log4jApiLogFactory} when Log4j API is available and is not redirected to SLF4J,
+ * otherwise {@link org.apache.commons.logging.impl.Slf4jLogFactory} when SLF4J is available,
+ * otherwise the legacy {@link org.apache.commons.logging.impl.LogFactoryImpl}.</li>
  * </ul>
  * <p>If a {@code commons-logging.properties} file is found, all of the
  * properties defined there are also used to set configuration attributes on
@@ -101,21 +101,31 @@
  * but still allow each web application to provide its own {@code LogFactory}
  * implementation, if it so desires.  An instance of this class will then be
  * created, and cached per class loader.
- * <h3>The Default {@code LogFactory} Implementation</h3>
- * <p>The Logging Package APIs include a default {@code LogFactory}
- * implementation class (<a href="impl/LogFactoryImpl.html">
- * org.apache.commons.logging.impl.LogFactoryImpl</a>) that is selected if no
- * other implementation class name can be discovered.  Its primary purpose is
- * to create (as necessary) and return <a href="Log.html">Log</a> instances
- * in response to calls to the {@code getInstance()} method.  The default
- * implementation uses the following rules:</p>
+ * <h3>The Legacy {@code LogFactory} Implementation</h3>
+ * <p>
+ * The legacy {@link org.apache.commons.logging.impl.LogFactoryImpl} creates and returns {@link org.apache.commons.logging.Log} instances.
+ * The {@code org.apache.commons.logging.Log} property selects a logger only for this factory; it does not override factory discovery.
+ * To select {@code NoOpLog} even when Log4j API or SLF4J is available, use both settings in {@code commons-logging.properties}:
+ * </p>
+ * <pre>
+ * org.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl
+ * org.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
+ * </pre>
+ * <p>
+ * Replace {@code NoOpLog} with {@code SimpleLog} to use the simple logger. These settings can also be supplied as system properties.
+ * Do not combine {@code Slf4jLogFactory} with an active {@code slf4j-jcl} binding, which delegates back to JCL and creates a logging loop.
+ * Remove that binding or explicitly select the legacy factory to retain the SLF4J-to-JCL direction.
+ * </p>
+ * <p>
+ * The legacy implementation uses the following rules:
+ * </p>
  * <ul>
  * <li>At most one {@code Log} instance of the same name will be created.
  * Subsequent {@code getInstance()} calls to the same
  * {@code LogFactory} instance, with the same name or {@code Class}
  * parameter, will return the same {@code Log} instance.</li>
- * <li>When a new {@code Log} instance must be created, the default
- * {@code LogFactory} implementation uses the following discovery
+ * <li>When a new {@code Log} instance must be created, the legacy
+ * {@code LogFactoryImpl} implementation uses the following discovery
  * process:
  * <ul>
  * <li>Look for a configuration attribute of this factory named
@@ -126,11 +136,7 @@
  * {@code org.apache.commons.logging.Log} (for backwards
  * compatibility to pre-1.0 versions of this API, a system property
  * {@code org.apache.commons.logging.log} is also consulted).</li>
- * <li>If the Log4J logging system is available in the application
- * class path, use the corresponding wrapper class
- * (<a href="impl/Log4JLogger.html">Log4JLogger</a>).</li>
- * <li>If the application is executing on a JDK 1.4 system, use
- * the corresponding wrapper class
+ * <li>If the {@code java.logging} module is available, use the corresponding wrapper class
  * (<a href="impl/Jdk14Logger.html">Jdk14Logger</a>).</li>
  * <li>Fall back to the default simple logging implementation
  * (<a href="impl/SimpleLog.html">SimpleLog</a>).</li>

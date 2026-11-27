@@ -34,6 +34,9 @@
 <a href="#Contents">Contents</a>
 </li>
 <li>
+<a href="#SLF4J Delegation Loops">SLF4J Delegation Loops</a>
+</li>
+<li>
 <a href="#Using JCL Diagnostics">Using JCL Diagnostics</a>
 <ul>
 <li>
@@ -97,6 +100,31 @@
 </li>
 </ul>
 </section>
+  <section name='SLF4J Delegation Loops'>
+    <p>
+Since version 1.3.0, Commons Logging can automatically select <code>Slf4jLogFactory</code>.
+If SLF4J is bound to Commons Logging through <code>slf4j-jcl</code>, requesting a logger creates
+a delegation loop: JCL to SLF4J to JCL. Before version 1.4.1, this configuration could hang
+in <code>ConcurrentHashMap.computeIfAbsent</code> on Java 8 or throw
+<code>IllegalStateException: Recursive update</code> on newer Java versions.
+    </p>
+    <p>
+Starting with version 1.4.1, <code>Slf4jLogFactory</code> rejects the active JCL binding with a
+<code>LogConfigurationException</code> explaining the delegation loop. An old binding JAR ignored
+by SLF4J 2 does not trigger this check.
+    </p>
+    <p>
+Remove <code>slf4j-jcl</code> and choose an SLF4J backend to route logging through SLF4J.
+If the application must instead route SLF4J to JCL, explicitly select the legacy JCL factory
+in <code>commons-logging.properties</code> or with a system property:
+    </p>
+    <source>org.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl</source>
+    <p>
+The legacy factory can then use <code>java.util.logging</code>, <code>SimpleLog</code>, or
+<code>NoOpLog</code>. Setting only <code>org.apache.commons.logging.Log</code> does not override
+factory discovery. See the <a href="guide.html#Configuration">configuration examples</a>.
+    </p>
+  </section>
   <section name='Using JCL Diagnostics'>
     <p>
 Diagnostics is a feature introduced in JCL 1.1 as an aid to debugging problems 
@@ -231,7 +259,8 @@ Finally, once initialization is complete a <code>BOOTSTRAP COMPLETED</code> mess
     </subsection>
     <subsection name='Construction Of LogFactoryImpl Instances'>
       <p>
-<code>LogFactoryImpl</code> is the standard and default <code>LogFactory</code> implementation.
+<code>LogFactoryImpl</code> is the legacy <code>LogFactory</code> implementation, used when explicitly selected
+or when the Log4j API and SLF4J factories are unavailable.
 This section obviously only applies to configurations using this implementation.
       </p>
       <p>
