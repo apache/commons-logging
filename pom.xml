@@ -59,6 +59,8 @@ under the License.
     <log4j2.version>2.26.1</log4j2.version>
     <logback.version>1.3.16</logback.version>
     <slf4j.version>2.0.20</slf4j.version>
+    <!-- Matches the legacy binding involved in the delegation loop regression. -->
+    <slf4j1.version>1.7.25</slf4j1.version>
     <findsecbugs.version>1.14.0</findsecbugs.version>
     <jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
     <commons.osgi.import>
@@ -426,6 +428,196 @@ under the License.
               </classpathDependencyExcludes>
               <includes>
                 <include>org/apache/commons/logging/slf4j/*Test.java</include>
+              </includes>
+            </configuration>
+          </execution>
+          <!-- Reject the active SLF4J 1 binding that delegates back to JCL. -->
+          <execution>
+            <id>slf4j-jcl-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <!-- Use the packaged JAR for case-sensitive class lookup, including on macOS. -->
+              <classesDirectory>${project.build.directory}/${project.build.finalName}.jar</classesDirectory>
+              <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+              <reportNameSuffix>slf4j-jcl-test</reportNameSuffix>
+              <additionalClasspathDependencies>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+                  <version>${slf4j1.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-jcl</artifactId>
+                  <version>${slf4j1.version}</version>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+              </additionalClasspathDependencies>
+              <classpathDependencyExcludes>
+                <exclude>org.apache.logging.log4j:*</exclude>
+                <exclude>org.slf4j:*</exclude>
+              </classpathDependencyExcludes>
+              <includes>
+                <include>org/apache/commons/logging/slf4j/jcl/DelegationLoopTest.java</include>
+              </includes>
+            </configuration>
+          </execution>
+          <!-- Reject the same loop when Log4j API redirects to SLF4J. -->
+          <execution>
+            <id>log4j-to-slf4j-jcl-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <!-- Use the packaged JAR for case-sensitive class lookup, including on macOS. -->
+              <classesDirectory>${project.build.directory}/${project.build.finalName}.jar</classesDirectory>
+              <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+              <reportNameSuffix>log4j-to-slf4j-jcl-test</reportNameSuffix>
+              <additionalClasspathDependencies>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+                  <version>${slf4j1.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-jcl</artifactId>
+                  <version>${slf4j1.version}</version>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.logging.log4j</groupId>
+                  <artifactId>log4j-to-slf4j</artifactId>
+                  <version>${log4j2.version}</version>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+              </additionalClasspathDependencies>
+              <classpathDependencyExcludes>
+                <exclude>org.apache.logging.log4j:log4j-core</exclude>
+                <exclude>org.apache.logging.log4j:log4j-core-test</exclude>
+                <exclude>org.apache.logging.log4j:log4j-1.2-api</exclude>
+                <exclude>org.slf4j:*</exclude>
+              </classpathDependencyExcludes>
+              <includes>
+                <include>org/apache/commons/logging/slf4j/jcl/DelegationLoopTest.java</include>
+              </includes>
+            </configuration>
+          </execution>
+          <!-- An explicit legacy JCL factory breaks the delegation loop. -->
+          <execution>
+            <id>slf4j-jcl-legacy-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <!-- Use the packaged JAR for case-sensitive class lookup, including on macOS. -->
+              <classesDirectory>${project.build.directory}/${project.build.finalName}.jar</classesDirectory>
+              <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+              <reportNameSuffix>slf4j-jcl-legacy-test</reportNameSuffix>
+              <additionalClasspathDependencies>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+                  <version>${slf4j1.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-jcl</artifactId>
+                  <version>${slf4j1.version}</version>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+              </additionalClasspathDependencies>
+              <classpathDependencyExcludes>
+                <exclude>org.apache.logging.log4j:*</exclude>
+                <exclude>org.slf4j:*</exclude>
+              </classpathDependencyExcludes>
+              <includes>
+                <include>org/apache/commons/logging/slf4j/jcl/LegacyFactoryTest.java</include>
+              </includes>
+              <systemPropertyVariables>
+                <org.apache.commons.logging.LogFactory>org.apache.commons.logging.impl.LogFactoryImpl</org.apache.commons.logging.LogFactory>
+                <org.apache.commons.logging.Log>org.apache.commons.logging.impl.NoOpLog</org.apache.commons.logging.Log>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+          <!-- A legacy binding ignored by SLF4J 2 must not prevent logging. -->
+          <execution>
+            <id>slf4j2-jcl-test</id>
+            <goals>
+              <goal>integration-test</goal>
+            </goals>
+            <configuration>
+              <!-- Use the packaged JAR for case-sensitive class lookup, including on macOS. -->
+              <classesDirectory>${project.build.directory}/${project.build.finalName}.jar</classesDirectory>
+              <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+              <reportNameSuffix>slf4j2-jcl-test</reportNameSuffix>
+              <additionalClasspathDependencies>
+                <dependency>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-jcl</artifactId>
+                  <version>${slf4j1.version}</version>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>commons-logging</groupId>
+                      <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+                <dependency>
+                  <groupId>ch.qos.logback</groupId>
+                  <artifactId>logback-classic</artifactId>
+                  <version>${logback.version}</version>
+                  <exclusions>
+                    <exclusion>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                  </exclusions>
+                </dependency>
+              </additionalClasspathDependencies>
+              <classpathDependencyExcludes>
+                <exclude>org.apache.logging.log4j:*</exclude>
+              </classpathDependencyExcludes>
+              <includes>
+                <include>org/apache/commons/logging/slf4j/jcl/IgnoredBindingTest.java</include>
               </includes>
             </configuration>
           </execution>

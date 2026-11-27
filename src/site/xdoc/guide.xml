@@ -136,9 +136,9 @@ JCL's discovery process).
 There are two base abstractions used by JCL: <code>Log</code>
 (the basic logger) and <code>LogFactory</code> (which knows how to create <code>Log</code>
 instances). Specifying a particular Log implementation is very useful (whether that is
-one provided by Commons Logging or a user-defined one). Specifying a
-<code>LogFactory</code> implementation explicitly is a subject for
-advanced users only, so will not be addressed here.
+one provided by Commons Logging or a user-defined one). Factory selection happens before
+logger selection. The <code>org.apache.commons.logging.Log</code> property selects a logger
+only when the legacy <code>LogFactoryImpl</code> is used.
             </p>
             <p>
               JCL provides three standard log factories:
@@ -151,6 +151,25 @@ advanced users only, so will not be addressed here.
                   then <code>Slf4jLogFactory</code> is used. This factory redirects all output to SLF4J.</li>
               <li>otherwise the legacy <code>LogFactoryImpl</code> is used.</li>
             </ol>
+            <p>
+Since version 1.3.0, the presence of Log4j API or SLF4J can therefore change the selected factory.
+To select <code>NoOpLog</code> explicitly, for example to disable logging in tests, put both
+settings in <code>commons-logging.properties</code>:
+            </p>
+            <source>org.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl
+org.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog</source>
+            <p>
+For <code>SimpleLog</code>, replace <code>NoOpLog</code> with <code>SimpleLog</code> in the second setting.
+The same settings can be supplied as system properties. A factory selected by a system property or
+service provider takes precedence over the factory setting in <code>commons-logging.properties</code>.
+            </p>
+            <p>
+Do not combine <code>Slf4jLogFactory</code> with an active <code>slf4j-jcl</code> binding:
+Commons Logging would delegate to SLF4J, which would delegate back to Commons Logging.
+Remove the reverse binding and configure an SLF4J backend, or explicitly select
+<code>LogFactoryImpl</code> to retain the SLF4J-to-JCL direction.
+See <a href="troubleshooting.html#SLF4J_Delegation_Loops">SLF4J Delegation Loops</a>.
+            </p>
             <p>
 The legacy <code>LogFactory</code> implementation uses the following discovery process
 to determine what type of <code>Log</code> implementation it should use
@@ -693,8 +712,8 @@ can be provided to meet
 specific requirements for connecting to, or instantiating, a logger.
     </p>
             <p>
-The default <code>LogFactory</code> provided by JCL
-can be configured to instantiate a specific implementation of the
+The legacy <code>LogFactoryImpl</code>, selected explicitly as described in
+<a href="#Configuration">Configuration</a>, can be configured to instantiate a specific implementation of the
 <code>org.apache.commons.logging.Log</code> interface
 by setting the property of the same name (<code>org.apache.commons.logging.Log</code>).
 This property can be specified as a system property,
@@ -721,6 +740,11 @@ JCL is distributed with a very simple <code>Log</code> implementation named
 implementation. Developers requiring a fully functional open source logging system are 
 directed to <a href='https://logging.apache.org/log4j'>Log4J</a>.
   </p>
+  <p>
+To select <code>SimpleLog</code> even when Log4j API or SLF4J is available, use:
+  </p>
+  <source>org.apache.commons.logging.LogFactory=org.apache.commons.logging.impl.LogFactoryImpl
+org.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog</source>
   <p>
   <code>SimpleLog</code> sends all (enabled) log messages,
   for all defined loggers, to <code>System.err</code>.  The following system properties

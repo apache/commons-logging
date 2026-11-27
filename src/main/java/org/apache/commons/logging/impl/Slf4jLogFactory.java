@@ -288,10 +288,23 @@ public final class Slf4jLogFactory extends LogFactory {
         return getInstance(clazz.getName());
     }
 
+    /**
+     * Gets a logger, rejecting an SLF4J binding that delegates back to Commons Logging.
+     *
+     * @param name the logger name.
+     * @return the logger.
+     * @throws LogConfigurationException if the active SLF4J binding delegates to Commons Logging.
+     */
     @Override
     public Log getInstance(final String name) {
+        final ILoggerFactory factory = LoggerFactory.getILoggerFactory();
+        // Check the active factory, since SLF4J 2 can ignore a legacy binding on the class path.
+        if ("org.slf4j.impl.JCLLoggerFactory".equals(factory.getClass().getName())) {
+            throw new LogConfigurationException("SLF4J is bound to JCL (slf4j-jcl), which would cause a logging delegation loop. " +
+                    "Remove slf4j-jcl or set " + FACTORY_PROPERTY + " to " + FACTORY_DEFAULT + ".");
+        }
         return loggers.computeIfAbsent(name, n -> {
-            final Logger logger = LoggerFactory.getLogger(n);
+            final Logger logger = factory.getLogger(n);
             return logger instanceof LocationAwareLogger ? new Slf4jLocationAwareLog((LocationAwareLogger) logger) : new Slf4jLog(
                     logger);
         });
